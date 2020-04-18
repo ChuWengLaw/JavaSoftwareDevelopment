@@ -70,7 +70,7 @@ public class Billboard {
     public String DeleteBillboard (String BillBoardName){
         return "sql code";
         /*
-        DELETE FROM BillboardInfo WHERE name = BillBoardName;
+        DELETE FROM BillboardInfo WHERE ...;
          */
     }
 

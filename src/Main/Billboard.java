@@ -55,6 +55,23 @@ public class Billboard {
 
 
         return "sql code";
+        /*
+        possible SQL code layout
+        INSERT INTO BillboardInfo (column1, column2, column3, ...)
+        VALUES (value1, value2, value3, ...);
+         */
+    }
+
+    /**
+     * @author Lachlan
+     * @param BillBoardName name of the bill
+     * @return
+     */
+    public String DeleteBillboard (String BillBoardName){
+        return "sql code";
+        /*
+        DELETE FROM BillboardInfo WHERE name = BillBoardName;
+         */
     }
 
 }

@@ -37,7 +37,6 @@ public class Billboard {
         this.BillboardInformation = BillboardInformation;
     }
 
-
     //use the GetCreateBillboardPermission() method
     public String CreateBillboard(String BillBoardName)
     {
@@ -52,7 +51,40 @@ public class Billboard {
 
 
         return "sql code";
+        /*
+        select * from billboards where billboardname = 'input';
+
+        if the returned value is not null
+        {
+        update billboards
+        set (billboardname=..., textcolour=..., message=..., image=..., information=...)
+        where billboardname = input;
+        }
+        else{
+        insert into billboards (billboardname, textcolour, message, image, information)
+        values(...);
+        }
+         */
     }
+
+    /*
+    -------------------------------DELETE BILLBOARD-------------------------------------------
+    delete from billboards
+    where billboardname = input;
+
+    -----------------------------LIST BILLBOARD-----------------------------------------------
+    select * from billboards;
+
+    ----------------------------GET BILLBOARD INFO--------------------------------------------
+    select information from billboards
+    where billboardname = input;
+
+    ----------------------------VIEW BILLBOARD------------------------------------------------
+    select * from billboards
+    order by schedule;
+     */
+
+    
 
 }
 

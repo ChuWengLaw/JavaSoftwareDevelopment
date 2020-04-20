@@ -37,11 +37,7 @@ public class Billboard {
         this.BillboardInformation = BillboardInformation;
     }
 
-    /**use the GetCreateBillboardPermission() method
-     * @author Callum
-     * @param BillBoardName
-     * @return
-     */
+    //use the GetCreateBillboardPermission() method
     public String CreateBillboard(String BillBoardName)
     {
         //check if billboard already exists, if it doesnt create a new one.

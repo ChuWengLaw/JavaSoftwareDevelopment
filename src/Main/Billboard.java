@@ -79,10 +79,15 @@ public class Billboard {
     -----------------------------LIST BILLBOARD-----------------------------------------------
     select * from billboards;
 
-    ----------------------------VIEW BILLBOARD--------------------------------------------
+    ----------------------------GET BILLBOARD INFO--------------------------------------------
+    select information from billboards
+    where billboardname = input;
+
+    ----------------------------VIEW BILLBOARD------------------------------------------------
     select * from billboards
     order by schedule;
      */
+
     
 
 }

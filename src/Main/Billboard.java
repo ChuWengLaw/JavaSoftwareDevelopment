@@ -55,53 +55,31 @@ public class Billboard {
 
 
         return "sql code";
+        /*
+        select * from billboards where billboardname = 'input';
+
+        if the returned value is not null
+        {
+        update billboards
+        set (billboardname=..., textcolour=..., message=..., image=..., information=...)
+        where billboardname = input;
+        }
+        else{
+        insert into billboards (billboardname, textcolour, message, image, information)
+        values(...);
+        }
+         */
     }
 
-    /**
-     * @author Lachlan
-     * @param BillBoardName name of the bill
-     * @return
-     */
-    public String DeleteBillboard (String BillBoardName){
-        return "sql code";
-
-    }
-    
     /*
-    !This is a list of the possible sql code for the required functionality!
-    -------------------LIST BILLBOARD----------------------------------
-    SELECT column1, column2, ...
-    FROM table_name;
-    -------------------GET BILLBOARD INFO------------------------------
-    SELECT column1, column2, ...
-    FROM table_name
-    WHERE condition;
-    -------------------CREATE/EDIT BILLBOARD---------------------------
-    !For edit!
-    UPDATE table_name
-    SET column1 = value1, column2 = value2, ...
-    WHERE condition;
+    -------------------------------DELETE BILLBOARD-------------------------------------------
+    delete from billboards
+    where billboardname = input;
 
-    and
-
-    !For create!
-    INSERT INTO table_name (column1, column2, column3, ...)
-    VALUES (value1, value2, value3, ...);
-    -------------------DELETE BILLBOARD--------------------------------
-    DELETE FROM table_name
-    WHERE condition;
-    ------------------VIEW SCHEDULE------------------------------------
-    SELECT column1, column2, ...
-    FROM table_name
-    ORDER BY column1, column2, ... ASC|DESC;
-    ------------------SCHEDULE BILLBOARD-------------------------------
-    UPDATE table_name
-    SET column1 = value1, column2 = value2, ...
-    WHERE condition;
-    ------------------REMOVE BILLBOARD FROM SCHEDULE-------------------
-    DELETE FROM table_name
-    WHERE condition;
+    -----------------------------LIST BILLBOARD-----------------------------------------------
+    select * from billboards;
      */
+    
 
 }
 

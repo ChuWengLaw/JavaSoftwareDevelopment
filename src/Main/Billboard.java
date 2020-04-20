@@ -80,7 +80,8 @@ public class Billboard {
     select * from billboards;
 
     ----------------------------VIEW BILLBOARD--------------------------------------------
-    
+    select * from billboards
+    order by schedule;
      */
     
 

@@ -3,62 +3,92 @@ import java.util.Scanner;    //remove once gui is set up
 
 //Double check method prefixes  (public/private/static ect)
 public class User {
-
-    private String UserID;
-    private String UserName;
-    private String UserPassword;
-    private boolean CreateBillboardsPermission;
-    private boolean EditAllBillboardPermission;
-    private boolean ScheduleBillboardsPermission;
-    private boolean EditUsersPermission;
+    private String userID;
+    private String userFName;
+    private String userLName;
+    private String userPassword;
+    private boolean createBillboardsPermission;
+    private boolean editAllBillboardPermission;
+    private boolean scheduleBillboardsPermission;
+    private boolean editUsersPermission;
 
 //Default constructor should throw an error because below info is required
 
     //Constructor
-    public User(String UserID, String UserName, String UserPassword, boolean CreateBillboardsPermission, boolean EditAllBillboardPermission, boolean ScheduleBillboardsPermission, boolean EditUsersPermission) {
-        this.UserID = UserID;
-        this.UserName = UserName;
-        this.UserPassword = UserPassword;
-        this.CreateBillboardsPermission = CreateBillboardsPermission;
-        this.EditAllBillboardPermission = EditAllBillboardPermission;
-        this.ScheduleBillboardsPermission = ScheduleBillboardsPermission;
-        this.EditUsersPermission = EditUsersPermission;
-
-        // ̶c̶l̶i̶c̶k̶i̶n̶g̶ ̶c̶r̶e̶a̶t̶e̶ ̶n̶e̶w̶ ̶u̶s̶e̶r̶ ̶w̶i̶l̶l̶ ̶c̶r̶e̶a̶t̶e̶ ̶a̶ ̶n̶e̶w̶ ̶U̶s̶e̶r̶ ̶O̶b̶j̶e̶c̶t̶ ̶a̶n̶d̶ ̶w̶i̶l̶l̶ ̶n̶e̶e̶d̶ ̶t̶o̶ ̶s̶e̶n̶d̶ ̶t̶o̶ ̶S̶Q̶L̶
-        // No matter what, a new user object will be created, the difference is for new user,
-        // they will need to type in their prefer user name and password, and store it into SQL,
-        // where old user just retrieve data from SQL.
+    public User() {
 
     }
 
-//Get Methods to be called to check user's information
-    public String GetUserID(){
-        return UserID;
+    // Set method to store user information
+    public void setUserID(String userID){
+        this.userID = userID;
+        System.out.println(this.userID);
     }
 
-    public String GetUserName(){
-        return UserName;
+    public void setUserFName(String userFName){
+        this.userFName = userFName;
+        System.out.println(this.userFName);
     }
 
-    public String GetUserPassword(){
-        return UserPassword;
+    public void setUserLName(String userLName){
+        this.userLName = userLName;
+        System.out.println(this.userLName);
     }
 
-//Get Methods to be called to check if user has permissions to call above functions
-    public Boolean GetCreateBillboardsPermission() {
-        return CreateBillboardsPermission;
+
+    public void setPassword(char[] userPassword) {
+        this.userPassword = String.valueOf(userPassword);
+        System.out.println(this.userPassword);
     }
 
-    public Boolean GetEditAllBillboardPermission() {
-        return EditAllBillboardPermission;
+    public void setCreateBillboardsPermission(Boolean permission){
+        this.createBillboardsPermission = permission;
     }
 
-    public Boolean GetScheduleBillboardsPermission() {
-        return ScheduleBillboardsPermission;
+    public void setEditAllBillboardsPermission(Boolean permission){
+        this.editAllBillboardPermission = permission;
     }
 
-    public Boolean GetEditUsersPermission() {
-        return EditUsersPermission;
+    public void setScheduleBillboardsPermission(Boolean permission){
+        this.scheduleBillboardsPermission = permission;
+    }
+
+    public void setEditUsersPermission(Boolean permission){
+        this.editUsersPermission = permission;
+    }
+
+    // Get Methods to be called to check user's information
+    public String getUserID(){
+        return userID;
+    }
+
+    public String getUserFName(){
+        return userFName;
+    }
+
+    public String getUserLName(){
+        return userLName;
+    }
+
+    public String getUserPassword(){
+        return userPassword;
+    }
+
+    // Get Methods to be called to check if user has permissions to call above functions
+    public Boolean getCreateBillboardsPermission() {
+        return createBillboardsPermission;
+    }
+
+    public Boolean getEditAllBillboardPermission() {
+        return editAllBillboardPermission;
+    }
+
+    public Boolean getScheduleBillboardsPermission() {
+        return scheduleBillboardsPermission;
+    }
+
+    public Boolean getEditUsersPermission() {
+        return editUsersPermission;
     }
 
 }

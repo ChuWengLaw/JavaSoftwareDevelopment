@@ -5,12 +5,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.*;
 
-public class CreateEdit extends JFrame implements ActionListener,Runnable{
+public class CreateEditGUI extends JFrame implements ActionListener,Runnable{
     //set the width of the GUI
     public static final int WIDTH = 450;
     public static final int HEIGHT = 600;
 
-    public CreateEdit(String title) throws HeadlessException {
+    public CreateEditGUI(String title) throws HeadlessException {
         super(title);
     }
 
@@ -18,7 +18,7 @@ public class CreateEdit extends JFrame implements ActionListener,Runnable{
     private JPanel pnlOne;
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(new CreateEdit("Create and Edit"));
+        SwingUtilities.invokeLater(new CreateEditGUI("Create and Edit"));
     }
 
     /**

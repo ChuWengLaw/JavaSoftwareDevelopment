@@ -7,16 +7,14 @@ import java.awt.*;
 
 public class CreateEditGUI extends JFrame implements ActionListener,Runnable{
     //set the width of the GUI
-    public static final int WIDTH = 450;
-    public static final int HEIGHT = 600;
+    public static final int WIDTH = 350;
+    public static final int HEIGHT = 400;
 
     public CreateEditGUI(String title) throws HeadlessException {
         super(title);
     }
 
     //define element to be used
-    private JPanel pnlInputs;
-
     private JButton btnSubmit;
 
     private JLabel lblBillboardName;
@@ -47,7 +45,6 @@ public class CreateEditGUI extends JFrame implements ActionListener,Runnable{
         setLayout(new BorderLayout());
 
         //define the colour of elements
-        pnlInputs = createPanel(Color.lightGray);
         btnSubmit=createButton("Submit");
 
         //create the labels
@@ -66,29 +63,28 @@ public class CreateEditGUI extends JFrame implements ActionListener,Runnable{
         txtImage=createText();
         txtInformation=createText();
 
-        //define location of elements
-        getContentPane().add(pnlInputs,BorderLayout.CENTER);
-        //getContentPane().add(btnSubmit,BorderLayout.SOUTH);
-        //getContentPane().add(txtBillboardName,BorderLayout.NORTH);
-        //getContentPane().add(lblBillboardName,BorderLayout.EAST);
+        //create a grid layout to hold the labels and text inputs
+        JPanel inputs = new JPanel(new GridLayout(6,2));
+        inputs.add(lblBillboardName);
+        inputs.add(txtBillboardName);
+        inputs.add(lblTextColour);
+        inputs.add(txtTextColour);
+        inputs.add(lblBackgroundColour);
+        inputs.add(txtBackgroundColour);
+        inputs.add(lblMessage);
+        inputs.add(txtMessage);
+        inputs.add(lblImage);
+        inputs.add(txtImage);
+        inputs.add(lblInformation);
+        inputs.add(txtInformation);
 
-        layoutButtonPanel();
+        //define location of elements
+        getContentPane().add(inputs);
+        getContentPane().add(btnSubmit,BorderLayout.SOUTH);
 
         //make changes and then send to GUI
         repaint();
         setVisible(true);
-    }
-
-    /**
-     * Creates a JPanel
-     * @author Lachlan
-     * @param c the colour of the JPanel
-     * @return a JPanel of colour c
-     */
-    private JPanel createPanel(Color c){
-        JPanel panel = new JPanel();
-        panel.setBackground(c);
-        return panel;
     }
 
     /**
@@ -135,55 +131,6 @@ public class CreateEditGUI extends JFrame implements ActionListener,Runnable{
         JLabel label = new JLabel();
         label.setText(text);
         return label;
-    }
-
-    private void layoutButtonPanel() {
-        GridBagLayout layout = new GridBagLayout();
-        pnlInputs.setLayout(layout);
-        //Lots of layout code here
-        //add components to grid
-        GridBagConstraints constraints = new GridBagConstraints();
-
-        //Defaults
-        constraints.fill = GridBagConstraints.HORIZONTAL;
-        constraints.anchor = GridBagConstraints.WEST;
-        constraints.weightx = 100;
-        constraints.weighty = 100;
-
-        addToPanel(pnlInputs, lblBillboardName,constraints,0,0,2,1);
-        addToPanel(pnlInputs, txtBillboardName,constraints,3,0,2,1);
-        addToPanel(pnlInputs, lblTextColour,constraints,0,2,2,1);
-        addToPanel(pnlInputs, txtTextColour,constraints,3,2,2,1);
-        addToPanel(pnlInputs, lblBackgroundColour, constraints,0,4,2,1);
-        addToPanel(pnlInputs,txtBackgroundColour,constraints,3,4,2,1);
-        addToPanel(pnlInputs,lblMessage,constraints,0,6,2,1);
-        addToPanel(pnlInputs,txtMessage,constraints,3,6,2,1);
-        addToPanel(pnlInputs,lblImage,constraints,0,8,2,1);
-        addToPanel(pnlInputs,txtImage,constraints,3,8,2,1);
-        addToPanel(pnlInputs,lblInformation,constraints,0,10,2,1);
-        addToPanel(pnlInputs,txtInformation,constraints,3,10,2,1);
-        addToPanel(pnlInputs,btnSubmit,constraints,2,12,2,1);
-    }
-
-    /**
-     *
-     * A convenience method to add a component to given grid bag
-     * layout locations. Code due to Cay Horstmann
-     *
-     * @param c the component to add
-     * @param constraints the grid bag constraints to use
-     * @param x the x grid position
-     * @param y the y grid position
-     * @param w the grid width of the component
-     * @param h the grid height of the component
-     */
-    private void addToPanel(JPanel jp,Component c, GridBagConstraints
-            constraints,int x, int y, int w, int h) {
-        constraints.gridx = x;
-        constraints.gridy = y;
-        constraints.gridwidth = w;
-        constraints.gridheight = h;
-        jp.add(c, constraints);
     }
 
     @Override

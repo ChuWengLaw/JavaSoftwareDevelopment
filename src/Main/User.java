@@ -3,7 +3,7 @@ import java.util.Scanner;    //remove once gui is set up
 
 //Double check method prefixes  (public/private/static ect)
 public class User {
-    private String userID;
+    private String userName;
     private String userFName;
     private String userLName;
     private String userPassword;
@@ -20,9 +20,9 @@ public class User {
     }
 
     // Set method to store user information
-    public void setUserID(String userID){
-        this.userID = userID;
-        System.out.println(this.userID);
+    public void setUserName(String userName){
+        this.userName = userName;
+        System.out.println(this.userName);
     }
 
     public void setUserFName(String userFName){
@@ -58,8 +58,8 @@ public class User {
     }
 
     // Get Methods to be called to check user's information
-    public String getUserID(){
-        return userID;
+    public String getUserName(){
+        return userName;
     }
 
     public String getUserFName(){

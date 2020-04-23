@@ -4,10 +4,12 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import javax.swing.*;
 
-public class CreateNewUserWin extends JFrame{
+public class CreateUserWin extends JFrame{
+        private JLabel labelUserName = new JLabel("User Name");
         private JLabel labelUserLName = new JLabel("User Last Name");
         private JLabel labelUserFName = new JLabel("User First Name");
         private JLabel labelPassword = new JLabel("Selected password");
+        private JTextField userNameTextFiled = new JTextField(20);
         private JTextField userFNameTextFiled = new JTextField(20);
         private JTextField userLNameTextFiled = new JTextField(20);
         private JPasswordField passwordTextField = new JPasswordField(20);
@@ -16,7 +18,7 @@ public class CreateNewUserWin extends JFrame{
         private JPanel panel = new JPanel(new GridBagLayout());
         private GridBagConstraints constraints = new GridBagConstraints();
 
-        public CreateNewUserWin(){
+        public CreateUserWin(){
                 // Setting default value of the frame
                 super("Create New Account");
                 setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -24,6 +26,7 @@ public class CreateNewUserWin extends JFrame{
                 // Button setting
                 User user = new User();
                 ActionListener createListener = e -> {
+                        user.setUserName(userNameTextFiled.getText());
                         user.setUserFName(userFNameTextFiled.getText());
                         user.setUserLName(userLNameTextFiled.getText());
                         user.setPassword(passwordTextField.getPassword());
@@ -32,10 +35,8 @@ public class CreateNewUserWin extends JFrame{
 
                 ActionListener cancelListener = e -> {
                         super.dispose();
-                        new LoginWin();
                 };
                 cancelButton.addActionListener(cancelListener);
-
 
                 // Panel setting
                 constraints.anchor = GridBagConstraints.WEST;
@@ -43,27 +44,34 @@ public class CreateNewUserWin extends JFrame{
 
                 constraints.gridx = 0;
                 constraints.gridy = 0;
+                panel.add(labelUserName, constraints);
+
+                constraints.gridx = 1;
+                panel.add(userNameTextFiled, constraints);
+
+                constraints.gridx = 0;
+                constraints.gridy = 1;
                 panel.add(labelUserFName, constraints);
 
                 constraints.gridx = 1;
                 panel.add(userFNameTextFiled, constraints);
 
                 constraints.gridx = 0;
-                constraints.gridy = 1;
+                constraints.gridy = 2;
                 panel.add(labelUserLName, constraints);
 
                 constraints.gridx = 1;
                 panel.add(userLNameTextFiled, constraints);
 
                 constraints.gridx = 0;
-                constraints.gridy = 2;
+                constraints.gridy = 3;
                 panel.add(labelPassword, constraints);
 
                 constraints.gridx = 1;
                 panel.add(passwordTextField, constraints);
 
                 constraints.gridx = 1;
-                constraints.gridy = 3;
+                constraints.gridy = 4;
                 constraints.gridwidth = 2;
                 constraints.insets = new Insets(5, 10, 5, 10);
                 constraints.anchor = GridBagConstraints.CENTER;

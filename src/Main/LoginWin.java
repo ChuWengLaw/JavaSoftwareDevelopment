@@ -10,7 +10,6 @@ public class LoginWin extends JFrame{
         private JTextField idTextField = new JTextField(20);
         private JPasswordField passwordTextField = new JPasswordField(20);
         private JButton loginButton = new JButton("Login");
-        private JButton newAccButton = new JButton("Create New Account");
         private JPanel panel = new JPanel(new GridBagLayout());
         private GridBagConstraints constraints = new GridBagConstraints();
 
@@ -22,16 +21,12 @@ public class LoginWin extends JFrame{
             // Button setting
             User user = new User();
             ActionListener loginListener = e ->{
-                user.setUserID(idTextField.getText());
+                dispose();
+                user.setUserName(idTextField.getText());
                 user.setPassword(passwordTextField.getPassword());
+                new MeauWin();
             };
             loginButton.addActionListener(loginListener);
-
-            ActionListener newAccListener = e ->{
-                super.dispose();
-                new CreateNewUserWin();
-            };
-            newAccButton.addActionListener(newAccListener);
 
             // Panel setting
             constraints.anchor = GridBagConstraints.WEST;
@@ -57,11 +52,6 @@ public class LoginWin extends JFrame{
             constraints.insets = new Insets(5, 10, 5, 10);
             constraints.anchor = GridBagConstraints.CENTER;
             panel.add(loginButton, constraints);
-
-            constraints.gridx = 0;
-            constraints.gridy = 3;
-            constraints.gridwidth = 2;
-            panel.add(newAccButton, constraints);
 
             getContentPane().add(panel);
 

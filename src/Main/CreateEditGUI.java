@@ -4,15 +4,12 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.*;
+import java.sql.SQLException;
 
 public class CreateEditGUI extends JFrame implements ActionListener,Runnable{
     //set the width of the GUI
     public static final int WIDTH = 350;
     public static final int HEIGHT = 400;
-
-    public CreateEditGUI(String title) throws HeadlessException {
-        super(title);
-    }
 
     //define element to be used
     private JButton btnSubmit;
@@ -31,9 +28,23 @@ public class CreateEditGUI extends JFrame implements ActionListener,Runnable{
     private JTextField txtImage;
     private JTextField txtInformation;
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(new CreateEditGUI("Create and Edit"));
+    private String StrBillboardName;
+    private String StrTextColour;
+    private String StrBackgroundColour;
+    private String StrMessage;
+    private String StrImage;
+    private String StrInformation;
+
+    public CreateEditGUI(String title) throws HeadlessException {
+        super(title);
     }
+
+    /* Add submit action
+    *         //String StrCreatedByUserName = GetUserName();
+        String StrCreatedByUserName = "PLACEHOLDER";
+        bb.CreateEditBillboard(StrBillboardName,StrCreatedByUserName,StrTextColour,StrBackgroundColour,
+                StrMessage,StrImage,StrInformation);
+    * */
 
     /**
      * Create the base GUI to be used to create and edit the data
@@ -118,6 +129,7 @@ public class CreateEditGUI extends JFrame implements ActionListener,Runnable{
     private JTextField createText(String text){
         JTextField textBox = new JTextField();
         textBox.setText(text);
+        StrBillboardName = text;
         return textBox;
     }
 

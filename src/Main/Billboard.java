@@ -107,7 +107,7 @@ public class Billboard {
      */
     public void ListBillboards(String BillBoardName) throws SQLException {
         try {
-            ResultSet list = statement.executeQuery("SELECT * FROM Billboard;");
+            ResultSet list = statement.executeQuery("SELECT * FROM Billboard"/*ORDER BY ScheduleValue (i.e. how ever we are going to schedule) ASC*/+";");
         } catch (SQLException e) {
             System.out.println(e);
         }

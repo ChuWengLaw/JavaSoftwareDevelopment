@@ -67,7 +67,6 @@ public class CreateEditGUI extends JFrame implements ActionListener,Runnable{
                 } catch (SQLException ex) {
                     ex.printStackTrace();
                 }
-                System.out.println(strBillboardName );
             }
         });
 

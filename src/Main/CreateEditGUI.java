@@ -67,7 +67,7 @@ public class CreateEditGUI extends JFrame implements ActionListener,Runnable{
                 } catch (SQLException ex) {
                     ex.printStackTrace();
                 }
-                //clear the textFeilds once the SQL code has been exicuted
+                //clear the textFeilds once the SQL code has been executed
                 txtBillboardName.setText("");
                 txtTextColour.setText("");
                 txtBackgroundColour.setText("");

@@ -48,7 +48,7 @@ public class CreateEditGUI extends JFrame implements ActionListener,Runnable{
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
 
-        //define the colour of elements
+        //create the button and define what text it will contain
         btnSubmit=createButton("Submit");
         //create and actionListner for the sumbit button
         btnSubmit.addActionListener(new ActionListener() {

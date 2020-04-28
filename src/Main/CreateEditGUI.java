@@ -28,23 +28,16 @@ public class CreateEditGUI extends JFrame implements ActionListener,Runnable{
     private JTextField txtImage;
     private JTextField txtInformation;
 
-    private String StrBillboardName;
-    private String StrTextColour;
-    private String StrBackgroundColour;
-    private String StrMessage;
-    private String StrImage;
-    private String StrInformation;
+    private String strBillboardName;
+    private String strTextColour;
+    private String strBackgroundColour;
+    private String strMessage;
+    private String strImage;
+    private String strInformation;
 
     public CreateEditGUI(String title) throws HeadlessException {
         super(title);
     }
-
-    /* Add submit action
-    *         //String StrCreatedByUserName = GetUserName();
-        String StrCreatedByUserName = "PLACEHOLDER";
-        bb.CreateEditBillboard(StrBillboardName,StrCreatedByUserName,StrTextColour,StrBackgroundColour,
-                StrMessage,StrImage,StrInformation);
-    * */
 
     /**
      * Create the base GUI to be used to create and edit the data
@@ -57,6 +50,32 @@ public class CreateEditGUI extends JFrame implements ActionListener,Runnable{
 
         //define the colour of elements
         btnSubmit=createButton("Submit");
+        //create and actionListner for the sumbit button
+        btnSubmit.addActionListener(new ActionListener() {
+            //when the submit button is click make covert the inputs into string. then execute the CreateEditBilloard from the Billboard Class
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Billboard bb = new Billboard();
+                strBillboardName = txtBillboardName.getText();
+                strTextColour = txtTextColour.getText();
+                strBackgroundColour=txtBackgroundColour.getText();
+                strMessage = txtMessage.getText();
+                strImage = txtImage.getText();
+                strInformation = txtInformation.getText();
+                try {
+                    bb.CreateEditBillboard(strBillboardName,"Jeff", strTextColour, strBackgroundColour,strMessage,strImage, strInformation);
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+                //clear the textFeilds once the SQL code has been executed
+                txtBillboardName.setText("");
+                txtTextColour.setText("");
+                txtBackgroundColour.setText("");
+                txtMessage.setText("");
+                txtImage.setText("");
+                txtInformation.setText("");
+            }
+        });
 
         //create the labels
         lblBillboardName = createLabel("Billboard Name:");
@@ -129,7 +148,7 @@ public class CreateEditGUI extends JFrame implements ActionListener,Runnable{
     private JTextField createText(String text){
         JTextField textBox = new JTextField();
         textBox.setText(text);
-        StrBillboardName = text;
+        strBillboardName = text;
         return textBox;
     }
 

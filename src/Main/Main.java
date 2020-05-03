@@ -14,6 +14,10 @@ public class Main {
      *  SQL String to create a table named billboard in the database
      * @author Law
      */
+    private static final String DELETE_ALL =
+            "DROP table billboard;" +
+            "DROP table user;" +
+            "DROP table Schedule;";
     private static final String CREATE_BILLBOARD_TABLE =
             "CREATE TABLE IF NOT EXISTS Billboard ("
                     + "BillboardName VARCHAR(30) PRIMARY KEY NOT NULL UNIQUE,"
@@ -49,9 +53,12 @@ public class Main {
         connection = DBConnection.newConnection();
         try {
             statement = connection.createStatement();
+
             statement.execute(CREATE_BILLBOARD_TABLE);
             statement.execute(CREATE_USER_TABLE);
             statement.execute(CREATE_SCHEDULE_TABLE);
+
+            statement.execute("INSERT INTO User Values ('', '',true,true,true,true);");  //this is just so the login has something to search
         } catch (SQLException ex) {
             ex.printStackTrace();
         }

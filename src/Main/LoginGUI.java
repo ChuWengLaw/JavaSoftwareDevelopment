@@ -4,6 +4,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class LoginGUI extends JFrame implements Runnable{
 
@@ -63,20 +65,30 @@ public class LoginGUI extends JFrame implements Runnable{
                 String enteredUserName = User_Submitted.getText();
                 String enteredPassword = Password_Submitted.getText();
 
-                String DatabaseUserName = "user";
-                String DatabasePassword = "password";
 
                 /*
                 get all users and passwords from sql and loop through them to find the matches
                  */
 
-                if (enteredUserName.trim().equals(DatabaseUserName) && enteredPassword.trim().equals(DatabasePassword)) {
-                    TestMessage.setText(" Hello " + enteredUserName
+                String DatabaseUserName = "";
+                String DatabasePassword = "";
+
+                try {
+                    ResultSet resultSet = Main.statement.executeQuery("SELECT * FROM User");
+                    while (resultSet.next()) {
+                        if ( enteredUserName.equals(resultSet.getString("UserName")) && enteredPassword.equals(resultSet.getString("UserPassword"))) {
+                           TestMessage.setText(" Hello " + enteredUserName
                             + "");
-                    SwingUtilities.invokeLater(new CreateEditGUI("Create and Edit"));
-                } else {
-                    TestMessage.setText(" Invalid user.. ");
+                            SwingUtilities.invokeLater(new CreateEditGUI("Create Edit"));
+                        }
+                        else {
+                            TestMessage.setText(" Invalid user.. ");
+                        }
+                    }
+                } catch (SQLException ex) {
+                    System.out.println(ex);
                 }
+
             }
         });
 

@@ -9,8 +9,7 @@ import java.util.Properties;
 //double check method prefixes  (public/private/static ect)
 
 public class Billboard {
-    private static Connection connection;
-    private static Statement statement;
+
     /* attributes
     User Creator
     Billboard Name
@@ -18,20 +17,6 @@ public class Billboard {
     Colour of Text and background
     Images
     */
-    /**
-     *  SQL String to create a table in mydb schema
-     * @author Law
-     */
-    public static final String CREATE_TABLE =
-            "CREATE TABLE IF NOT EXISTS Billboard ("
-                    + "BillboardName VARCHAR(30) PRIMARY KEY NOT NULL UNIQUE,"
-                    + "UserName VARCHAR(30),"
-                    + "TextColour VARCHAR(30),"
-                    + "BackGroundColour VARCHAR(30),"
-                    + "Message VARCHAR(30),"
-                    + "Image VARCHAR(30),"
-                    + "Information VARCHAR(30)" + ");";
-
 //overloading constructors depending on info submitted.  OR
     //One constructor but when you create a new billboard it inputs '0' to show that there was no input
     //when you click create billboard you first enter a name and it checks if it exists
@@ -41,16 +26,7 @@ public class Billboard {
      *  holding the address list.
      *  @author Law
      */
-    public Billboard() {
-
-        connection = DBConnection.newConnection();
-        try {
-            statement = connection.createStatement();
-            statement.execute(CREATE_TABLE);
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
-    }
+    public Billboard() {}
 
     //use the GetCreateBillboardPermission() method
     /**
@@ -75,7 +51,7 @@ public class Billboard {
 
         /* Loop through the billboard list and update ExistFlag's status */
         try {
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM Billboard");
+            ResultSet resultSet = Main.statement.executeQuery("SELECT * FROM Billboard");
             while (resultSet.next()) {
                 if ( BillboardName.equals(resultSet.getString("BillboardName")) ) {
                     ExistFlag = true;
@@ -84,16 +60,16 @@ public class Billboard {
                     ExistFlag = false;
                 }
             }
-            /* If the billboard is indeed exist, Update the table row */
+            /* If the billboard exists, Update the table row */
             if (ExistFlag == true) {
-                ResultSet update = statement.executeQuery("UPDATE Billboard SET UserName = '" + CreatedByUserName + "',TextColour = '" + BillboardTextColour +
+                ResultSet update = Main.statement.executeQuery("UPDATE Billboard SET UserName = '" + CreatedByUserName + "',TextColour = '" + BillboardTextColour +
                         "',BackGroundColour = '" + BillboardBackgroundColour + "',Message = '" + BillboardMessage + "',Image = '" +
                         BillboardPicture + "',Information = '" + BillboardInformation + "' WHERE BillboardName = '" + BillboardName + "';");
             }
 
             /* Else, Insert the table row */
             else {
-                ResultSet insert = statement.executeQuery("INSERT INTO Billboard VALUES ('" +
+                ResultSet insert = Main.statement.executeQuery("INSERT INTO Billboard VALUES ('" +
                         BillboardName + "','" + CreatedByUserName + "','" + BillboardTextColour +
                         "','" + BillboardBackgroundColour + "','" + BillboardMessage + "','" +
                         BillboardPicture + "','" + BillboardInformation + "');");
@@ -112,7 +88,7 @@ public class Billboard {
      */
     public void GetBillboardInfo(String BillBoardName) throws SQLException {
         try {
-            ResultSet info = statement.executeQuery("SELECT Information FROM Billboard WHERE BillboardName = '"
+            ResultSet info = Main.statement.executeQuery("SELECT Information FROM Billboard WHERE BillboardName = '"
                     + BillBoardName + "';");
         } catch (SQLException e) {
             System.out.println(e);
@@ -128,7 +104,7 @@ public class Billboard {
      */
     public void ListBillboards(String BillBoardName) throws SQLException {
         try {
-            ResultSet list = statement.executeQuery("SELECT * FROM Billboard"/*ORDER BY ScheduleValue (i.e. how ever we are going to schedule) ASC*/+";");
+            ResultSet list = Main.statement.executeQuery("SELECT * FROM Billboard"/*ORDER BY ScheduleValue (i.e. how ever we are going to schedule) ASC*/+";");
         } catch (SQLException e) {
             System.out.println(e);
         }
@@ -144,7 +120,7 @@ public class Billboard {
      */
     public void DeleteBillboard(String BillBoardName) throws SQLException {
         try {
-            ResultSet delete = statement.executeQuery("DELETE FROM Billboard WHERE BillboardName = '" + BillBoardName + "';");
+            ResultSet delete = Main.statement.executeQuery("DELETE FROM Billboard WHERE BillboardName = '" + BillBoardName + "';");
         } catch (SQLException e) {
             System.out.println(e);
         }

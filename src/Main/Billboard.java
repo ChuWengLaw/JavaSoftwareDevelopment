@@ -1,6 +1,10 @@
 package Main;//not sure if this is correct
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.sql.*;
+import java.util.Properties;
 
 //double check method prefixes  (public/private/static ect)
 
@@ -14,21 +18,38 @@ public class Billboard {
     Colour of Text and background
     Images
     */
+    /**
+     *  SQL String to create a table in mydb schema
+     * @author Law
+     */
+    public static final String CREATE_TABLE =
+            "CREATE TABLE IF NOT EXISTS Billboard ("
+                    + "BillboardName VARCHAR(30) PRIMARY KEY NOT NULL UNIQUE,"
+                    + "UserName VARCHAR(30),"
+                    + "TextColour VARCHAR(30),"
+                    + "BackGroundColour VARCHAR(30),"
+                    + "Message VARCHAR(30),"
+                    + "Image VARCHAR(30),"
+                    + "Information VARCHAR(30)" + ");";
 
 //overloading constructors depending on info submitted.  OR
     //One constructor but when you create a new billboard it inputs '0' to show that there was no input
     //when you click create billboard you first enter a name and it checks if it exists
 
-    //Constructor TBModified
+    /**
+     *  This function establish a connection to database and　retrieving data from the XML file
+     *  holding the address list.
+     *  @author Law
+     */
     public Billboard() {
-//    public Billboard(String BillboardName, String CreatedByUserName, String BillboardTextColour, String BillboardBackgroundColour, String BillboardMessage, String BillboardPicture, String BillboardInformation) throws SQLException {
-//        this.BillboardName = BillboardName;
-//        this.CreatedByUserName = CreatedByUserName;
-//        this.BillboardTextColour = BillboardTextColour;
-//        this.BillboardBackgroundColour = BillboardBackgroundColour;
-//        this.BillboardMessage = BillboardMessage;
-//        this.BillboardPicture = BillboardPicture;
-//        this.BillboardInformation = BillboardInformation;
+
+        connection = DBConnection.newConnection();
+        try {
+            statement = connection.createStatement();
+            statement.execute(CREATE_TABLE);
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
     }
 
     //use the GetCreateBillboardPermission() method
@@ -43,7 +64,7 @@ public class Billboard {
      * @param BillboardMessage Message in the billboard
      * @param BillboardPicture Image Url in the billboard
      * @param BillboardInformation Information in the billboard
-     * @exception SQLException if sql query error occurs
+     * @exception SQLException if sql query error occursr
      */
     public void CreateEditBillboard(String BillboardName, String CreatedByUserName, String BillboardTextColour,
                                     String BillboardBackgroundColour, String BillboardMessage,
@@ -127,18 +148,6 @@ public class Billboard {
         } catch (SQLException e) {
             System.out.println(e);
         }
-    }
-
-    /**
-     * Sample Code for database setup
-     * @author Law
-     * @exception SQLException if a database access error occurs or the url is
-     * {@code null}
-     */
-    public void ConnectDatabase() throws SQLException {
-        connection = DriverManager.getConnection("jdbc:mariadb://localhost:3306/mydb", "root", "");
-        statement = connection.createStatement();
-        connection.close();
     }
 }
 

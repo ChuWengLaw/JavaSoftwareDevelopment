@@ -1,8 +1,8 @@
-package Main;//not sure if this is correct
+package Main;
 
 import java.sql.*;
 
-//double check method prefixes  (public/private/static ect)
+
 
 public class Billboard {
     private static Connection connection;

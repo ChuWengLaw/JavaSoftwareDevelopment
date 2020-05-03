@@ -2,6 +2,7 @@ package Main;
 
 import javax.swing.*;
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -58,7 +59,13 @@ public class Main {
             statement.execute(CREATE_USER_TABLE);
             statement.execute(CREATE_SCHEDULE_TABLE);
 
-            statement.execute("INSERT INTO User Values ('', '',true,true,true,true);");  //this is just so the login has something to search
+
+            //statement.execute("INSERT INTO User Values ('', '',true,true,true,true);");  //this is just so the login has something to search
+
+
+        
+
+
         } catch (SQLException ex) {
             ex.printStackTrace();
         }

@@ -14,6 +14,7 @@ public class CreateEditGUI extends JFrame implements ActionListener,Runnable{
     //define element to be used
     private JButton btnSubmit;
 
+    //define the labels
     private JLabel lblBillboardName;
     private JLabel lblAuthor;
     private JLabel lblTextColour;
@@ -22,6 +23,7 @@ public class CreateEditGUI extends JFrame implements ActionListener,Runnable{
     private JLabel lblImage;
     private JLabel lblInformation;
 
+    //define the text boxes
     private JTextField txtBillboardName;
     private JTextField txtAuthor;
     private JTextField txtTextColour;
@@ -30,6 +32,7 @@ public class CreateEditGUI extends JFrame implements ActionListener,Runnable{
     private JTextField txtImage;
     private JTextField txtInformation;
 
+    //define the strings to be used in the SQL
     private String strBillboardName;
     private String strAuthor;
     private String strTextColour;
@@ -38,6 +41,7 @@ public class CreateEditGUI extends JFrame implements ActionListener,Runnable{
     private String strImage;
     private String strInformation;
 
+    //constructor
     public CreateEditGUI(String title) throws HeadlessException {
         super(title);
     }

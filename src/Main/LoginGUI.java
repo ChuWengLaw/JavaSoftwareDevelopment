@@ -73,6 +73,7 @@ public class LoginGUI extends JFrame implements Runnable{
                 if (enteredUserName.trim().equals(DatabaseUserName) && enteredPassword.trim().equals(DatabasePassword)) {
                     TestMessage.setText(" Hello " + enteredUserName
                             + "");
+                    SwingUtilities.invokeLater(new CreateEditGUI("Create and Edit"));
                 } else {
                     TestMessage.setText(" Invalid user.. ");
                 }

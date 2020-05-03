@@ -53,7 +53,7 @@ public class CreateEditGUI extends JFrame implements ActionListener,Runnable{
 
         //create the button and define what text it will contain
         btnSubmit=createButton("Submit");
-        //create and actionListner for the sumbit button
+        //create and actionListener for the submit button
         btnSubmit.addActionListener(new ActionListener() {
             //when the submit button is click make covert the inputs into string. then execute the CreateEditBilloard from the Billboard Class
             @Override

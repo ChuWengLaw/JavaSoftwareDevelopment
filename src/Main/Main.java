@@ -59,11 +59,26 @@ public class Main {
             statement.execute(CREATE_USER_TABLE);
             statement.execute(CREATE_SCHEDULE_TABLE);
 
+//################code below is just to create a test user with no name or password for testing
+            try {
+                ResultSet resultSet = Main.statement.executeQuery("SELECT * FROM User");
+                String testAdmin = "";
+                Boolean AdminExists = false;
+                while (resultSet.next()) {
+                    if ( testAdmin.equals(resultSet.getString("UserName")) && testAdmin.equals(resultSet.getString("UserPassword"))) {
+                        AdminExists = true;
+                    }
+                }
+                if (!AdminExists)
+                {
+                    statement.execute("INSERT INTO User Values ('', '',true,true,true,true);");
+                }
+            } catch (SQLException ex) {
+                System.out.println(ex);
+            }
+//#########################above code is just to create a test user with no name or password for testing
 
-            //statement.execute("INSERT INTO User Values ('', '',true,true,true,true);");  //this is just so the login has something to search
 
-
-        
 
 
         } catch (SQLException ex) {

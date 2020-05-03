@@ -14,6 +14,7 @@ public class InformationGUI extends JFrame implements ActionListener,Runnable {
 
     //define buttons
     private JButton btnGetInfo;
+    private JButton btnClear;
 
     //define text boxes
     private JTextField txtBillboardName;
@@ -57,6 +58,18 @@ public class InformationGUI extends JFrame implements ActionListener,Runnable {
             }
         });
 
+        //create a button to clear the text
+        btnClear = createButton("Clear");
+
+        //create an actionListener for the clear button
+        btnClear.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                txtBillboardName.setText("");
+                txtInfo.setText("");
+            }
+        });
+
         //create labels
         lblBillboardName = createLabel("Billboard Name:");
         lblInfo =createLabel("Information:");
@@ -74,6 +87,7 @@ public class InformationGUI extends JFrame implements ActionListener,Runnable {
 
         getContentPane().add(inputBoxes);
         getContentPane().add(btnGetInfo,BorderLayout.SOUTH);
+        getContentPane().add(btnClear, BorderLayout.SOUTH);
 
         repaint();
         setVisible(true);

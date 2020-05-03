@@ -64,7 +64,7 @@ public class Billboard {
      * @param BillboardMessage Message in the billboard
      * @param BillboardPicture Image Url in the billboard
      * @param BillboardInformation Information in the billboard
-     * @exception SQLException if sql query error occursr
+     * @exception SQLException if sql query error occurs
      */
     public void CreateEditBillboard(String BillboardName, String CreatedByUserName, String BillboardTextColour,
                                     String BillboardBackgroundColour, String BillboardMessage,

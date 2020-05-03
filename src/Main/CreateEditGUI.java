@@ -15,6 +15,7 @@ public class CreateEditGUI extends JFrame implements ActionListener,Runnable{
     private JButton btnSubmit;
 
     private JLabel lblBillboardName;
+    private JLabel lblAuthor;
     private JLabel lblTextColour;
     private JLabel lblBackgroundColour;
     private JLabel lblMessage;
@@ -22,6 +23,7 @@ public class CreateEditGUI extends JFrame implements ActionListener,Runnable{
     private JLabel lblInformation;
 
     private JTextField txtBillboardName;
+    private JTextField txtAuthor;
     private JTextField txtTextColour;
     private JTextField txtBackgroundColour;
     private JTextField txtMessage;
@@ -29,6 +31,7 @@ public class CreateEditGUI extends JFrame implements ActionListener,Runnable{
     private JTextField txtInformation;
 
     private String strBillboardName;
+    private String strAuthor;
     private String strTextColour;
     private String strBackgroundColour;
     private String strMessage;
@@ -57,18 +60,20 @@ public class CreateEditGUI extends JFrame implements ActionListener,Runnable{
             public void actionPerformed(ActionEvent e) {
                 Billboard bb = new Billboard();
                 strBillboardName = txtBillboardName.getText();
+                strAuthor=txtAuthor.getText();
                 strTextColour = txtTextColour.getText();
                 strBackgroundColour=txtBackgroundColour.getText();
                 strMessage = txtMessage.getText();
                 strImage = txtImage.getText();
                 strInformation = txtInformation.getText();
                 try {
-                    bb.CreateEditBillboard(strBillboardName,"Jeff", strTextColour, strBackgroundColour,strMessage,strImage, strInformation);
+                    bb.CreateEditBillboard(strBillboardName,strAuthor, strTextColour, strBackgroundColour,strMessage,strImage, strInformation);
                 } catch (SQLException ex) {
                     ex.printStackTrace();
                 }
                 //clear the textFeilds once the SQL code has been executed
                 txtBillboardName.setText("");
+                txtAuthor.setText("");
                 txtTextColour.setText("");
                 txtBackgroundColour.setText("");
                 txtMessage.setText("");
@@ -79,6 +84,7 @@ public class CreateEditGUI extends JFrame implements ActionListener,Runnable{
 
         //create the labels
         lblBillboardName = createLabel("Billboard Name:");
+        lblAuthor = createLabel("Author:");
         lblTextColour = createLabel("Text Colour:");
         lblBackgroundColour = createLabel("Background Colour:");
         lblMessage = createLabel("Message:");
@@ -87,6 +93,7 @@ public class CreateEditGUI extends JFrame implements ActionListener,Runnable{
 
         //create the text boxes to receive the data
         txtBillboardName= createText();
+        txtAuthor = createText();
         txtTextColour =createText();
         txtBackgroundColour = createText();
         txtMessage=createText();
@@ -94,9 +101,11 @@ public class CreateEditGUI extends JFrame implements ActionListener,Runnable{
         txtInformation=createText();
 
         //create a grid layout to hold the labels and text inputs
-        JPanel inputs = new JPanel(new GridLayout(6,2));
+        JPanel inputs = new JPanel(new GridLayout(7,2));
         inputs.add(lblBillboardName);
         inputs.add(txtBillboardName);
+        inputs.add(lblAuthor);
+        inputs.add(txtAuthor);
         inputs.add(lblTextColour);
         inputs.add(txtTextColour);
         inputs.add(lblBackgroundColour);

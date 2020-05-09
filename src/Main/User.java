@@ -1,71 +1,82 @@
 package Main;  //not sure if this is correct
 import java.util.Scanner;    //remove once gui is set up
-//double check method prefixes  (public/private/static ect)
-public class User {
 
-    String UserName;
-    String UserPassword;
-    boolean CreateBillboardsPermission;
-    boolean EditAllBillboardPermission;
-    boolean ScheduleBillboardsPermission;
-    boolean EditUsersPermission;
+//Double check method prefixes  (public/private/static ect)
+public class User {
+    private String userName;
+    private String userPassword;
+    private boolean createBillboardsPermission;
+    private boolean editAllBillboardPermission;
+    private boolean scheduleBillboardsPermission;
+    private boolean editUsersPermission;
 
 //Default constructor should throw an error because below info is required
+
     //Constructor
-    public User(String UserName, String UserPassword, boolean CreateBillboardsPermission, boolean EditAllBillboardPermission, boolean ScheduleBillboardsPermission, boolean EditUsersPermission) {
-        this.UserName = UserName;
-        this.UserPassword = UserPassword;
-        this.CreateBillboardsPermission = CreateBillboardsPermission;
-        this.EditAllBillboardPermission = EditAllBillboardPermission;
-        this.ScheduleBillboardsPermission = ScheduleBillboardsPermission;
-        this.EditUsersPermission = EditUsersPermission;
-
-        //Send this info to database
-        //clicking create new user will create a new User Object and will need to send to SQL
-
+    public User() {
 
     }
 
-
-    //Global Variable array of object users placeholder for server communications
-    public User Users[] = {};
-
-    public void GetUsers(){
-        //Code that connects to Server and retrieves all User Infomation
-        //filler code
-        //Users[] = {};  //empty array of the users, replace with code that retrieves the actual user infomation
+    // Set method to store user information
+    public void setUserName(String userName){
+        this.userName = userName;
+        System.out.println(this.userName);
     }
 
-    public String DeleteUser(String UserName){ //input is the username you want to edit not yours
-//Code that returns SQL Code to Delete a user.
-
-
-        return "SQL Code";
+    public void setPassword(char[] userPassword) {
+        this.userPassword = String.valueOf(userPassword);
+        System.out.println(this.userPassword);
     }
 
-    public String EditUser(String UserName) { //input is the username you want to edit not yours
-        //should check occur in this function?
-        if (EditUsersPermission) return "SQL CODE";
-        //or before the this function.  I think BEfore so this code only send SQL code and not any "invalid permission" code
-        return "filler code";
+    public void setPassword(String userPassword) {
+        this.userPassword = userPassword;
+        System.out.println(this.userPassword);
     }
 
-
-//Get Methods to be called to check if user has permissions to call above functions
-    public Boolean GetCreateBillboardsPermission() {
-        return CreateBillboardsPermission;
-    }
-    public Boolean GetEditAllBillboardPermission() {
-        return EditAllBillboardPermission;
-    }
-    public Boolean GetScheduleBillboardsPermission() {
-        return ScheduleBillboardsPermission;
-    }
-    public Boolean GetEditUsersPermission() {
-        return EditUsersPermission;
+    public void setCreateBillboardsPermission(Boolean permission){
+        this.createBillboardsPermission = permission;
+        System.out.println(this.createBillboardsPermission);
     }
 
+    public void setEditAllBillboardsPermission(Boolean permission){
+        this.editAllBillboardPermission = permission;
+        System.out.println(this.editAllBillboardPermission);
+    }
 
+    public void setScheduleBillboardsPermission(Boolean permission){
+        this.scheduleBillboardsPermission = permission;
+        System.out.println(this.scheduleBillboardsPermission);
+    }
+
+    public void setEditUsersPermission(Boolean permission){
+        this.editUsersPermission = permission;
+        System.out.println(this.editUsersPermission);
+    }
+
+    // Get Methods to be called to check user's information
+    public String getUserName(){
+        return userName;
+    }
+
+    public String getUserPassword(){
+        return userPassword;
+    }
+
+    public Boolean getCreateBillboardsPermission() {
+        return createBillboardsPermission;
+    }
+
+    public Boolean getEditAllBillboardPermission() {
+        return editAllBillboardPermission;
+    }
+
+    public Boolean getScheduleBillboardsPermission() {
+        return scheduleBillboardsPermission;
+    }
+
+    public Boolean getEditUsersPermission() {
+        return editUsersPermission;
+    }
 
 }
 

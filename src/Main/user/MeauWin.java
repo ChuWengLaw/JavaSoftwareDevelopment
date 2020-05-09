@@ -1,4 +1,7 @@
-package Main;
+package Main.user;
+
+import Main.Main;
+import Main.billboard.CreateEditGUI;
 
 import java.awt.*;
 import java.awt.event.ActionListener;
@@ -18,6 +21,9 @@ public class MeauWin extends JFrame{
             // Button setting
             ActionListener editUserListener = e -> new UserManagementWin();
             editUserButton.addActionListener(editUserListener);
+
+            ActionListener editBillboardListener = e -> new CreateEditGUI("Create/Edit Billboard");
+            billboardManageButton.addActionListener(editBillboardListener);
 
             // Panel setting
             constraints.anchor = GridBagConstraints.WEST;

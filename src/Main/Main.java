@@ -1,5 +1,8 @@
 package Main;
 
+import Main.connection.DBConnection;
+import Main.user.LoginWin;
+
 import javax.swing.*;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -8,7 +11,7 @@ import java.sql.Statement;
 
 public class Main {
 
-    private static Connection connection;
+    public static Connection connection;
     public static Statement statement;
 
     /**
@@ -49,7 +52,7 @@ public class Main {
     //TODO: CREATE_USER_TABLE and CREATE_SCHEDULE_TABLE
 
     public static void main(String[] args) throws SQLException {
-        SwingUtilities.invokeLater(new LoginGUI("Login"));
+        SwingUtilities.invokeLater(new LoginWin());
 
         connection = DBConnection.newConnection();
         try {

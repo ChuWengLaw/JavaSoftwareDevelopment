@@ -1,4 +1,6 @@
-package Main;
+package Main.user;
+
+import Main.Main;
 
 import java.awt.*;
 import java.awt.event.ActionListener;

@@ -1,4 +1,6 @@
-package Main;  //not sure if this is correct
+package Main.user;  //not sure if this is correct
+import Main.Main;
+
 import java.util.Scanner;    //remove once gui is set up
 
 //Double check method prefixes  (public/private/static ect)

@@ -1,10 +1,12 @@
-package Main;
+package Main.user;
+
+import Main.Main;
 
 import java.awt.*;
 import java.awt.event.ActionListener;
 import javax.swing.*;
 
-public class LoginWin extends JFrame{
+public class LoginWin extends JFrame implements Runnable{
         private JLabel labelUserID = new JLabel("User ID");
         private JLabel labelPassword= new JLabel("Password");
         private JTextField idTextField = new JTextField(20);
@@ -16,6 +18,9 @@ public class LoginWin extends JFrame{
         public LoginWin(){
             // Setting default value of the frame
             super("Login");
+        }
+
+        private void createGUI() {
             setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
             // Button setting
@@ -59,5 +64,9 @@ public class LoginWin extends JFrame{
             setLocation(900,350);
             pack();
             setVisible(true);
+        }
+    @Override
+    public void run() {
+        createGUI();
     }
 }

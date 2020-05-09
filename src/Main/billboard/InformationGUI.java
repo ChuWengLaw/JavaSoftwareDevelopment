@@ -1,4 +1,7 @@
-package Main;
+package Main.billboard;
+
+import Main.Main;
+import Main.billboard.Billboard;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;

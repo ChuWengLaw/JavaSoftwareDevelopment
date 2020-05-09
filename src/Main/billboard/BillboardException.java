@@ -1,4 +1,6 @@
-package Main;
+package Main.billboard;
+
+import Main.Main;
 
 /* A trivial exception class for the Movie List program. */
 @SuppressWarnings("serial")

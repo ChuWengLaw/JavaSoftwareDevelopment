@@ -1,9 +1,10 @@
-package Main;
+package Main.user;
+
+import Main.Main;
 
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.sql.*;
-import java.util.Set;
 import javax.swing.*;
 
 public class DeleteUserWin extends JFrame{

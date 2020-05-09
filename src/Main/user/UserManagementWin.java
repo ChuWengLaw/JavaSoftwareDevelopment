@@ -1,4 +1,9 @@
-package Main;
+package Main.user;
+
+import Main.Main;
+import Main.user.CreateUserWin;
+import Main.user.DeleteUserWin;
+import Main.user.EditUserWin;
 
 import java.awt.*;
 import java.awt.event.ActionListener;
@@ -22,6 +27,11 @@ public class UserManagementWin extends JFrame{
 
         ActionListener editUserListener = e -> new EditUserWin();
         editUserButton.addActionListener(editUserListener);
+
+        ActionListener deleteActionListener = e ->{
+            new DeleteUserWin();
+        };
+        deleteUserButton.addActionListener(deleteActionListener);
 
         // Panel setting
         constraints.anchor = GridBagConstraints.WEST;

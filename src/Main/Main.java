@@ -1,9 +1,14 @@
 package Main;
-import java.awt.*;
-import javax.swing.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 
 public class Main {
-    public static void main(String[] arg){
-        new LoginWin();
+    public static Connection connection;
+
+    public static void main(String[] arg) throws SQLException {
+        connection = DriverManager.getConnection("jdbc:mariadb://localhost:3306/mydb", "root", "");
+        new EditUserWin();
+
     }
 }

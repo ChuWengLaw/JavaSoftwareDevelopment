@@ -4,8 +4,6 @@ import java.util.Scanner;    //remove once gui is set up
 //Double check method prefixes  (public/private/static ect)
 public class User {
     private String userName;
-    private String userFName;
-    private String userLName;
     private String userPassword;
     private boolean createBillboardsPermission;
     private boolean editAllBillboardPermission;
@@ -25,36 +23,34 @@ public class User {
         System.out.println(this.userName);
     }
 
-    public void setUserFName(String userFName){
-        this.userFName = userFName;
-        System.out.println(this.userFName);
-    }
-
-    public void setUserLName(String userLName){
-        this.userLName = userLName;
-        System.out.println(this.userLName);
-    }
-
-
     public void setPassword(char[] userPassword) {
         this.userPassword = String.valueOf(userPassword);
         System.out.println(this.userPassword);
     }
 
+    public void setPassword(String userPassword) {
+        this.userPassword = userPassword;
+        System.out.println(this.userPassword);
+    }
+
     public void setCreateBillboardsPermission(Boolean permission){
         this.createBillboardsPermission = permission;
+        System.out.println(this.createBillboardsPermission);
     }
 
     public void setEditAllBillboardsPermission(Boolean permission){
         this.editAllBillboardPermission = permission;
+        System.out.println(this.editAllBillboardPermission);
     }
 
     public void setScheduleBillboardsPermission(Boolean permission){
         this.scheduleBillboardsPermission = permission;
+        System.out.println(this.scheduleBillboardsPermission);
     }
 
     public void setEditUsersPermission(Boolean permission){
         this.editUsersPermission = permission;
+        System.out.println(this.editUsersPermission);
     }
 
     // Get Methods to be called to check user's information
@@ -62,19 +58,10 @@ public class User {
         return userName;
     }
 
-    public String getUserFName(){
-        return userFName;
-    }
-
-    public String getUserLName(){
-        return userLName;
-    }
-
     public String getUserPassword(){
         return userPassword;
     }
 
-    // Get Methods to be called to check if user has permissions to call above functions
     public Boolean getCreateBillboardsPermission() {
         return createBillboardsPermission;
     }

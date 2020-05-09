@@ -41,6 +41,8 @@ public class CreateEditGUI extends JFrame implements ActionListener,Runnable{
     private String strImage;
     private String strInformation;
 
+    private JColorChooser testcolorchooser;
+
     //constructor
     public CreateEditGUI(String title) throws HeadlessException {
         super(title);
@@ -86,6 +88,10 @@ public class CreateEditGUI extends JFrame implements ActionListener,Runnable{
             }
         });
 
+        testcolorchooser = new JColorChooser();
+
+
+
         //create the labels
         lblBillboardName = createLabel("Billboard Name:");
         lblAuthor = createLabel("Author:");
@@ -106,6 +112,9 @@ public class CreateEditGUI extends JFrame implements ActionListener,Runnable{
 
         //create a grid layout to hold the labels and text inputs
         JPanel inputs = new JPanel(new GridLayout(7,2));
+        inputs.add(testcolorchooser,BorderLayout.SOUTH);
+
+
         inputs.add(lblBillboardName);
         inputs.add(txtBillboardName);
         inputs.add(lblAuthor);
@@ -120,6 +129,8 @@ public class CreateEditGUI extends JFrame implements ActionListener,Runnable{
         inputs.add(txtImage);
         inputs.add(lblInformation);
         inputs.add(txtInformation);
+
+
 
         //define location of elements
         getContentPane().add(inputs);

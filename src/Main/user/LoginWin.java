@@ -18,7 +18,6 @@ public class LoginWin extends JFrame implements Runnable{
     private JButton loginButton = new JButton("Login");
     private JPanel panel = new JPanel(new GridBagLayout());
     private GridBagConstraints constraints = new GridBagConstraints();
-    public User user = new User();
 
     public LoginWin(){
         // Setting default value of the frame
@@ -32,15 +31,16 @@ public class LoginWin extends JFrame implements Runnable{
         ActionListener loginListener = e ->{
             try {
                 if (!CheckUserSQL(idTextField.getText())){
-                    new ErrorWin("User Name does not exists.");
+                    JOptionPane.showMessageDialog(null,"User name does not exists");
                 }
                 else if (!CheckPasswordSQL(idTextField.getText(), passwordTextField.getPassword())){
-                    new ErrorWin("Wrong password.");
+                    JOptionPane.showMessageDialog(null,"Wrong password");
                 }
                 else{
                     super.dispose();
-                    SetUserSQL(user);
-                    new MeauWin(user);
+                    SetUserSQL(Main.user);
+                    Main.meauWin.EnableUserButton(Main.user);
+                    Main.meauWin.setVisible(true);
                 }
             } catch (SQLException ex) {
                 ex.printStackTrace();

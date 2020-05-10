@@ -1,7 +1,7 @@
 package Main;
 
 import Main.connection.DBConnection;
-import Main.user.LoginWin;
+import Main.user.*;
 
 import javax.swing.*;
 import java.sql.Connection;
@@ -13,6 +13,14 @@ public class Main {
 
     public static Connection connection;
     public static Statement statement;
+    public static User user = new User();
+
+    // Setting up windows
+    public static MeauWin meauWin = new MeauWin();
+    public static UserManagementWin userManagementWin = new UserManagementWin();
+    public static CreateUserWin createUserWin = new CreateUserWin();
+    public static EditUserWin editUserWin = new EditUserWin();
+    public static DeleteUserWin deleteUserWin = new DeleteUserWin();
 
     /**
      * SQL String to create a table named billboard in the database

@@ -4,6 +4,8 @@ import Main.Main;
 
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -32,7 +34,35 @@ public class EditUserWin extends JFrame{
     public EditUserWin(){
         // Setting default value of the frame
         super("Edit User");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+        // Window Listener
+        WindowListener windowListener = new WindowListener() {
+            @Override
+            public void windowOpened(WindowEvent e) {}
+
+            @Override
+            public void windowClosing(WindowEvent e) {}
+
+            @Override
+            public void windowClosed(WindowEvent e) {
+                Main.userManagementWin.setEnabled(true);
+                Main.userManagementWin.setVisible(true);
+            }
+
+            @Override
+            public void windowIconified(WindowEvent e) {}
+
+            @Override
+            public void windowDeiconified(WindowEvent e) {}
+
+            @Override
+            public void windowActivated(WindowEvent e) {}
+
+            @Override
+            public void windowDeactivated(WindowEvent e) {}
+        };
+        super.addWindowListener(windowListener);
 
         // Text field and checkbox setting
         passwordTextField.setEditable(false);
@@ -46,7 +76,7 @@ public class EditUserWin extends JFrame{
         ActionListener searchListener = e -> {
             try {
                 if (!CheckUserSQL(userNameTextField.getText())){
-                    new ErrorWin("User Name does not exist");
+                    JOptionPane.showMessageDialog(null,"User name does not exists");
                 }
                 else{
                     SetUserSQL();
@@ -70,6 +100,7 @@ public class EditUserWin extends JFrame{
                 EditUserSQL(userNameTextField.getText(), passwordTextField.getText(), checkBox1.isSelected(), checkBox2.isSelected(), checkBox3.isSelected(), checkBox4.isSelected());
                 userNameTextField.setEditable(true);
                 passwordTextField.setEditable(false);
+                passwordTextField.setText(null);
                 checkBox1.setEnabled(false);
                 checkBox2.setEnabled(false);
                 checkBox3.setEnabled(false);
@@ -165,7 +196,6 @@ public class EditUserWin extends JFrame{
         // Display the window
         setLocation(900,350);
         pack();
-        setVisible(true);
     }
 
     private void SetUserSQL() throws SQLException {

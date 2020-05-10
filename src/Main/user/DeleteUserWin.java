@@ -22,14 +22,14 @@ public class DeleteUserWin extends JFrame{
         ActionListener listener = e -> {
             try{
                 if(!CheckUserSQL(usernamefield.getText())){
-                    new ErrorWin("Username does not exist");
+                    JOptionPane.showMessageDialog(null,"User name does not exists");
                 }
                 else if(usernamefield.getText().isEmpty()){
-                    new ErrorWin("Username field is empty");
+                    JOptionPane.showMessageDialog(null,"User name field is empty");
                 }
                 else{
                     DeleteUserSQL(usernamefield.getText());
-                    new ErrorWin("User has been deleted");
+                    JOptionPane.showMessageDialog(null,"User has been deleted");
                 }
             }
             catch (SQLException ex){
@@ -57,7 +57,6 @@ public class DeleteUserWin extends JFrame{
 
         setLocation(900,350);
         pack();
-        setVisible(true);
     }
     private boolean CheckUserSQL(String userName) throws SQLException {
         boolean existing = false;

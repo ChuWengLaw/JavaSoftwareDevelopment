@@ -4,6 +4,8 @@ import Main.Main;
 
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.sql.*;
 import javax.swing.*;
 
@@ -21,23 +23,50 @@ public class CreateUserWin extends JFrame{
         private JCheckBox checkBox3 = new JCheckBox("Enable");
         private JCheckBox checkBox4 = new JCheckBox("Enable");
         private JButton createButton = new JButton("Create");
-        private JButton cancelButton = new JButton("Cancel");
         private JPanel panel = new JPanel(new GridBagLayout());
         private GridBagConstraints constraints = new GridBagConstraints();
 
         public CreateUserWin(){
                 // Setting default value of the frame
                 super("Create New Account");
-                setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+                // Window Listener
+                WindowListener windowListener = new WindowListener() {
+                        @Override
+                        public void windowOpened(WindowEvent e) {}
+
+                        @Override
+                        public void windowClosing(WindowEvent e) {}
+
+                        @Override
+                        public void windowClosed(WindowEvent e) {
+                                Main.userManagementWin.setEnabled(true);
+                                Main.userManagementWin.setVisible(true);
+                        }
+
+                        @Override
+                        public void windowIconified(WindowEvent e) {}
+
+                        @Override
+                        public void windowDeiconified(WindowEvent e) {}
+
+                        @Override
+                        public void windowActivated(WindowEvent e) {}
+
+                        @Override
+                        public void windowDeactivated(WindowEvent e) {}
+                };
+                super.addWindowListener(windowListener);
 
                 // Button setting
                 ActionListener createListener = e -> {
                         try {
                                 if(CheckUserSQL(userNameTextField.getText())){
-                                        new ErrorWin("User Name exists");
+                                        JOptionPane.showMessageDialog(null,"User name already exists");
                                 }
                                 else if(userNameTextField.getText().isEmpty() || passwordTextField.getPassword().length == 0){
-                                        new ErrorWin("There is an empty filed");
+                                        JOptionPane.showMessageDialog(null,"User name and password field cannot be empty");
                                 }
                                 else{
                                         CreateUserSQL(userNameTextField.getText(), String.valueOf(passwordTextField.getPassword()), checkBox1.isSelected(),
@@ -49,11 +78,6 @@ public class CreateUserWin extends JFrame{
                         }
                 };
                 createButton.addActionListener(createListener);
-
-                ActionListener cancelListener = e -> {
-                        super.dispose();
-                };
-                cancelButton.addActionListener(cancelListener);
 
                 // Panel setting
                 constraints.anchor = GridBagConstraints.WEST;
@@ -105,19 +129,14 @@ public class CreateUserWin extends JFrame{
                 constraints.gridy = 6;
                 constraints.gridwidth = 2;
                 constraints.insets = new Insets(5, 10, 5, 10);
-                constraints.anchor = GridBagConstraints.CENTER;
-                panel.add(createButton, constraints);
-
-                constraints.gridx = 0;
                 constraints.anchor = GridBagConstraints.EAST;
-                panel.add(cancelButton, constraints);
+                panel.add(createButton, constraints);
 
                 getContentPane().add(panel);
 
                 // Display the window
                 setLocation(900,350);
                 pack();
-                setVisible(true);
         }
 
         private void CreateUserSQL(String userName, String userPassword,

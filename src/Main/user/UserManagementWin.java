@@ -7,6 +7,8 @@ import Main.user.EditUserWin;
 
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import javax.swing.*;
 
 public class UserManagementWin extends JFrame{
@@ -19,17 +21,52 @@ public class UserManagementWin extends JFrame{
 
     public UserManagementWin(){
         super("User Management");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+        // Window Listener
+        WindowListener windowListener = new WindowListener() {
+            @Override
+            public void windowOpened(WindowEvent e) {}
+
+            @Override
+            public void windowClosing(WindowEvent e) {}
+
+            @Override
+            public void windowClosed(WindowEvent e) {
+                Main.meauWin.setEnabled(true);
+                Main.meauWin.setVisible(true);
+            }
+
+            @Override
+            public void windowIconified(WindowEvent e) {}
+
+            @Override
+            public void windowDeiconified(WindowEvent e) {}
+
+            @Override
+            public void windowActivated(WindowEvent e) {}
+
+            @Override
+            public void windowDeactivated(WindowEvent e) {}
+        };
+        super.addWindowListener(windowListener);
 
         // Button setting
-        ActionListener createUserListener = e -> new CreateUserWin();
+        ActionListener createUserListener = e -> {
+            Main.createUserWin.setVisible(true);
+            super.setEnabled(false);
+        };
         createUserButton.addActionListener(createUserListener);
 
-        ActionListener editUserListener = e -> new EditUserWin();
+        ActionListener editUserListener = e -> {
+            Main.editUserWin.setVisible(true);
+            super.setEnabled(false);
+        };
         editUserButton.addActionListener(editUserListener);
 
-        ActionListener deleteActionListener = e ->{
-            new DeleteUserWin();
+        ActionListener deleteActionListener = e -> {
+            Main.deleteUserWin.setVisible(true);
+            super.setEnabled(false);
         };
         deleteUserButton.addActionListener(deleteActionListener);
 
@@ -55,6 +92,5 @@ public class UserManagementWin extends JFrame{
         // Display the window
         setLocation(900,350);
         pack();
-        setVisible(true);
     }
 }

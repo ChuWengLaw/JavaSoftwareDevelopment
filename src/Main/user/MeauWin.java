@@ -13,16 +13,15 @@ public class MeauWin extends JFrame{
     private JPanel panel = new JPanel(new GridBagLayout());
     private GridBagConstraints constraints = new GridBagConstraints();
 
-    public MeauWin(User user){
+    public MeauWin(){
         // Setting default value of the frame
         super("Meau");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        editUserButton.setEnabled(user.getEditUsersPermission());
-
         // Button setting
         ActionListener editUserListener = e -> {
-            new UserManagementWin();
+            Main.userManagementWin.setVisible(true);
+            super.setEnabled(false);
         };
         editUserButton.addActionListener(editUserListener);
 
@@ -45,6 +44,9 @@ public class MeauWin extends JFrame{
         // Display the window
         setLocation(900,350);
         pack();
-        setVisible(true);
+    }
+
+    public void EnableUserButton(User user){
+        editUserButton.setEnabled(user.getEditUsersPermission());
     }
 }

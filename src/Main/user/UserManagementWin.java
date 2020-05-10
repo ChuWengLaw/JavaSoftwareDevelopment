@@ -33,6 +33,10 @@ public class UserManagementWin extends JFrame{
         };
         deleteUserButton.addActionListener(deleteActionListener);
 
+        ActionListener listActionListener = e-> new ListUserWin();
+        listUserButton.addActionListener(listActionListener);
+
+
         // Panel setting
         constraints.anchor = GridBagConstraints.WEST;
         constraints.insets = new Insets(10, 10, 10, 10);

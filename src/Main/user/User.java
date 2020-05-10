@@ -19,6 +19,16 @@ public class User {
 
     }
 
+    public User(String userName, String userPassword, boolean createBillboardsPermission, boolean editAllBillboardPermission,
+                boolean scheduleBillboardsPermission, boolean editUsersPermission){
+        this.userName = userName;
+        this.userPassword = userPassword;
+        this.createBillboardsPermission = createBillboardsPermission;
+        this.editAllBillboardPermission = editAllBillboardPermission;
+        this.scheduleBillboardsPermission = scheduleBillboardsPermission;
+        this. editUsersPermission = editUsersPermission;
+    }
+
     // Set method to store user information
     public void setUserName(String userName){
         this.userName = userName;
@@ -57,27 +67,25 @@ public class User {
 
     // Get Methods to be called to check user's information
     public String getUserName(){
-        return userName;
+        return this.userName;
     }
 
     public String getUserPassword(){
-        return userPassword;
+        return this.userPassword;
     }
 
     public Boolean getCreateBillboardsPermission() {
-        return createBillboardsPermission;
+        return this.createBillboardsPermission;
     }
 
-    public Boolean getEditAllBillboardPermission() {
-        return editAllBillboardPermission;
-    }
+    public Boolean getEditAllBillboardPermission() { return this.editAllBillboardPermission; }
 
     public Boolean getScheduleBillboardsPermission() {
-        return scheduleBillboardsPermission;
+        return this.scheduleBillboardsPermission;
     }
 
     public Boolean getEditUsersPermission() {
-        return editUsersPermission;
+        return this.editUsersPermission;
     }
 
 }

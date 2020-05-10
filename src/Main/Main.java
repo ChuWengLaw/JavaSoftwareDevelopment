@@ -15,13 +15,14 @@ public class Main {
     public static Statement statement;
 
     /**
-     *  SQL String to create a table named billboard in the database
+     * SQL String to create a table named billboard in the database
+     *
      * @author Law
      */
     private static final String DELETE_ALL =
             "DROP table billboard;" +
-            "DROP table user;" +
-            "DROP table Schedule;";
+                    "DROP table user;" +
+                    "DROP table Schedule;";
     private static final String CREATE_BILLBOARD_TABLE =
             "CREATE TABLE IF NOT EXISTS Billboard ("
                     + "BillboardName VARCHAR(30) PRIMARY KEY NOT NULL UNIQUE,"
@@ -63,18 +64,19 @@ public class Main {
             statement.execute(CREATE_SCHEDULE_TABLE);
 
 //################code below is just to create a test user with no name or password for testing
+
+            // Username and Password are added.
             try {
                 ResultSet resultSet = Main.statement.executeQuery("SELECT * FROM User");
-                String testAdmin = "";
+                String testAdmin = "QUTfortherealworld";
                 Boolean AdminExists = false;
                 while (resultSet.next()) {
-                    if ( testAdmin.equals(resultSet.getString("UserName")) && testAdmin.equals(resultSet.getString("UserPassword"))) {
+                    if (testAdmin.equals(resultSet.getString("UserName")) && testAdmin.equals(resultSet.getString("UserPassword"))) {
                         AdminExists = true;
                     }
                 }
-                if (!AdminExists)
-                {
-                    statement.execute("INSERT INTO User Values ('', '',true,true,true,true);");
+                if (!AdminExists) {
+                    statement.execute("INSERT INTO User Values ('QUTfortherealworld', 'asdfghjkl',true,true,true,true);");
                 }
             } catch (SQLException ex) {
                 System.out.println(ex);
@@ -82,10 +84,9 @@ public class Main {
 //#########################above code is just to create a test user with no name or password for testing
 
 
-
-
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
     }
 }
+

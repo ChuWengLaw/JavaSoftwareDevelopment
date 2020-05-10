@@ -65,25 +65,25 @@ public class User {
 
     // Get Methods to be called to check user's information
     public String getUserName(){
-        return this.userName;
+        return userName;
     }
 
     public String getUserPassword(){
-        return this.userPassword;
+        return userPassword;
     }
 
     public Boolean getCreateBillboardsPermission() {
-        return this.createBillboardsPermission;
+        return createBillboardsPermission;
     }
 
-    public Boolean getEditAllBillboardPermission() { return this.editAllBillboardPermission; }
+    public Boolean getEditAllBillboardPermission() { return editAllBillboardPermission; }
 
     public Boolean getScheduleBillboardsPermission() {
-        return this.scheduleBillboardsPermission;
+        return scheduleBillboardsPermission;
     }
 
     public Boolean getEditUsersPermission() {
-        return this.editUsersPermission;
+        return editUsersPermission;
     }
 
 }

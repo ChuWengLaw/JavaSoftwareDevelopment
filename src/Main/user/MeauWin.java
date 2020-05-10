@@ -22,7 +22,7 @@ public class MeauWin extends JFrame{
 
         // Button setting
         ActionListener editUserListener = e -> {
-            new UserManagementWin();
+            new UserManagementWin(user);
         };
         editUserButton.addActionListener(editUserListener);
 

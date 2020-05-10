@@ -12,6 +12,7 @@ import java.util.Vector;
 public class ListUserWin {
     public ListUserWin(){
         try{
+            User user = new User();
             Statement statement = Main.connection.createStatement();
             ResultSet rs = statement.executeQuery("select * from user");
             ResultSetMetaData rsmd = rs.getMetaData();

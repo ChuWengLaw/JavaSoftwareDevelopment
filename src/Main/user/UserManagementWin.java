@@ -17,10 +17,9 @@ public class UserManagementWin extends JFrame{
     private JPanel panel = new JPanel(new GridBagLayout());
     private GridBagConstraints constraints = new GridBagConstraints();
 
-    public UserManagementWin(){
+    public UserManagementWin(User user){
         super("User Management");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
         // Button setting
         ActionListener createUserListener = e -> new CreateUserWin();
         createUserButton.addActionListener(createUserListener);
@@ -29,7 +28,7 @@ public class UserManagementWin extends JFrame{
         editUserButton.addActionListener(editUserListener);
 
         ActionListener deleteActionListener = e ->{
-            new DeleteUserWin();
+            new DeleteUserWin(user);
         };
         deleteUserButton.addActionListener(deleteActionListener);
 

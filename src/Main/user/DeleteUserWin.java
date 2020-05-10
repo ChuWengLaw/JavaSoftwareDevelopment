@@ -14,32 +14,22 @@ public class DeleteUserWin extends JFrame{
     private JPanel deletepanel = new JPanel(new GridBagLayout());
     private GridBagConstraints constraints = new GridBagConstraints();
 
-    public DeleteUserWin(){
+    public DeleteUserWin(User user){
         super("Delete a User");
         setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-        User user = new User();
-
         ActionListener listener = e -> {
             try{
-                if(!CheckUserSQL(usernamefield.getText())){
+                if(user.getUserName().equals(usernamefield.getText())){
+                    JOptionPane.showMessageDialog(null, "You can't delete yourself, you knobhead");
+                } else if(!CheckUserSQL(usernamefield.getText())){
                     JOptionPane.showMessageDialog(null, "Username does not exist");
-                }
-                else if(usernamefield.getText() == user.getUserName()){
-                    JOptionPane.showMessageDialog(null,"You can't delete yourself, you knobhead");
                 }
                 else if(usernamefield.getText().isEmpty()) {
                     JOptionPane.showMessageDialog(null, "Username field is empty");
                 }
                 else{
-                    if (user.getUserName() == usernamefield.getText()){
-                        JOptionPane.showMessageDialog(null,"You can't delete yourself, you knobhead");
-
-                    }
-                    else{
-                        System.out.println(user.getUserName());
-                        DeleteUserSQL(usernamefield.getText());
-                        JOptionPane.showMessageDialog(null,"User has been deleted");
-                    }
+                    DeleteUserSQL(usernamefield.getText());
+                    JOptionPane.showMessageDialog(null,"User has been deleted");
 
                 }
             }
@@ -71,6 +61,7 @@ public class DeleteUserWin extends JFrame{
         setVisible(true);
     }
     private boolean CheckUserSQL(String userName) throws SQLException {
+        User user = new User();
         boolean existing = false;
         Statement statement = Main.connection.createStatement();
         ResultSet resultSet = statement.executeQuery("SELECT userName FROM user");
@@ -82,13 +73,18 @@ public class DeleteUserWin extends JFrame{
         }
         statement.close();
         return existing;
-    }
-    public void DeleteUserSQL(String userName) throws SQLException {
-        PreparedStatement deletestatement = Main.connection.prepareStatement("delete from user where userName=?");
-        deletestatement.setString(1,userName);
-        deletestatement.executeQuery();
-        deletestatement.close();
 
+    }
+    private void DeleteUserSQL(String userName) throws SQLException {
+        if(userName != usernamefield.getText()){
+            PreparedStatement deletestatement = Main.connection.prepareStatement("delete from user where userName=?");
+            deletestatement.setString(1,userName);
+            deletestatement.executeQuery();
+            deletestatement.close();
+        }
+        else{
+            JOptionPane.showMessageDialog(null,"why");
+        }
     }
 
 }

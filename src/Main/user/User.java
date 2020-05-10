@@ -16,7 +16,15 @@ public class User {
 
     //Constructor
     public User() {
+    }
 
+    public User(String userName, String userPassword, boolean createBillboardsPermission, boolean editAllBillboardPermission, boolean scheduleBillboardsPermission, boolean editUsersPermission){
+        this.userName = userName;
+        this.userPassword = userPassword;
+        this.createBillboardsPermission = createBillboardsPermission;
+        this.editAllBillboardPermission = editAllBillboardPermission;
+        this.scheduleBillboardsPermission = scheduleBillboardsPermission;
+        this.editUsersPermission = editUsersPermission;
     }
 
     // Set method to store user information

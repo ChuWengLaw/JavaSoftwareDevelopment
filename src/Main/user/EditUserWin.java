@@ -33,7 +33,6 @@ public class EditUserWin extends JFrame{
         // Setting default value of the frame
         super("Edit User");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        User user = new User();
 
         // Text field and checkbox setting
         passwordTextField.setEditable(false);
@@ -49,17 +48,8 @@ public class EditUserWin extends JFrame{
                 if (!CheckUserSQL(userNameTextField.getText())){
                     new ErrorWin("User Name does not exist");
                 }
-                else if (userNameTextField.getText().isEmpty()){
-                    new ErrorWin("User Name field cannot be empty");
-                }
                 else{
-                    SetUserSQL(user);
-                    userNameTextField.setText(user.getUserName());
-                    passwordTextField.setText(user.getUserPassword());
-                    checkBox1.setSelected(user.getCreateBillboardsPermission());
-                    checkBox2.setSelected(user.getEditAllBillboardPermission());
-                    checkBox3.setSelected(user.getScheduleBillboardsPermission());
-                    checkBox4.setSelected(user.getEditUsersPermission());
+                    SetUserSQL();
                     userNameTextField.setEditable(false);
                     passwordTextField.setEditable(true);
                     checkBox1.setEnabled(true);
@@ -76,12 +66,8 @@ public class EditUserWin extends JFrame{
         searchButton.addActionListener(searchListener);
 
         ActionListener editListener = e ->{
-            System.out.println(userNameTextField.getText());
-            System.out.println(user.getUserName());
             try{
-                SetUser(user);
-                EditUserSQL(user.getUserName(), user.getUserPassword(), user.getCreateBillboardsPermission(),
-                        user.getEditAllBillboardPermission(), user.getScheduleBillboardsPermission(), user.getEditUsersPermission());
+                EditUserSQL(userNameTextField.getText(), passwordTextField.getText(), checkBox1.isSelected(), checkBox2.isSelected(), checkBox3.isSelected(), checkBox4.isSelected());
                 userNameTextField.setEditable(true);
                 passwordTextField.setEditable(false);
                 checkBox1.setEnabled(false);
@@ -182,50 +168,17 @@ public class EditUserWin extends JFrame{
         setVisible(true);
     }
 
-    private void SetUser(User user){
-        user.setUserName(userNameTextField.getText());
-        user.setPassword(passwordTextField.getText());
-
-        if (checkBox1.isSelected()){
-            user.setCreateBillboardsPermission(true);
-        }
-        else {
-            user.setCreateBillboardsPermission(false);
-        }
-
-        if (checkBox2.isSelected()){
-            user.setEditAllBillboardsPermission(true);
-        }
-        else {
-            user.setEditAllBillboardsPermission(false);
-        }
-
-        if (checkBox3.isSelected()){
-            user.setScheduleBillboardsPermission(true);
-        }
-        else {
-            user.setScheduleBillboardsPermission(false);
-        }
-
-        if (checkBox4.isSelected()){
-            user.setEditUsersPermission(true);
-        }
-        else {
-            user.setEditUsersPermission(false);
-        }
-    }
-
-    private void SetUserSQL(User user) throws SQLException {
+    private void SetUserSQL() throws SQLException {
         Statement statement = Main.connection.createStatement();
         ResultSet resultSet = statement.executeQuery("SELECT * FROM  user");
+
         while(resultSet.next()) {
             if (userNameTextField.getText().equals(resultSet.getString("userName"))){
-                user.setUserName(resultSet.getString("userName"));
-                user.setPassword(resultSet.getString("userPassword"));
-                user.setCreateBillboardsPermission(resultSet.getBoolean("createBillboardsPermission"));
-                user.setEditAllBillboardsPermission(resultSet.getBoolean("editAllBillboardPermission"));
-                user.setScheduleBillboardsPermission(resultSet.getBoolean("scheduleBillboardsPermission"));
-                user.setEditUsersPermission(resultSet.getBoolean("editUsersPermission"));
+                passwordTextField.setText(resultSet.getString("userPassword"));
+                checkBox1.setSelected(resultSet.getBoolean("createBillboardsPermission"));
+                checkBox2.setSelected(resultSet.getBoolean("editAllBillboardPermission"));
+                checkBox3.setSelected(resultSet.getBoolean("scheduleBillboardsPermission"));
+                checkBox4.setSelected(resultSet.getBoolean("editUsersPermission"));
                 break;
             }
         }

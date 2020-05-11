@@ -12,8 +12,8 @@ public class BillBoardManagementGUI extends JFrame implements ActionListener,Run
     private JButton btnListBillboards;
     private GridBagConstraints constraints = new GridBagConstraints();
 
-    public BillBoardManagementGUI(String title) throws HeadlessException {
-        super(title);
+    public BillBoardManagementGUI() throws HeadlessException {
+        super("Billboard Management");
     }
 
     /**

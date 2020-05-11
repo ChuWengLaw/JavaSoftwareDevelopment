@@ -1,6 +1,7 @@
 package Main.user;
 
 import Main.Main;
+import Main.billboard.BillBoardManagementGUI;
 import Main.billboard.CreateEditGUI;
 
 import java.awt.*;
@@ -22,7 +23,7 @@ public class MeauWin extends JFrame{
             ActionListener editUserListener = e -> new UserManagementWin();
             editUserButton.addActionListener(editUserListener);
 
-            ActionListener editBillboardListener = e -> new CreateEditGUI();
+            ActionListener editBillboardListener = e -> new BillBoardManagementGUI();
             billboardManageButton.addActionListener(editBillboardListener);
 
             // Panel setting

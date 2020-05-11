@@ -1,4 +1,6 @@
-package Main;
+package Main.billboard;
+
+import Main.Main;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;

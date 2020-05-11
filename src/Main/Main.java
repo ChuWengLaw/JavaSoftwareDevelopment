@@ -1,19 +1,27 @@
 package Main;
 
+import Main.connection.DBConnection;
+import Main.user.LoginWin;
+
 import javax.swing.*;
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
 public class Main {
 
-    private static Connection connection;
+    public static Connection connection;
     public static Statement statement;
 
     /**
      *  SQL String to create a table named billboard in the database
      * @author Law
      */
+    private static final String DELETE_ALL =
+            "DROP table billboard;" +
+            "DROP table user;" +
+            "DROP table Schedule;";
     private static final String CREATE_BILLBOARD_TABLE =
             "CREATE TABLE IF NOT EXISTS Billboard ("
                     + "BillboardName VARCHAR(30) PRIMARY KEY NOT NULL UNIQUE,"
@@ -44,14 +52,38 @@ public class Main {
     //TODO: CREATE_USER_TABLE and CREATE_SCHEDULE_TABLE
 
     public static void main(String[] args) throws SQLException {
-        SwingUtilities.invokeLater(new LoginGUI("Login"));
+        SwingUtilities.invokeLater(new LoginWin());
 
         connection = DBConnection.newConnection();
         try {
             statement = connection.createStatement();
+
             statement.execute(CREATE_BILLBOARD_TABLE);
             statement.execute(CREATE_USER_TABLE);
             statement.execute(CREATE_SCHEDULE_TABLE);
+
+//################code below is just to create a test user with no name or password for testing
+            try {
+                ResultSet resultSet = Main.statement.executeQuery("SELECT * FROM User");
+                String testAdmin = "";
+                Boolean AdminExists = false;
+                while (resultSet.next()) {
+                    if ( testAdmin.equals(resultSet.getString("UserName")) && testAdmin.equals(resultSet.getString("UserPassword"))) {
+                        AdminExists = true;
+                    }
+                }
+                if (!AdminExists)
+                {
+                    statement.execute("INSERT INTO User Values ('', '',true,true,true,true);");
+                }
+            } catch (SQLException ex) {
+                System.out.println(ex);
+            }
+//#########################above code is just to create a test user with no name or password for testing
+
+
+
+
         } catch (SQLException ex) {
             ex.printStackTrace();
         }

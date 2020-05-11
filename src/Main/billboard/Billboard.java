@@ -1,4 +1,6 @@
-package Main;
+package Main.billboard;
+
+import Main.Main;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;

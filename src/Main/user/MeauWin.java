@@ -15,7 +15,7 @@ public class MeauWin extends JFrame{
 
         public MeauWin(){
             // Setting default value of the frame
-            super("Meau");
+            super("Menu");
             setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
             // Button setting

@@ -10,6 +10,7 @@ public class BillBoardManagementGUI extends JFrame implements ActionListener,Run
     private JButton btnCreateEditBillboard;
     private JButton btnBillboardInfo;
     private JButton btnListBillboards;
+    private JPanel menu = new JPanel(new GridBagLayout());
     private GridBagConstraints constraints = new GridBagConstraints();
 
     public BillBoardManagementGUI() throws HeadlessException {
@@ -52,8 +53,6 @@ public class BillBoardManagementGUI extends JFrame implements ActionListener,Run
             }
         });
 
-        JPanel menu = new JPanel(new GridBagLayout());
-
         constraints.anchor = GridBagConstraints.WEST;
         constraints.insets = new Insets(10,10,10,10);
 
@@ -68,7 +67,6 @@ public class BillBoardManagementGUI extends JFrame implements ActionListener,Run
         menu.add(btnListBillboards, constraints);
 
         getContentPane().add(menu);
-
 
         repaint();
         setVisible(true);

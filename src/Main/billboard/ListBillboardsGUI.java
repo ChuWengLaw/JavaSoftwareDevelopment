@@ -11,8 +11,11 @@ import java.sql.SQLException;
 public class ListBillboardsGUI extends JFrame {
 
     //set the width and height of the GUI
-    public static final int HEIGHT = 300;
+    public static final int HEIGHT = 800;
     public static final int WIDTH = 600;
+
+    //define the table
+    private JTable tblBilboards;
 
 
     public ListBillboardsGUI() throws HeadlessException {
@@ -21,6 +24,7 @@ public class ListBillboardsGUI extends JFrame {
     }
 
     private void createGUI() {
+        //set the size of the frame
         setSize(WIDTH, HEIGHT);
 
         repaint();

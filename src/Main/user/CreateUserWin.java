@@ -6,6 +6,7 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.security.NoSuchAlgorithmException;
 import java.sql.*;
 import javax.swing.*;
 
@@ -70,11 +71,13 @@ public class CreateUserWin extends JFrame{
                                                 JOptionPane.showMessageDialog(null,"User name already exists");
                                         }
                                         else{
-                                                createUserSQL(userNameTextField.getText(), String.valueOf(passwordTextField.getPassword()), checkBox1.isSelected(),
-                                                        checkBox2.isSelected(), checkBox3.isSelected(), checkBox4.isSelected());
+                                                String saltString = Main.saltString();
+                                                String hasedPassword = Main.hashAString(passwordTextField.getPassword() + saltString);
+                                                createUserSQL(userNameTextField.getText(), hasedPassword, checkBox1.isSelected(),
+                                                        checkBox2.isSelected(), checkBox3.isSelected(), checkBox4.isSelected(), saltString);
                                         }
 
-                                } catch (SQLException ex) {
+                                } catch (SQLException | NoSuchAlgorithmException ex) {
                                         ex.printStackTrace();
                                 }
                         }
@@ -143,16 +146,17 @@ public class CreateUserWin extends JFrame{
 
         private void createUserSQL(String userName, String userPassword,
                                    boolean createBillboardsPermission, boolean editAllBillboardPermission,
-                                   boolean scheduleBillboardsPermission, boolean editUsersPermission) throws SQLException {
+                                   boolean scheduleBillboardsPermission, boolean editUsersPermission, String saltValue) throws SQLException {
                 PreparedStatement pstatement = Main.connection.prepareStatement("INSERT INTO user  " +
-                        "(userName, userPassword,  createBillboardsPermission, editAllBillboardPermission, scheduleBillboardsPermission, editUsersPermission) " +
-                        "VALUES (?, ?, ?, ?, ?, ?)");
+                        "(userName, userPassword,  createBillboardsPermission, editAllBillboardPermission, scheduleBillboardsPermission, editUsersPermission, saltValue) " +
+                        "VALUES (?, ?, ?, ?, ?, ?, ?)");
                 pstatement.setString(1, userName);
                 pstatement.setString(2, userPassword);
                 pstatement.setBoolean(3, createBillboardsPermission);
                 pstatement.setBoolean(4, editAllBillboardPermission);
                 pstatement.setBoolean(5, scheduleBillboardsPermission);
                 pstatement.setBoolean(6, editUsersPermission);
+                pstatement.setString(7, saltValue);
                 pstatement.executeUpdate();
                 pstatement.close();
         }

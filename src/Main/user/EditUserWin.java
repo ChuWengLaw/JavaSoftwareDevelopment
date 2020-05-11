@@ -6,6 +6,7 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.security.NoSuchAlgorithmException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -106,17 +107,35 @@ public class EditUserWin extends JFrame{
 
         ActionListener editListener = e ->{
             try{
-                editUserSQL(userNameTextField.getText(), passwordTextField.getText(), checkBox1.isSelected(), checkBox2.isSelected(), checkBox3.isSelected(), checkBox4.isSelected());
-                userNameTextField.setEditable(true);
-                passwordTextField.setEditable(false);
-                passwordTextField.setText(null);
-                checkBox1.setEnabled(false);
-                checkBox2.setEnabled(false);
-                checkBox3.setEnabled(false);
-                checkBox4.setEnabled(false);
-                editButton.setEnabled(false);
-                searchButton.setEnabled(true);
-            } catch (SQLException ex) {
+                if (passwordTextField.getText().isEmpty()){
+                    editUserSQL(userNameTextField.getText(), checkBox1.isSelected(), checkBox2.isSelected(),
+                            checkBox3.isSelected(), checkBox4.isSelected());
+                    userNameTextField.setEditable(true);
+                    passwordTextField.setEditable(false);
+                    passwordTextField.setText(null);
+                    checkBox1.setEnabled(false);
+                    checkBox2.setEnabled(false);
+                    checkBox3.setEnabled(false);
+                    checkBox4.setEnabled(false);
+                    editButton.setEnabled(false);
+                    searchButton.setEnabled(true);
+                }
+                else{
+                    String saltString = Main.saltString();
+                    String hashPassword = Main.hashAString(passwordTextField.getText() + saltString);
+                    editUserSQL(userNameTextField.getText(), hashPassword, checkBox1.isSelected(), checkBox2.isSelected(),
+                            checkBox3.isSelected(), checkBox4.isSelected(), saltString);
+                    userNameTextField.setEditable(true);
+                    passwordTextField.setEditable(false);
+                    passwordTextField.setText(null);
+                    checkBox1.setEnabled(false);
+                    checkBox2.setEnabled(false);
+                    checkBox3.setEnabled(false);
+                    checkBox4.setEnabled(false);
+                    editButton.setEnabled(false);
+                    searchButton.setEnabled(true);
+                }
+            } catch (SQLException | NoSuchAlgorithmException ex) {
                 ex.printStackTrace();
             }
         };
@@ -209,15 +228,15 @@ public class EditUserWin extends JFrame{
 
     private void setUserSQL() throws SQLException {
         Statement statement = Main.connection.createStatement();
-        ResultSet resultSet = statement.executeQuery("SELECT * FROM  user");
+        ResultSet resultSet = statement.executeQuery("SELECT userName, createBillboardsPermission, editAllBillboardPermission, scheduleBillboardsPermission," +
+                "editUsersPermission FROM  user");
 
         while(resultSet.next()) {
-            if (userNameTextField.getText().equals(resultSet.getString("userName"))){
-                passwordTextField.setText(resultSet.getString("userPassword"));
-                checkBox1.setSelected(resultSet.getBoolean("createBillboardsPermission"));
-                checkBox2.setSelected(resultSet.getBoolean("editAllBillboardPermission"));
-                checkBox3.setSelected(resultSet.getBoolean("scheduleBillboardsPermission"));
-                checkBox4.setSelected(resultSet.getBoolean("editUsersPermission"));
+            if (userNameTextField.getText().equals(resultSet.getString(1))){
+                checkBox1.setSelected(resultSet.getBoolean(2));
+                checkBox2.setSelected(resultSet.getBoolean(3));
+                checkBox3.setSelected(resultSet.getBoolean(4));
+                checkBox4.setSelected(resultSet.getBoolean(5));
                 break;
             }
         }
@@ -227,16 +246,31 @@ public class EditUserWin extends JFrame{
 
     private void editUserSQL(String userName, String userPassword,
                              boolean createBillboardsPermission, boolean editAllBillboardPermission,
-                             boolean scheduleBillboardsPermission, boolean editUsersPermission) throws SQLException {
+                             boolean scheduleBillboardsPermission, boolean editUsersPermission, String saltValue) throws SQLException {
         PreparedStatement pstatement = Main.connection.prepareStatement("UPDATE user " +
                 "SET userPassword = ?,  createBillboardsPermission = ?, editAllBillboardPermission = ?, " +
-                "scheduleBillboardsPermission = ?, editUsersPermission = ? WHERE userName = ? " );
+                "scheduleBillboardsPermission = ?, editUsersPermission = ?, saltValue = ? WHERE userName = ? " );
         pstatement.setString(1, userPassword);
         pstatement.setBoolean(2, createBillboardsPermission);
         pstatement.setBoolean(3, editAllBillboardPermission);
         pstatement.setBoolean(4, scheduleBillboardsPermission);
         pstatement.setBoolean(5, editUsersPermission);
-        pstatement.setString(6, userName);
+        pstatement.setString(6, saltValue);
+        pstatement.setString(7, userName);
+        pstatement.executeUpdate();
+        pstatement.close();
+    }
+
+    private void editUserSQL(String userName, boolean createBillboardsPermission, boolean editAllBillboardPermission,
+                             boolean scheduleBillboardsPermission, boolean editUserPermission) throws SQLException {
+        PreparedStatement pstatement = Main.connection.prepareStatement("UPDATE user " +
+                "SET  createBillboardsPermission = ?, editAllBillboardPermission = ?, " +
+                "scheduleBillboardsPermission = ?, editUsersPermission = ? WHERE userName = ? " );
+        pstatement.setBoolean(1, createBillboardsPermission);
+        pstatement.setBoolean(2, editAllBillboardPermission);
+        pstatement.setBoolean(3, scheduleBillboardsPermission);
+        pstatement.setBoolean(4, editUserPermission);
+        pstatement.setString(5, userName);
         pstatement.executeUpdate();
         pstatement.close();
     }

@@ -31,6 +31,7 @@ public class InformationGUI extends JFrame implements ActionListener,Runnable {
 
     public InformationGUI() throws HeadlessException {
         super("Billboard Information");
+        createGUI();
     }
 
     /**
@@ -137,6 +138,6 @@ public class InformationGUI extends JFrame implements ActionListener,Runnable {
 
     @Override
     public void run() {
-createGUI();
+
     }
 }

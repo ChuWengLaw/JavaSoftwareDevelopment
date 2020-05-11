@@ -46,8 +46,8 @@ public class CreateEditGUI extends JFrame implements ActionListener{
     private String strInformation;
 
     //constructor
-    public CreateEditGUI(String title) throws HeadlessException {
-        super(title);
+    public CreateEditGUI() throws HeadlessException {
+        super("Create/Edit Billboard");
         createGUI();
     }
 

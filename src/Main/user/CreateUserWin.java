@@ -61,20 +61,22 @@ public class CreateUserWin extends JFrame{
 
                 // Button setting
                 ActionListener createListener = e -> {
-                        try {
-                                if(CheckUserSQL(userNameTextField.getText())){
-                                        JOptionPane.showMessageDialog(null,"User name already exists");
-                                }
-                                else if(userNameTextField.getText().isEmpty() || passwordTextField.getPassword().length == 0){
-                                        JOptionPane.showMessageDialog(null,"User name and password field cannot be empty");
-                                }
-                                else{
-                                        CreateUserSQL(userNameTextField.getText(), String.valueOf(passwordTextField.getPassword()), checkBox1.isSelected(),
-                                                checkBox2.isSelected(), checkBox3.isSelected(), checkBox4.isSelected());
-                                }
+                        if (userNameTextField.getText().isEmpty() || passwordTextField.getPassword().length == 0){
+                                JOptionPane.showMessageDialog(null,"User name and password field cannot be empty");
+                        }
+                        else{
+                                try {
+                                        if(checkUserSQL(userNameTextField.getText())){
+                                                JOptionPane.showMessageDialog(null,"User name already exists");
+                                        }
+                                        else{
+                                                createUserSQL(userNameTextField.getText(), String.valueOf(passwordTextField.getPassword()), checkBox1.isSelected(),
+                                                        checkBox2.isSelected(), checkBox3.isSelected(), checkBox4.isSelected());
+                                        }
 
-                        } catch (SQLException ex) {
-                                ex.printStackTrace();
+                                } catch (SQLException ex) {
+                                        ex.printStackTrace();
+                                }
                         }
                 };
                 createButton.addActionListener(createListener);
@@ -139,23 +141,23 @@ public class CreateUserWin extends JFrame{
                 pack();
         }
 
-        private void CreateUserSQL(String userName, String userPassword,
+        private void createUserSQL(String userName, String userPassword,
                                    boolean createBillboardsPermission, boolean editAllBillboardPermission,
                                    boolean scheduleBillboardsPermission, boolean editUsersPermission) throws SQLException {
-                PreparedStatement Pstatement = Main.connection.prepareStatement("INSERT INTO user  " +
+                PreparedStatement pstatement = Main.connection.prepareStatement("INSERT INTO user  " +
                         "(userName, userPassword,  createBillboardsPermission, editAllBillboardPermission, scheduleBillboardsPermission, editUsersPermission) " +
                         "VALUES (?, ?, ?, ?, ?, ?)");
-                Pstatement.setString(1, userName);
-                Pstatement.setString(2, userPassword);
-                Pstatement.setBoolean(3, createBillboardsPermission);
-                Pstatement.setBoolean(4, editAllBillboardPermission);
-                Pstatement.setBoolean(5, scheduleBillboardsPermission);
-                Pstatement.setBoolean(6, editUsersPermission);
-                Pstatement.executeUpdate();
-                Pstatement.close();
+                pstatement.setString(1, userName);
+                pstatement.setString(2, userPassword);
+                pstatement.setBoolean(3, createBillboardsPermission);
+                pstatement.setBoolean(4, editAllBillboardPermission);
+                pstatement.setBoolean(5, scheduleBillboardsPermission);
+                pstatement.setBoolean(6, editUsersPermission);
+                pstatement.executeUpdate();
+                pstatement.close();
         }
 
-        private boolean CheckUserSQL(String userName) throws SQLException {
+        private boolean checkUserSQL(String userName) throws SQLException {
                 boolean existing = false;
 
                 Statement statement = Main.connection.createStatement();

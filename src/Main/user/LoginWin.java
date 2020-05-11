@@ -4,11 +4,11 @@ import Main.Main;
 
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.security.NoSuchAlgorithmException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
 
 public class LoginWin extends JFrame implements Runnable{
     private JLabel labelUserID = new JLabel("User ID");
@@ -30,19 +30,19 @@ public class LoginWin extends JFrame implements Runnable{
         // Button setting
         ActionListener loginListener = e ->{
             try {
-                if (!CheckUserSQL(idTextField.getText())){
+                if (!checkUserSQL(idTextField.getText())){
                     JOptionPane.showMessageDialog(null,"User name does not exists");
                 }
-                else if (!CheckPasswordSQL(idTextField.getText(), passwordTextField.getPassword())){
+                else if (!checkPasswordSQL(idTextField.getText(), passwordTextField.getPassword())){
                     JOptionPane.showMessageDialog(null,"Wrong password");
                 }
                 else{
                     super.dispose();
-                    SetUserSQL(Main.user);
-                    Main.meauWin.EnableUserButton(Main.user);
+                    setUserSQL(Main.user);
+                    Main.meauWin.enableUserButton(Main.user);
                     Main.meauWin.setVisible(true);
                 }
-            } catch (SQLException ex) {
+            } catch (SQLException | NoSuchAlgorithmException ex) {
                 ex.printStackTrace();
             }
         };
@@ -81,14 +81,13 @@ public class LoginWin extends JFrame implements Runnable{
         setVisible(true);
     }
 
-    private void SetUserSQL(User user) throws SQLException {
+    private void setUserSQL(User user) throws SQLException {
         Statement statement = Main.connection.createStatement();
         ResultSet resultSet = statement.executeQuery("SELECT * FROM  user");
 
         while (resultSet.next()) {
             if (idTextField.getText().equals(resultSet.getString("userName"))) {
                 user.setUserName(resultSet.getString("userName"));
-                user.setPassword(resultSet.getString("userPassword"));
                 user.setCreateBillboardsPermission(resultSet.getBoolean("createBillboardsPermission"));
                 user.setEditAllBillboardsPermission(resultSet.getBoolean("editAllBillboardPermission"));
                 user.setScheduleBillboardsPermission(resultSet.getBoolean("scheduleBillboardsPermission"));
@@ -100,7 +99,7 @@ public class LoginWin extends JFrame implements Runnable{
         statement.close();
     }
 
-    private boolean CheckUserSQL(String userName) throws SQLException {
+    private boolean checkUserSQL(String userName) throws SQLException {
         boolean existing = false;
 
         Statement statement = Main.connection.createStatement();
@@ -117,15 +116,17 @@ public class LoginWin extends JFrame implements Runnable{
         return existing;
     }
 
-    private boolean CheckPasswordSQL(String userName, char[] userPassword) throws SQLException {
+    private boolean checkPasswordSQL(String userName, char[] userPassword) throws SQLException, NoSuchAlgorithmException {
         boolean correctPassword = false;
         String userPasswordString = String.valueOf(userPassword);
 
         Statement statement = Main.connection.createStatement();
-        ResultSet resultSet = statement.executeQuery("SELECT userName, userPassword FROM  user");
+        ResultSet resultSet = statement.executeQuery("SELECT userName, userPassword, saltValue FROM  user");
 
         while(resultSet.next()){
-            if (userName.equals(resultSet.getString(1)) && userPasswordString.equals(resultSet.getString(2))){
+            String hasedRecievedString = Main.hashAString(userPasswordString+resultSet.getString(3));
+
+            if (userName.equals(resultSet.getString(1)) && hasedRecievedString.equals(resultSet.getString(2))){
                 correctPassword = true;
                 break;
             }

@@ -1,20 +1,19 @@
 package Main.billboard;
 
-import Main.user.CreateUserWin;
-import Main.user.DeleteUserWin;
-import Main.user.EditUserWin;
-
 import java.awt.*;
-import java.awt.event.ActionListener;
 import javax.swing.*;
 
 public class BillBoardManagementGUI extends JFrame{
     private JButton btnCreateEditBB;
     private JButton btnInfoBB;
     private JButton btnListBB;
-    private JPanel panel = new JPanel(new GridBagLayout());
+    private JPanel bBMenu = new JPanel(new GridBagLayout());
     private GridBagConstraints constraints = new GridBagConstraints();
 
+    /**
+     * create the BillboardManagement GUI
+     * @Author Lachlan
+     */
     public BillBoardManagementGUI(){
         super("Billboard Management");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -30,16 +29,15 @@ public class BillBoardManagementGUI extends JFrame{
 
         constraints.gridx = 0;
         constraints.gridy = 0;
-        panel.add(btnCreateEditBB, constraints);
+        bBMenu.add(btnCreateEditBB, constraints);
 
         constraints.gridx = 1;
-        panel.add(btnInfoBB, constraints);
+        bBMenu.add(btnInfoBB, constraints);
 
         constraints.gridx = 2;
-        panel.add(btnListBB, constraints);
+        bBMenu.add(btnListBB, constraints);
 
-
-        getContentPane().add(panel);
+        getContentPane().add(bBMenu);
 
         // Display the window
         setLocation(900,350);
@@ -47,6 +45,12 @@ public class BillBoardManagementGUI extends JFrame{
         setVisible(true);
     }
 
+    /**
+     * Creates the button
+     * @author Lachlan
+     * @param text the text on the button
+     * @return the formatted button
+     */
     private JButton createButton (String text){
         JButton button = new JButton();
         button.setText(text);

@@ -9,7 +9,7 @@ import java.awt.event.ActionListener;
 import java.awt.*;
 import java.sql.SQLException;
 
-public class InformationGUI extends JFrame implements ActionListener,Runnable {
+public class InformationGUI extends JFrame {
 
     //set the size of the GUI
     public static final int WIDTH = 300;
@@ -129,15 +129,5 @@ public class InformationGUI extends JFrame implements ActionListener,Runnable {
         JButton button = new JButton();
         button.setText(text);
         return button;
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-
-    }
-
-    @Override
-    public void run() {
-
     }
 }

@@ -29,8 +29,8 @@ public class InformationGUI extends JFrame implements ActionListener,Runnable {
     private JLabel lblBillboardName;
     private JLabel lblInfo;
 
-    public InformationGUI(String title) throws HeadlessException {
-        super(title);
+    public InformationGUI() throws HeadlessException {
+        super("Billboard Information");
     }
 
     /**

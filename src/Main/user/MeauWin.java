@@ -1,6 +1,7 @@
 package Main.user;
 
 import Main.Main;
+import Main.billboard.BillBoardManagementGUI;
 import Main.billboard.CreateEditGUI;
 
 import java.awt.*;
@@ -15,14 +16,14 @@ public class MeauWin extends JFrame{
 
         public MeauWin(){
             // Setting default value of the frame
-            super("Meau");
+            super("Menu");
             setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
             // Button setting
             ActionListener editUserListener = e -> new UserManagementWin();
             editUserButton.addActionListener(editUserListener);
 
-            ActionListener editBillboardListener = e -> new CreateEditGUI("Create/Edit Billboard");
+            ActionListener editBillboardListener = e -> new BillBoardManagementGUI();
             billboardManageButton.addActionListener(editBillboardListener);
 
             // Panel setting

@@ -42,7 +42,7 @@ public class LoginGUI extends JFrame implements Runnable{
 
         BtnLogin = new JButton("Login");
 
-        GUIpanel = new JPanel(new GridLayout(3, 1));
+        GUIpanel = new JPanel(new GridLayout(3, 2));
         TestMessage = new JLabel();
 
 
@@ -50,13 +50,13 @@ public class LoginGUI extends JFrame implements Runnable{
         GUIpanel.add(User_Submitted);
         GUIpanel.add(Password_Label);
         GUIpanel.add(Password_Submitted);
-        GUIpanel.add(BtnLogin);
         GUIpanel.add(TestMessage);
 
 
 
 
         add(GUIpanel, BorderLayout.CENTER);
+        add(BtnLogin, BorderLayout.SOUTH);
 
         setTitle("Login");
         setVisible(true);

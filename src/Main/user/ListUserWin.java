@@ -14,7 +14,9 @@ public class ListUserWin {
         try{
             User user = new User();
             Statement statement = Main.connection.createStatement();
-            ResultSet rs = statement.executeQuery("select * from user");
+            ResultSet rs = statement.executeQuery(
+                    "select userName,CreateBillboardsPermission,EditAllBillboardPermission," +
+                            "ScheduleBillboardsPermission, EditUsersPermission from user");
             ResultSetMetaData rsmd = rs.getMetaData();
             int columnCount = rsmd.getColumnCount();
             Vector column  = new Vector(columnCount);

@@ -1,12 +1,7 @@
 package Main.billboard;
 
-import Main.Main;
-
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.*;
-import java.sql.SQLException;
 
 public class ListBillboardsGUI extends JFrame {
 
@@ -15,7 +10,7 @@ public class ListBillboardsGUI extends JFrame {
     public static final int WIDTH = 600;
 
     //define the table
-    private JTable tblBilboards;
+    private JTable tblBillboards;
 
 
     public ListBillboardsGUI() throws HeadlessException {
@@ -24,8 +19,9 @@ public class ListBillboardsGUI extends JFrame {
     }
 
     private void createGUI() {
-        //set the size of the frame
+        //set the size of the frame and exit
         setSize(WIDTH, HEIGHT);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         repaint();
         setVisible(true);

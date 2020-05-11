@@ -22,7 +22,7 @@ public class MeauWin extends JFrame{
             ActionListener editUserListener = e -> new UserManagementWin();
             editUserButton.addActionListener(editUserListener);
 
-            ActionListener editBillboardListener = e -> new CreateEditGUI("Create/Edit Billboard");
+            ActionListener editBillboardListener = e -> new CreateEditGUI();
             billboardManageButton.addActionListener(editBillboardListener);
 
             // Panel setting

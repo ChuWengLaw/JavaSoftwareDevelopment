@@ -10,6 +10,10 @@ import java.sql.SQLException;
 
 public class ListBillboardsGUI extends JFrame implements ActionListener, Runnable {
 
+    //set the width and height of the GUI
+    public static final int HEIGHT = 300;
+    public static final int WIDTH = 600;
+
 
 
     @Override

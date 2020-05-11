@@ -10,7 +10,7 @@ import java.awt.*;
 import java.sql.SQLException;
 
 // Runnable is not needed anymore
-public class CreateEditGUI extends JFrame implements ActionListener{
+public class CreateEditGUI extends JFrame{
     //set the width of the GUI
     public static final int WIDTH = 350;
     public static final int HEIGHT = 400;
@@ -180,10 +180,5 @@ public class CreateEditGUI extends JFrame implements ActionListener{
         JLabel label = new JLabel();
         label.setText(text);
         return label;
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-
     }
 }

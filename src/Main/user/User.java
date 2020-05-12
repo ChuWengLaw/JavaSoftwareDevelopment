@@ -60,9 +60,7 @@ public class User {
         return createBillboardsPermission;
     }
 
-    public Boolean getEditAllBillboardPermission() {
-        return editAllBillboardPermission;
-    }
+    public Boolean getEditAllBillboardPermission() { return editAllBillboardPermission; }
 
     public Boolean getScheduleBillboardsPermission() {
         return scheduleBillboardsPermission;

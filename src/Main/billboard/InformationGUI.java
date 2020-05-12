@@ -55,10 +55,10 @@ public class InformationGUI extends JFrame {
             public void actionPerformed(ActionEvent e) {
 
                 try{
-                 if(!checkBillboard(txtBillboardName.getText())){
-                    JOptionPane.showMessageDialog(null, "Billboard name entered not found");
+                    if (!checkBillboard(txtBillboardName.getText())){
+                        JOptionPane.showMessageDialog(null,"Billboard name entered not found.");
                     }
-                 else{
+                    else{
                         txtInfo.setText(setInfo(txtBillboardName.getText()));
                     }
                 } catch (Exception ex) {

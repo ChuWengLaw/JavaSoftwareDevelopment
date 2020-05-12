@@ -139,6 +139,13 @@ public class InformationGUI extends JFrame {
         return button;
     }
 
+    /**
+     * function gets the information for a particular billboard
+     * @author Lachlan
+     * @param name the name of the Billboard
+     * @return the information for that billboard
+     * @throws SQLException
+     */
     private String setInfo(String name) throws SQLException {
         Statement statement = Main.connection.createStatement();
         ResultSet rs = statement.executeQuery("SELECT BillboardName, Information FROM Billboard");
@@ -155,6 +162,13 @@ public class InformationGUI extends JFrame {
         return result;
     }
 
+    /**
+     * the function check if a billboard exists
+     * @author Lachlan
+     * @param Billboard billboard we want to search for
+     * @return true or false to whether the billboard exist
+     * @throws SQLException
+     */
     private boolean checkBillboard(String Billboard) throws SQLException {
         boolean existing = false;
 

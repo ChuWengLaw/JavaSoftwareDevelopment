@@ -16,7 +16,7 @@ public class Main {
     public static User user = new User();
 
     // Setting up windows
-    public static MeauWin meauWin = new MeauWin();
+    public static MenuWin menuWin = new MenuWin();
     public static UserManagementWin userManagementWin = new UserManagementWin();
     public static ChangePasswordWin changePasswordWin = new ChangePasswordWin();
     public static CreateUserWin createUserWin = new CreateUserWin();

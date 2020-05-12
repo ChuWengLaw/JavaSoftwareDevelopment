@@ -44,7 +44,53 @@ public class Billboard {
      * @param BillboardInformation Information in the billboard
      * @exception SQLException if sql query error occurs
      */
+/*
     public void CreateEditBillboard(String BillboardName, String CreatedByUserName, String BillboardTextColour,
+                                    String BillboardBackgroundColour, String BillboardMessage,
+                                    String BillboardPicture, String BillboardInformation) throws SQLException {
+        System.out.println("this is getting run");
+       //  Flags for checking billboard existence
+        boolean ExistFlag = false;
+
+        // Loop through the billboard list and update ExistFlag's status
+        try {
+            ResultSet resultSet = Main.statement.executeQuery("SELECT * FROM Billboard");
+            while (resultSet.next()) {
+                if ( BillboardName.equals(resultSet.getString("BillboardName")) ) {
+                    ExistFlag = true;
+                    break;
+
+                }
+                else {
+                    ExistFlag = false;
+                }
+            }
+            // If the billboard exists, Update the table row
+            if (ExistFlag == true) {
+
+                ResultSet update = Main.statement.executeQuery("UPDATE Billboard SET UserName = '" + CreatedByUserName + "',TextColour = '" + BillboardTextColour +
+                        "',BackGroundColour = '" + BillboardBackgroundColour + "',Message = '" + BillboardMessage + "',Image = '" +
+                        BillboardPicture + "',Information = '" + BillboardInformation + "' WHERE BillboardName = '" + BillboardName + "';");
+
+
+            }
+
+
+            // Else, Insert the table row
+            else {
+                ResultSet insert = Main.statement.executeQuery("INSERT INTO Billboard VALUES ('" +
+                        BillboardName + "','" + CreatedByUserName + "','" + BillboardTextColour +
+                        "','" + BillboardBackgroundColour + "','" + BillboardMessage + "','" +
+                        BillboardPicture + "','" + BillboardInformation + "');");
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+            System.out.println("Already exists");
+        }
+    }
+*/
+    //##########################################################################################################################
+    public void CreateBillboard(String BillboardName, String CreatedByUserName, String BillboardTextColour,
                                     String BillboardBackgroundColour, String BillboardMessage,
                                     String BillboardPicture, String BillboardInformation) throws SQLException {
 
@@ -57,6 +103,8 @@ public class Billboard {
             while (resultSet.next()) {
                 if ( BillboardName.equals(resultSet.getString("BillboardName")) ) {
                     ExistFlag = true;
+                    break;
+
                 }
                 else {
                     ExistFlag = false;
@@ -64,10 +112,11 @@ public class Billboard {
             }
             /* If the billboard exists, Update the table row */
             if (ExistFlag == true) {
-                ResultSet update = Main.statement.executeQuery("UPDATE Billboard SET UserName = '" + CreatedByUserName + "',TextColour = '" + BillboardTextColour +
-                        "',BackGroundColour = '" + BillboardBackgroundColour + "',Message = '" + BillboardMessage + "',Image = '" +
-                        BillboardPicture + "',Information = '" + BillboardInformation + "' WHERE BillboardName = '" + BillboardName + "';");
+
+                System.out.println("Already exists");
+
             }
+
 
             /* Else, Insert the table row */
             else {
@@ -78,8 +127,69 @@ public class Billboard {
             }
         } catch (SQLException e) {
             System.out.println(e);
+
         }
     }
+
+//##############################################################################################################################
+
+    public void EditBillboard(String BillboardName, String CreatedByUserName, String BillboardTextColour,
+                                    String BillboardBackgroundColour, String BillboardMessage,
+                                    String BillboardPicture, String BillboardInformation) throws SQLException {
+
+        /* Flags for checking billboard existence */
+        boolean ExistFlag = false;
+
+        /* Loop through the billboard list and update ExistFlag's status */
+        try {
+            ResultSet resultSet = Main.statement.executeQuery("SELECT * FROM Billboard");
+            while (resultSet.next()) {
+                if ( BillboardName.equals(resultSet.getString("BillboardName")) ) {
+                    ExistFlag = true;
+                    break;
+
+                }
+                else {
+                    ExistFlag = false;
+                }
+            }
+            /* If the billboard exists, Update the table row */
+            if (ExistFlag == true) {
+
+                ResultSet update = Main.statement.executeQuery("UPDATE Billboard SET UserName = '" + CreatedByUserName + "',TextColour = '" + BillboardTextColour +
+                        "',BackGroundColour = '" + BillboardBackgroundColour + "',Message = '" + BillboardMessage + "',Image = '" +
+                        BillboardPicture + "',Information = '" + BillboardInformation + "' WHERE BillboardName = '" + BillboardName + "';");
+
+
+            }
+
+
+            /* Else, Insert the table row */
+            else {
+                System.out.println("Doesn't exist please create instead");
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+
+        }
+    }
+
+    //########################################################################################################################################
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     /**
      * This function creates a public method to retrieve

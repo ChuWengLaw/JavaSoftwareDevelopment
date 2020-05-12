@@ -34,9 +34,17 @@ public class BillBoardManagementGUI extends JFrame{
         btnCreateBB.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new CreateEditGUI();
+                new CreateBillboardGUI();
             }
         });
+
+        btnEditBB.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new EditBillboardGUI();
+            }
+        });
+
 
         btnInfoBB.addActionListener(new ActionListener() {
             @Override

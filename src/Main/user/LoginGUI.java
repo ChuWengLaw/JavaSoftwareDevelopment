@@ -1,7 +1,6 @@
 package Main.user;
 
 import Main.Main;
-import Main.billboard.CreateEditGUI;
 
 import javax.swing.*;
 import java.awt.*;

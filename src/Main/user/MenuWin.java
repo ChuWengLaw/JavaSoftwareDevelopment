@@ -26,7 +26,7 @@ public class MenuWin extends JFrame{
         };
         editUserButton.addActionListener(editUserListener);
 
-        ActionListener editBillboardListener = e -> new CreateEditGUI("Create/Edit Billboard");
+        ActionListener editBillboardListener = e -> new CreateEditGUI();
         billboardManageButton.addActionListener(editBillboardListener);
 
         ActionListener changePasswordListener = e -> {

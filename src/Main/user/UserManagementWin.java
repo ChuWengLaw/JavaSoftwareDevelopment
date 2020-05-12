@@ -34,7 +34,6 @@ public class UserManagementWin extends JFrame{
             @Override
             public void windowClosed(WindowEvent e) {
                 Main.meauWin.setEnabled(true);
-                Main.meauWin.setVisible(true);
             }
 
             @Override

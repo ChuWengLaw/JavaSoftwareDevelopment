@@ -61,7 +61,7 @@ public class EditBillboardGUI extends JFrame {
      */
     private void createGUI() {
         setSize(WIDTH, HEIGHT);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLayout(new BorderLayout());
 
         //create the button and define what text it will contain

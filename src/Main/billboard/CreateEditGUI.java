@@ -141,6 +141,8 @@ public class CreateEditGUI extends JFrame{
         getContentPane().add(inputs);
         getContentPane().add(btnSubmit,BorderLayout.SOUTH);
 
+        setLocation(900,350);
+
         //make changes and then send to GUI
         repaint();
         setVisible(true);

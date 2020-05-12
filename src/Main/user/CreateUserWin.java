@@ -4,6 +4,9 @@ import Main.Main;
 
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.security.NoSuchAlgorithmException;
 import java.sql.*;
 import javax.swing.*;
 
@@ -21,41 +24,65 @@ public class CreateUserWin extends JFrame{
         private JCheckBox checkBox3 = new JCheckBox("Enable");
         private JCheckBox checkBox4 = new JCheckBox("Enable");
         private JButton createButton = new JButton("Create");
-        private JButton cancelButton = new JButton("Cancel");
         private JPanel panel = new JPanel(new GridBagLayout());
         private GridBagConstraints constraints = new GridBagConstraints();
 
         public CreateUserWin(){
                 // Setting default value of the frame
                 super("Create New Account");
-                setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                User user = new User();
+                setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+                // Window Listener
+                WindowListener windowListener = new WindowListener() {
+                        @Override
+                        public void windowOpened(WindowEvent e) {}
+
+                        @Override
+                        public void windowClosing(WindowEvent e) {}
+
+                        @Override
+                        public void windowClosed(WindowEvent e) {
+                                Main.userManagementWin.setEnabled(true);
+                                Main.userManagementWin.setVisible(true);
+                        }
+
+                        @Override
+                        public void windowIconified(WindowEvent e) {}
+
+                        @Override
+                        public void windowDeiconified(WindowEvent e) {}
+
+                        @Override
+                        public void windowActivated(WindowEvent e) {}
+
+                        @Override
+                        public void windowDeactivated(WindowEvent e) {}
+                };
+                super.addWindowListener(windowListener);
 
                 // Button setting
                 ActionListener createListener = e -> {
-                        try {
-                                if(CheckUserSQL(userNameTextField.getText())){
-                                        new ErrorWin("User Name exists");
-                                }
-                                else if(userNameTextField.getText().isEmpty() || passwordTextField.getPassword().length == 0){
-                                        new ErrorWin("There is an empty filed");
-                                }
-                                else{
-                                        SetUser(user);
-                                        CreateUserSQL(user.getUserName(), user.getUserPassword(), user.getCreateBillboardsPermission(),
-                                                user.getEditAllBillboardPermission(), user.getScheduleBillboardsPermission(), user.getEditUsersPermission());
-                                }
+                        if (userNameTextField.getText().isEmpty() || passwordTextField.getPassword().length == 0){
+                                JOptionPane.showMessageDialog(null,"User name and password field cannot be empty");
+                        }
+                        else{
+                                try {
+                                        if(checkUserSQL(userNameTextField.getText())){
+                                                JOptionPane.showMessageDialog(null,"User name already exists");
+                                        }
+                                        else{
+                                                String saltString = Main.saltString();
+                                                String hasedPassword = Main.hashAString(passwordTextField.getPassword() + saltString);
+                                                createUserSQL(userNameTextField.getText(), hasedPassword, checkBox1.isSelected(),
+                                                        checkBox2.isSelected(), checkBox3.isSelected(), checkBox4.isSelected(), saltString);
+                                        }
 
-                        } catch (SQLException ex) {
-                                ex.printStackTrace();
+                                } catch (SQLException | NoSuchAlgorithmException ex) {
+                                        ex.printStackTrace();
+                                }
                         }
                 };
                 createButton.addActionListener(createListener);
-
-                ActionListener cancelListener = e -> {
-                        super.dispose();
-                };
-                cancelButton.addActionListener(cancelListener);
 
                 // Panel setting
                 constraints.anchor = GridBagConstraints.WEST;
@@ -107,71 +134,34 @@ public class CreateUserWin extends JFrame{
                 constraints.gridy = 6;
                 constraints.gridwidth = 2;
                 constraints.insets = new Insets(5, 10, 5, 10);
-                constraints.anchor = GridBagConstraints.CENTER;
-                panel.add(createButton, constraints);
-
-                constraints.gridx = 0;
                 constraints.anchor = GridBagConstraints.EAST;
-                panel.add(cancelButton, constraints);
+                panel.add(createButton, constraints);
 
                 getContentPane().add(panel);
 
                 // Display the window
                 setLocation(900,350);
                 pack();
-                setVisible(true);
         }
 
-        private void SetUser(User user){
-                user.setUserName(userNameTextField.getText());
-                user.setPassword(passwordTextField.getPassword());
-
-                if (checkBox1.isSelected()){
-                        user.setCreateBillboardsPermission(true);
-                }
-                else {
-                        user.setCreateBillboardsPermission(false);
-                }
-
-                if (checkBox2.isSelected()){
-                        user.setEditAllBillboardsPermission(true);
-                }
-                else {
-                        user.setEditAllBillboardsPermission(false);
-                }
-
-                if (checkBox3.isSelected()){
-                        user.setScheduleBillboardsPermission(true);
-                }
-                else {
-                        user.setScheduleBillboardsPermission(false);
-                }
-
-                if (checkBox4.isSelected()){
-                        user.setEditUsersPermission(true);
-                }
-                else {
-                        user.setEditUsersPermission(false);
-                }
+        private void createUserSQL(String userName, String userPassword,
+                                   boolean createBillboardsPermission, boolean editAllBillboardPermission,
+                                   boolean scheduleBillboardsPermission, boolean editUsersPermission, String saltValue) throws SQLException {
+                PreparedStatement pstatement = Main.connection.prepareStatement("INSERT INTO user  " +
+                        "(userName, userPassword,  createBillboardsPermission, editAllBillboardPermission, scheduleBillboardsPermission, editUsersPermission, saltValue) " +
+                        "VALUES (?, ?, ?, ?, ?, ?, ?)");
+                pstatement.setString(1, userName);
+                pstatement.setString(2, userPassword);
+                pstatement.setBoolean(3, createBillboardsPermission);
+                pstatement.setBoolean(4, editAllBillboardPermission);
+                pstatement.setBoolean(5, scheduleBillboardsPermission);
+                pstatement.setBoolean(6, editUsersPermission);
+                pstatement.setString(7, saltValue);
+                pstatement.executeUpdate();
+                pstatement.close();
         }
 
-        private void CreateUserSQL(String userName, String userPassword,
-                                  boolean createBillboardsPermission, boolean editAllBillboardPermission,
-                                  boolean scheduleBillboardsPermission, boolean editUsersPermission) throws SQLException {
-                PreparedStatement Pstatement = Main.connection.prepareStatement("INSERT INTO user  " +
-                        "(userName, userPassword,  createBillboardsPermission, editAllBillboardPermission, scheduleBillboardsPermission, editUsersPermission) " +
-                        "VALUES (?, ?, ?, ?, ?, ?)");
-                Pstatement.setString(1, userName);
-                Pstatement.setString(2, userPassword);
-                Pstatement.setBoolean(3, createBillboardsPermission);
-                Pstatement.setBoolean(4, editAllBillboardPermission);
-                Pstatement.setBoolean(5, scheduleBillboardsPermission);
-                Pstatement.setBoolean(6, editUsersPermission);
-                Pstatement.executeUpdate();
-                Pstatement.close();
-        }
-
-        private boolean CheckUserSQL(String userName) throws SQLException {
+        private boolean checkUserSQL(String userName) throws SQLException {
                 boolean existing = false;
 
                 Statement statement = Main.connection.createStatement();

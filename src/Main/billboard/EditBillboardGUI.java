@@ -17,6 +17,7 @@ public class EditBillboardGUI extends JFrame {
 
     //define element to be used
     private JButton btnSubmit;
+    private JButton btnSearch;
 
     //define the labels
     private JLabel lblBillboardName;
@@ -26,6 +27,7 @@ public class EditBillboardGUI extends JFrame {
     private JLabel lblMessage;
     private JLabel lblImage;
     private JLabel lblInformation;
+    //private JPanel 
 
     //define the text boxes
     private JTextField txtBillboardName;
@@ -64,6 +66,7 @@ public class EditBillboardGUI extends JFrame {
 
         //create the button and define what text it will contain
         btnSubmit = createButton("Submit");
+
         //create and actionListener for the submit button
         btnSubmit.addActionListener(new ActionListener() {
             //when the submit button is click make covert the inputs into string. then execute the CreateEditBilloard from the Billboard Class
@@ -91,6 +94,14 @@ public class EditBillboardGUI extends JFrame {
                 txtImage.setText("");
                 txtInformation.setText("");
             }
+        });
+
+        btnSearch = createButton("Search");
+
+        btnSearch.addActionListener(new ActionListener() {
+            //when the submit button is click make covert the inputs into string. then execute the CreateEditBilloard from the Billboard Class
+            @Override
+            public void actionPerformed(ActionEvent e) {}
         });
 
 
@@ -135,7 +146,7 @@ public class EditBillboardGUI extends JFrame {
         //define location of elements
         getContentPane().add(inputs);
         getContentPane().add(btnSubmit, BorderLayout.SOUTH);
-
+        getContentPane().add(btnSearch, BorderLayout.SOUTH);
         //make changes and then send to GUI
         repaint();
         setVisible(true);

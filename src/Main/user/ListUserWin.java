@@ -43,9 +43,6 @@ public class ListUserWin {
             panel.add(scrollpane, BorderLayout.CENTER);
             frame.setContentPane(panel);
             frame.setVisible(true);
-
-
-
         }
         catch(Exception e){
             JOptionPane.showMessageDialog(null, e);

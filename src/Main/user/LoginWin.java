@@ -39,8 +39,8 @@ public class LoginWin extends JFrame implements Runnable{
                 else{
                     super.dispose();
                     setUserSQL(Main.user);
-                    Main.meauWin.enableUserButton(Main.user);
-                    Main.meauWin.setVisible(true);
+                    Main.menuWin.enableUserButton(Main.user);
+                    Main.menuWin.setVisible(true);
                 }
             } catch (SQLException | NoSuchAlgorithmException ex) {
                 ex.printStackTrace();

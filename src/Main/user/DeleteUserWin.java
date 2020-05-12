@@ -14,12 +14,12 @@ public class DeleteUserWin extends JFrame{
     private JPanel deletepanel = new JPanel(new GridBagLayout());
     private GridBagConstraints constraints = new GridBagConstraints();
 
-    public DeleteUserWin(User user){
+    public DeleteUserWin(){
         super("Delete a User");
         setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         ActionListener listener = e -> {
             try{
-                if(user.getUserName().equals(usernamefield.getText())){
+                if(Main.user.getUserName().equals(usernamefield.getText())){
                     JOptionPane.showMessageDialog(null, "You can't delete yourself, you knobhead");
                 } else if(!CheckUserSQL(usernamefield.getText())){
                     JOptionPane.showMessageDialog(null, "Username does not exist");

@@ -7,23 +7,22 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import javax.swing.*;
 
-public class MeauWin extends JFrame{
+public class MenuWin extends JFrame{
     private JButton billboardManageButton = new JButton("Billboard management");
     private JButton editUserButton = new JButton ("User management");
     private JButton changePasswordButton = new JButton("Change password");
     private JPanel panel = new JPanel(new GridBagLayout());
     private GridBagConstraints constraints = new GridBagConstraints();
 
-    public MeauWin(){
+    public MenuWin(){
         // Setting default value of the frame
-        super("Meau");
+        super("Menu");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         // Button setting
         ActionListener editUserListener = e -> {
             Main.userManagementWin.setVisible(true);
             super.setEnabled(false);
-
         };
         editUserButton.addActionListener(editUserListener);
 

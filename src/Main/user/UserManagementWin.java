@@ -1,9 +1,6 @@
 package Main.user;
 
 import Main.Main;
-import Main.user.CreateUserWin;
-import Main.user.DeleteUserWin;
-import Main.user.EditUserWin;
 
 import java.awt.*;
 import java.awt.event.ActionListener;
@@ -19,7 +16,7 @@ public class UserManagementWin extends JFrame{
     private JPanel panel = new JPanel(new GridBagLayout());
     private GridBagConstraints constraints = new GridBagConstraints();
 
-    public UserManagementWin(User user){
+    public UserManagementWin(){
         super("User Management");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
@@ -33,7 +30,7 @@ public class UserManagementWin extends JFrame{
 
             @Override
             public void windowClosed(WindowEvent e) {
-                Main.meauWin.setEnabled(true);
+                Main.menuWin.setEnabled(true);
             }
 
             @Override
@@ -49,7 +46,6 @@ public class UserManagementWin extends JFrame{
             public void windowDeactivated(WindowEvent e) {}
         };
         super.addWindowListener(windowListener);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         // Button setting
         ActionListener createUserListener = e -> {

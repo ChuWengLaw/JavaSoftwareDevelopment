@@ -2,8 +2,6 @@ package Main.user;
 
 import Main.Main;
 import Main.billboard.BillBoardManagementGUI;
-
-
 import java.awt.*;
 import java.awt.event.ActionListener;
 import javax.swing.*;

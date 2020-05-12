@@ -28,6 +28,7 @@ public class ListBillboardsGUI extends JFrame {
                 {"Star Wars", "George Lucas","","","",""},
                 {"Avengers", "Stan Lee","","","",""}
         };
+        //TODO Link to database
 
         String[] columnNames = {"Name", "Author","Text Colour","Backgroud Colour","Message", "Image"};
 
@@ -36,6 +37,8 @@ public class ListBillboardsGUI extends JFrame {
 
         JScrollPane sp = new JScrollPane(tblBillboards);
         getContentPane().add(sp);
+
+        setLocation(900,350);
 
         repaint();
         setVisible(true);

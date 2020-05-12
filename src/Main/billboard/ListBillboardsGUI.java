@@ -1,7 +1,14 @@
 package Main.billboard;
 
+import Main.Main;
+
 import javax.swing.*;
 import java.awt.*;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Vector;
 
 public class ListBillboardsGUI extends JFrame {
 
@@ -23,24 +30,41 @@ public class ListBillboardsGUI extends JFrame {
         setSize(WIDTH, HEIGHT);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
-        //array of the billboards
-        String[][] data ={
-                {"Star Wars", "George Lucas","","","",""},
-                {"Avengers", "Stan Lee","","","",""}
-        };
-        //TODO Link to database
+        try {
+            //define a statement
+            Statement statement = Main.connection.createStatement();
 
-        String[] columnNames = {"Name", "Author","Text Colour","Backgroud Colour","Message", "Image"};
+            //define a result set
+            ResultSet rs = statement.executeQuery("SELECT BillboardName, Information FROM Billboard");
 
-        tblBillboards = new JTable(data, columnNames);
-        tblBillboards.setBounds(30,40,200,300);
+            //define the results meta data
+            ResultSetMetaData rsmd = rs.getMetaData();
+            int columnCount = rsmd.getColumnCount();
+            Vector column = new Vector(columnCount);
+            for (int i = 1; i <= columnCount; i++) {
+                column.add(rsmd.getColumnName(i));
+            }
+            Vector data = new Vector();
+            Vector row = new Vector();
+            while (rs.next()) {
+                row = new Vector(columnCount);
+                for (int i = 1; i <= columnCount; i++) {
+                    row.add(rs.getString(i));
+                }
+                data.add(row);
+            }
 
-        JScrollPane sp = new JScrollPane(tblBillboards);
-        getContentPane().add(sp);
+            tblBillboards = new JTable(data, column);
+            tblBillboards.setBounds(30, 40, 200, 300);
 
-        setLocation(900,350);
+            JScrollPane sp = new JScrollPane(tblBillboards);
+            getContentPane().add(sp);
 
-        repaint();
-        setVisible(true);
-    }
-}
+            setLocation(900, 350);
+
+            repaint();
+            setVisible(true);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }}

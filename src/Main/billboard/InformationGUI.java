@@ -94,6 +94,7 @@ public class InformationGUI extends JFrame {
         getContentPane().add(btnGetInfo,BorderLayout.SOUTH);
         getContentPane().add(btnClear, BorderLayout.SOUTH);
 
+        //set the location of the GUI
         setLocation(900,350);
 
         repaint();

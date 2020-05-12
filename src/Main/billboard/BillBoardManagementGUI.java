@@ -23,7 +23,7 @@ public class BillBoardManagementGUI extends JFrame{
     }
 
     private void createGUI(){
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         //set up buttons
         btnCreateBB = createButton("Create Billboard");

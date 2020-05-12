@@ -203,6 +203,10 @@ public class EditBillboardGUI extends JFrame {
         pnlAllButtons.add(btnSearch, BorderLayout.WEST);
         getContentPane().add(pnlAllButtons, BorderLayout.SOUTH);
         //getContentPane().add(btnSearch, BorderLayout.SOUTH);
+
+        //set the location of the GUI
+        setLocation(900,350);
+
         //make changes and then send to GUI
         repaint();
         setVisible(true);

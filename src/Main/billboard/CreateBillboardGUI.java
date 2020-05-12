@@ -56,8 +56,10 @@ public class CreateBillboardGUI extends JFrame {
      *
      * @author Lachlan
      */
-    private void createGUI(){
-        setSize(WIDTH,HEIGHT);
+
+    private void createGUI() {
+        setSize(WIDTH, HEIGHT);
+
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLayout(new BorderLayout());
 
@@ -126,6 +128,9 @@ public class CreateBillboardGUI extends JFrame {
         //define location of elements
         getContentPane().add(inputs);
         getContentPane().add(btnSubmit, BorderLayout.SOUTH);
+
+        //set the location of the GUI
+        setLocation(900,350);
 
         //make changes and then send to GUI
         repaint();

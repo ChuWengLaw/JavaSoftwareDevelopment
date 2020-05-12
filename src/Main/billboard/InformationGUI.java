@@ -60,6 +60,7 @@ public class InformationGUI extends JFrame {
                 }
                 txtInfo.setText(out);
             }
+            //TODO link to database
         });
 
         //create a button to clear the text
@@ -92,6 +93,9 @@ public class InformationGUI extends JFrame {
         getContentPane().add(inputBoxes);
         getContentPane().add(btnGetInfo,BorderLayout.SOUTH);
         getContentPane().add(btnClear, BorderLayout.SOUTH);
+
+        //set the location of the GUI
+        setLocation(900,350);
 
         repaint();
         setVisible(true);

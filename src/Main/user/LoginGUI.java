@@ -1,4 +1,7 @@
-package Main;
+package Main.user;
+
+import Main.Main;
+import Main.billboard.CreateEditGUI;
 
 import javax.swing.*;
 import java.awt.*;
@@ -24,7 +27,7 @@ public class LoginGUI extends JFrame implements Runnable{
         super(title);
     }
 
-    public void createGUI()
+    private void createGUI()
     {
         // User Label
         User_Label = new JLabel();
@@ -39,7 +42,7 @@ public class LoginGUI extends JFrame implements Runnable{
 
         BtnLogin = new JButton("Login");
 
-        GUIpanel = new JPanel(new GridLayout(3, 1));
+        GUIpanel = new JPanel(new GridLayout(3, 2));
         TestMessage = new JLabel();
 
 
@@ -47,13 +50,13 @@ public class LoginGUI extends JFrame implements Runnable{
         GUIpanel.add(User_Submitted);
         GUIpanel.add(Password_Label);
         GUIpanel.add(Password_Submitted);
-        GUIpanel.add(BtnLogin);
         GUIpanel.add(TestMessage);
 
 
 
 
         add(GUIpanel, BorderLayout.CENTER);
+        add(BtnLogin, BorderLayout.SOUTH);
 
         setTitle("Login");
         setVisible(true);
@@ -79,7 +82,7 @@ public class LoginGUI extends JFrame implements Runnable{
                         if ( enteredUserName.equals(resultSet.getString("UserName")) && enteredPassword.equals(resultSet.getString("UserPassword"))) {
                            TestMessage.setText(" Hello " + enteredUserName
                             + "");
-                            SwingUtilities.invokeLater(new CreateEditGUI("Create Edit"));
+                            //SwingUtilities.invokeLater(new CreateEditGUI("Create Edit"));
                         }
                         else {
                             TestMessage.setText(" Invalid user.. ");

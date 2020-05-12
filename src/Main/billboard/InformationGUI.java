@@ -1,4 +1,7 @@
-package Main;
+package Main.billboard;
+
+import Main.Main;
+import Main.billboard.Billboard;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -6,7 +9,7 @@ import java.awt.event.ActionListener;
 import java.awt.*;
 import java.sql.SQLException;
 
-public class InformationGUI extends JFrame implements ActionListener,Runnable {
+public class InformationGUI extends JFrame {
 
     //set the size of the GUI
     public static final int WIDTH = 300;
@@ -26,8 +29,9 @@ public class InformationGUI extends JFrame implements ActionListener,Runnable {
     private JLabel lblBillboardName;
     private JLabel lblInfo;
 
-    public InformationGUI(String title) throws HeadlessException {
-        super(title);
+    public InformationGUI() throws HeadlessException {
+        super("Billboard Information");
+        createGUI();
     }
 
     /**
@@ -125,15 +129,5 @@ public class InformationGUI extends JFrame implements ActionListener,Runnable {
         JButton button = new JButton();
         button.setText(text);
         return button;
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-
-    }
-
-    @Override
-    public void run() {
-createGUI();
     }
 }

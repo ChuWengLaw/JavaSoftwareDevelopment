@@ -4,10 +4,13 @@ import Main.Main;
 import Main.billboard.Billboard;
 
 import javax.swing.*;
+import javax.swing.plaf.nimbus.State;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.*;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 public class InformationGUI extends JFrame {
 
@@ -50,20 +53,21 @@ public class InformationGUI extends JFrame {
         btnGetInfo.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Billboard bb = new Billboard();
-                strBillboardName = txtBillboardName.getText();
-                String out = null;
-                try {
-                    bb.GetBillboardInfo(strBillboardName);
-                } catch (SQLException ex) {
+
+                try{
+                    if (!checkBillboard(txtBillboardName.getText())){
+                        JOptionPane.showMessageDialog(null,"Billboard name entered not found.");
+                    }
+                    else{
+                        txtInfo.setText(setInfo(txtBillboardName.getText()));
+                    }
+                } catch (Exception ex) {
                     ex.printStackTrace();
                 }
-                txtInfo.setText(out);
             }
-            //TODO link to database
         });
 
-        //create a button to clear the text
+                                         //create a button to clear the text
         btnClear = createButton("Clear");
 
         //create an actionListener for the clear button
@@ -92,7 +96,7 @@ public class InformationGUI extends JFrame {
 
         getContentPane().add(inputBoxes);
         getContentPane().add(btnGetInfo,BorderLayout.SOUTH);
-        getContentPane().add(btnClear, BorderLayout.SOUTH);
+        //getContentPane().add(btnClear, BorderLayout.SOUTH);
 
         //set the location of the GUI
         setLocation(900,350);
@@ -133,5 +137,37 @@ public class InformationGUI extends JFrame {
         JButton button = new JButton();
         button.setText(text);
         return button;
+    }
+
+    private String setInfo(String name) throws SQLException {
+        Statement statement = Main.connection.createStatement();
+        ResultSet rs = statement.executeQuery("SELECT BillboardName, Information FROM Billboard");
+
+        String result = null;
+
+        while (rs.next()){
+            if(name.equals(rs.getString(1))){
+                result = rs.getString(2);
+                break;
+            }
+        }
+
+        return result;
+    }
+
+    private boolean checkBillboard(String Billboard) throws SQLException {
+        boolean existing = false;
+
+        Statement statement = Main.connection.createStatement();
+        ResultSet rs = statement.executeQuery("SELECT BillboardName FROM Billboard");
+
+        while (rs.next()){
+            if (Billboard.equals(rs.getString(1))){
+                existing = true;
+                break;
+            }
+        }
+        statement.close();
+        return existing;
     }
 }

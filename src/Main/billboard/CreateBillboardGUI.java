@@ -56,7 +56,6 @@ public class CreateBillboardGUI extends JFrame {
      *
      * @author Lachlan
      */
-
     private void createGUI() {
         setSize(WIDTH, HEIGHT);
 

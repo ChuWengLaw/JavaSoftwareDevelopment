@@ -6,7 +6,6 @@ import java.util.Scanner;    //remove once gui is set up
 //Double check method prefixes  (public/private/static ect)
 public class User {
     private String userName;
-    private String userPassword;
     private boolean createBillboardsPermission;
     private boolean editAllBillboardPermission;
     private boolean scheduleBillboardsPermission;
@@ -18,9 +17,8 @@ public class User {
     public User() {
     }
 
-    public User(String userName, String userPassword, boolean createBillboardsPermission, boolean editAllBillboardPermission, boolean scheduleBillboardsPermission, boolean editUsersPermission){
+    public User(String userName, boolean createBillboardsPermission, boolean editAllBillboardPermission, boolean scheduleBillboardsPermission, boolean editUsersPermission){
         this.userName = userName;
-        this.userPassword = userPassword;
         this.createBillboardsPermission = createBillboardsPermission;
         this.editAllBillboardPermission = editAllBillboardPermission;
         this.scheduleBillboardsPermission = scheduleBillboardsPermission;
@@ -31,16 +29,6 @@ public class User {
     public void setUserName(String userName){
         this.userName = userName;
         System.out.println(this.userName);
-    }
-
-    public void setPassword(char[] userPassword) {
-        this.userPassword = String.valueOf(userPassword);
-        System.out.println(this.userPassword);
-    }
-
-    public void setPassword(String userPassword) {
-        this.userPassword = userPassword;
-        System.out.println(this.userPassword);
     }
 
     public void setCreateBillboardsPermission(Boolean permission){
@@ -68,10 +56,6 @@ public class User {
         return userName;
     }
 
-    public String getUserPassword(){
-        return userPassword;
-    }
-
     public Boolean getCreateBillboardsPermission() {
         return createBillboardsPermission;
     }
@@ -85,7 +69,6 @@ public class User {
     public Boolean getEditUsersPermission() {
         return editUsersPermission;
     }
-
 }
 
 

@@ -30,7 +30,6 @@ public class DeleteUserWin extends JFrame{
                 else{
                     DeleteUserSQL(usernamefield.getText());
                     JOptionPane.showMessageDialog(null,"User has been deleted");
-
                 }
             }
             catch (SQLException ex){
@@ -58,7 +57,6 @@ public class DeleteUserWin extends JFrame{
 
         setLocation(900,350);
         pack();
-        setVisible(true);
     }
     private boolean CheckUserSQL(String userName) throws SQLException {
         User user = new User();

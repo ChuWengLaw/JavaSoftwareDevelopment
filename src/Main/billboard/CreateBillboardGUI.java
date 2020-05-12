@@ -1,6 +1,7 @@
 package Main.billboard;
 
 import Main.Main;
+import Main.user.User;
 import Main.billboard.Billboard;
 
 import javax.swing.*;
@@ -20,7 +21,6 @@ public class CreateBillboardGUI extends JFrame {
 
     //define the labels
     private JLabel lblBillboardName;
-    private JLabel lblAuthor;
     private JLabel lblTextColour;
     private JLabel lblBackgroundColour;
     private JLabel lblMessage;
@@ -29,7 +29,6 @@ public class CreateBillboardGUI extends JFrame {
 
     //define the text boxes
     private JTextField txtBillboardName;
-    private JTextField txtAuthor;
     private JTextField txtTextColour;
     private JTextField txtBackgroundColour;
     private JTextField txtMessage;
@@ -38,7 +37,7 @@ public class CreateBillboardGUI extends JFrame {
 
     //define the strings to be used in the SQL
     private String strBillboardName;
-    private String strAuthor;
+    private String author = Main.user.getUserName();
     private String strTextColour;
     private String strBackgroundColour;
     private String strMessage;
@@ -59,6 +58,7 @@ public class CreateBillboardGUI extends JFrame {
      */
     private void createGUI() {
         setSize(WIDTH, HEIGHT);
+
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLayout(new BorderLayout());
 
@@ -71,20 +71,18 @@ public class CreateBillboardGUI extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 Billboard bb = new Billboard();
                 strBillboardName = txtBillboardName.getText();
-                strAuthor = txtAuthor.getText();
                 strTextColour = txtTextColour.getText();
                 strBackgroundColour = txtBackgroundColour.getText();
                 strMessage = txtMessage.getText();
                 strImage = txtImage.getText();
                 strInformation = txtInformation.getText();
                 try {
-                    bb.CreateBillboard(strBillboardName, strAuthor, strTextColour, strBackgroundColour, strMessage, strImage, strInformation);
+                    bb.CreateBillboard(strBillboardName, author, strTextColour, strBackgroundColour, strMessage, strImage, strInformation);
                 } catch (SQLException ex) {
                     ex.printStackTrace();
                 }
                 //clear the textFeilds once the SQL code has been executed
                 txtBillboardName.setText("");
-                txtAuthor.setText("");
                 txtTextColour.setText("");
                 txtBackgroundColour.setText("");
                 txtMessage.setText("");
@@ -96,7 +94,6 @@ public class CreateBillboardGUI extends JFrame {
 
         //create the labels
         lblBillboardName = createLabel("Billboard Name:");
-        lblAuthor = createLabel("Author:");
         lblTextColour = createLabel("Text Colour:");
         lblBackgroundColour = createLabel("Background Colour:");
         lblMessage = createLabel("Message:");
@@ -104,22 +101,17 @@ public class CreateBillboardGUI extends JFrame {
         lblInformation = createLabel("Information:");
 
         //create the text boxes to receive the data
-        txtBillboardName = createText();
-        txtAuthor = createText();
-        txtTextColour = createText();
+        txtBillboardName= createText();
+        txtTextColour =createText();
         txtBackgroundColour = createText();
         txtMessage = createText();
         txtImage = createText();
         txtInformation = createText();
 
         //create a grid layout to hold the labels and text inputs
-        JPanel inputs = new JPanel(new GridLayout(7, 2));
-
-
+        JPanel inputs = new JPanel(new GridLayout(6,2));
         inputs.add(lblBillboardName);
         inputs.add(txtBillboardName);
-        inputs.add(lblAuthor);
-        inputs.add(txtAuthor);
         inputs.add(lblTextColour);
         inputs.add(txtTextColour);
         inputs.add(lblBackgroundColour);

@@ -76,7 +76,7 @@ public class CreateBillboardGUI extends JFrame {
                 strImage = txtImage.getText();
                 strInformation = txtInformation.getText();
                 try {
-                    bb.CreateEditBillboard(strBillboardName, author, strTextColour, strBackgroundColour, strMessage, strImage, strInformation);
+                    bb.CreateBillboard(strBillboardName, author, strTextColour, strBackgroundColour, strMessage, strImage, strInformation);
                 } catch (SQLException ex) {
                     ex.printStackTrace();
                 }

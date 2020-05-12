@@ -67,7 +67,10 @@ public class UserManagementWin extends JFrame{
         };
         deleteUserButton.addActionListener(deleteActionListener);
 
-        ActionListener listActionListener = e-> new ListUserWin();
+        ActionListener listActionListener = e-> {
+            new ListUserWin();
+            super.setEnabled(false);
+        };
         listUserButton.addActionListener(listActionListener);
 
 

@@ -6,8 +6,8 @@ import java.awt.*;
 public class ListBillboardsGUI extends JFrame {
 
     //set the width and height of the GUI
-    public static final int HEIGHT = 800;
-    public static final int WIDTH = 600;
+    public static final int HEIGHT = 500;
+    public static final int WIDTH = 800;
 
     //define the table
     private JTable tblBillboards;
@@ -21,7 +21,21 @@ public class ListBillboardsGUI extends JFrame {
     private void createGUI() {
         //set the size of the frame and exit
         setSize(WIDTH, HEIGHT);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+        //array of the billboards
+        String[][] data ={
+                {"Star Wars", "George Lucas","","","",""},
+                {"Avengers", "Stan Lee","","","",""}
+        };
+
+        String[] columnNames = {"Name", "Author","Text Colour","Backgroud Colour","Message", "Image"};
+
+        tblBillboards = new JTable(data, columnNames);
+        tblBillboards.setBounds(30,40,200,300);
+
+        JScrollPane sp = new JScrollPane(tblBillboards);
+        getContentPane().add(sp);
 
         repaint();
         setVisible(true);

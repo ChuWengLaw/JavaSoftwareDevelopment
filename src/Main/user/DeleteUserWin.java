@@ -16,20 +16,20 @@ public class DeleteUserWin extends JFrame{
 
     public DeleteUserWin(){
         super("Delete a User");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        User user = new User();
-
+        setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         ActionListener listener = e -> {
             try{
-                if(!CheckUserSQL(usernamefield.getText())){
-                    new ErrorWin("Username does not exist");
+                if(Main.user.getUserName().equals(usernamefield.getText())){
+                    JOptionPane.showMessageDialog(null, "You can't delete yourself, you knobhead");
+                } else if(!CheckUserSQL(usernamefield.getText())){
+                    JOptionPane.showMessageDialog(null, "Username does not exist");
                 }
-                else if(usernamefield.getText().isEmpty()){
-                    new ErrorWin("Username field is empty");
+                else if(usernamefield.getText().isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "Username field is empty");
                 }
                 else{
                     DeleteUserSQL(usernamefield.getText());
-                    new ErrorWin("User has been deleted");
+                    JOptionPane.showMessageDialog(null,"User has been deleted");
                 }
             }
             catch (SQLException ex){
@@ -57,9 +57,9 @@ public class DeleteUserWin extends JFrame{
 
         setLocation(900,350);
         pack();
-        setVisible(true);
     }
     private boolean CheckUserSQL(String userName) throws SQLException {
+        User user = new User();
         boolean existing = false;
         Statement statement = Main.connection.createStatement();
         ResultSet resultSet = statement.executeQuery("SELECT userName FROM user");
@@ -71,13 +71,18 @@ public class DeleteUserWin extends JFrame{
         }
         statement.close();
         return existing;
+
     }
     private void DeleteUserSQL(String userName) throws SQLException {
-        PreparedStatement deletestatement = Main.connection.prepareStatement("delete from user where userName=?");
-        deletestatement.setString(1,userName);
-        deletestatement.executeQuery();
-        deletestatement.close();
-
+        if(userName != usernamefield.getText()){
+            PreparedStatement deletestatement = Main.connection.prepareStatement("delete from user where userName=?");
+            deletestatement.setString(1,userName);
+            deletestatement.executeQuery();
+            deletestatement.close();
+        }
+        else{
+            JOptionPane.showMessageDialog(null,"why");
+        }
     }
 
 }

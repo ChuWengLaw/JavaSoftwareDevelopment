@@ -60,6 +60,7 @@ public class InformationGUI extends JFrame {
                 }
                 txtInfo.setText(out);
             }
+            //TODO link to database
         });
 
         //create a button to clear the text

@@ -8,7 +8,8 @@ import javax.swing.*;
 public class BillBoardManagementGUI extends JFrame{
 
     //define the buttons
-    private JButton btnCreateEditBB;
+    private JButton btnCreateBB;
+    private JButton btnEditBB;
     private JButton btnInfoBB;
     private JButton btnListBB;
 
@@ -25,11 +26,12 @@ public class BillBoardManagementGUI extends JFrame{
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         //set up buttons
-        btnCreateEditBB = createButton("Create or Edit Billboard");
+        btnCreateBB = createButton("Create Billboard");
+        btnEditBB = createButton("Edit Billboard");
         btnInfoBB = createButton("Billboard Info");
         btnListBB = createButton("List Existing Billboards");
 
-        btnCreateEditBB.addActionListener(new ActionListener() {
+        btnCreateBB.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 new CreateEditGUI();
@@ -56,12 +58,15 @@ public class BillBoardManagementGUI extends JFrame{
 
         constraints.gridx = 0;
         constraints.gridy = 0;
-        bBMenu.add(btnCreateEditBB, constraints);
+        bBMenu.add(btnCreateBB, constraints);
 
         constraints.gridx = 1;
-        bBMenu.add(btnInfoBB, constraints);
+        bBMenu.add(btnEditBB, constraints);
 
         constraints.gridx = 2;
+        bBMenu.add(btnInfoBB, constraints);
+
+        constraints.gridx = 3;
         bBMenu.add(btnListBB, constraints);
 
         getContentPane().add(bBMenu);

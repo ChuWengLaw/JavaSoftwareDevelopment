@@ -9,8 +9,8 @@ import java.awt.event.ActionListener;
 import java.awt.*;
 import java.sql.SQLException;
 
-// Runnable is not needed anymore
-public class CreateEditGUI extends JFrame{
+
+public class CreateBillboardGUI extends JFrame {
     //set the width of the GUI
     public static final int WIDTH = 350;
     public static final int HEIGHT = 400;
@@ -46,24 +46,24 @@ public class CreateEditGUI extends JFrame{
     private String strInformation;
 
 
-
     //constructor
-    public CreateEditGUI() throws HeadlessException {
-        super("Create/Edit Billboard");
+    public CreateBillboardGUI() throws HeadlessException {
+        super("Create Billboard");
         createGUI();
     }
 
     /**
      * Create the base GUI to be used to create and edit the data
+     *
      * @author Lachlan
      */
-    private void createGUI(){
-        setSize(WIDTH,HEIGHT);
+    private void createGUI() {
+        setSize(WIDTH, HEIGHT);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
 
         //create the button and define what text it will contain
-        btnSubmit=createButton("Submit");
+        btnSubmit = createButton("Submit");
         //create and actionListener for the submit button
         btnSubmit.addActionListener(new ActionListener() {
             //when the submit button is click make covert the inputs into string. then execute the CreateEditBilloard from the Billboard Class
@@ -71,14 +71,14 @@ public class CreateEditGUI extends JFrame{
             public void actionPerformed(ActionEvent e) {
                 Billboard bb = new Billboard();
                 strBillboardName = txtBillboardName.getText();
-                strAuthor=txtAuthor.getText();
+                strAuthor = txtAuthor.getText();
                 strTextColour = txtTextColour.getText();
-                strBackgroundColour=txtBackgroundColour.getText();
+                strBackgroundColour = txtBackgroundColour.getText();
                 strMessage = txtMessage.getText();
                 strImage = txtImage.getText();
                 strInformation = txtInformation.getText();
                 try {
-                    bb.CreateEditBillboard(strBillboardName,strAuthor, strTextColour, strBackgroundColour,strMessage,strImage, strInformation);
+                    bb.CreateBillboard(strBillboardName, strAuthor, strTextColour, strBackgroundColour, strMessage, strImage, strInformation);
                 } catch (SQLException ex) {
                     ex.printStackTrace();
                 }
@@ -94,9 +94,6 @@ public class CreateEditGUI extends JFrame{
         });
 
 
-
-
-
         //create the labels
         lblBillboardName = createLabel("Billboard Name:");
         lblAuthor = createLabel("Author:");
@@ -107,17 +104,16 @@ public class CreateEditGUI extends JFrame{
         lblInformation = createLabel("Information:");
 
         //create the text boxes to receive the data
-        txtBillboardName= createText();
+        txtBillboardName = createText();
         txtAuthor = createText();
-        txtTextColour =createText();
+        txtTextColour = createText();
         txtBackgroundColour = createText();
-        txtMessage=createText();
-        txtImage=createText();
-        txtInformation=createText();
+        txtMessage = createText();
+        txtImage = createText();
+        txtInformation = createText();
 
         //create a grid layout to hold the labels and text inputs
-        JPanel inputs = new JPanel(new GridLayout(7,2));
-
+        JPanel inputs = new JPanel(new GridLayout(7, 2));
 
 
         inputs.add(lblBillboardName);
@@ -136,10 +132,9 @@ public class CreateEditGUI extends JFrame{
         inputs.add(txtInformation);
 
 
-
         //define location of elements
         getContentPane().add(inputs);
-        getContentPane().add(btnSubmit,BorderLayout.SOUTH);
+        getContentPane().add(btnSubmit, BorderLayout.SOUTH);
 
         //make changes and then send to GUI
         repaint();
@@ -148,11 +143,12 @@ public class CreateEditGUI extends JFrame{
 
     /**
      * This function creates a JButton
-     * @author Lachlan
+     *
      * @param text the text with will be on the button
      * @return a JButton with text on it
+     * @author Lachlan
      */
-    private JButton createButton(String text){
+    private JButton createButton(String text) {
         JButton button = new JButton();
         button.setText(text);
         return button;
@@ -160,8 +156,9 @@ public class CreateEditGUI extends JFrame{
 
     /**
      * This function create a blank JTextField
-     * @author Lachlan
+     *
      * @return an empty JTextField
+     * @author Lachlan
      */
     private JTextField createText() {
         JTextField textBox = new JTextField();
@@ -170,11 +167,12 @@ public class CreateEditGUI extends JFrame{
 
     /**
      * This function create a JTextField with the input of the text
-     * @author Lachlan
+     *
      * @param text the text to be displayed
      * @return a JTextField with the input of text
+     * @author Lachlan
      */
-    private JTextField createText(String text){
+    private JTextField createText(String text) {
         JTextField textBox = new JTextField();
         textBox.setText(text);
         strBillboardName = text;
@@ -183,11 +181,12 @@ public class CreateEditGUI extends JFrame{
 
     /**
      * This function create a JLabel with the title of the text
-     * @author Lachlan
+     *
      * @param text the title of the label
      * @return a JLabel with the title of text
+     * @author Lachlan
      */
-    private JLabel createLabel (String text){
+    private JLabel createLabel(String text) {
         JLabel label = new JLabel();
         label.setText(text);
         return label;

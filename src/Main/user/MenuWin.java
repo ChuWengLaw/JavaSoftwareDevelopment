@@ -1,7 +1,9 @@
 package Main.user;
 
 import Main.Main;
-import Main.billboard.CreateEditGUI;
+import Main.billboard.BillBoardManagementGUI;
+import Main.billboard.EditBillboardGUI;
+
 
 import java.awt.*;
 import java.awt.event.ActionListener;
@@ -26,7 +28,7 @@ public class MenuWin extends JFrame{
         };
         editUserButton.addActionListener(editUserListener);
 
-        ActionListener editBillboardListener = e -> new CreateEditGUI("Create/Edit Billboard");
+        ActionListener editBillboardListener = e -> new BillBoardManagementGUI();
         billboardManageButton.addActionListener(editBillboardListener);
 
         ActionListener changePasswordListener = e -> {

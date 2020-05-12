@@ -1,6 +1,9 @@
 package Main.billboard;
 
 import Main.Main;
+
+
+
 import Main.user.User;
 
 
@@ -12,8 +15,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Vector;
 
-import java.sql.Statement;
-import java.util.Vector;
 
 /**
   * List all the existing billboards in the database
@@ -41,16 +42,13 @@ public class ListBillboardsGUI extends JFrame {
             }
             Vector data = new Vector();
             Vector row = new Vector();
-
             while(rs.next()){
                 row = new Vector(columnCount);
                 for (int i = 1; i <= columnCount; i++){
-
                     row.add(rs.getString(i));
                 }
                 data.add(row);
             }
-
             JFrame frame = new JFrame();
             frame.setSize(500,400);
             frame.setLocationRelativeTo(null);
@@ -68,4 +66,3 @@ public class ListBillboardsGUI extends JFrame {
         }
     }
 }
-

@@ -45,7 +45,7 @@ public class CreateEditGUI extends JFrame{
     private String strImage;
     private String strInformation;
 
-    private JColorChooser testcolorchooser;
+
 
     //constructor
     public CreateEditGUI() throws HeadlessException {
@@ -93,7 +93,7 @@ public class CreateEditGUI extends JFrame{
             }
         });
 
-        testcolorchooser = new JColorChooser();
+
 
 
 
@@ -117,7 +117,7 @@ public class CreateEditGUI extends JFrame{
 
         //create a grid layout to hold the labels and text inputs
         JPanel inputs = new JPanel(new GridLayout(7,2));
-        inputs.add(testcolorchooser,BorderLayout.SOUTH);
+
 
 
         inputs.add(lblBillboardName);

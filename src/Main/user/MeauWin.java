@@ -23,6 +23,7 @@ public class MeauWin extends JFrame{
         ActionListener editUserListener = e -> {
             Main.userManagementWin.setVisible(true);
             super.setEnabled(false);
+
         };
         editUserButton.addActionListener(editUserListener);
 

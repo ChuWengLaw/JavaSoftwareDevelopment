@@ -1,6 +1,7 @@
 package Main;
 
 import Main.connection.DBConnection;
+import Main.schedule.TestSchedule;
 import Main.user.*;
 
 import javax.swing.*;
@@ -58,19 +59,40 @@ public class Main {
                     + "ScheduleTime DATETIME NOT NULL,"
                     + "Duration INT NOT NULL,"
                     + "RecurType VARCHAR(10),"
-                    + "RecurDuration INT" + ");"; //only required for minutes
+                    + "RecurDuration INT,"
+                    + "FOREIGN KEY (BillboardName) REFERENCES Billboard(BillboardName)" +
+                    ");"; //only required for minutes
 
     //TODO: CREATE_USER_TABLE and CREATE_SCHEDULE_TABLE
+    private static final String Delete_test ="DELETE FROM schedule WHERE BillboardName = 'Test Billboard';";
+    private static final String INSERT_TEST_SCHEDULE =
+            "INSERT INTO schedule VALUES ('Test Billboard', '2020-05-17 23:59:10', 1, 1,1);";
+
+
 
     public static void main(String[] args) throws SQLException, NoSuchAlgorithmException {
         SwingUtilities.invokeLater(new LoginWin());
         connection = DBConnection.newConnection();
         try {
+
             statement = connection.createStatement();
 
             statement.execute(CREATE_BILLBOARD_TABLE);
             statement.execute(CREATE_USER_TABLE);
             statement.execute(CREATE_SCHEDULE_TABLE);
+
+//#############################3testing
+            statement.execute(Delete_test);
+            statement.execute(INSERT_TEST_SCHEDULE);
+//            System.out.println("SQL");
+//            TestSchedule.print_dmy(TestSchedule.SplitDate(TestSchedule.getScheduleInfo()));
+//            System.out.println("Java");
+//            TestSchedule.print_dmy(TestSchedule.SplitDate(TestSchedule.get_java_date()));
+            TestSchedule.getScheduleInfo();
+            TestSchedule.End_Date(TestSchedule.SplitDate(TestSchedule.test_string), 10);
+
+            //TestSchedule.compare_date(TestSchedule.getScheduleInfo(), TestSchedule.get_java_date());
+
 
 //################code below is just to create a test user with no name or password for testing
 

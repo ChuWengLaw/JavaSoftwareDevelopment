@@ -149,7 +149,7 @@ public class EditBillboardGUI extends JFrame {
 
                 try {
                     if (!BillboardCheckSQL(txtBillboardName.getText())){
-                        JOptionPane.showMessageDialog(null,"User name does not exists.");
+                        JOptionPane.showMessageDialog(null,"Billboard with that name does not exists.");
                     }
                     else{
                         setBillboardSQL();

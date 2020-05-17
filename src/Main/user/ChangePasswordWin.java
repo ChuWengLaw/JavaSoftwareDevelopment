@@ -65,6 +65,8 @@ public class ChangePasswordWin extends JFrame {
                 } catch (SQLException | NoSuchAlgorithmException ex) {
                     ex.printStackTrace();
                 }
+
+                passwordTextField.setText(null);
                 JOptionPane.showMessageDialog(null, "Change applied!");
             }
         };

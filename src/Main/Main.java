@@ -22,6 +22,7 @@ public class Main {
     public static CreateUserWin createUserWin = new CreateUserWin();
     public static EditUserWin editUserWin = new EditUserWin();
     public static DeleteUserWin deleteUserWin = new DeleteUserWin();
+    public static ListUserWin listUserWin = new ListUserWin();
 
     /**
      * SQL String to create a table named billboard in the database

@@ -12,7 +12,8 @@ import java.util.Vector;
 public class ListUserWin extends JFrame{
     private JPanel panel = new JPanel();
     private JTable table = new JTable();
-    private JScrollPane scrollpane = new JScrollPane();
+    private JScrollPane scrollpane;
+
     public ListUserWin(){
         super("List of users");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -47,7 +48,15 @@ public class ListUserWin extends JFrame{
          * This section retrieves the listed user information and puts them in a vector
          * It then displays the user information stored in the vector through JTable
          */
-        try{
+
+        setSize(500,120);
+        setLocation(900,350);
+
+        panel.setLayout(new BorderLayout());
+        getContentPane().add(panel);
+        }
+
+        public void createTableSQL() throws SQLException {
             Statement statement = Main.connection.createStatement();
             ResultSet rs = statement.executeQuery(
                     "select userName,CreateBillboardsPermission,EditAllBillboardPermission," +
@@ -55,30 +64,25 @@ public class ListUserWin extends JFrame{
             ResultSetMetaData rsmd = rs.getMetaData();
             int columnCount = rsmd.getColumnCount();
             Vector column  = new Vector(columnCount);
+
             for (int i = 1; i<= columnCount; i++){
                 column.add(rsmd.getColumnName(i));
             }
+
             Vector data = new Vector();
             Vector row = new Vector();
+
             while(rs.next()) {
                 row = new Vector(columnCount);
                 for (int i = 1; i <= columnCount; i++) {
                     row.add(rs.getString(i));
                 }
+
                 data.add(row);
                 table = new JTable(data,column);
+                scrollpane = new JScrollPane(table);
+                panel.add(scrollpane, BorderLayout.CENTER);
+                getContentPane().add(panel);
             }
-        }
-        catch(Exception e){
-            JOptionPane.showMessageDialog(null, e);
-        }
-
-        setSize(500,120);
-        setLocation(900,350);
-        scrollpane = new JScrollPane(table);
-        panel.setLayout(new BorderLayout());
-        panel.add(scrollpane, BorderLayout.CENTER);
-        getContentPane().add(panel);
-        setVisible(true);
         }
     }

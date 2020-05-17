@@ -6,6 +6,7 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.sql.SQLException;
 import javax.swing.*;
 
 public class UserManagementWin extends JFrame{
@@ -13,6 +14,7 @@ public class UserManagementWin extends JFrame{
     private JButton listUserButton = new JButton("List all users");
     private JButton editUserButton = new JButton("Edit user");
     private JButton deleteUserButton = new JButton("Delete user");
+    private JButton changePasswordButton = new JButton("Change password");
     private JPanel panel = new JPanel(new GridBagLayout());
     private GridBagConstraints constraints = new GridBagConstraints();
 
@@ -31,10 +33,7 @@ public class UserManagementWin extends JFrame{
             @Override
             public void windowClosed(WindowEvent e) {
                 Main.menuWin.setEnabled(true);
-<<<<<<< HEAD
-=======
                 Main.menuWin.setVisible(true);
->>>>>>> 44c7c372f0600187770a10b75cc9490f0438ea3b
             }
 
             @Override
@@ -71,11 +70,23 @@ public class UserManagementWin extends JFrame{
         deleteUserButton.addActionListener(deleteActionListener);
 
         ActionListener listActionListener = e-> {
-            new ListUserWin();
+            Main.listUserWin.setVisible(true);
+
+            try {
+                Main.listUserWin.createTableSQL();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+
             super.setEnabled(false);
         };
         listUserButton.addActionListener(listActionListener);
 
+        ActionListener changePasswordListener = e-> {
+            Main.changePasswordWin.setVisible(true);
+            super.setEnabled(false);
+        };
+        changePasswordButton.addActionListener(changePasswordListener);
 
         // Panel setting
         constraints.anchor = GridBagConstraints.WEST;
@@ -94,10 +105,22 @@ public class UserManagementWin extends JFrame{
         constraints.gridx =3;
         panel.add(deleteUserButton, constraints);
 
+        constraints.gridx = 4;
+        panel.add(changePasswordButton, constraints);
+
         getContentPane().add(panel);
 
         // Display the window
         setLocation(900,350);
         pack();
+    }
+
+    public void permission(boolean permission){
+        if(!permission){
+            createUserButton.setEnabled(false);
+            editUserButton.setEnabled(false);
+            deleteUserButton.setEnabled(false);
+            listUserButton.setEnabled(false);
+        }
     }
 }

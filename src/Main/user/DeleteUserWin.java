@@ -88,6 +88,12 @@ public class DeleteUserWin extends JFrame{
         setLocation(900,350);
         pack();
     }
+    /**
+     * @author Foo
+     * @param userName
+     * @exception SQLException , happens if any sql query error happens
+     * This method checks if the user exists in the table for the entered user
+     */
     private boolean CheckUserSQL(String userName) throws SQLException {
         User user = new User();
         boolean existing = false;
@@ -103,6 +109,12 @@ public class DeleteUserWin extends JFrame{
         return existing;
 
     }
+    /**
+     * @author Foo
+     * @param userName
+     * @exception SQLException , happens if any sql query error happens
+     * This method deletes the user that has been entered into the textfield
+     */
     private void DeleteUserSQL(String userName) throws SQLException {
         if(userName != usernamefield.getText()){
             PreparedStatement deletestatement = Main.connection.prepareStatement("delete from user where userName=?");

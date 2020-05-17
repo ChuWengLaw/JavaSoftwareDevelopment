@@ -42,7 +42,11 @@ public class ListUserWin extends JFrame{
             public void windowDeactivated(WindowEvent e) {}
         };
         super.addWindowListener(windowListener);
-
+        /**
+         * @author Foo
+         * This section retrieves the listed user information and puts them in a vector
+         * It then displays the user information stored in the vector through JTable
+         */
         try{
             Statement statement = Main.connection.createStatement();
             ResultSet rs = statement.executeQuery(

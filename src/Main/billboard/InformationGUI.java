@@ -84,7 +84,7 @@ public class InformationGUI extends JFrame {
         //create textBox
         txtBillboardName = createText();
         txtInfo = createText();
-        
+
         constraints.anchor = GridBagConstraints.WEST;
         constraints.insets = new Insets(10, 10, 10, 10);
 

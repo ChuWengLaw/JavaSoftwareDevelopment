@@ -79,15 +79,15 @@ public class CreateBillboardGUI extends JFrame {
                 strImage = txtImage.getText();
                 strInformation = txtInformation.getText();
                 try {
-                    if (checkDublicate(strBillboardName)){
+                    if (checkDublicate(strBillboardName)) {
                         JOptionPane.showMessageDialog(null, "Billboard by that name already exists.");
+                    } else {
+                        try {
+                            bb.CreateBillboard(strBillboardName, author, strTextColour, strBackgroundColour, strMessage, strImage, strInformation);
+                        } catch (SQLException ex) {
+                            ex.printStackTrace();
+                        }
                     }
-                    else{
-                    try {
-                        bb.CreateBillboard(strBillboardName, author, strTextColour, strBackgroundColour, strMessage, strImage, strInformation);
-                    } catch (SQLException ex) {
-                        ex.printStackTrace();
-                    }}
                 } catch (SQLException ex) {
                     ex.printStackTrace();
                 }
@@ -111,15 +111,15 @@ public class CreateBillboardGUI extends JFrame {
         lblInformation = createLabel("Information:");
 
         //create the text boxes to receive the data
-        txtBillboardName= createText();
-        txtTextColour =createText();
+        txtBillboardName = createText();
+        txtTextColour = createText();
         txtBackgroundColour = createText();
         txtMessage = createText();
         txtImage = createText();
         txtInformation = createText();
 
         //create a grid layout to hold the labels and text inputs
-        JPanel inputs = new JPanel(new GridLayout(6,2));
+        JPanel inputs = new JPanel(new GridLayout(6, 2));
         inputs.add(lblBillboardName);
         inputs.add(txtBillboardName);
         inputs.add(lblTextColour);
@@ -139,7 +139,7 @@ public class CreateBillboardGUI extends JFrame {
         getContentPane().add(btnSubmit, BorderLayout.SOUTH);
 
         //set the location of the GUI
-        setLocation(900,350);
+        setLocation(900, 350);
 
         //make changes and then send to GUI
         repaint();
@@ -199,19 +199,20 @@ public class CreateBillboardGUI extends JFrame {
 
     /**
      * This function is used to determine if a billboard already exists
-     * @author Lachlan
+     *
      * @param billboardName the name of the billboard being created
      * @return a boolean value to whether a billboard already exists
      * @throws SQLException
+     * @author Lachlan
      */
-    private Boolean checkDublicate (String billboardName) throws SQLException {
+    private Boolean checkDublicate(String billboardName) throws SQLException {
         boolean existing = false;
 
         Statement statement = Main.connection.createStatement();
         ResultSet rs = statement.executeQuery("SELECT BillboardName FROM Billboard");
 
-        while (rs.next()){
-            if (billboardName.equals(rs.getString(1))){
+        while (rs.next()) {
+            if (billboardName.equals(rs.getString(1))) {
                 existing = true;
                 break;
             }

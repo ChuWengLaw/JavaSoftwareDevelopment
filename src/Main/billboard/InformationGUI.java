@@ -14,10 +14,6 @@ import java.sql.Statement;
 
 public class InformationGUI extends JFrame {
 
-    //set the size of the GUI
-    public static final int WIDTH = 300;
-    public static final int HEIGHT =300;
-
     //define buttons
     private JButton btnGetInfo;
     private JButton btnClear;
@@ -32,6 +28,9 @@ public class InformationGUI extends JFrame {
     private JLabel lblBillboardName;
     private JLabel lblInfo;
 
+    private JPanel panel = new JPanel(new GridBagLayout());
+    private GridBagConstraints constraints = new GridBagConstraints();
+
     public InformationGUI() throws HeadlessException {
         super("Billboard Information");
         createGUI();
@@ -42,7 +41,6 @@ public class InformationGUI extends JFrame {
      * @author Lachlan
      */
     private void createGUI(){
-        setSize(WIDTH,HEIGHT);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLayout(new BorderLayout());
 
@@ -67,7 +65,7 @@ public class InformationGUI extends JFrame {
             }
         });
 
-                                         //create a button to clear the text
+        //create a button to clear the text
         btnClear = createButton("Clear");
 
         //create an actionListener for the clear button
@@ -86,22 +84,38 @@ public class InformationGUI extends JFrame {
         //create textBox
         txtBillboardName = createText();
         txtInfo = createText();
+        
+        constraints.anchor = GridBagConstraints.WEST;
+        constraints.insets = new Insets(10, 10, 10, 10);
 
-        //create layout for the text boxes
-        JPanel inputBoxes = new JPanel(new GridLayout(2,2));
-        inputBoxes.add(lblBillboardName);
-        inputBoxes.add(txtBillboardName);
-        inputBoxes.add(lblInfo);
-        inputBoxes.add(txtInfo);
+        constraints.gridx = 0;
+        constraints.gridy = 0;
+        panel.add(lblBillboardName, constraints);
 
-        getContentPane().add(inputBoxes);
-        getContentPane().add(btnGetInfo,BorderLayout.SOUTH);
-        //getContentPane().add(btnClear, BorderLayout.SOUTH);
+        constraints.gridx = 1;
+        panel.add(txtBillboardName, constraints);
 
-        //set the location of the GUI
+        constraints.gridx = 0;
+        constraints.gridy =1;
+        panel.add(lblInfo,constraints);
+
+        constraints.gridx =1;
+        panel.add(txtInfo, constraints);
+
+        constraints.gridwidth = 2;
+        constraints.insets = new Insets(5, 10, 5, 10);
+        constraints.anchor = GridBagConstraints.EAST;
+        constraints.gridx = 0;
+        constraints.gridy = 3;
+        panel.add(btnGetInfo, constraints);
+        constraints.anchor = GridBagConstraints.WEST;
+        panel.add(btnClear,constraints);
+
+        getContentPane().add(panel);
+
+        // Display the window
         setLocation(900,350);
-
-        repaint();
+        pack();
         setVisible(true);
     }
 
@@ -111,7 +125,7 @@ public class InformationGUI extends JFrame {
      * @return the text box
      */
     private JTextField createText() {
-        JTextField textField = new JTextField();
+        JTextField textField = new JTextField(20);
         return textField;
     }
 

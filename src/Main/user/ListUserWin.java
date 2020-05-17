@@ -3,16 +3,51 @@ package Main.user;
 import Main.Main;
 
 import javax.swing.*;
-import javax.swing.border.Border;
-import javax.xml.transform.Result;
 import java.awt.*;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.sql.*;
 import java.util.Vector;
 
-public class ListUserWin {
+public class ListUserWin extends JFrame{
+    private JPanel panel = new JPanel();
+    private JTable table = new JTable();
+    private JScrollPane scrollpane = new JScrollPane();
     public ListUserWin(){
+        super("List of users");
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        WindowListener windowListener = new WindowListener() {
+            @Override
+            public void windowOpened(WindowEvent e) {}
+
+            @Override
+            public void windowClosing(WindowEvent e) {}
+
+            @Override
+            public void windowClosed(WindowEvent e) {
+                Main.userManagementWin.setEnabled(true);
+                Main.userManagementWin.setVisible(true);
+            }
+
+            @Override
+            public void windowIconified(WindowEvent e) {}
+
+            @Override
+            public void windowDeiconified(WindowEvent e) {}
+
+            @Override
+            public void windowActivated(WindowEvent e) {}
+
+            @Override
+            public void windowDeactivated(WindowEvent e) {}
+        };
+        super.addWindowListener(windowListener);
+        /**
+         * @author Foo
+         * This section retrieves the listed user information and puts them in a vector
+         * It then displays the user information stored in the vector through JTable
+         */
         try{
-            User user = new User();
             Statement statement = Main.connection.createStatement();
             ResultSet rs = statement.executeQuery(
                     "select userName,CreateBillboardsPermission,EditAllBillboardPermission," +
@@ -25,31 +60,25 @@ public class ListUserWin {
             }
             Vector data = new Vector();
             Vector row = new Vector();
-            while(rs.next()){
+            while(rs.next()) {
                 row = new Vector(columnCount);
-                for (int i = 1; i <= columnCount; i++){
+                for (int i = 1; i <= columnCount; i++) {
                     row.add(rs.getString(i));
                 }
                 data.add(row);
+                table = new JTable(data,column);
             }
-            JFrame frame = new JFrame();
-            frame.setSize(500,120);
-            frame.setLocationRelativeTo(null);
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            JPanel panel = new JPanel();
-            JTable table = new JTable(data,column);
-            JScrollPane scrollpane = new JScrollPane(table);
-            panel.setLayout(new BorderLayout());
-            panel.add(scrollpane, BorderLayout.CENTER);
-            frame.setContentPane(panel);
-            frame.setVisible(true);
-
-
-
         }
         catch(Exception e){
             JOptionPane.showMessageDialog(null, e);
         }
-    }
 
-}
+        setSize(500,120);
+        setLocation(900,350);
+        scrollpane = new JScrollPane(table);
+        panel.setLayout(new BorderLayout());
+        panel.add(scrollpane, BorderLayout.CENTER);
+        getContentPane().add(panel);
+        setVisible(true);
+        }
+    }

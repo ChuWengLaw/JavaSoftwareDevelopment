@@ -31,6 +31,10 @@ public class UserManagementWin extends JFrame{
             @Override
             public void windowClosed(WindowEvent e) {
                 Main.menuWin.setEnabled(true);
+<<<<<<< HEAD
+=======
+                Main.menuWin.setVisible(true);
+>>>>>>> 44c7c372f0600187770a10b75cc9490f0438ea3b
             }
 
             @Override
@@ -66,7 +70,10 @@ public class UserManagementWin extends JFrame{
         };
         deleteUserButton.addActionListener(deleteActionListener);
 
-        ActionListener listActionListener = e-> new ListUserWin();
+        ActionListener listActionListener = e-> {
+            new ListUserWin();
+            super.setEnabled(false);
+        };
         listUserButton.addActionListener(listActionListener);
 
 

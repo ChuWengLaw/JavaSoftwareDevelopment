@@ -13,10 +13,6 @@ import java.sql.Statement;
 
 
 public class EditBillboardGUI extends JFrame {
-    //set the width of the GUI
-    public static final int WIDTH = 350;
-    public static final int HEIGHT = 400;
-
     //define element to be used
     private JButton btnSubmit;
     private JButton btnSearch;
@@ -29,7 +25,6 @@ public class EditBillboardGUI extends JFrame {
     private JLabel lblMessage;
     private JLabel lblImage;
     private JLabel lblInformation;
-    private JPanel pnlAllButtons;
 
     //define the text boxes
     private JTextField txtBillboardName;
@@ -65,12 +60,8 @@ public class EditBillboardGUI extends JFrame {
      * @author Lachlan
      */
     private void createGUI() {
-        setSize(WIDTH, HEIGHT);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLayout(new BorderLayout());
-
-        pnlAllButtons = new JPanel();
-
 
         //create the labels
         lblBillboardName = createLabel("Billboard Name:");

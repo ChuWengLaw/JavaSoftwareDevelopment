@@ -8,7 +8,9 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.*;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 
 public class CreateBillboardGUI extends JFrame {
@@ -77,7 +79,15 @@ public class CreateBillboardGUI extends JFrame {
                 strImage = txtImage.getText();
                 strInformation = txtInformation.getText();
                 try {
-                    bb.CreateBillboard(strBillboardName, author, strTextColour, strBackgroundColour, strMessage, strImage, strInformation);
+                    if (checkDublicate(strBillboardName)){
+                        JOptionPane.showMessageDialog(null, "Billboard by that name already exists.");
+                    }
+                    else{
+                    try {
+                        bb.CreateBillboard(strBillboardName, author, strTextColour, strBackgroundColour, strMessage, strImage, strInformation);
+                    } catch (SQLException ex) {
+                        ex.printStackTrace();
+                    }}
                 } catch (SQLException ex) {
                     ex.printStackTrace();
                 }
@@ -185,5 +195,28 @@ public class CreateBillboardGUI extends JFrame {
         JLabel label = new JLabel();
         label.setText(text);
         return label;
+    }
+
+    /**
+     * This function is used to determine if a billboard already exists
+     * @author Lachlan
+     * @param billboardName the name of the billboard being created
+     * @return a boolean value to whether a billboard already exists
+     * @throws SQLException
+     */
+    private Boolean checkDublicate (String billboardName) throws SQLException {
+        boolean existing = false;
+
+        Statement statement = Main.connection.createStatement();
+        ResultSet rs = statement.executeQuery("SELECT BillboardName FROM Billboard");
+
+        while (rs.next()){
+            if (billboardName.equals(rs.getString(1))){
+                existing = true;
+                break;
+            }
+        }
+        statement.close();
+        return existing;
     }
 }

@@ -2,6 +2,7 @@ package Main.billboard;
 
 import Main.Main;
 
+import javax.swing.*;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -113,7 +114,7 @@ public class Billboard {
 
             //if it doesnt exist it will prompt to create a new billboard
             else {
-                System.out.println("Doesn't exist please create instead");
+                JOptionPane.showMessageDialog(null,"Doesn't exist please create instead.");
             }
         } catch (SQLException e) {
             System.out.println(e);

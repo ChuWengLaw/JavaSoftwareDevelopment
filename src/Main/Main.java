@@ -83,13 +83,13 @@ public class Main {
             statement.execute(CREATE_USER_TABLE);
             statement.execute(CREATE_SCHEDULE_TABLE);
 
-//#############################3testing
+//#############################testing schedule
             statement.execute(Delete_test);
             statement.execute(INSERT_TEST_SCHEDULE);
             statement.execute(INSERT_a_SCHEDULE);
             TestSchedule.getScheduleInfo();
 
-//################code below is just to create a test user with no name or password for testing
+//################ testing above
 
             // Username and Password are added.
             try {

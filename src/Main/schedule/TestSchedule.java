@@ -13,9 +13,6 @@ import java.util.Date;
 
 public class TestSchedule {
 
-    public String TestDateString;
-    public static String test_string = "Nothing";
-    public static int Duration;
 
     public static void getScheduleInfo() throws SQLException, ParseException {
         Statement statement = Main.connection.createStatement();
@@ -23,8 +20,9 @@ public class TestSchedule {
 
         while(resultSet.next()) {
             SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            test_string = resultSet.getString(2);
-            Duration = resultSet.getInt(3);
+            String test_string = resultSet.getString(2);
+            int Duration = resultSet.getInt(3);
+            System.out.println(resultSet.getString(1));
             test_string = test_string.substring(0, test_string.indexOf("."));
             System.out.println("Start Time\t" + test_string);
             int Min_in_Millis = 60000;
@@ -32,7 +30,6 @@ public class TestSchedule {
             Date date=new Date(End_Time_Milli);
             System.out.println("End Time\t" + formatter.format(date));
         }
-
     }
 
     public static long DateStr_2_Millis(String In_Date, SimpleDateFormat Format) throws ParseException {

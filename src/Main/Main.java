@@ -65,10 +65,11 @@ public class Main {
                     ");"; //only required for minutes
 
     //TODO: CREATE_USER_TABLE and CREATE_SCHEDULE_TABLE
-    private static final String Delete_test ="DELETE FROM schedule WHERE BillboardName = 'Test Billboard';";
+    private static final String Delete_test ="DELETE FROM schedule WHERE BillboardName = 'Test Billboard' OR BillboardName = 'a';";
     private static final String INSERT_TEST_SCHEDULE =
-            "INSERT INTO schedule VALUES ('Test Billboard', '2020-05-17 23:59:12', 1, 1,1);";
-
+            "INSERT INTO schedule VALUES ('Test Billboard', '2020-05-17 22:45:12', 1, 1,1);";
+    private static final String INSERT_a_SCHEDULE =
+            "INSERT INTO schedule VALUES ('a', '2019-12-31 23:59:12', 10, 1,1);";
 
 
     public static void main(String[] args) throws SQLException, NoSuchAlgorithmException, /*Added for testing >*/ParseException {
@@ -85,7 +86,7 @@ public class Main {
 //#############################3testing
             statement.execute(Delete_test);
             statement.execute(INSERT_TEST_SCHEDULE);
-
+            statement.execute(INSERT_a_SCHEDULE);
             TestSchedule.getScheduleInfo();
 
 //################code below is just to create a test user with no name or password for testing

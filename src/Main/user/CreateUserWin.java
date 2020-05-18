@@ -1,6 +1,7 @@
 package Main.user;
 
 import Main.Main;
+import Server.Server;
 
 import java.awt.*;
 import java.awt.event.ActionListener;
@@ -71,8 +72,8 @@ public class CreateUserWin extends JFrame{
                                                 JOptionPane.showMessageDialog(null,"User name already exists");
                                         }
                                         else{
-                                                String saltString = Main.saltString();
-                                                String hasedPassword = Main.hashAString(passwordTextField.getPassword() + saltString);
+                                                String saltString = Server.saltString();
+                                                String hasedPassword = Server.hashAString(passwordTextField.getPassword() + saltString);
                                                 createUserSQL(userNameTextField.getText(), hasedPassword, checkBox1.isSelected(),
                                                         checkBox2.isSelected(), checkBox3.isSelected(), checkBox4.isSelected(), saltString);
                                         }
@@ -147,7 +148,7 @@ public class CreateUserWin extends JFrame{
         private void createUserSQL(String userName, String userPassword,
                                    boolean createBillboardsPermission, boolean editAllBillboardPermission,
                                    boolean scheduleBillboardsPermission, boolean editUsersPermission, String saltValue) throws SQLException {
-                PreparedStatement pstatement = Main.connection.prepareStatement("INSERT INTO user  " +
+                PreparedStatement pstatement = Server.connection.prepareStatement("INSERT INTO user  " +
                         "(userName, userPassword,  createBillboardsPermission, editAllBillboardPermission, scheduleBillboardsPermission, editUsersPermission, saltValue) " +
                         "VALUES (?, ?, ?, ?, ?, ?, ?)");
                 pstatement.setString(1, userName);
@@ -164,7 +165,7 @@ public class CreateUserWin extends JFrame{
         private boolean checkUserSQL(String userName) throws SQLException {
                 boolean existing = false;
 
-                Statement statement = Main.connection.createStatement();
+                Statement statement = Server.connection.createStatement();
                 ResultSet resultSet = statement.executeQuery("SELECT userName FROM  user");
 
                 while(resultSet.next()){

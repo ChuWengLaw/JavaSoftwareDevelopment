@@ -1,9 +1,12 @@
 package Main.user;
 
 import Main.Main;
+import Server.*;
+import Server.Request.LoginRequest;
 
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -27,23 +30,24 @@ public class LoginWin extends JFrame implements Runnable{
     private void createGUI() {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        // Button setting
+         //Button setting
         ActionListener loginListener = e ->{
+            LoginRequest loginRequest = new LoginRequest(idTextField.getText(), String.valueOf(passwordTextField.getPassword()));
             try {
-                if (!checkUserSQL(idTextField.getText())){
-                    JOptionPane.showMessageDialog(null,"User name does not exists");
-                }
-                else if (!checkPasswordSQL(idTextField.getText(), passwordTextField.getPassword())){
-                    JOptionPane.showMessageDialog(null,"Wrong password");
-                }
-                else{
-                    super.dispose();
-                    setUserSQL(Main.user);
-                    Main.menuWin.enableUserButton(Main.user);
-                    Main.menuWin.setVisible(true);
-                }
-            } catch (SQLException | NoSuchAlgorithmException ex) {
+                Client.main(loginRequest);
+            } catch (IOException ex) {
                 ex.printStackTrace();
+            } catch (InterruptedException ex) {
+                ex.printStackTrace();
+            } catch (ClassNotFoundException ex) {
+                ex.printStackTrace();
+            }
+
+
+            if (Client.isRequestState()){
+                super.dispose();
+                Main.menuWin.setVisible(true);
+                Main.userManagementWin.permission(true);
             }
         };
         loginButton.addActionListener(loginListener);
@@ -79,61 +83,6 @@ public class LoginWin extends JFrame implements Runnable{
         setLocation(900,350);
         pack();
         setVisible(true);
-    }
-
-    private void setUserSQL(User user) throws SQLException {
-        Statement statement = Main.connection.createStatement();
-        ResultSet resultSet = statement.executeQuery("SELECT * FROM  user");
-
-        while (resultSet.next()) {
-            if (idTextField.getText().equals(resultSet.getString("userName"))) {
-                user.setUserName(resultSet.getString("userName"));
-                user.setCreateBillboardsPermission(resultSet.getBoolean("createBillboardsPermission"));
-                user.setEditAllBillboardsPermission(resultSet.getBoolean("editAllBillboardPermission"));
-                user.setScheduleBillboardsPermission(resultSet.getBoolean("scheduleBillboardsPermission"));
-                user.setEditUsersPermission(resultSet.getBoolean("editUsersPermission"));
-                break;
-            }
-        }
-
-        statement.close();
-    }
-
-    private boolean checkUserSQL(String userName) throws SQLException {
-        boolean existing = false;
-
-        Statement statement = Main.connection.createStatement();
-        ResultSet resultSet = statement.executeQuery("SELECT userName FROM  user");
-
-        while(resultSet.next()){
-            if (userName.equals(resultSet.getString(1))){
-                existing = true;
-                break;
-            }
-        }
-
-        statement.close();
-        return existing;
-    }
-
-    private boolean checkPasswordSQL(String userName, char[] userPassword) throws SQLException, NoSuchAlgorithmException {
-        boolean correctPassword = false;
-        String userPasswordString = String.valueOf(userPassword);
-
-        Statement statement = Main.connection.createStatement();
-        ResultSet resultSet = statement.executeQuery("SELECT userName, userPassword, saltValue FROM  user");
-
-        while(resultSet.next()){
-            String hasedRecievedString = Main.hashAString(userPasswordString+resultSet.getString(3));
-
-            if (userName.equals(resultSet.getString(1)) && hasedRecievedString.equals(resultSet.getString(2))){
-                correctPassword = true;
-                break;
-            }
-        }
-
-        statement.close();
-        return correctPassword;
     }
 
     @Override

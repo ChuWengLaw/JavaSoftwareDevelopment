@@ -1,6 +1,7 @@
 package Main.user;
 
 import Main.Main;
+import Server.*;
 
 import java.awt.*;
 import java.awt.event.ActionListener;
@@ -8,9 +9,7 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.security.NoSuchAlgorithmException;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import javax.swing.*;
 
 public class ChangePasswordWin extends JFrame {
@@ -59,12 +58,14 @@ public class ChangePasswordWin extends JFrame {
             }
             else{
                 try {
-                    String saltString = Main.saltString();
-                    String hashPassword = Main.hashAString(passwordTextField.getText()+saltString);
+                    String saltString = Server.saltString();
+                    String hashPassword = Server.hashAString(passwordTextField.getText()+saltString);
                     changePasswordSQL(Main.user, hashPassword, saltString);
                 } catch (SQLException | NoSuchAlgorithmException ex) {
                     ex.printStackTrace();
                 }
+
+                passwordTextField.setText(null);
                 JOptionPane.showMessageDialog(null, "Change applied!");
             }
         };
@@ -96,7 +97,7 @@ public class ChangePasswordWin extends JFrame {
     }
 
     private void changePasswordSQL(User user, String newPassword, String saltString) throws SQLException {
-        PreparedStatement pstatement = Main.connection.prepareStatement("UPDATE user " +
+        PreparedStatement pstatement = Server.connection.prepareStatement("UPDATE user " +
                 "SET userPassword = ?, saltValue = ? WHERE userName = ? " );
 
         pstatement.setString(1, newPassword);

@@ -1,4 +1,4 @@
-package Main.user;  //not sure if this is correct
+package Server;  //not sure if this is correct
 import Main.Main;
 
 import java.util.Scanner;    //remove once gui is set up

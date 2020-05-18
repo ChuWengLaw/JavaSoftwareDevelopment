@@ -59,17 +59,16 @@ public class Main {
                     + "BillboardName VARCHAR(30) PRIMARY KEY NOT NULL UNIQUE,"
                     + "ScheduleTime DATETIME NOT NULL,"
                     + "Duration INT NOT NULL,"
-                    + "RecurType VARCHAR(10),"
-                    + "RecurDuration INT,"
-                    + "FOREIGN KEY (BillboardName) REFERENCES Billboard(BillboardName)" +
-                    ");"; //only required for minutes
+                    + "RecurType ENUM ('None', 'Day', 'Hour', 'Minute'),"//ENUM ('Day', 'Hour', 'Minute')
+                    + "RecurDuration INT" +
+                    ");"; //Foreign Key
 
     //TODO: CREATE_USER_TABLE and CREATE_SCHEDULE_TABLE
-    private static final String Delete_test ="DELETE FROM schedule WHERE BillboardName = 'Test Billboard' OR BillboardName = 'a';";
+    private static final String Delete_test ="DROP TABLE Schedule";
     private static final String INSERT_TEST_SCHEDULE =
-            "INSERT INTO schedule VALUES ('Test Billboard', '2020-05-17 22:45:12', 1, 1,1);";
+            "INSERT INTO schedule VALUES ('Test Billboard', '2020-05-17 20:30:00', 30, 'Hour',20);";
     private static final String INSERT_a_SCHEDULE =
-            "INSERT INTO schedule VALUES ('a', '2019-12-31 23:59:12', 10, 1,1);";
+            "INSERT INTO schedule VALUES ('a', '2020-05-18 22:40:00', 20, 'Day',30);";
 
 
     public static void main(String[] args) throws SQLException, NoSuchAlgorithmException, /*Added for testing >*/ParseException {
@@ -85,9 +84,10 @@ public class Main {
 
 //#############################testing schedule
             statement.execute(Delete_test);
+            statement.execute(CREATE_SCHEDULE_TABLE);
             statement.execute(INSERT_TEST_SCHEDULE);
             statement.execute(INSERT_a_SCHEDULE);
-            TestSchedule.getScheduleInfo();
+            System.out.println("Billboard Name: " + TestSchedule.What_Billboard_To_Display());
 
 //################ testing above
 

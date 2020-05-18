@@ -43,8 +43,8 @@ public class CreateUserWin extends JFrame{
 
                         @Override
                         public void windowClosed(WindowEvent e) {
-                                Server.userManagementWin.setEnabled(true);
-                                Server.userManagementWin.setVisible(true);
+                                Main.userManagementWin.setEnabled(true);
+                                Main.userManagementWin.setVisible(true);
                         }
 
                         @Override

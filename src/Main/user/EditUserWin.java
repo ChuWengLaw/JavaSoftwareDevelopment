@@ -48,8 +48,8 @@ public class EditUserWin extends JFrame{
 
             @Override
             public void windowClosed(WindowEvent e) {
-                Server.userManagementWin.setEnabled(true);
-                Server.userManagementWin.setVisible(true);
+                Main.userManagementWin.setEnabled(true);
+                Main.userManagementWin.setVisible(true);
             }
 
             @Override
@@ -79,7 +79,7 @@ public class EditUserWin extends JFrame{
             if(userNameTextField.getText().isEmpty()){
                 JOptionPane.showMessageDialog(null,"User name field can't be empty.");
             }
-            else if (userNameTextField.getText().equals(Server.user.getUserName())){
+            else if (userNameTextField.getText().equals(Main.user.getUserName())){
                 JOptionPane.showMessageDialog(null,
                         "Administrators are not allow to change their own permission");
             }

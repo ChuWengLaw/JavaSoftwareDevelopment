@@ -1,7 +1,7 @@
 package Main.user;
 
 import Main.Main;
-import Server.Server;
+import Server.*;
 
 import java.awt.*;
 import java.awt.event.ActionListener;
@@ -9,9 +9,7 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.security.NoSuchAlgorithmException;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import javax.swing.*;
 
 public class ChangePasswordWin extends JFrame {
@@ -35,8 +33,8 @@ public class ChangePasswordWin extends JFrame {
 
             @Override
             public void windowClosed(WindowEvent e) {
-                Server.userManagementWin.setEnabled(true);
-                Server.userManagementWin.setVisible(true);
+                Main.userManagementWin.setEnabled(true);
+                Main.userManagementWin.setVisible(true);
             }
 
             @Override
@@ -62,10 +60,12 @@ public class ChangePasswordWin extends JFrame {
                 try {
                     String saltString = Server.saltString();
                     String hashPassword = Server.hashAString(passwordTextField.getText()+saltString);
-                    changePasswordSQL(Server.user, hashPassword, saltString);
+                    changePasswordSQL(Main.user, hashPassword, saltString);
                 } catch (SQLException | NoSuchAlgorithmException ex) {
                     ex.printStackTrace();
                 }
+
+                passwordTextField.setText(null);
                 JOptionPane.showMessageDialog(null, "Change applied!");
             }
         };

@@ -1,5 +1,6 @@
 package Main.billboard;
 
+import Main.Main;
 import Server.Server;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -13,10 +14,6 @@ import static Server.Server.*;
 
 
 public class CreateBillboardGUI extends JFrame {
-    //set the width of the GUI
-    public static final int WIDTH = 350;
-    public static final int HEIGHT = 400;
-
     //define element to be used
     private JButton btnSubmit;
 
@@ -45,6 +42,9 @@ public class CreateBillboardGUI extends JFrame {
     private String strImage;
     private String strInformation;
 
+    private JPanel panel = new JPanel(new GridBagLayout());
+    private GridBagConstraints constraints = new GridBagConstraints();
+
 
     //constructor
     public CreateBillboardGUI() throws HeadlessException {
@@ -58,7 +58,6 @@ public class CreateBillboardGUI extends JFrame {
      * @author Lachlan
      */
     private void createGUI() {
-        setSize(WIDTH, HEIGHT);
 
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLayout(new BorderLayout());
@@ -73,26 +72,22 @@ public class CreateBillboardGUI extends JFrame {
                 // TODO: keep the input in placeholder object class
                 CreateBBStorage a = new CreateBBStorage();
                 a.strBillboardName = txtBillboardName.getText();
-                 ........
                 strTextColour = txtTextColour.getText();
                 strBackgroundColour = txtBackgroundColour.getText();
                 strMessage = txtMessage.getText();
                 strImage = txtImage.getText();
                 strInformation = txtInformation.getText();
                 try {
-                    if (checkDublicate(strBillboardName)){
+                    if (checkDublicate(strBillboardName)) {
                         JOptionPane.showMessageDialog(null, "Billboard by that name already exists.");
-                    }
+                    } 
                     else{
-                    try {
 
                         // TODO: here we send the object to server along with action param
                         // to server so that server can identify which action to perform
 
-                        send("ACTION",a)
-                    } catch (SQLException ex) {
-                        ex.printStackTrace();
-                    }}
+                        //send("ACTION",a)
+                    }
                 } catch (SQLException ex) {
                     ex.printStackTrace();
                 }
@@ -116,38 +111,60 @@ public class CreateBillboardGUI extends JFrame {
         lblInformation = createLabel("Information:");
 
         //create the text boxes to receive the data
-        txtBillboardName= createText();
-        txtTextColour =createText();
+        txtBillboardName = createText();
+        txtTextColour = createText();
         txtBackgroundColour = createText();
         txtMessage = createText();
         txtImage = createText();
         txtInformation = createText();
 
-        //create a grid layout to hold the labels and text inputs
-        JPanel inputs = new JPanel(new GridLayout(6,2));
-        inputs.add(lblBillboardName);
-        inputs.add(txtBillboardName);
-        inputs.add(lblTextColour);
-        inputs.add(txtTextColour);
-        inputs.add(lblBackgroundColour);
-        inputs.add(txtBackgroundColour);
-        inputs.add(lblMessage);
-        inputs.add(txtMessage);
-        inputs.add(lblImage);
-        inputs.add(txtImage);
-        inputs.add(lblInformation);
-        inputs.add(txtInformation);
+        constraints.anchor = GridBagConstraints.WEST;
+        constraints.insets=new Insets(10,10,10,10);
 
+        //add labels to panel
+        constraints.gridx=0;
+        constraints.gridy=0;
+        panel.add(lblBillboardName,constraints);
+        constraints.gridy=1;
+        panel.add(lblTextColour,constraints);
+        constraints.gridy=2;
+        panel.add(lblBackgroundColour,constraints);
+        constraints.gridy=3;
+        panel.add(lblMessage,constraints);
+        constraints.gridy=4;
+        panel.add(lblImage,constraints);
+        constraints.gridy=5;
+        panel.add(lblInformation,constraints);
 
-        //define location of elements
-        getContentPane().add(inputs);
-        getContentPane().add(btnSubmit, BorderLayout.SOUTH);
+        //add txtfeilds to panel
+        constraints.gridx =1;
+        constraints.gridy=0;
+        panel.add(txtBillboardName,constraints);
+        constraints.gridy=1;
+        panel.add(txtTextColour,constraints);
+        constraints.gridy=2;
+        panel.add(txtBackgroundColour,constraints);
+        constraints.gridy=3;
+        panel.add(txtMessage,constraints);
+        constraints.gridy=4;
+        panel.add(txtImage,constraints);
+        constraints.gridy=5;
+        panel.add(txtInformation,constraints);
 
+        //add button to panel
+        constraints.gridwidth =2;
+        constraints.insets = new Insets(5,10,5,10);
+        constraints.anchor = GridBagConstraints.EAST;
+        constraints.gridx=0;
+        constraints.gridy=7;
+        panel.add(btnSubmit,constraints);
+
+        getContentPane().add(panel);
         //set the location of the GUI
-        setLocation(900,350);
+        setLocation(900, 350);
 
         //make changes and then send to GUI
-        repaint();
+        pack();
         setVisible(true);
     }
 
@@ -171,7 +188,7 @@ public class CreateBillboardGUI extends JFrame {
      * @author Lachlan
      */
     private JTextField createText() {
-        JTextField textBox = new JTextField();
+        JTextField textBox = new JTextField(20);
         return textBox;
     }
 
@@ -204,19 +221,20 @@ public class CreateBillboardGUI extends JFrame {
 
     /**
      * This function is used to determine if a billboard already exists
-     * @author Lachlan
+     *
      * @param billboardName the name of the billboard being created
      * @return a boolean value to whether a billboard already exists
      * @throws SQLException
+     * @author Lachlan
      */
-    private Boolean checkDublicate (String billboardName) throws SQLException {
+    private Boolean checkDublicate(String billboardName) throws SQLException {
         boolean existing = false;
 
         Statement statement = connection.createStatement();
         ResultSet rs = statement.executeQuery("SELECT BillboardName FROM Billboard");
 
-        while (rs.next()){
-            if (billboardName.equals(rs.getString(1))){
+        while (rs.next()) {
+            if (billboardName.equals(rs.getString(1))) {
                 existing = true;
                 break;
             }

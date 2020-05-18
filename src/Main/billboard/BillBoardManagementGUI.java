@@ -32,14 +32,14 @@ public class BillBoardManagementGUI extends JFrame {
         WindowListener windowListener = new WindowListener() {
             @Override
             public void windowOpened(WindowEvent e) {
-                Server.menuWin.setEnabled(false);}
+                Main.menuWin.setEnabled(false);}
 
             @Override
             public void windowClosing(WindowEvent e) {}
 
             @Override
             public void windowClosed(WindowEvent e) {
-                Server.menuWin.setEnabled(true);
+                Main.menuWin.setEnabled(true);
             }
 
             @Override

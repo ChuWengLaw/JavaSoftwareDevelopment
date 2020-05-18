@@ -48,6 +48,9 @@ public class EditBillboardGUI extends JFrame {
     private String strImage;
     private String strInformation;
 
+    private JPanel panel = new JPanel(new GridBagLayout());
+    private GridBagConstraints constraints = new GridBagConstraints();
+
 
     //constructor
     public EditBillboardGUI() throws HeadlessException {
@@ -168,38 +171,55 @@ public class EditBillboardGUI extends JFrame {
             }
         });
 
-        //create a grid layout to hold the labels and text inputs
-        JPanel inputs = new JPanel(new GridLayout(7, 2));
+        constraints.anchor = GridBagConstraints.WEST;
+        constraints.insets=new Insets(10,10,10,10);
 
-        inputs.add(lblBillboardName);
-        inputs.add(txtBillboardName);
-        inputs.add(lblAuthor);
-        inputs.add(txtAuthor);
-        inputs.add(lblTextColour);
-        inputs.add(txtTextColour);
-        inputs.add(lblBackgroundColour);
-        inputs.add(txtBackgroundColour);
-        inputs.add(lblMessage);
-        inputs.add(txtMessage);
-        inputs.add(lblImage);
-        inputs.add(txtImage);
-        inputs.add(lblInformation);
-        inputs.add(txtInformation);
+        //add labels to panel
+        constraints.gridx=0;
+        constraints.gridy=0;
+        panel.add(lblBillboardName,constraints);
+        constraints.gridy=1;
+        panel.add(lblTextColour,constraints);
+        constraints.gridy=2;
+        panel.add(lblBackgroundColour,constraints);
+        constraints.gridy=3;
+        panel.add(lblMessage,constraints);
+        constraints.gridy=4;
+        panel.add(lblImage,constraints);
+        constraints.gridy=5;
+        panel.add(lblInformation,constraints);
 
+        //add txtfeilds to panel
+        constraints.gridx =1;
+        constraints.gridy=0;
+        panel.add(txtBillboardName,constraints);
+        constraints.gridy=1;
+        panel.add(txtTextColour,constraints);
+        constraints.gridy=2;
+        panel.add(txtBackgroundColour,constraints);
+        constraints.gridy=3;
+        panel.add(txtMessage,constraints);
+        constraints.gridy=4;
+        panel.add(txtImage,constraints);
+        constraints.gridy=5;
+        panel.add(txtInformation,constraints);
 
-        //define location of elements
-        getContentPane().add(inputs);
+        //add button to panel
+        constraints.gridwidth =1;
+        constraints.insets = new Insets(5,10,5,10);
+        constraints.anchor = GridBagConstraints.CENTER;
+        constraints.gridx=0;
+        constraints.gridy=7;
+        panel.add(btnSubmit,constraints);
+        constraints.gridx=1;
+        panel.add(btnSearch,constraints);
 
-        pnlAllButtons.add(btnSubmit, BorderLayout.EAST);
-        pnlAllButtons.add(btnSearch, BorderLayout.WEST);
-        getContentPane().add(pnlAllButtons, BorderLayout.SOUTH);
-        //getContentPane().add(btnSearch, BorderLayout.SOUTH);
-
+        getContentPane().add(panel);
         //set the location of the GUI
-        setLocation(900,350);
+        setLocation(900, 350);
 
         //make changes and then send to GUI
-        repaint();
+        pack();
         setVisible(true);
     }
 
@@ -223,7 +243,7 @@ public class EditBillboardGUI extends JFrame {
      * @author Lachlan
      */
     private JTextField createText() {
-        JTextField textBox = new JTextField();
+        JTextField textBox = new JTextField(20);
         return textBox;
     }
 

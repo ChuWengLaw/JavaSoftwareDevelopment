@@ -1,10 +1,12 @@
 package Main.user;
 
 import Main.Main;
-import Server.Server;
+import Server.*;
 
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.sql.*;
 import javax.swing.*;
 
@@ -17,10 +19,37 @@ public class DeleteUserWin extends JFrame{
 
     public DeleteUserWin(){
         super("Delete a User");
-        setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        WindowListener windowListener = new WindowListener() {
+            @Override
+            public void windowOpened(WindowEvent e) {}
+
+            @Override
+            public void windowClosing(WindowEvent e) {}
+
+            @Override
+            public void windowClosed(WindowEvent e) {
+                Main.userManagementWin.setEnabled(true);
+                Main.userManagementWin.setVisible(true);
+            }
+
+            @Override
+            public void windowIconified(WindowEvent e) {}
+
+            @Override
+            public void windowDeiconified(WindowEvent e) {}
+
+            @Override
+            public void windowActivated(WindowEvent e) {}
+
+            @Override
+            public void windowDeactivated(WindowEvent e) {}
+        };
+        super.addWindowListener(windowListener);
+
         ActionListener listener = e -> {
             try{
-                if(Server.user.getUserName().equals(usernamefield.getText())){
+                if(Main.user.getUserName().equals(usernamefield.getText())){
                     JOptionPane.showMessageDialog(null, "You can't delete yourself, you knobhead");
                 } else if(!CheckUserSQL(usernamefield.getText())){
                     JOptionPane.showMessageDialog(null, "Username does not exist");
@@ -30,6 +59,7 @@ public class DeleteUserWin extends JFrame{
                 }
                 else{
                     DeleteUserSQL(usernamefield.getText());
+                    DeleteUserBillboardSQL(usernamefield.getText());
                     JOptionPane.showMessageDialog(null,"User has been deleted");
                 }
             }
@@ -59,6 +89,12 @@ public class DeleteUserWin extends JFrame{
         setLocation(900,350);
         pack();
     }
+    /**
+     * @author Foo
+     * @param userName
+     * @exception SQLException , happens if any sql query error happens
+     * This method checks if the user exists in the table for the entered user
+     */
     private boolean CheckUserSQL(String userName) throws SQLException {
         User user = new User();
         boolean existing = false;
@@ -74,6 +110,12 @@ public class DeleteUserWin extends JFrame{
         return existing;
 
     }
+    /**
+     * @author Foo
+     * @param userName
+     * @exception SQLException , happens if any sql query error happens
+     * This method deletes the user that has been entered into the textfield
+     */
     private void DeleteUserSQL(String userName) throws SQLException {
         if(userName != usernamefield.getText()){
             PreparedStatement deletestatement = Server.connection.prepareStatement("delete from user where userName=?");
@@ -83,6 +125,25 @@ public class DeleteUserWin extends JFrame{
         }
         else{
             JOptionPane.showMessageDialog(null,"why");
+        }
+    }
+    /**
+     * @author Foo
+     * @param userName
+     * @exception SQLException , happens if any sql query error happens
+     * This method deletes every billboard that was created by the deleted user
+     */
+    private void DeleteUserBillboardSQL (String userName) throws SQLException{
+        try{
+            PreparedStatement deletebillboardstatement = Server.connection.prepareStatement(
+                    "delete from billboard where UserName=?"
+            );
+            deletebillboardstatement.setString(1,userName);
+            deletebillboardstatement.executeQuery();
+            deletebillboardstatement.close();
+        }
+        catch(SQLException e){
+            System.out.println();
         }
     }
 

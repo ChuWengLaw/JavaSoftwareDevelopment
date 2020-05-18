@@ -1,8 +1,7 @@
 package Main.billboard;
 
-import Main.Main;
-import Main.billboard.Billboard;
-
+import Server.Server;
+import Server.Billboard;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -168,17 +167,9 @@ public class EditBillboardGUI extends JFrame {
 
             }
         });
-//###############################################################################################
-
-
-
-
-
-
 
         //create a grid layout to hold the labels and text inputs
         JPanel inputs = new JPanel(new GridLayout(7, 2));
-
 
         inputs.add(lblBillboardName);
         inputs.add(txtBillboardName);
@@ -264,7 +255,7 @@ public class EditBillboardGUI extends JFrame {
     }
 
     private void setBillboardSQL() throws SQLException {
-        Statement statement = Main.connection.createStatement();
+        Statement statement = Server.connection.createStatement();
         ResultSet resultSet = statement.executeQuery("SELECT * FROM  billboard");
 
         while(resultSet.next()) {
@@ -282,13 +273,10 @@ public class EditBillboardGUI extends JFrame {
         statement.close();
     }
 
-
-
-
     private boolean BillboardCheckSQL(String BillboardName) throws SQLException {
         boolean existing = false;
 
-        Statement statement = Main.connection.createStatement();
+        Statement statement = Server.connection.createStatement();
         ResultSet resultSet = statement.executeQuery("SELECT BillboardName FROM  billboard");
 
         while(resultSet.next()){

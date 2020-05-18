@@ -1,11 +1,16 @@
 package Main.billboard;
 
+import Main.Main;
+import Server.Server;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import javax.swing.*;
 
-public class BillBoardManagementGUI extends JFrame{
+public class BillBoardManagementGUI extends JFrame {
 
     //define the buttons
     private JButton btnCreateBB;
@@ -21,10 +26,35 @@ public class BillBoardManagementGUI extends JFrame{
         super("Billboard Management");
         createGUI();
     }
-
     private void createGUI(){
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        // Window Listener
+        WindowListener windowListener = new WindowListener() {
+            @Override
+            public void windowOpened(WindowEvent e) {
+                Server.menuWin.setEnabled(false);}
 
+            @Override
+            public void windowClosing(WindowEvent e) {}
+
+            @Override
+            public void windowClosed(WindowEvent e) {
+                Server.menuWin.setEnabled(true);
+            }
+
+            @Override
+            public void windowIconified(WindowEvent e) {}
+
+            @Override
+            public void windowDeiconified(WindowEvent e) {}
+
+            @Override
+            public void windowActivated(WindowEvent e) {}
+
+            @Override
+            public void windowDeactivated(WindowEvent e) {}
+        };
+        super.addWindowListener(windowListener);
         //set up buttons
         btnCreateBB = createButton("Create Billboard");
         btnEditBB = createButton("Edit Billboard");

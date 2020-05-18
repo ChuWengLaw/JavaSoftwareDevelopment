@@ -1,15 +1,7 @@
-package Main.billboard;
-
-import Main.Main;
+package Server;
 
 import javax.swing.*;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.sql.*;
-import java.util.Properties;
-
-
 
 public class Billboard {
 
@@ -55,7 +47,7 @@ public class Billboard {
 
         /* Loop through the billboard list and update ExistFlag's status */
         try {
-            ResultSet resultSet = Main.statement.executeQuery("SELECT * FROM Billboard");
+            ResultSet resultSet = Server.statement.executeQuery("SELECT * FROM Billboard");
             while (resultSet.next()) {
                 if ( BillboardName.equals(resultSet.getString("BillboardName")) ) {
                     ExistFlag = true;
@@ -71,7 +63,7 @@ public class Billboard {
             }
             //if billboard does not exist it will create a new billboard
             else {
-                ResultSet insert = Main.statement.executeQuery("INSERT INTO Billboard VALUES ('" +
+                ResultSet insert = Server.statement.executeQuery("INSERT INTO Billboard VALUES ('" +
                         BillboardName + "','" + CreatedByUserName + "','" + BillboardTextColour +
                         "','" + BillboardBackgroundColour + "','" + BillboardMessage + "','" +
                         BillboardPicture + "','" + BillboardInformation + "');");
@@ -91,7 +83,7 @@ public class Billboard {
 
 
         try {
-            ResultSet resultSet = Main.statement.executeQuery("SELECT * FROM Billboard");
+            ResultSet resultSet = Server.statement.executeQuery("SELECT * FROM Billboard");
             while (resultSet.next()) {
                 if ( BillboardName.equals(resultSet.getString("BillboardName")) ) {
                     ExistFlag = true;
@@ -104,7 +96,7 @@ public class Billboard {
             //if it exists it will edit it
             if (ExistFlag == true) {
 
-                ResultSet update = Main.statement.executeQuery("UPDATE Billboard SET UserName = '" + CreatedByUserName + "',TextColour = '" + BillboardTextColour +
+                ResultSet update = Server.statement.executeQuery("UPDATE Billboard SET UserName = '" + CreatedByUserName + "',TextColour = '" + BillboardTextColour +
                         "',BackGroundColour = '" + BillboardBackgroundColour + "',Message = '" + BillboardMessage + "',Image = '" +
                         BillboardPicture + "',Information = '" + BillboardInformation + "' WHERE BillboardName = '" + BillboardName + "';");
 
@@ -132,7 +124,7 @@ public class Billboard {
      */
     public void GetBillboardInfo(String BillBoardName) throws SQLException {
         try {
-            ResultSet info = Main.statement.executeQuery("SELECT Information FROM Billboard WHERE BillboardName = '"
+            ResultSet info = Server.statement.executeQuery("SELECT Information FROM Billboard WHERE BillboardName = '"
                     + BillBoardName + "';");
         } catch (SQLException e) {
             System.out.println(e);
@@ -148,7 +140,7 @@ public class Billboard {
      */
     public void ListBillboards(String BillBoardName) throws SQLException {
         try {
-            ResultSet list = Main.statement.executeQuery("SELECT * FROM Billboard"/*ORDER BY ScheduleValue (i.e. how ever we are going to schedule) ASC*/+";");
+            ResultSet list = Server.statement.executeQuery("SELECT * FROM Billboard"/*ORDER BY ScheduleValue (i.e. how ever we are going to schedule) ASC*/+";");
         } catch (SQLException e) {
             System.out.println(e);
         }
@@ -164,7 +156,7 @@ public class Billboard {
      */
     public void DeleteBillboard(String BillBoardName) throws SQLException {
         try {
-            ResultSet delete = Main.statement.executeQuery("DELETE FROM Billboard WHERE BillboardName = '" + BillBoardName + "';");
+            ResultSet delete = Server.statement.executeQuery("DELETE FROM Billboard WHERE BillboardName = '" + BillBoardName + "';");
         } catch (SQLException e) {
             System.out.println(e);
         }

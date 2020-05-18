@@ -1,4 +1,4 @@
-package Main.connection;
+package Server;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;

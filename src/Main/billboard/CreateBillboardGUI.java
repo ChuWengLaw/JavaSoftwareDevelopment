@@ -1,9 +1,7 @@
 package Main.billboard;
 
-import Main.Main;
-import Main.user.User;
-import Main.billboard.Billboard;
-
+import Server.Server;
+import Server.Billboard;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -39,7 +37,7 @@ public class CreateBillboardGUI extends JFrame {
 
     //define the strings to be used in the SQL
     private String strBillboardName;
-    private String author = Main.user.getUserName();
+    private String author = Server.user.getUserName();
     private String strTextColour;
     private String strBackgroundColour;
     private String strMessage;
@@ -71,8 +69,10 @@ public class CreateBillboardGUI extends JFrame {
             //when the submit button is click make covert the inputs into string. then execute the CreateEditBilloard from the Billboard Class
             @Override
             public void actionPerformed(ActionEvent e) {
-                Billboard bb = new Billboard();
-                strBillboardName = txtBillboardName.getText();
+                // TODO: keep the input in placeholder object class
+                a = new GUIRsp();
+                a.strBillboardName = txtBillboardName.getText();
+                 ........
                 strTextColour = txtTextColour.getText();
                 strBackgroundColour = txtBackgroundColour.getText();
                 strMessage = txtMessage.getText();
@@ -84,7 +84,11 @@ public class CreateBillboardGUI extends JFrame {
                     }
                     else{
                     try {
-                        bb.CreateBillboard(strBillboardName, author, strTextColour, strBackgroundColour, strMessage, strImage, strInformation);
+
+                        // TODO: here we send the object to server along with action param
+                        // to server so that server can identify which action to perform
+
+                        send("ACTION",a)
                     } catch (SQLException ex) {
                         ex.printStackTrace();
                     }}
@@ -207,7 +211,7 @@ public class CreateBillboardGUI extends JFrame {
     private Boolean checkDublicate (String billboardName) throws SQLException {
         boolean existing = false;
 
-        Statement statement = Main.connection.createStatement();
+        Statement statement = Server.connection.createStatement();
         ResultSet rs = statement.executeQuery("SELECT BillboardName FROM Billboard");
 
         while (rs.next()){

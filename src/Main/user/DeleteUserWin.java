@@ -1,6 +1,7 @@
 package Main.user;
 
 import Main.Main;
+import Server.Server;
 
 import java.awt.*;
 import java.awt.event.ActionListener;
@@ -48,7 +49,7 @@ public class DeleteUserWin extends JFrame{
 
         ActionListener listener = e -> {
             try{
-                if(Main.user.getUserName().equals(usernamefield.getText())){
+                if(Server.user.getUserName().equals(usernamefield.getText())){
                     JOptionPane.showMessageDialog(null, "You can't delete yourself, you knobhead");
                 } else if(!CheckUserSQL(usernamefield.getText())){
                     JOptionPane.showMessageDialog(null, "Username does not exist");
@@ -97,7 +98,7 @@ public class DeleteUserWin extends JFrame{
     private boolean CheckUserSQL(String userName) throws SQLException {
         User user = new User();
         boolean existing = false;
-        Statement statement = Main.connection.createStatement();
+        Statement statement = Server.connection.createStatement();
         ResultSet resultSet = statement.executeQuery("SELECT userName FROM user");
         while(resultSet.next()){
             if(userName.equals(resultSet.getString(1))){
@@ -117,7 +118,7 @@ public class DeleteUserWin extends JFrame{
      */
     private void DeleteUserSQL(String userName) throws SQLException {
         if(userName != usernamefield.getText()){
-            PreparedStatement deletestatement = Main.connection.prepareStatement("delete from user where userName=?");
+            PreparedStatement deletestatement = Server.connection.prepareStatement("delete from user where userName=?");
             deletestatement.setString(1,userName);
             deletestatement.executeQuery();
             deletestatement.close();

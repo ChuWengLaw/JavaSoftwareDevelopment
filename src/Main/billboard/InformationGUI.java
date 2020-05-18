@@ -1,19 +1,17 @@
 package Main.billboard;
 
 import Main.Main;
-import Main.billboard.Billboard;
+import Server.Server;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.*;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
-public class InformationGUI extends JFrame implements ActionListener,Runnable {
-
-    //set the size of the GUI
-    public static final int WIDTH = 300;
-    public static final int HEIGHT =300;
+public class InformationGUI extends JFrame {
 
     //define buttons
     private JButton btnGetInfo;
@@ -29,8 +27,12 @@ public class InformationGUI extends JFrame implements ActionListener,Runnable {
     private JLabel lblBillboardName;
     private JLabel lblInfo;
 
-    public InformationGUI(String title) throws HeadlessException {
-        super(title);
+    private JPanel panel = new JPanel(new GridBagLayout());
+    private GridBagConstraints constraints = new GridBagConstraints();
+
+    public InformationGUI() throws HeadlessException {
+        super("Billboard Information");
+        createGUI();
     }
 
     /**
@@ -38,8 +40,7 @@ public class InformationGUI extends JFrame implements ActionListener,Runnable {
      * @author Lachlan
      */
     private void createGUI(){
-        setSize(WIDTH,HEIGHT);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLayout(new BorderLayout());
 
         //create the button and what text it will contain
@@ -49,15 +50,17 @@ public class InformationGUI extends JFrame implements ActionListener,Runnable {
         btnGetInfo.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Billboard bb = new Billboard();
-                strBillboardName = txtBillboardName.getText();
-                String out = null;
-                try {
-                    bb.GetBillboardInfo(strBillboardName);
-                } catch (SQLException ex) {
+
+                try{
+                    if (!checkBillboard(txtBillboardName.getText())){
+                        JOptionPane.showMessageDialog(null,"Billboard name entered not found.");
+                    }
+                    else{
+                        txtInfo.setText(setInfo(txtBillboardName.getText()));
+                    }
+                } catch (Exception ex) {
                     ex.printStackTrace();
                 }
-                txtInfo.setText(out);
             }
         });
 
@@ -81,18 +84,37 @@ public class InformationGUI extends JFrame implements ActionListener,Runnable {
         txtBillboardName = createText();
         txtInfo = createText();
 
-        //create layout for the text boxes
-        JPanel inputBoxes = new JPanel(new GridLayout(2,2));
-        inputBoxes.add(lblBillboardName);
-        inputBoxes.add(txtBillboardName);
-        inputBoxes.add(lblInfo);
-        inputBoxes.add(txtInfo);
+        constraints.anchor = GridBagConstraints.WEST;
+        constraints.insets = new Insets(10, 10, 10, 10);
 
-        getContentPane().add(inputBoxes);
-        getContentPane().add(btnGetInfo,BorderLayout.SOUTH);
-        getContentPane().add(btnClear, BorderLayout.SOUTH);
+        constraints.gridx = 0;
+        constraints.gridy = 0;
+        panel.add(lblBillboardName, constraints);
 
-        repaint();
+        constraints.gridx = 1;
+        panel.add(txtBillboardName, constraints);
+
+        constraints.gridx = 0;
+        constraints.gridy =1;
+        panel.add(lblInfo,constraints);
+
+        constraints.gridx =1;
+        panel.add(txtInfo, constraints);
+
+        constraints.gridwidth = 2;
+        constraints.insets = new Insets(5, 10, 5, 10);
+        constraints.anchor = GridBagConstraints.EAST;
+        constraints.gridx = 0;
+        constraints.gridy = 3;
+        panel.add(btnGetInfo, constraints);
+        constraints.anchor = GridBagConstraints.WEST;
+        panel.add(btnClear,constraints);
+
+        getContentPane().add(panel);
+
+        // Display the window
+        setLocation(900,350);
+        pack();
         setVisible(true);
     }
 
@@ -102,7 +124,7 @@ public class InformationGUI extends JFrame implements ActionListener,Runnable {
      * @return the text box
      */
     private JTextField createText() {
-        JTextField textField = new JTextField();
+        JTextField textField = new JTextField(20);
         return textField;
     }
 
@@ -130,13 +152,49 @@ public class InformationGUI extends JFrame implements ActionListener,Runnable {
         return button;
     }
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
+    /**
+     * function gets the information for a particular billboard
+     * @author Lachlan
+     * @param name the name of the Billboard
+     * @return the information for that billboard
+     * @throws SQLException
+     */
+    private String setInfo(String name) throws SQLException {
+        Statement statement = Server.connection.createStatement();
+        ResultSet rs = statement.executeQuery("SELECT BillboardName, Information FROM Billboard");
 
+        String result = null;
+
+        while (rs.next()){
+            if(name.equals(rs.getString(1))){
+                result = rs.getString(2);
+                break;
+            }
+        }
+
+        return result;
     }
 
-    @Override
-    public void run() {
-createGUI();
+    /**
+     * the function check if a billboard exists
+     * @author Lachlan
+     * @param Billboard billboard we want to search for
+     * @return true or false to whether the billboard exist
+     * @throws SQLException
+     */
+    private boolean checkBillboard(String Billboard) throws SQLException {
+        boolean existing = false;
+
+        Statement statement = Server.connection.createStatement();
+        ResultSet rs = statement.executeQuery("SELECT BillboardName FROM Billboard");
+
+        while (rs.next()){
+            if (Billboard.equals(rs.getString(1))){
+                existing = true;
+                break;
+            }
+        }
+        statement.close();
+        return existing;
     }
 }

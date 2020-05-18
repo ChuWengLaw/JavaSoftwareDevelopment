@@ -1,6 +1,7 @@
 package Main.user;
 
 import Main.Main;
+import Server.Server;
 
 import java.awt.*;
 import java.awt.event.ActionListener;
@@ -32,8 +33,12 @@ public class UserManagementWin extends JFrame{
 
             @Override
             public void windowClosed(WindowEvent e) {
+<<<<<<< HEAD
                 Main.menuWin.setEnabled(true);
                 Main.menuWin.setVisible(true);
+=======
+                Server.menuWin.setEnabled(true);
+>>>>>>> 7d81f66fa5f95d76ca72d621a652122be54c986f
             }
 
             @Override
@@ -52,19 +57,19 @@ public class UserManagementWin extends JFrame{
 
         // Button setting
         ActionListener createUserListener = e -> {
-            Main.createUserWin.setVisible(true);
+            Server.createUserWin.setVisible(true);
             super.setEnabled(false);
         };
         createUserButton.addActionListener(createUserListener);
 
         ActionListener editUserListener = e -> {
-            Main.editUserWin.setVisible(true);
+            Server.editUserWin.setVisible(true);
             super.setEnabled(false);
         };
         editUserButton.addActionListener(editUserListener);
 
         ActionListener deleteActionListener = e -> {
-            Main.deleteUserWin.setVisible(true);
+            Server.deleteUserWin.setVisible(true);
             super.setEnabled(false);
         };
         deleteUserButton.addActionListener(deleteActionListener);

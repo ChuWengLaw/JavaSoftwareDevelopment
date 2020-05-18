@@ -1,15 +1,17 @@
 package Main;
 
-import Main.connection.DBConnection;
+import Main.billboard.BillBoardManagementGUI;
 import Main.user.*;
 
 import javax.swing.*;
-import java.security.MessageDigest;
+import java.io.FileInputStream;
+import java.net.Socket;
 import java.security.NoSuchAlgorithmException;
 import java.sql.*;
-import java.util.Random;
+import java.util.Properties;
 
 public class Main {
+<<<<<<< HEAD
 
     public static Connection connection;
     public static Statement statement;
@@ -64,81 +66,30 @@ public class Main {
     //TODO: CREATE_USER_TABLE and CREATE_SCHEDULE_TABLE
 
     public static void main(String[] args) throws SQLException, NoSuchAlgorithmException {
+=======
+    public static void main(String[] args) {
+        // User the commented code to start a new connection to server
+//        Properties props = new Properties();
+//        FileInputStream in = null;
+//        try {
+//            in = new FileInputStream("./network.props");
+//            props.load(in);
+//            in.close();
+//
+//            // specify the socket port
+//            int port = Integer.parseInt(props.getProperty("port"));
+//            String address = props.getProperty("address");
+//            Socket socket = new Socket(address, port);
+//
+//            System.out.println("Connected to Server");
+//
+//
+//            socket.close();
+//        } catch (Exception e) {
+//            System.err.println(e);
+//        }
+>>>>>>> 7d81f66fa5f95d76ca72d621a652122be54c986f
         SwingUtilities.invokeLater(new LoginWin());
-        connection = DBConnection.newConnection();
-        try {
-            statement = connection.createStatement();
-
-            statement.execute(CREATE_BILLBOARD_TABLE);
-            statement.execute(CREATE_USER_TABLE);
-            statement.execute(CREATE_SCHEDULE_TABLE);
-
-//################code below is just to create a test user with no name or password for testing
-
-            // Username and Password are added.
-            try {
-                ResultSet resultSet = Main.statement.executeQuery("SELECT * FROM user");
-                String testAdmin = "admin";
-                String testPassword = "test1";
-                String testSaltString = saltString();
-                Boolean AdminExists = false;
-                String hashedPassword = hashAString(testPassword + testSaltString);
-
-                while (resultSet.next()) {
-                    if (testAdmin.equals(resultSet.getString("userName"))) {
-                        AdminExists = true;
-                    }
-                }
-                if (!AdminExists) {
-                    PreparedStatement pstatement = connection.prepareStatement("INSERT INTO user  " +
-                            "(userName, userPassword,  createBillboardsPermission, editAllBillboardPermission, scheduleBillboardsPermission, editUsersPermission, SaltValue) " +
-                            "VALUES (?, ?, ?, ?, ?, ?, ?)");
-                    pstatement.setString(1, testAdmin);
-                    pstatement.setString(2, hashedPassword);
-                    pstatement.setBoolean(3, true);
-                    pstatement.setBoolean(4, true);
-                    pstatement.setBoolean(5, true);
-                    pstatement.setBoolean(6, true);
-                    pstatement.setString(7, testSaltString);
-                    pstatement.executeUpdate();
-                    pstatement.close();
-                }
-            } catch (SQLException ex) {
-                System.out.println(ex);
-            } catch (NoSuchAlgorithmException e) {
-                e.printStackTrace();
-            }
-//#########################above code is just to create a test user with no name or password for testing
-
-
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
-    }
-
-    public static String hashAString(String hashString) throws NoSuchAlgorithmException {
-        MessageDigest md = MessageDigest.getInstance("SHA-256");
-        byte[] hash = md.digest(hashString.getBytes());
-        StringBuffer sb = new StringBuffer();
-
-        for (byte b : hash){
-            sb.append(String.format("%02x", b & 0xFF));
-        }
-
-        return sb.toString();
-    }
-
-    public static String saltString(){
-        Random rng = new Random();
-        byte[] saltBytes = new byte[32];
-        rng.nextBytes(saltBytes);
-        StringBuffer sb = new StringBuffer();
-
-        for (byte b : saltBytes){
-            sb.append(String.format("%02x", b & 0xFF));
-        }
-
-        return sb.toString();
     }
 }
 

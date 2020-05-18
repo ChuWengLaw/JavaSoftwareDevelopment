@@ -1,6 +1,7 @@
 package Main.user;
 
 import Main.Main;
+import Server.Server;
 
 import java.awt.*;
 import java.awt.event.ActionListener;
@@ -47,8 +48,8 @@ public class EditUserWin extends JFrame{
 
             @Override
             public void windowClosed(WindowEvent e) {
-                Main.userManagementWin.setEnabled(true);
-                Main.userManagementWin.setVisible(true);
+                Server.userManagementWin.setEnabled(true);
+                Server.userManagementWin.setVisible(true);
             }
 
             @Override
@@ -78,7 +79,7 @@ public class EditUserWin extends JFrame{
             if(userNameTextField.getText().isEmpty()){
                 JOptionPane.showMessageDialog(null,"User name field can't be empty.");
             }
-            else if (userNameTextField.getText().equals(Main.user.getUserName())){
+            else if (userNameTextField.getText().equals(Server.user.getUserName())){
                 JOptionPane.showMessageDialog(null,
                         "Administrators are not allow to change their own permission");
             }
@@ -121,8 +122,8 @@ public class EditUserWin extends JFrame{
                     searchButton.setEnabled(true);
                 }
                 else{
-                    String saltString = Main.saltString();
-                    String hashPassword = Main.hashAString(passwordTextField.getText() + saltString);
+                    String saltString = Server.saltString();
+                    String hashPassword = Server.hashAString(passwordTextField.getText() + saltString);
                     editUserSQL(userNameTextField.getText(), hashPassword, checkBox1.isSelected(), checkBox2.isSelected(),
                             checkBox3.isSelected(), checkBox4.isSelected(), saltString);
                     userNameTextField.setEditable(true);
@@ -227,7 +228,7 @@ public class EditUserWin extends JFrame{
     }
 
     private void setUserSQL() throws SQLException {
-        Statement statement = Main.connection.createStatement();
+        Statement statement = Server.connection.createStatement();
         ResultSet resultSet = statement.executeQuery("SELECT userName, createBillboardsPermission, editAllBillboardPermission, scheduleBillboardsPermission," +
                 "editUsersPermission FROM  user");
 
@@ -247,7 +248,7 @@ public class EditUserWin extends JFrame{
     private void editUserSQL(String userName, String userPassword,
                              boolean createBillboardsPermission, boolean editAllBillboardPermission,
                              boolean scheduleBillboardsPermission, boolean editUsersPermission, String saltValue) throws SQLException {
-        PreparedStatement pstatement = Main.connection.prepareStatement("UPDATE user " +
+        PreparedStatement pstatement = Server.connection.prepareStatement("UPDATE user " +
                 "SET userPassword = ?,  createBillboardsPermission = ?, editAllBillboardPermission = ?, " +
                 "scheduleBillboardsPermission = ?, editUsersPermission = ?, saltValue = ? WHERE userName = ? " );
         pstatement.setString(1, userPassword);
@@ -263,7 +264,7 @@ public class EditUserWin extends JFrame{
 
     private void editUserSQL(String userName, boolean createBillboardsPermission, boolean editAllBillboardPermission,
                              boolean scheduleBillboardsPermission, boolean editUserPermission) throws SQLException {
-        PreparedStatement pstatement = Main.connection.prepareStatement("UPDATE user " +
+        PreparedStatement pstatement = Server.connection.prepareStatement("UPDATE user " +
                 "SET  createBillboardsPermission = ?, editAllBillboardPermission = ?, " +
                 "scheduleBillboardsPermission = ?, editUsersPermission = ? WHERE userName = ? " );
         pstatement.setBoolean(1, createBillboardsPermission);
@@ -278,7 +279,7 @@ public class EditUserWin extends JFrame{
     private boolean checkUserSQL(String userName) throws SQLException {
         boolean existing = false;
 
-        Statement statement = Main.connection.createStatement();
+        Statement statement = Server.connection.createStatement();
         ResultSet resultSet = statement.executeQuery("SELECT userName FROM  user");
 
         while(resultSet.next()){

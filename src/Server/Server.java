@@ -3,6 +3,7 @@ package Server;
 import Server.Request.LoginReply;
 import Server.Request.LoginRequest;
 
+import javax.swing.*;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -224,5 +225,41 @@ public class Server {
 
         statement.close();
         return correctPassword;
+    }
+    /**
+     * @author Foo
+     * @param userName
+     * @exception SQLException , happens if any sql query error happens
+     * This method deletes the user that has been entered into the textfield
+     */
+    private void DeleteUserSQL(String userName) throws SQLException {
+        if(userName != usernamefield.getText()){
+            PreparedStatement deletestatement = Server.connection.prepareStatement("delete from user where userName=?");
+            deletestatement.setString(1,userName);
+            deletestatement.executeQuery();
+            deletestatement.close();
+        }
+        else{
+            JOptionPane.showMessageDialog(null,"why");
+        }
+    }
+    /**
+     * @author Foo
+     * @param userName
+     * @exception SQLException , happens if any sql query error happens
+     * This method deletes every billboard that was created by the deleted user
+     */
+    private void DeleteUserBillboardSQL (String userName) throws SQLException{
+        try{
+            PreparedStatement deletebillboardstatement = Server.connection.prepareStatement(
+                    "delete from billboard where UserName=?"
+            );
+            deletebillboardstatement.setString(1,userName);
+            deletebillboardstatement.executeQuery();
+            deletebillboardstatement.close();
+        }
+        catch(SQLException e){
+            System.out.println();
+        }
     }
 }

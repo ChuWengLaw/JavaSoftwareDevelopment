@@ -1,5 +1,6 @@
 package Main.billboard;
 
+import Main.Main;
 import Server.Server;
 import Server.Billboard;
 import javax.swing.*;
@@ -33,7 +34,7 @@ public class CreateBillboardGUI extends JFrame {
 
     //define the strings to be used in the SQL
     private String strBillboardName;
-    private String author = Server.user.getUserName();
+    private String author = Main.user.getUserName();
     private String strTextColour;
     private String strBackgroundColour;
     private String strMessage;
@@ -68,9 +69,8 @@ public class CreateBillboardGUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // TODO: keep the input in placeholder object class
-                a = new GUIRsp();
-                a.strBillboardName = txtBillboardName.getText();
-                 ........
+                //a = new GUIRsp();
+                //a.strBillboardName = txtBillboardName.getText();
                 strTextColour = txtTextColour.getText();
                 strBackgroundColour = txtBackgroundColour.getText();
                 strMessage = txtMessage.getText();
@@ -81,15 +81,12 @@ public class CreateBillboardGUI extends JFrame {
                         JOptionPane.showMessageDialog(null, "Billboard by that name already exists.");
                     } 
                     else{
-                    try {
 
                         // TODO: here we send the object to server along with action param
                         // to server so that server can identify which action to perform
 
-                        send("ACTION",a)
-                    } catch (SQLException ex) {
-                        ex.printStackTrace();
-                    }}
+                        //send("ACTION",a)
+                    }
                 } catch (SQLException ex) {
                     ex.printStackTrace();
                 }

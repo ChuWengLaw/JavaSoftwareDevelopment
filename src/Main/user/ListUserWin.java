@@ -16,7 +16,6 @@ public class ListUserWin extends JFrame{
     private JScrollPane scrollpane;
 
     public ListUserWin(){
-<<<<<<< HEAD
         super("List of users");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         WindowListener windowListener = new WindowListener() {
@@ -59,12 +58,7 @@ public class ListUserWin extends JFrame{
         }
 
         public void createTableSQL() throws SQLException {
-            Statement statement = Main.connection.createStatement();
-=======
-        try{
-            User user = new User();
             Statement statement = Server.connection.createStatement();
->>>>>>> 7d81f66fa5f95d76ca72d621a652122be54c986f
             ResultSet rs = statement.executeQuery(
                     "select userName,CreateBillboardsPermission,EditAllBillboardPermission," +
                             "ScheduleBillboardsPermission, EditUsersPermission from user");
@@ -91,8 +85,7 @@ public class ListUserWin extends JFrame{
                 panel.add(scrollpane, BorderLayout.CENTER);
                 getContentPane().add(panel);
             }
-<<<<<<< HEAD
-=======
+
             JFrame frame = new JFrame();
             frame.setSize(500,120);
             frame.setLocationRelativeTo(null);
@@ -104,9 +97,5 @@ public class ListUserWin extends JFrame{
             panel.add(scrollpane, BorderLayout.CENTER);
             frame.setContentPane(panel);
             frame.setVisible(true);
-        }
-        catch(Exception e){
-            JOptionPane.showMessageDialog(null, e);
->>>>>>> 7d81f66fa5f95d76ca72d621a652122be54c986f
         }
     }

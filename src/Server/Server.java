@@ -1,8 +1,9 @@
 package Server;
 
-import Main.user.*;
-import java.io.FileInputStream;
-import java.io.IOException;
+import Server.Request.LoginReply;
+import Server.Request.LoginRequest;
+
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.security.MessageDigest;
@@ -14,15 +15,7 @@ import java.util.Random;
 public class Server {
     public static Connection connection;
     public static Statement statement;
-    public static User user = new User();
-
-    // Setting up windows
-    public static MenuWin menuWin = new MenuWin();
-    public static UserManagementWin userManagementWin = new UserManagementWin();
-    public static ChangePasswordWin changePasswordWin = new ChangePasswordWin();
-    public static CreateUserWin createUserWin = new CreateUserWin();
-    public static EditUserWin editUserWin = new EditUserWin();
-    public static DeleteUserWin deleteUserWin = new DeleteUserWin();
+    public static User user;
 
     /**
      * SQL String to create a table named billboard in the database
@@ -64,7 +57,7 @@ public class Server {
 
     private static ServerSocket serverSocket;
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, ClassNotFoundException, SQLException, NoSuchAlgorithmException {
         /* Initiate database connection */
         initDBConnection();
         /* Setup socket connection */
@@ -86,10 +79,35 @@ public class Server {
             Socket socket = serverSocket.accept();
             System.out.println("Received connection from " + socket.getInetAddress());
 
+            // Stream
+            InputStream inputStream = socket.getInputStream();
+            OutputStream outputStream = socket.getOutputStream();
+            ObjectInputStream ois = new ObjectInputStream(inputStream);
+            ObjectOutputStream oos = new ObjectOutputStream(outputStream);
+            Object o = ois.readObject();
+
+            // Handle request
+            if (o instanceof LoginRequest){
+                LoginRequest loginRequest = (LoginRequest) o;
+                boolean loginState = checkPasswordSQL(loginRequest.getUserName(), loginRequest.getPassword());
+                System.out.println(loginRequest.getUserName());
+                System.out.println(loginRequest.getPassword());
+
+                if (loginState){
+                    LoginReply loginReply = new LoginReply(loginState, "1827439182731");
+                    System.out.println("Successful login");
+                    //setUserSQL(user, loginRequest.getUserName());
+                    oos.writeObject(loginReply);
+                    oos.flush();
+                }
+            }
+
             /** TODO: We receive the action enum and object from client
              * then create the user/bb object using object.username....
               */
 
+            oos.close();
+            ois.close();
             socket.close();
         }
     }
@@ -168,5 +186,43 @@ public class Server {
         }
 
         return sb.toString();
+    }
+
+    private static void setUserSQL(User user, String userName) throws SQLException {
+        PreparedStatement pstatement = connection.prepareStatement("SELECT * FROM  user where userName = ?");
+        pstatement.setString(1, userName);
+        ResultSet resultSet = pstatement.executeQuery();
+
+        while (resultSet.next()) {
+            if (userName.equals(resultSet.getString("userName"))) {
+                user.setUserName(resultSet.getString("userName"));
+                user.setCreateBillboardsPermission(resultSet.getBoolean("createBillboardsPermission"));
+                user.setEditAllBillboardsPermission(resultSet.getBoolean("editAllBillboardPermission"));
+                user.setScheduleBillboardsPermission(resultSet.getBoolean("scheduleBillboardsPermission"));
+                user.setEditUsersPermission(resultSet.getBoolean("editUsersPermission"));
+                break;
+            }
+        }
+
+        pstatement.close();
+    }
+
+    private static boolean checkPasswordSQL(String userName, String userPassword) throws SQLException, NoSuchAlgorithmException {
+        boolean correctPassword = false;
+
+        Statement statement = connection.createStatement();
+        ResultSet resultSet = statement.executeQuery("SELECT userName, userPassword, saltValue FROM user");
+
+        while(resultSet.next()){
+            String hasedRecievedString = Server.hashAString(userPassword+resultSet.getString(3));
+
+            if (userName.equals(resultSet.getString(1)) && hasedRecievedString.equals(resultSet.getString(2))){
+                correctPassword = true;
+                break;
+            }
+        }
+
+        statement.close();
+        return correctPassword;
     }
 }

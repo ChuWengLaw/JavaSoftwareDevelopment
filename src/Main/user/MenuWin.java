@@ -21,7 +21,7 @@ public class MenuWin extends JFrame {
 
         // Button setting
         ActionListener editUserListener = e -> {
-            Server.userManagementWin.setVisible(true);
+            Main.userManagementWin.setVisible(true);
             super.setEnabled(false);
         };
         editUserButton.addActionListener(editUserListener);
@@ -29,15 +29,6 @@ public class MenuWin extends JFrame {
         ActionListener editBillboardListener = e -> new BillBoardManagementGUI();
         billboardManageButton.addActionListener(editBillboardListener);
 
-<<<<<<< HEAD
-=======
-        ActionListener changePasswordListener = e -> {
-            Server.changePasswordWin.setVisible(true);
-            super.setEnabled(false);
-        };
-        changePasswordButton.addActionListener(changePasswordListener);
-
->>>>>>> 7d81f66fa5f95d76ca72d621a652122be54c986f
         // Panel setting
         constraints.anchor = GridBagConstraints.WEST;
         constraints.insets = new Insets(10, 10, 10, 10);

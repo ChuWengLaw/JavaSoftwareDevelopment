@@ -1,6 +1,7 @@
 package Main.user;
 
 import Main.Main;
+import Server.Server;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -13,7 +14,7 @@ public class ListUserWin {
     public ListUserWin(){
         try{
             User user = new User();
-            Statement statement = Main.connection.createStatement();
+            Statement statement = Server.connection.createStatement();
             ResultSet rs = statement.executeQuery(
                     "select userName,CreateBillboardsPermission,EditAllBillboardPermission," +
                             "ScheduleBillboardsPermission, EditUsersPermission from user");

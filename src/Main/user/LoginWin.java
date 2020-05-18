@@ -1,6 +1,7 @@
 package Main.user;
 
 import Main.Main;
+import Server.Server;
 
 import java.awt.*;
 import java.awt.event.ActionListener;
@@ -38,9 +39,9 @@ public class LoginWin extends JFrame implements Runnable{
                 }
                 else{
                     super.dispose();
-                    setUserSQL(Main.user);
-                    Main.menuWin.enableUserButton(Main.user);
-                    Main.menuWin.setVisible(true);
+                    setUserSQL(Server.user);
+                    Server.menuWin.enableUserButton(Server.user);
+                    Server.menuWin.setVisible(true);
                 }
             } catch (SQLException | NoSuchAlgorithmException ex) {
                 ex.printStackTrace();
@@ -82,7 +83,7 @@ public class LoginWin extends JFrame implements Runnable{
     }
 
     private void setUserSQL(User user) throws SQLException {
-        Statement statement = Main.connection.createStatement();
+        Statement statement = Server.connection.createStatement();
         ResultSet resultSet = statement.executeQuery("SELECT * FROM  user");
 
         while (resultSet.next()) {
@@ -102,8 +103,8 @@ public class LoginWin extends JFrame implements Runnable{
     private boolean checkUserSQL(String userName) throws SQLException {
         boolean existing = false;
 
-        Statement statement = Main.connection.createStatement();
-        ResultSet resultSet = statement.executeQuery("SELECT userName FROM  user");
+        Statement statement = Server.connection.createStatement();
+        ResultSet resultSet = statement.executeQuery("SELECT userName FROM user");
 
         while(resultSet.next()){
             if (userName.equals(resultSet.getString(1))){
@@ -120,11 +121,11 @@ public class LoginWin extends JFrame implements Runnable{
         boolean correctPassword = false;
         String userPasswordString = String.valueOf(userPassword);
 
-        Statement statement = Main.connection.createStatement();
-        ResultSet resultSet = statement.executeQuery("SELECT userName, userPassword, saltValue FROM  user");
+        Statement statement = Server.connection.createStatement();
+        ResultSet resultSet = statement.executeQuery("SELECT userName, userPassword, saltValue FROM user");
 
         while(resultSet.next()){
-            String hasedRecievedString = Main.hashAString(userPasswordString+resultSet.getString(3));
+            String hasedRecievedString = Server.hashAString(userPasswordString+resultSet.getString(3));
 
             if (userName.equals(resultSet.getString(1)) && hasedRecievedString.equals(resultSet.getString(2))){
                 correctPassword = true;

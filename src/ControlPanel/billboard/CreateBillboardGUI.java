@@ -1,14 +1,12 @@
-package Main.billboard;
+package ControlPanel.billboard;
 
-import Server.Server;
-import Server.Billboard;
+import ControlPanel.Client;
+import Server.Request.CreateBBRequest;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.*;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.io.IOException;
 
 
 public class CreateBillboardGUI extends JFrame {
@@ -33,16 +31,8 @@ public class CreateBillboardGUI extends JFrame {
 
     //define the strings to be used in the SQL
     private String strBillboardName;
-    private String author = Server.user.getUserName();
-    private String strTextColour;
-    private String strBackgroundColour;
-    private String strMessage;
-    private String strImage;
-    private String strInformation;
-
     private JPanel panel = new JPanel(new GridBagLayout());
     private GridBagConstraints constraints = new GridBagConstraints();
-
 
     //constructor
     public CreateBillboardGUI() throws HeadlessException {
@@ -67,30 +57,15 @@ public class CreateBillboardGUI extends JFrame {
             //when the submit button is click make covert the inputs into string. then execute the CreateEditBilloard from the Billboard Class
             @Override
             public void actionPerformed(ActionEvent e) {
-                // TODO: keep the input in placeholder object class
-                a = new GUIRsp();
-                a.strBillboardName = txtBillboardName.getText();
-                 ........
-                strTextColour = txtTextColour.getText();
-                strBackgroundColour = txtBackgroundColour.getText();
-                strMessage = txtMessage.getText();
-                strImage = txtImage.getText();
-                strInformation = txtInformation.getText();
+                CreateBBRequest temp = new CreateBBRequest(txtBillboardName.getText(), txtTextColour.getText(),
+                        txtBackgroundColour.getText(), txtMessage.getText(), txtImage.getText(), txtInformation.getText());
                 try {
-                    if (checkDublicate(strBillboardName)) {
-                        JOptionPane.showMessageDialog(null, "Billboard by that name already exists.");
-                    } 
-                    else{
-                    try {
-
-                        // TODO: here we send the object to server along with action param
-                        // to server so that server can identify which action to perform
-
-                        send("ACTION",a)
-                    } catch (SQLException ex) {
-                        ex.printStackTrace();
-                    }}
-                } catch (SQLException ex) {
+                    Client.connectServer(temp);
+                } catch (InterruptedException ex) {
+                    ex.printStackTrace();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                } catch (ClassNotFoundException ex) {
                     ex.printStackTrace();
                 }
                 //clear the textFeilds once the SQL code has been executed
@@ -221,27 +196,27 @@ public class CreateBillboardGUI extends JFrame {
         return label;
     }
 
-    /**
-     * This function is used to determine if a billboard already exists
-     *
-     * @param billboardName the name of the billboard being created
-     * @return a boolean value to whether a billboard already exists
-     * @throws SQLException
-     * @author Lachlan
-     */
-    private Boolean checkDublicate(String billboardName) throws SQLException {
-        boolean existing = false;
-
-        Statement statement = Server.connection.createStatement();
-        ResultSet rs = statement.executeQuery("SELECT BillboardName FROM Billboard");
-
-        while (rs.next()) {
-            if (billboardName.equals(rs.getString(1))) {
-                existing = true;
-                break;
-            }
-        }
-        statement.close();
-        return existing;
-    }
+//    /**
+//     * This function is used to determine if a billboard already exists
+//     *
+//     * @param billboardName the name of the billboard being created
+//     * @return a boolean value to whether a billboard already exists
+//     * @throws SQLException
+//     * @author Lachlan
+//     */
+//    private Boolean checkDublicate(String billboardName) throws SQLException {
+//        boolean existing = false;
+//
+//        Statement statement = connection.createStatement();
+//        ResultSet rs = statement.executeQuery("SELECT BillboardName FROM Billboard");
+//
+//        while (rs.next()) {
+//            if (billboardName.equals(rs.getString(1))) {
+//                existing = true;
+//                break;
+//            }
+//        }
+//        statement.close();
+//        return existing;
+//    }
 }

@@ -1,8 +1,8 @@
 package Server;
 
-import Main.user.*;
-import java.io.FileInputStream;
-import java.io.IOException;
+import ControlPanel.User;
+import Server.Request.*;
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.security.MessageDigest;
@@ -11,18 +11,11 @@ import java.sql.*;
 import java.util.Properties;
 import java.util.Random;
 
+import static Server.UserSQL.*;
+
 public class Server {
     public static Connection connection;
     public static Statement statement;
-    public static User user = new User();
-
-    // Setting up windows
-    public static MenuWin menuWin = new MenuWin();
-    public static UserManagementWin userManagementWin = new UserManagementWin();
-    public static ChangePasswordWin changePasswordWin = new ChangePasswordWin();
-    public static CreateUserWin createUserWin = new CreateUserWin();
-    public static EditUserWin editUserWin = new EditUserWin();
-    public static DeleteUserWin deleteUserWin = new DeleteUserWin();
 
     /**
      * SQL String to create a table named billboard in the database
@@ -64,9 +57,10 @@ public class Server {
 
     private static ServerSocket serverSocket;
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, ClassNotFoundException, SQLException, NoSuchAlgorithmException {
         /* Initiate database connection */
         initDBConnection();
+
         /* Setup socket connection */
         Properties props = new Properties();
         FileInputStream in = null;
@@ -86,10 +80,17 @@ public class Server {
             Socket socket = serverSocket.accept();
             System.out.println("Received connection from " + socket.getInetAddress());
 
-            /** TODO: We receive the action enum and object from client
-             * then create the user/bb object using object.username....
-              */
+            // Stream
+            InputStream inputStream = socket.getInputStream();
+            OutputStream outputStream = socket.getOutputStream();
+            ObjectInputStream ois = new ObjectInputStream(inputStream);
+            ObjectOutputStream oos = new ObjectOutputStream(outputStream);
+            Object o = ois.readObject();
 
+            // Handle request
+            requestExecute(o, oos);
+            oos.close();
+            ois.close();
             socket.close();
         }
     }
@@ -138,13 +139,12 @@ public class Server {
                 e.printStackTrace();
             }
 //#########################above code is just to create a test user with no name or password for testing
-
-
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
     }
 
+    // Method for hashing and salting.
     public static String hashAString(String hashString) throws NoSuchAlgorithmException {
         MessageDigest md = MessageDigest.getInstance("SHA-256");
         byte[] hash = md.digest(hashString.getBytes());
@@ -168,5 +168,99 @@ public class Server {
         }
 
         return sb.toString();
+    }
+
+    // Server request method
+    private static void requestExecute(Object o, ObjectOutputStream oos) throws SQLException, NoSuchAlgorithmException, IOException {
+        if (o instanceof LoginRequest){
+            LoginRequest loginRequest = (LoginRequest) o;
+            boolean loginState = checkPasswordSQL(loginRequest.getUserName(), loginRequest.getPassword());
+
+            if (loginState){
+                User user = new User();
+                setUserSQL(user, loginRequest.getUserName());
+                LoginReply loginReply = new LoginReply(loginState, "1827439182731", user);
+                System.out.println(user.getCreateBillboardsPermission());
+                oos.writeObject(loginReply);
+                oos.flush();
+            }
+            else{
+                LoginReply loginReply = new LoginReply(loginState, null);
+                oos.writeObject(loginReply);
+                oos.flush();
+            }
+        }
+        else if (o instanceof CreateUserRequest){
+            CreateUserRequest createUserRequest = (CreateUserRequest) o;
+            boolean createState = !checkUserSQL(createUserRequest.getUserName());
+
+            if (createState) {
+                String saltString = saltString();
+                String hasedPassword = hashAString(createUserRequest.getUserPassword() + saltString);
+                createUserSQL(createUserRequest.getUserName(), hasedPassword, createUserRequest.isCreateBillboardsPermission(),
+                        createUserRequest.isEditAllBillboardPermission(), createUserRequest.isScheduleBillboardsPermission(),
+                        createUserRequest.isEditUsersPermission(), saltString);
+                GernalReply gernalReply = new GernalReply(createState);
+                oos.writeObject(gernalReply);
+                oos.flush();
+            }
+            else{
+                GernalReply gernalReply = new GernalReply(createState);
+                oos.writeObject(gernalReply);
+                oos.flush();
+            }
+        }
+        else if (o instanceof SearchRequest){
+            SearchRequest searchRequest = (SearchRequest) o;
+            boolean searchState = checkUserSQL(searchRequest.getUserName());
+
+            if(searchState){
+                User user = new User();
+                setUserSQL(user, searchRequest.getUserName());
+                SearchReply searchReply = new SearchReply(searchState, user);
+                oos.writeObject(searchReply);
+                oos.flush();
+            }
+            else{
+                SearchReply searchReply = new SearchReply(searchState);
+                oos.writeObject(searchReply);
+                oos.flush();
+            }
+        }
+        else if (o instanceof EditUserRequest){
+            EditUserRequest editUserRequest = (EditUserRequest)o;
+            boolean havePassword = editUserRequest.isHavePassword();
+            boolean editState = true;
+
+            if(havePassword){
+                String saltString = saltString();
+                String hasedPassword = hashAString(editUserRequest.getUserPassword() + saltString);
+                editUserSQL(editUserRequest.getUserName(), hasedPassword, editUserRequest.isCreateBillboardsPermission(), editUserRequest.isEditAllBillboardPermission(),
+                editUserRequest.isScheduleBillboardsPermission(), editUserRequest.isEditUsersPermission(), saltString);
+                GernalReply gernalReply = new GernalReply(editState);
+                oos.writeObject(gernalReply);
+                oos.flush();
+            }
+            else{
+                editUserSQL(editUserRequest.getUserName(), editUserRequest.isCreateBillboardsPermission(), editUserRequest.isEditAllBillboardPermission(),
+                        editUserRequest.isScheduleBillboardsPermission(), editUserRequest.isEditUsersPermission());
+                GernalReply gernalReply = new GernalReply(editState);
+                oos.writeObject(gernalReply);
+                oos.flush();
+            }
+        }
+        else if (o instanceof CreateBBRequest) {
+            CreateBBRequest temp = (CreateBBRequest) o;
+            BillboardSQL bb = new BillboardSQL();
+            bb.CreateBillboard(temp.getBillboardName(), temp.getAuthor(), temp.getTextColour(), temp.getBackgroundColour(),
+                    temp.getMessage(), temp.getImage(), temp.getInformation());
+            oos.flush();
+        }
+        else if (o instanceof DeleteBBRequest) {
+            DeleteBBRequest temp = (DeleteBBRequest) o;
+            BillboardSQL bb = new BillboardSQL();
+            bb.DeleteBillboard(temp.getBillboardName());
+            oos.flush();
+        }
     }
 }

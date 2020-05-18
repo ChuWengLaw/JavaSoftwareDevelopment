@@ -1,7 +1,6 @@
 package Main.billboard;
 
 import Server.Server;
-import Server.Billboard;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -9,6 +8,8 @@ import java.awt.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+
+import static Server.Server.*;
 
 
 public class CreateBillboardGUI extends JFrame {
@@ -37,7 +38,7 @@ public class CreateBillboardGUI extends JFrame {
 
     //define the strings to be used in the SQL
     private String strBillboardName;
-    private String author = Server.user.getUserName();
+    private String author = user.getUserName();
     private String strTextColour;
     private String strBackgroundColour;
     private String strMessage;
@@ -70,7 +71,7 @@ public class CreateBillboardGUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // TODO: keep the input in placeholder object class
-                a = new GUIRsp();
+                CreateBBStorage a = new CreateBBStorage();
                 a.strBillboardName = txtBillboardName.getText();
                  ........
                 strTextColour = txtTextColour.getText();
@@ -211,7 +212,7 @@ public class CreateBillboardGUI extends JFrame {
     private Boolean checkDublicate (String billboardName) throws SQLException {
         boolean existing = false;
 
-        Statement statement = Server.connection.createStatement();
+        Statement statement = connection.createStatement();
         ResultSet rs = statement.executeQuery("SELECT BillboardName FROM Billboard");
 
         while (rs.next()){

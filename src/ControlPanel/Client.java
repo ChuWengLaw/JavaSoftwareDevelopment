@@ -1,11 +1,8 @@
-package Server;
+package ControlPanel;
 
-import Server.Request.LoginReply;
-import Server.Request.LoginRequest;
+import Server.Request.*;
 
 import java.io.*;
-import java.net.InetAddress;
-import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Properties;
 
@@ -13,7 +10,7 @@ public class Client {
     private static Object requestReply;
     private static boolean requestState;
 
-    public static void main(Object args) throws IOException, InterruptedException, ClassNotFoundException {
+    public static void connectServer(Object args) throws IOException, InterruptedException, ClassNotFoundException {
         // Set up socket.
         Properties props = new Properties();
         FileInputStream in = null;
@@ -34,29 +31,36 @@ public class Client {
         oos.flush();
 
         Object requestReply = ois.readObject();
-
-        if (requestReply instanceof LoginReply){
-            LoginReply loginReply = (LoginReply) requestReply;
-            System.out.println("successful login");
-            requestState = loginReply.isLoginState();
-
-//            if (loginReply.isLoginState()) {
-//                requestState = true;
-//                System.out.println(loginReply.getSessionToken());
-//            }
-//            else {
-//                requestState = false;
-//            }
-        }
+        executeReply(requestReply);
 
         ois.close();
         oos.close();
-
-
-
     }
 
     public static boolean isRequestState() {
         return requestState;
+    }
+
+    private static void executeReply(Object requestReply){
+        if (requestReply instanceof LoginReply){
+            LoginReply loginReply = (LoginReply) requestReply;
+            requestState = loginReply.isLoginState();
+
+            if (requestState){
+                Main.loginUser = loginReply.getUser();
+            }
+        }
+        else if (requestReply instanceof SearchReply){
+            SearchReply searchReply = (SearchReply) requestReply;
+            requestState = searchReply.isRequestState();
+
+            if (requestState){
+                Main.editUserWin.editedUser = searchReply.getUser();
+            }
+        }
+        else if (requestReply instanceof GernalReply){
+            GernalReply gernalReply = (GernalReply) requestReply;
+            requestState = gernalReply.isRequestState();
+        }
     }
 }

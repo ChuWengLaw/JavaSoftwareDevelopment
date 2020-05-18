@@ -1,4 +1,4 @@
-package Main.billboard;
+package ControlPanel.billboard;
 
 import Server.*;
 

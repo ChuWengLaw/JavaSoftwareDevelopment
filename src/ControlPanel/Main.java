@@ -1,13 +1,11 @@
-package Main;
-
-import Main.user.*;
-import Server.User;
+package ControlPanel;
+import ControlPanel.user.*;
 
 import javax.swing.*;
 
 
 public class Main {
-    public static User user = new User();
+    public static User loginUser = new User();
 
     // Setting up windows
     public static MenuWin menuWin = new MenuWin();

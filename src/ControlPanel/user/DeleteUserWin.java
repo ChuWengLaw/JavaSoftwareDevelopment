@@ -1,8 +1,7 @@
-package Main.user;
+package ControlPanel.user;
 
-import Main.Main;
+import ControlPanel.*;
 import Server.*;
-
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
@@ -49,7 +48,7 @@ public class DeleteUserWin extends JFrame{
 
         ActionListener listener = e -> {
             try{
-                if(Main.user.getUserName().equals(usernamefield.getText())){
+                if(Main.loginUser.getUserName().equals(usernamefield.getText())){
                     JOptionPane.showMessageDialog(null, "You can't delete yourself, you knobhead");
                 } else if(!CheckUserSQL(usernamefield.getText())){
                     JOptionPane.showMessageDialog(null, "Username does not exist");

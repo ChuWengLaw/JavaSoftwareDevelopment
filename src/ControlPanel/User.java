@@ -1,10 +1,9 @@
-package Server;  //not sure if this is correct
-import Main.Main;
+package ControlPanel;
+import java.io.Serializable;
 
-import java.util.Scanner;    //remove once gui is set up
 
 //Double check method prefixes  (public/private/static ect)
-public class User {
+public class User implements Serializable {
     private String userName;
     private boolean createBillboardsPermission;
     private boolean editAllBillboardPermission;
@@ -28,27 +27,22 @@ public class User {
     // Set method to store user information
     public void setUserName(String userName){
         this.userName = userName;
-        System.out.println(this.userName);
     }
 
     public void setCreateBillboardsPermission(Boolean permission){
         this.createBillboardsPermission = permission;
-        System.out.println(this.createBillboardsPermission);
     }
 
     public void setEditAllBillboardsPermission(Boolean permission){
         this.editAllBillboardPermission = permission;
-        System.out.println(this.editAllBillboardPermission);
     }
 
     public void setScheduleBillboardsPermission(Boolean permission){
         this.scheduleBillboardsPermission = permission;
-        System.out.println(this.scheduleBillboardsPermission);
     }
 
     public void setEditUsersPermission(Boolean permission){
         this.editUsersPermission = permission;
-        System.out.println(this.editUsersPermission);
     }
 
     // Get Methods to be called to check user's information

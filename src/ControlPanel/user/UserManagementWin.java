@@ -1,7 +1,6 @@
-package Main.user;
+package ControlPanel.user;
 
-import Main.Main;
-import Server.Server;
+import ControlPanel.Main;
 
 import java.awt.*;
 import java.awt.event.ActionListener;

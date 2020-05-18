@@ -1,16 +1,11 @@
-package Main.user;
+package ControlPanel.user;
 
-import Main.Main;
-import Server.*;
+import ControlPanel.*;
 import Server.Request.LoginRequest;
 
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-import java.security.NoSuchAlgorithmException;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import javax.swing.*;
 
 public class LoginWin extends JFrame implements Runnable{
@@ -34,7 +29,7 @@ public class LoginWin extends JFrame implements Runnable{
         ActionListener loginListener = e ->{
             LoginRequest loginRequest = new LoginRequest(idTextField.getText(), String.valueOf(passwordTextField.getPassword()));
             try {
-                Client.main(loginRequest);
+                Client.connectServer(loginRequest);
             } catch (IOException ex) {
                 ex.printStackTrace();
             } catch (InterruptedException ex) {
@@ -43,11 +38,13 @@ public class LoginWin extends JFrame implements Runnable{
                 ex.printStackTrace();
             }
 
-
             if (Client.isRequestState()){
                 super.dispose();
                 Main.menuWin.setVisible(true);
                 Main.userManagementWin.permission(true);
+            }
+            else{
+                JOptionPane.showMessageDialog(null,"Invalid user name or password");
             }
         };
         loginButton.addActionListener(loginListener);

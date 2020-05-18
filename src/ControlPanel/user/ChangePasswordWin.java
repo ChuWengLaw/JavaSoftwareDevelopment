@@ -1,6 +1,6 @@
-package Main.user;
+package ControlPanel.user;
 
-import Main.Main;
+import ControlPanel.*;
 import Server.*;
 
 import java.awt.*;
@@ -60,7 +60,7 @@ public class ChangePasswordWin extends JFrame {
                 try {
                     String saltString = Server.saltString();
                     String hashPassword = Server.hashAString(passwordTextField.getText()+saltString);
-                    changePasswordSQL(Main.user, hashPassword, saltString);
+                    changePasswordSQL(Main.loginUser, hashPassword, saltString);
                 } catch (SQLException | NoSuchAlgorithmException ex) {
                     ex.printStackTrace();
                 }

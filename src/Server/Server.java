@@ -1,7 +1,8 @@
 package Server;
 
-import Server.Request.LoginReply;
-import Server.Request.LoginRequest;
+import ControlPanel.User;
+import Server.Request.*;
+import ControlPanel.*;
 
 import java.io.*;
 import java.net.ServerSocket;
@@ -12,10 +13,11 @@ import java.sql.*;
 import java.util.Properties;
 import java.util.Random;
 
+import static Server.UserSQL.*;
+
 public class Server {
     public static Connection connection;
     public static Statement statement;
-    public static User user;
 
     /**
      * SQL String to create a table named billboard in the database
@@ -60,6 +62,7 @@ public class Server {
     public static void main(String[] args) throws IOException, ClassNotFoundException, SQLException, NoSuchAlgorithmException {
         /* Initiate database connection */
         initDBConnection();
+
         /* Setup socket connection */
         Properties props = new Properties();
         FileInputStream in = null;
@@ -87,20 +90,7 @@ public class Server {
             Object o = ois.readObject();
 
             // Handle request
-            if (o instanceof LoginRequest){
-                LoginRequest loginRequest = (LoginRequest) o;
-                boolean loginState = checkPasswordSQL(loginRequest.getUserName(), loginRequest.getPassword());
-                System.out.println(loginRequest.getUserName());
-                System.out.println(loginRequest.getPassword());
-
-                if (loginState){
-                    LoginReply loginReply = new LoginReply(loginState, "1827439182731");
-                    System.out.println("Successful login");
-                    //setUserSQL(user, loginRequest.getUserName());
-                    oos.writeObject(loginReply);
-                    oos.flush();
-                }
-            }
+            requestExecute(o, oos);
 
             /** TODO: We receive the action enum and object from client
              * then create the user/bb object using object.username....
@@ -156,13 +146,12 @@ public class Server {
                 e.printStackTrace();
             }
 //#########################above code is just to create a test user with no name or password for testing
-
-
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
     }
 
+    // Method for hashing and salting.
     public static String hashAString(String hashString) throws NoSuchAlgorithmException {
         MessageDigest md = MessageDigest.getInstance("SHA-256");
         byte[] hash = md.digest(hashString.getBytes());
@@ -188,41 +177,84 @@ public class Server {
         return sb.toString();
     }
 
-    private static void setUserSQL(User user, String userName) throws SQLException {
-        PreparedStatement pstatement = connection.prepareStatement("SELECT * FROM  user where userName = ?");
-        pstatement.setString(1, userName);
-        ResultSet resultSet = pstatement.executeQuery();
+    // Server request method
+    private static void requestExecute(Object o, ObjectOutputStream oos) throws SQLException, NoSuchAlgorithmException, IOException {
+        if (o instanceof LoginRequest){
+            LoginRequest loginRequest = (LoginRequest) o;
+            boolean loginState = checkPasswordSQL(loginRequest.getUserName(), loginRequest.getPassword());
 
-        while (resultSet.next()) {
-            if (userName.equals(resultSet.getString("userName"))) {
-                user.setUserName(resultSet.getString("userName"));
-                user.setCreateBillboardsPermission(resultSet.getBoolean("createBillboardsPermission"));
-                user.setEditAllBillboardsPermission(resultSet.getBoolean("editAllBillboardPermission"));
-                user.setScheduleBillboardsPermission(resultSet.getBoolean("scheduleBillboardsPermission"));
-                user.setEditUsersPermission(resultSet.getBoolean("editUsersPermission"));
-                break;
+            if (loginState){
+                User user = new User();
+                setUserSQL(user, loginRequest.getUserName());
+                LoginReply loginReply = new LoginReply(loginState, "1827439182731", user);
+                System.out.println(user.getCreateBillboardsPermission());
+                oos.writeObject(loginReply);
+                oos.flush();
+            }
+            else{
+                LoginReply loginReply = new LoginReply(loginState, null);
+                oos.writeObject(loginReply);
+                oos.flush();
             }
         }
+        else if (o instanceof CreateUserRequest){
+            CreateUserRequest createUserRequest = (CreateUserRequest) o;
+            boolean createState = !checkUserSQL(createUserRequest.getUserName());
 
-        pstatement.close();
-    }
-
-    private static boolean checkPasswordSQL(String userName, String userPassword) throws SQLException, NoSuchAlgorithmException {
-        boolean correctPassword = false;
-
-        Statement statement = connection.createStatement();
-        ResultSet resultSet = statement.executeQuery("SELECT userName, userPassword, saltValue FROM user");
-
-        while(resultSet.next()){
-            String hasedRecievedString = Server.hashAString(userPassword+resultSet.getString(3));
-
-            if (userName.equals(resultSet.getString(1)) && hasedRecievedString.equals(resultSet.getString(2))){
-                correctPassword = true;
-                break;
+            if (createState) {
+                String saltString = saltString();
+                String hasedPassword = hashAString(createUserRequest.getUserPassword() + saltString);
+                createUserSQL(createUserRequest.getUserName(), hasedPassword, createUserRequest.isCreateBillboardsPermission(),
+                        createUserRequest.isEditAllBillboardPermission(), createUserRequest.isScheduleBillboardsPermission(),
+                        createUserRequest.isEditUsersPermission(), saltString);
+                GernalReply gernalReply = new GernalReply(createState);
+                oos.writeObject(gernalReply);
+                oos.flush();
+            }
+            else{
+                GernalReply gernalReply = new GernalReply(createState);
+                oos.writeObject(gernalReply);
+                oos.flush();
             }
         }
+        else if (o instanceof SearchRequest){
+            SearchRequest searchRequest = (SearchRequest) o;
+            boolean searchState = checkUserSQL(searchRequest.getUserName());
 
-        statement.close();
-        return correctPassword;
+            if(searchState){
+                User user = new User();
+                setUserSQL(user, searchRequest.getUserName());
+                SearchReply searchReply = new SearchReply(searchState, user);
+                oos.writeObject(searchReply);
+                oos.flush();
+            }
+            else{
+                SearchReply searchReply = new SearchReply(searchState);
+                oos.writeObject(searchReply);
+                oos.flush();
+            }
+        }
+        else if (o instanceof EditUserRequest){
+            EditUserRequest editUserRequest = (EditUserRequest)o;
+            boolean havePassword = editUserRequest.isHavePassword();
+            boolean editState = true;
+
+            if(havePassword){
+                String saltString = saltString();
+                String hasedPassword = hashAString(editUserRequest.getUserPassword() + saltString);
+                editUserSQL(editUserRequest.getUserName(), hasedPassword, editUserRequest.isCreateBillboardsPermission(), editUserRequest.isEditAllBillboardPermission(),
+                editUserRequest.isScheduleBillboardsPermission(), editUserRequest.isEditUsersPermission(), saltString);
+                GernalReply gernalReply = new GernalReply(editState);
+                oos.writeObject(gernalReply);
+                oos.flush();
+            }
+            else{
+                editUserSQL(editUserRequest.getUserName(), editUserRequest.isCreateBillboardsPermission(), editUserRequest.isEditAllBillboardPermission(),
+                        editUserRequest.isScheduleBillboardsPermission(), editUserRequest.isEditUsersPermission());
+                GernalReply gernalReply = new GernalReply(editState);
+                oos.writeObject(gernalReply);
+                oos.flush();
+            }
+        }
     }
 }

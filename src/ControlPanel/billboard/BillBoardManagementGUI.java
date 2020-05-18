@@ -1,7 +1,6 @@
-package Main.billboard;
+package ControlPanel.billboard;
 
-import Main.Main;
-import Server.Server;
+import ControlPanel.Main;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;

@@ -1,6 +1,5 @@
-package Main.billboard;
+package ControlPanel.billboard;
 
-import Main.Main;
 import Server.Server;
 import Server.Billboard;
 import javax.swing.*;
@@ -12,20 +11,28 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 
-public class CreateBillboardGUI extends JFrame {
+public class EditBillboardGUI extends JFrame {
+    //set the width of the GUI
+    public static final int WIDTH = 350;
+    public static final int HEIGHT = 400;
+
     //define element to be used
     private JButton btnSubmit;
+    private JButton btnSearch;
 
     //define the labels
     private JLabel lblBillboardName;
+    private JLabel lblAuthor;
     private JLabel lblTextColour;
     private JLabel lblBackgroundColour;
     private JLabel lblMessage;
     private JLabel lblImage;
     private JLabel lblInformation;
+    private JPanel pnlAllButtons;
 
     //define the text boxes
     private JTextField txtBillboardName;
+    private JTextField txtAuthor;
     private JTextField txtTextColour;
     private JTextField txtBackgroundColour;
     private JTextField txtMessage;
@@ -34,7 +41,7 @@ public class CreateBillboardGUI extends JFrame {
 
     //define the strings to be used in the SQL
     private String strBillboardName;
-    private String author = Main.user.getUserName();
+    private String strAuthor;
     private String strTextColour;
     private String strBackgroundColour;
     private String strMessage;
@@ -46,8 +53,8 @@ public class CreateBillboardGUI extends JFrame {
 
 
     //constructor
-    public CreateBillboardGUI() throws HeadlessException {
-        super("Create Billboard");
+    public EditBillboardGUI() throws HeadlessException {
+        super("Edit Billboard");
         createGUI();
     }
 
@@ -57,52 +64,16 @@ public class CreateBillboardGUI extends JFrame {
      * @author Lachlan
      */
     private void createGUI() {
-
+        setSize(WIDTH, HEIGHT);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLayout(new BorderLayout());
 
-        //create the button and define what text it will contain
-        btnSubmit = createButton("Submit");
-        //create and actionListener for the submit button
-        btnSubmit.addActionListener(new ActionListener() {
-            //when the submit button is click make covert the inputs into string. then execute the CreateEditBilloard from the Billboard Class
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // TODO: keep the input in placeholder object class
-                //a = new GUIRsp();
-                //a.strBillboardName = txtBillboardName.getText();
-                strTextColour = txtTextColour.getText();
-                strBackgroundColour = txtBackgroundColour.getText();
-                strMessage = txtMessage.getText();
-                strImage = txtImage.getText();
-                strInformation = txtInformation.getText();
-                try {
-                    if (checkDublicate(strBillboardName)) {
-                        JOptionPane.showMessageDialog(null, "Billboard by that name already exists.");
-                    } 
-                    else{
-
-                        // TODO: here we send the object to server along with action param
-                        // to server so that server can identify which action to perform
-
-                        //send("ACTION",a)
-                    }
-                } catch (SQLException ex) {
-                    ex.printStackTrace();
-                }
-                //clear the textFeilds once the SQL code has been executed
-                txtBillboardName.setText("");
-                txtTextColour.setText("");
-                txtBackgroundColour.setText("");
-                txtMessage.setText("");
-                txtImage.setText("");
-                txtInformation.setText("");
-            }
-        });
+        pnlAllButtons = new JPanel();
 
 
         //create the labels
         lblBillboardName = createLabel("Billboard Name:");
+        lblAuthor = createLabel("Author:");
         lblTextColour = createLabel("Text Colour:");
         lblBackgroundColour = createLabel("Background Colour:");
         lblMessage = createLabel("Message:");
@@ -111,11 +82,94 @@ public class CreateBillboardGUI extends JFrame {
 
         //create the text boxes to receive the data
         txtBillboardName = createText();
+        txtAuthor = createText();
         txtTextColour = createText();
         txtBackgroundColour = createText();
         txtMessage = createText();
         txtImage = createText();
         txtInformation = createText();
+
+        txtAuthor.setEditable(false);
+        txtTextColour.setEditable(false);
+        txtBackgroundColour.setEditable(false);
+        txtMessage.setEditable(false);
+        txtImage.setEditable(false);
+        txtInformation.setEditable(false);
+
+
+
+        //create the button and define what text it will contain
+        btnSubmit = createButton("Submit");
+
+        //create and actionListener for the submit button
+        btnSubmit.addActionListener(new ActionListener() {
+            //when the submit button is click make covert the inputs into string. then execute the CreateEditBilloard from the Billboard Class
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Billboard bb = new Billboard();
+                strBillboardName = txtBillboardName.getText();
+                strAuthor = txtAuthor.getText();
+                strTextColour = txtTextColour.getText();
+                strBackgroundColour = txtBackgroundColour.getText();
+                strMessage = txtMessage.getText();
+                strImage = txtImage.getText();
+                strInformation = txtInformation.getText();
+                try {
+                    bb.EditBillboard(strBillboardName, strAuthor, strTextColour, strBackgroundColour, strMessage, strImage, strInformation);
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+                //clear the textFeilds once the SQL code has been executed
+                txtBillboardName.setText("");
+                txtAuthor.setText("");
+                txtTextColour.setText("");
+                txtBackgroundColour.setText("");
+                txtMessage.setText("");
+                txtImage.setText("");
+                txtInformation.setText("");
+
+                txtBillboardName.setEditable(true);
+                txtAuthor.setEditable(false);
+                txtTextColour.setEditable(false);
+                txtBackgroundColour.setEditable(false);
+                txtMessage.setEditable(false);
+                txtImage.setEditable(false);
+                txtInformation.setEditable(false);
+                btnSearch.setEnabled(true);
+            }
+        });
+
+
+
+
+        btnSearch = createButton("Search");
+//################################################################################################
+        btnSearch.addActionListener(new ActionListener() {
+            //when the submit button is click make covert the inputs into string. then execute the CreateEditBilloard from the Billboard Class
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                try {
+                    if (!BillboardCheckSQL(txtBillboardName.getText())){
+                        JOptionPane.showMessageDialog(null,"User name does not exists.");
+                    }
+                    else{
+                        setBillboardSQL();
+                        txtBillboardName.setEditable(false);
+                        txtAuthor.setEditable(true);
+                        txtTextColour.setEditable(true);
+                        txtBackgroundColour.setEditable(true);
+                        txtMessage.setEditable(true);
+                        txtImage.setEditable(true);
+                        txtInformation.setEditable(true);
+                        btnSearch.setEnabled(false);
+                    }
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+
+            }
+        });
 
         constraints.anchor = GridBagConstraints.WEST;
         constraints.insets=new Insets(10,10,10,10);
@@ -151,12 +205,14 @@ public class CreateBillboardGUI extends JFrame {
         panel.add(txtInformation,constraints);
 
         //add button to panel
-        constraints.gridwidth =2;
+        constraints.gridwidth =1;
         constraints.insets = new Insets(5,10,5,10);
-        constraints.anchor = GridBagConstraints.EAST;
+        constraints.anchor = GridBagConstraints.CENTER;
         constraints.gridx=0;
         constraints.gridy=7;
         panel.add(btnSubmit,constraints);
+        constraints.gridx=1;
+        panel.add(btnSearch,constraints);
 
         getContentPane().add(panel);
         //set the location of the GUI
@@ -218,27 +274,40 @@ public class CreateBillboardGUI extends JFrame {
         return label;
     }
 
-    /**
-     * This function is used to determine if a billboard already exists
-     *
-     * @param billboardName the name of the billboard being created
-     * @return a boolean value to whether a billboard already exists
-     * @throws SQLException
-     * @author Lachlan
-     */
-    private Boolean checkDublicate(String billboardName) throws SQLException {
+    private void setBillboardSQL() throws SQLException {
+        Statement statement = Server.connection.createStatement();
+        ResultSet resultSet = statement.executeQuery("SELECT * FROM  billboard");
+
+        while(resultSet.next()) {
+            if (txtBillboardName.getText().equals(resultSet.getString(1))){
+                txtAuthor.setText(resultSet.getString(2));
+                txtTextColour.setText(resultSet.getString(3));
+                txtBackgroundColour.setText(resultSet.getString(4));
+                txtMessage.setText(resultSet.getString(5));
+                txtImage.setText(resultSet.getString(5));
+                txtInformation.setText(resultSet.getString(5));
+                break;
+            }
+        }
+
+        statement.close();
+    }
+
+    private boolean BillboardCheckSQL(String BillboardName) throws SQLException {
         boolean existing = false;
 
         Statement statement = Server.connection.createStatement();
-        ResultSet rs = statement.executeQuery("SELECT BillboardName FROM Billboard");
+        ResultSet resultSet = statement.executeQuery("SELECT BillboardName FROM  billboard");
 
-        while (rs.next()) {
-            if (billboardName.equals(rs.getString(1))) {
+        while(resultSet.next()){
+            if (BillboardName.equals(resultSet.getString(1))){
                 existing = true;
                 break;
             }
         }
+
         statement.close();
         return existing;
     }
+
 }

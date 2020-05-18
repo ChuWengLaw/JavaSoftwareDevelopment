@@ -1,6 +1,5 @@
-package Main.billboard;
+package ControlPanel.billboard;
 
-import Main.Main;
 import Server.Server;
 
 import javax.swing.*;

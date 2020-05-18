@@ -101,14 +101,14 @@ public class Server {
             }
             else if (o instanceof CreateBBRequest) {
                 CreateBBRequest temp = (CreateBBRequest) o;
-                Billboard bb = new Billboard();
+                BillboardSQL bb = new BillboardSQL();
                 bb.CreateBillboard(temp.getBillboardName(), temp.getAuthor(), temp.getTextColour(), temp.getBackgroundColour(),
                         temp.getMessage(), temp.getImage(), temp.getInformation());
                 oos.flush();
             }
             else if (o instanceof DeleteBBRequest) {
                 DeleteBBRequest temp = (DeleteBBRequest) o;
-                Billboard bb = new Billboard();
+                BillboardSQL bb = new BillboardSQL();
                 bb.DeleteBillboard(temp.getBillboardName());
                 oos.flush();
             }

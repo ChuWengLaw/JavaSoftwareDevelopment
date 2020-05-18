@@ -1,17 +1,12 @@
 package ControlPanel.billboard;
 
 import ControlPanel.Client;
-import Server.Request.BBInfoRequest;
 import Server.Request.DeleteBBRequest;
-import Server.Server;
-import Server.Billboard;
+import Server.BillboardSQL;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.*;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 
 
 public class DeleteBillboardGUI extends JFrame {

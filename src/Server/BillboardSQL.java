@@ -3,7 +3,7 @@ package Server;
 import javax.swing.*;
 import java.sql.*;
 
-public class Billboard {
+public class BillboardSQL {
 
     /* attributes
     User Creator
@@ -21,7 +21,7 @@ public class Billboard {
      *  holding the address list.
      *  @author Law
      */
-    public Billboard() {}
+    public BillboardSQL() {}
 
     //use the GetCreateBillboardPermission() method
     /**

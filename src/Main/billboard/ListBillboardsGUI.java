@@ -5,6 +5,7 @@ import Main.Main;
 
 
 import Main.user.User;
+import Server.Server;
 
 
 import javax.swing.*;
@@ -28,8 +29,7 @@ public class ListBillboardsGUI extends JFrame {
 
     private void createGUI() {
         try{
-            User user = new User();
-            Statement statement = Main.connection.createStatement();
+            Statement statement = Server.connection.createStatement();
             ResultSet rs = statement.executeQuery(
                     "SELECT BillboardName, UserName, TextColour, " +
                             "BackGroundColour, Message, Image, Information FROM billboard");

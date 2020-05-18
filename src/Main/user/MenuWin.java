@@ -2,6 +2,8 @@ package Main.user;
 
 import Main.Main;
 import Main.billboard.BillBoardManagementGUI;
+import Server.Server;
+
 import java.awt.*;
 import java.awt.event.ActionListener;
 import javax.swing.*;
@@ -20,7 +22,7 @@ public class MenuWin extends JFrame{
 
         // Button setting
         ActionListener editUserListener = e -> {
-            Main.userManagementWin.setVisible(true);
+            Server.userManagementWin.setVisible(true);
             super.setEnabled(false);
         };
         editUserButton.addActionListener(editUserListener);
@@ -29,7 +31,7 @@ public class MenuWin extends JFrame{
         billboardManageButton.addActionListener(editBillboardListener);
 
         ActionListener changePasswordListener = e -> {
-            Main.changePasswordWin.setVisible(true);
+            Server.changePasswordWin.setVisible(true);
             super.setEnabled(false);
         };
         changePasswordButton.addActionListener(changePasswordListener);

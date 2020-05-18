@@ -1,10 +1,9 @@
 package Main.billboard;
 
 import Main.Main;
-import Main.billboard.Billboard;
+import Server.Server;
 
 import javax.swing.*;
-import javax.swing.plaf.nimbus.State;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.*;
@@ -161,7 +160,7 @@ public class InformationGUI extends JFrame {
      * @throws SQLException
      */
     private String setInfo(String name) throws SQLException {
-        Statement statement = Main.connection.createStatement();
+        Statement statement = Server.connection.createStatement();
         ResultSet rs = statement.executeQuery("SELECT BillboardName, Information FROM Billboard");
 
         String result = null;
@@ -186,7 +185,7 @@ public class InformationGUI extends JFrame {
     private boolean checkBillboard(String Billboard) throws SQLException {
         boolean existing = false;
 
-        Statement statement = Main.connection.createStatement();
+        Statement statement = Server.connection.createStatement();
         ResultSet rs = statement.executeQuery("SELECT BillboardName FROM Billboard");
 
         while (rs.next()){

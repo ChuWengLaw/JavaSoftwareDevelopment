@@ -1,8 +1,6 @@
 package ControlPanel;
 
-import Server.Request.GernalReply;
-import Server.Request.LoginReply;
-import Server.Request.SearchReply;
+import Server.Request.*;
 
 import java.io.*;
 import java.net.Socket;

@@ -2,8 +2,6 @@ package Server;
 
 import ControlPanel.User;
 import Server.Request.*;
-import ControlPanel.*;
-
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -91,11 +89,6 @@ public class Server {
 
             // Handle request
             requestExecute(o, oos);
-
-            /** TODO: We receive the action enum and object from client
-             * then create the user/bb object using object.username....
-              */
-
             oos.close();
             ois.close();
             socket.close();
@@ -255,6 +248,19 @@ public class Server {
                 oos.writeObject(gernalReply);
                 oos.flush();
             }
+        }
+        else if (o instanceof CreateBBRequest) {
+            CreateBBRequest temp = (CreateBBRequest) o;
+            BillboardSQL bb = new BillboardSQL();
+            bb.CreateBillboard(temp.getBillboardName(), temp.getAuthor(), temp.getTextColour(), temp.getBackgroundColour(),
+                    temp.getMessage(), temp.getImage(), temp.getInformation());
+            oos.flush();
+        }
+        else if (o instanceof DeleteBBRequest) {
+            DeleteBBRequest temp = (DeleteBBRequest) o;
+            BillboardSQL bb = new BillboardSQL();
+            bb.DeleteBillboard(temp.getBillboardName());
+            oos.flush();
         }
     }
 }

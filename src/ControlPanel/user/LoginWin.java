@@ -8,6 +8,8 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 import javax.swing.*;
 
+import static ControlPanel.Client.connectServer;
+
 public class LoginWin extends JFrame implements Runnable{
     private JLabel labelUserID = new JLabel("User ID");
     private JLabel labelPassword= new JLabel("Password");

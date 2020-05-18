@@ -3,7 +3,6 @@ package ControlPanel.user;
 import ControlPanel.Client;
 import ControlPanel.Main;
 import Server.Request.*;
-
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;

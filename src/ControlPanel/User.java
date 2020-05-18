@@ -1,7 +1,6 @@
-package ControlPanel;  //not sure if this is correct
-
-
+package ControlPanel;
 import java.io.Serializable;
+
 
 //Double check method prefixes  (public/private/static ect)
 public class User implements Serializable {

@@ -1,11 +1,9 @@
 package ControlPanel.user;
-
 import ControlPanel.Client;
 import ControlPanel.Main;
 import ControlPanel.User;
 import Server.Request.EditUserRequest;
 import Server.Request.SearchRequest;
-import Server.Server;
 
 import java.awt.*;
 import java.awt.event.ActionListener;

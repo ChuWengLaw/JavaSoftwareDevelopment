@@ -2,7 +2,6 @@ package ControlPanel.user;
 
 import ControlPanel.*;
 import Server.*;
-
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;

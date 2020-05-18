@@ -64,10 +64,10 @@ public class ListUserWin extends JFrame{
                             "ScheduleBillboardsPermission, EditUsersPermission from user");
             ResultSetMetaData rsmd = rs.getMetaData();
             int columnCount = rsmd.getColumnCount();
-            Vector column  = new Vector(columnCount);
+            Vector columnheader  = new Vector(columnCount);
 
             for (int i = 1; i<= columnCount; i++){
-                column.add(rsmd.getColumnName(i));
+                columnheader.add(rsmd.getColumnName(i));
             }
 
             Vector data = new Vector();
@@ -77,13 +77,12 @@ public class ListUserWin extends JFrame{
                 row = new Vector(columnCount);
                 for (int i = 1; i <= columnCount; i++) {
                     row.add(rs.getString(i));
+                    data.add(row);
+                    table = new JTable(data,columnheader);
+                    scrollpane = new JScrollPane(table);
+                    panel.add(scrollpane, BorderLayout.CENTER);
+                    getContentPane().add(panel);
                 }
-
-                data.add(row);
-                table = new JTable(data,column);
-                scrollpane = new JScrollPane(table);
-                panel.add(scrollpane, BorderLayout.CENTER);
-                getContentPane().add(panel);
             }
 
             JFrame frame = new JFrame();
@@ -91,7 +90,7 @@ public class ListUserWin extends JFrame{
             frame.setLocationRelativeTo(null);
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             JPanel panel = new JPanel();
-            JTable table = new JTable(data,column);
+            JTable table = new JTable(data,columnheader);
             JScrollPane scrollpane = new JScrollPane(table);
             panel.setLayout(new BorderLayout());
             panel.add(scrollpane, BorderLayout.CENTER);

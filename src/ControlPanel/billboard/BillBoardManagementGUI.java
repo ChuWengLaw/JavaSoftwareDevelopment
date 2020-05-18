@@ -1,7 +1,6 @@
-package Main.billboard;
+package ControlPanel.billboard;
 
-import Main.Main;
-import Server.Server;
+import ControlPanel.Main;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -14,7 +13,7 @@ public class BillBoardManagementGUI extends JFrame {
 
     //define the buttons
     private JButton btnCreateBB;
-    private JButton btnEditBB;
+    private JButton btnDeleteBB;
     private JButton btnInfoBB;
     private JButton btnListBB;
 
@@ -32,14 +31,14 @@ public class BillBoardManagementGUI extends JFrame {
         WindowListener windowListener = new WindowListener() {
             @Override
             public void windowOpened(WindowEvent e) {
-                Server.menuWin.setEnabled(false);}
+                Main.menuWin.setEnabled(false);}
 
             @Override
             public void windowClosing(WindowEvent e) {}
 
             @Override
             public void windowClosed(WindowEvent e) {
-                Server.menuWin.setEnabled(true);
+                Main.menuWin.setEnabled(true);
             }
 
             @Override
@@ -57,7 +56,7 @@ public class BillBoardManagementGUI extends JFrame {
         super.addWindowListener(windowListener);
         //set up buttons
         btnCreateBB = createButton("Create Billboard");
-        btnEditBB = createButton("Edit Billboard");
+        btnDeleteBB = createButton("Delete Billboard");
         btnInfoBB = createButton("Billboard Info");
         btnListBB = createButton("List Existing Billboards");
 
@@ -68,10 +67,10 @@ public class BillBoardManagementGUI extends JFrame {
             }
         });
 
-        btnEditBB.addActionListener(new ActionListener() {
+        btnDeleteBB.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new EditBillboardGUI();
+                new DeleteBillboardGUI();
             }
         });
 
@@ -99,7 +98,7 @@ public class BillBoardManagementGUI extends JFrame {
         bBMenu.add(btnCreateBB, constraints);
 
         constraints.gridx = 1;
-        bBMenu.add(btnEditBB, constraints);
+        bBMenu.add(btnDeleteBB, constraints);
 
         constraints.gridx = 2;
         bBMenu.add(btnInfoBB, constraints);

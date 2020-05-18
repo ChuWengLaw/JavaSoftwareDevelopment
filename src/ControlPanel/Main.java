@@ -1,16 +1,21 @@
-package Main;
-
-import Main.billboard.BillBoardManagementGUI;
-import Main.user.*;
+package ControlPanel;
+import ControlPanel.user.*;
 
 import javax.swing.*;
-import java.io.FileInputStream;
-import java.net.Socket;
-import java.security.NoSuchAlgorithmException;
-import java.sql.*;
-import java.util.Properties;
+
 
 public class Main {
+    public static User loginUser = new User();
+
+    // Setting up windows
+    public static MenuWin menuWin = new MenuWin();
+    public static UserManagementWin userManagementWin = new UserManagementWin();
+    public static ChangePasswordWin changePasswordWin = new ChangePasswordWin();
+    public static CreateUserWin createUserWin = new CreateUserWin();
+    public static EditUserWin editUserWin = new EditUserWin();
+    public static DeleteUserWin deleteUserWin = new DeleteUserWin();
+    public static ListUserWin listUserWin = new ListUserWin();
+
     public static void main(String[] args) {
         // User the commented code to start a new connection to server
 //        Properties props = new Properties();

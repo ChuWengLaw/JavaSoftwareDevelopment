@@ -1,12 +1,12 @@
-package Main.user;
+package ControlPanel.user;
 
-import Main.Main;
-import Server.Server;
+import ControlPanel.Main;
 
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.sql.SQLException;
 import javax.swing.*;
 
 public class UserManagementWin extends JFrame{
@@ -14,6 +14,7 @@ public class UserManagementWin extends JFrame{
     private JButton listUserButton = new JButton("List all users");
     private JButton editUserButton = new JButton("Edit user");
     private JButton deleteUserButton = new JButton("Delete user");
+    private JButton changePasswordButton = new JButton("Change password");
     private JPanel panel = new JPanel(new GridBagLayout());
     private GridBagConstraints constraints = new GridBagConstraints();
 
@@ -31,7 +32,7 @@ public class UserManagementWin extends JFrame{
 
             @Override
             public void windowClosed(WindowEvent e) {
-                Server.menuWin.setEnabled(true);
+                Main.menuWin.setEnabled(true);
             }
 
             @Override
@@ -50,26 +51,41 @@ public class UserManagementWin extends JFrame{
 
         // Button setting
         ActionListener createUserListener = e -> {
-            Server.createUserWin.setVisible(true);
+            Main.createUserWin.setVisible(true);
             super.setEnabled(false);
         };
         createUserButton.addActionListener(createUserListener);
 
         ActionListener editUserListener = e -> {
-            Server.editUserWin.setVisible(true);
+            Main.editUserWin.setVisible(true);
             super.setEnabled(false);
         };
         editUserButton.addActionListener(editUserListener);
 
         ActionListener deleteActionListener = e -> {
-            Server.deleteUserWin.setVisible(true);
+            Main.deleteUserWin.setVisible(true);
             super.setEnabled(false);
         };
         deleteUserButton.addActionListener(deleteActionListener);
 
-        ActionListener listActionListener = e-> new ListUserWin();
+        ActionListener listActionListener = e-> {
+            Main.listUserWin.setVisible(true);
+
+            try {
+                Main.listUserWin.createTableSQL();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+
+            super.setEnabled(false);
+        };
         listUserButton.addActionListener(listActionListener);
 
+        ActionListener changePasswordListener = e-> {
+            Main.changePasswordWin.setVisible(true);
+            super.setEnabled(false);
+        };
+        changePasswordButton.addActionListener(changePasswordListener);
 
         // Panel setting
         constraints.anchor = GridBagConstraints.WEST;
@@ -88,10 +104,22 @@ public class UserManagementWin extends JFrame{
         constraints.gridx =3;
         panel.add(deleteUserButton, constraints);
 
+        constraints.gridx = 4;
+        panel.add(changePasswordButton, constraints);
+
         getContentPane().add(panel);
 
         // Display the window
         setLocation(900,350);
         pack();
+    }
+
+    public void permission(boolean permission){
+        if(!permission){
+            createUserButton.setEnabled(false);
+            editUserButton.setEnabled(false);
+            deleteUserButton.setEnabled(false);
+            listUserButton.setEnabled(false);
+        }
     }
 }

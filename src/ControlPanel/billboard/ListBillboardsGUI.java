@@ -1,18 +1,12 @@
-package Main.billboard;
+package ControlPanel.billboard;
 
-import Main.Main;
-
-
-
-import Main.user.User;
-import Server.Server;
+import Server.*;
 
 
 import javax.swing.*;
 import java.awt.*;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Vector;
 

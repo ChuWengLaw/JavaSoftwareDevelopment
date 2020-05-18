@@ -1,12 +1,13 @@
-package Main.user;
+package ControlPanel.user;
 
-import Main.Main;
-import Server.Server;
-
+import ControlPanel.Client;
+import ControlPanel.Main;
+import Server.Request.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.*;
 import javax.swing.*;
@@ -43,8 +44,8 @@ public class CreateUserWin extends JFrame{
 
                         @Override
                         public void windowClosed(WindowEvent e) {
-                                Server.userManagementWin.setEnabled(true);
-                                Server.userManagementWin.setVisible(true);
+                                Main.userManagementWin.setEnabled(true);
+                                Main.userManagementWin.setVisible(true);
                         }
 
                         @Override
@@ -67,19 +68,24 @@ public class CreateUserWin extends JFrame{
                                 JOptionPane.showMessageDialog(null,"User name and password field cannot be empty");
                         }
                         else{
-                                try {
-                                        if(checkUserSQL(userNameTextField.getText())){
-                                                JOptionPane.showMessageDialog(null,"User name already exists");
-                                        }
-                                        else{
-                                                String saltString = Server.saltString();
-                                                String hasedPassword = Server.hashAString(passwordTextField.getPassword() + saltString);
-                                                createUserSQL(userNameTextField.getText(), hasedPassword, checkBox1.isSelected(),
-                                                        checkBox2.isSelected(), checkBox3.isSelected(), checkBox4.isSelected(), saltString);
-                                        }
+                                CreateUserRequest createUserRequest = new CreateUserRequest(userNameTextField.getText(), String.valueOf(passwordTextField.getPassword()), checkBox1.isSelected(),
+                                        checkBox2.isSelected(), checkBox3.isSelected(), checkBox4.isSelected());
 
-                                } catch (SQLException | NoSuchAlgorithmException ex) {
+                                try {
+                                        Client.connectServer(createUserRequest);
+                                } catch (IOException ex) {
                                         ex.printStackTrace();
+                                } catch (InterruptedException ex) {
+                                        ex.printStackTrace();
+                                } catch (ClassNotFoundException ex) {
+                                        ex.printStackTrace();
+                                }
+
+                                if (Client.isRequestState()){
+                                        JOptionPane.showMessageDialog(null,"User creation successful!");
+                                }
+                                else{
+                                        JOptionPane.showMessageDialog(null, "User name existed!");
                                 }
                         }
                 };
@@ -143,39 +149,5 @@ public class CreateUserWin extends JFrame{
                 // Display the window
                 setLocation(900,350);
                 pack();
-        }
-
-        private void createUserSQL(String userName, String userPassword,
-                                   boolean createBillboardsPermission, boolean editAllBillboardPermission,
-                                   boolean scheduleBillboardsPermission, boolean editUsersPermission, String saltValue) throws SQLException {
-                PreparedStatement pstatement = Server.connection.prepareStatement("INSERT INTO user  " +
-                        "(userName, userPassword,  createBillboardsPermission, editAllBillboardPermission, scheduleBillboardsPermission, editUsersPermission, saltValue) " +
-                        "VALUES (?, ?, ?, ?, ?, ?, ?)");
-                pstatement.setString(1, userName);
-                pstatement.setString(2, userPassword);
-                pstatement.setBoolean(3, createBillboardsPermission);
-                pstatement.setBoolean(4, editAllBillboardPermission);
-                pstatement.setBoolean(5, scheduleBillboardsPermission);
-                pstatement.setBoolean(6, editUsersPermission);
-                pstatement.setString(7, saltValue);
-                pstatement.executeUpdate();
-                pstatement.close();
-        }
-
-        private boolean checkUserSQL(String userName) throws SQLException {
-                boolean existing = false;
-
-                Statement statement = Server.connection.createStatement();
-                ResultSet resultSet = statement.executeQuery("SELECT userName FROM  user");
-
-                while(resultSet.next()){
-                        if (userName.equals(resultSet.getString(1))){
-                                existing = true;
-                                break;
-                        }
-                }
-
-                statement.close();
-                return existing;
         }
 }

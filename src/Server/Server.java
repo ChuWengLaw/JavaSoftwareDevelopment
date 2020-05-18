@@ -1,8 +1,6 @@
 package Server;
 
-import Server.Request.LoginReply;
-import Server.Request.LoginRequest;
-
+import Server.Request.*;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -87,7 +85,7 @@ public class Server {
             Object o = ois.readObject();
 
             // Handle request
-            if (o instanceof LoginRequest){
+            if (o instanceof LoginRequest) {
                 LoginRequest loginRequest = (LoginRequest) o;
                 boolean loginState = checkPasswordSQL(loginRequest.getUserName(), loginRequest.getPassword());
                 System.out.println(loginRequest.getUserName());
@@ -101,10 +99,19 @@ public class Server {
                     oos.flush();
                 }
             }
-
-            /** TODO: We receive the action enum and object from client
-             * then create the user/bb object using object.username....
-              */
+            else if (o instanceof CreateBBRequest) {
+                CreateBBRequest temp = (CreateBBRequest) o;
+                Billboard bb = new Billboard();
+                bb.CreateBillboard(temp.getBillboardName(), temp.getAuthor(), temp.getTextColour(), temp.getBackgroundColour(),
+                        temp.getMessage(), temp.getImage(), temp.getInformation());
+                oos.flush();
+            }
+            else if (o instanceof DeleteBBRequest) {
+                DeleteBBRequest temp = (DeleteBBRequest) o;
+                Billboard bb = new Billboard();
+                bb.DeleteBillboard(temp.getBillboardName());
+                oos.flush();
+            }
 
             oos.close();
             ois.close();

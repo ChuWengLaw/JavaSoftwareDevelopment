@@ -59,7 +59,10 @@ public class Billboard {
             }
             //If Billboard exists, return an error saying to use edit instead
             if (ExistFlag == true) {
-                System.out.println("Already exists, Either create a new name or go to edit and edit the existing billboard");
+                ResultSet update = Server.statement.executeQuery("UPDATE Billboard SET UserName = '" +
+                        CreatedByUserName + "',TextColour = '" + BillboardTextColour + "',BackGroundColour = '" +
+                        BillboardBackgroundColour + "',Message = '" + BillboardMessage + "',Image = '" + BillboardPicture +
+                        "',Information = '" + BillboardInformation + "' WHERE BillboardName = '" + BillboardName + "';");
             }
             //if billboard does not exist it will create a new billboard
             else {
@@ -74,45 +77,45 @@ public class Billboard {
     }
 
 
-    public void EditBillboard(String BillboardName, String CreatedByUserName, String BillboardTextColour,
-                                    String BillboardBackgroundColour, String BillboardMessage,
-                                    String BillboardPicture, String BillboardInformation) throws SQLException {
-
-        /* Flags for checking billboard existence */
-        boolean ExistFlag = false;
-
-
-        try {
-            ResultSet resultSet = Server.statement.executeQuery("SELECT * FROM Billboard");
-            while (resultSet.next()) {
-                if ( BillboardName.equals(resultSet.getString("BillboardName")) ) {
-                    ExistFlag = true;
-                    break;
-                }
-                else {
-                    ExistFlag = false;
-                }
-            }
-            //if it exists it will edit it
-            if (ExistFlag == true) {
-
-                ResultSet update = Server.statement.executeQuery("UPDATE Billboard SET UserName = '" + CreatedByUserName + "',TextColour = '" + BillboardTextColour +
-                        "',BackGroundColour = '" + BillboardBackgroundColour + "',Message = '" + BillboardMessage + "',Image = '" +
-                        BillboardPicture + "',Information = '" + BillboardInformation + "' WHERE BillboardName = '" + BillboardName + "';");
-
-
-            }
-
-
-            //if it doesnt exist it will prompt to create a new billboard
-            else {
-                JOptionPane.showMessageDialog(null,"Doesn't exist please create instead.");
-            }
-        } catch (SQLException e) {
-            System.out.println(e);
-
-        }
-    }
+//    public void EditBillboard(String BillboardName, String CreatedByUserName, String BillboardTextColour,
+//                                    String BillboardBackgroundColour, String BillboardMessage,
+//                                    String BillboardPicture, String BillboardInformation) throws SQLException {
+//
+//        /* Flags for checking billboard existence */
+//        boolean ExistFlag = false;
+//
+//
+//        try {
+//            ResultSet resultSet = Server.statement.executeQuery("SELECT * FROM Billboard");
+//            while (resultSet.next()) {
+//                if ( BillboardName.equals(resultSet.getString("BillboardName")) ) {
+//                    ExistFlag = true;
+//                    break;
+//                }
+//                else {
+//                    ExistFlag = false;
+//                }
+//            }
+//            //if it exists it will edit it
+//            if (ExistFlag == true) {
+//
+//                ResultSet update = Server.statement.executeQuery("UPDATE Billboard SET UserName = '" + CreatedByUserName + "',TextColour = '" + BillboardTextColour +
+//                        "',BackGroundColour = '" + BillboardBackgroundColour + "',Message = '" + BillboardMessage + "',Image = '" +
+//                        BillboardPicture + "',Information = '" + BillboardInformation + "' WHERE BillboardName = '" + BillboardName + "';");
+//
+//
+//            }
+//
+//
+//            //if it doesnt exist it will prompt to create a new billboard
+//            else {
+//                JOptionPane.showMessageDialog(null,"Doesn't exist please create instead.");
+//            }
+//        } catch (SQLException e) {
+//            System.out.println(e);
+//
+//        }
+//    }
 
 
     /**
@@ -144,7 +147,6 @@ public class Billboard {
         } catch (SQLException e) {
             System.out.println(e);
         }
-        //TODO: Order by Schedule
     }
 
     /**

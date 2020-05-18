@@ -1,8 +1,7 @@
-package Main.user;
+package ControlPanel.user;
 
-import Main.Main;
-import Main.billboard.BillBoardManagementGUI;
-import Server.Server;
+import ControlPanel.Main;
+import ControlPanel.billboard.BillBoardManagementGUI;
 
 import java.awt.*;
 import java.awt.event.ActionListener;

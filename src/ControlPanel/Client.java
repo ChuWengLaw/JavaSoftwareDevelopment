@@ -1,11 +1,8 @@
-package Server;
+package ControlPanel;
 
 import Server.Request.LoginReply;
-import Server.Request.LoginRequest;
 
 import java.io.*;
-import java.net.InetAddress;
-import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Properties;
 
@@ -13,7 +10,7 @@ public class Client {
     private static Object requestReply;
     private static boolean requestState;
 
-    public static void main(Object args) throws IOException, InterruptedException, ClassNotFoundException {
+    public static void connectServer(Object args) throws IOException, InterruptedException, ClassNotFoundException {
         // Set up socket.
         Properties props = new Properties();
         FileInputStream in = null;

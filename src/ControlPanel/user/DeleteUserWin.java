@@ -1,6 +1,6 @@
-package Main.user;
+package ControlPanel.user;
 
-import Main.Main;
+import ControlPanel.Main;
 import Server.*;
 
 import java.awt.*;

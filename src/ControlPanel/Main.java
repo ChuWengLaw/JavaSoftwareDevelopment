@@ -1,6 +1,6 @@
-package Main;
+package ControlPanel;
 
-import Main.user.*;
+import ControlPanel.user.*;
 import Server.User;
 
 import javax.swing.*;

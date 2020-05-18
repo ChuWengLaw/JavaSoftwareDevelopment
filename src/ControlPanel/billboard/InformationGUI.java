@@ -1,15 +1,12 @@
-package Main.billboard;
+package ControlPanel.billboard;
 
-import Main.Main;
-import Server.Server;
-
+import ControlPanel.Client;
+import Server.Request.BBInfoRequest;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.*;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+
 
 public class InformationGUI extends JFrame {
 
@@ -20,8 +17,6 @@ public class InformationGUI extends JFrame {
     //define text boxes
     private JTextField txtBillboardName;
     private JTextField txtInfo;
-
-    private String strBillboardName;
 
     //define Labels
     private JLabel lblBillboardName;
@@ -50,14 +45,9 @@ public class InformationGUI extends JFrame {
         btnGetInfo.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                BBInfoRequest temp = new BBInfoRequest(txtBillboardName.getText());
                 try{
-                    if (!checkBillboard(txtBillboardName.getText())){
-                        JOptionPane.showMessageDialog(null,"Billboard name entered not found.");
-                    }
-                    else{
-                        txtInfo.setText(setInfo(txtBillboardName.getText()));
-                    }
+                    Client.connectServer(temp);
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
@@ -78,7 +68,7 @@ public class InformationGUI extends JFrame {
 
         //create labels
         lblBillboardName = createLabel("Billboard Name:");
-        lblInfo =createLabel("Information:");
+        lblInfo = createLabel("Information:");
 
         //create textBox
         txtBillboardName = createText();
@@ -152,49 +142,49 @@ public class InformationGUI extends JFrame {
         return button;
     }
 
-    /**
-     * function gets the information for a particular billboard
-     * @author Lachlan
-     * @param name the name of the Billboard
-     * @return the information for that billboard
-     * @throws SQLException
-     */
-    private String setInfo(String name) throws SQLException {
-        Statement statement = Server.connection.createStatement();
-        ResultSet rs = statement.executeQuery("SELECT BillboardName, Information FROM Billboard");
-
-        String result = null;
-
-        while (rs.next()){
-            if(name.equals(rs.getString(1))){
-                result = rs.getString(2);
-                break;
-            }
-        }
-
-        return result;
-    }
-
-    /**
-     * the function check if a billboard exists
-     * @author Lachlan
-     * @param Billboard billboard we want to search for
-     * @return true or false to whether the billboard exist
-     * @throws SQLException
-     */
-    private boolean checkBillboard(String Billboard) throws SQLException {
-        boolean existing = false;
-
-        Statement statement = Server.connection.createStatement();
-        ResultSet rs = statement.executeQuery("SELECT BillboardName FROM Billboard");
-
-        while (rs.next()){
-            if (Billboard.equals(rs.getString(1))){
-                existing = true;
-                break;
-            }
-        }
-        statement.close();
-        return existing;
-    }
+//    /**
+//     * function gets the information for a particular billboard
+//     * @author Lachlan
+//     * @param name the name of the Billboard
+//     * @return the information for that billboard
+//     * @throws SQLException
+//     */
+//    private String setInfo(String name) throws SQLException {
+//        Statement statement = Server.connection.createStatement();
+//        ResultSet rs = statement.executeQuery("SELECT BillboardName, Information FROM Billboard");
+//
+//        String result = null;
+//
+//        while (rs.next()){
+//            if(name.equals(rs.getString(1))){
+//                result = rs.getString(2);
+//                break;
+//            }
+//        }
+//
+//        return result;
+//    }
+//
+//    /**
+//     * the function check if a billboard exists
+//     * @author Lachlan
+//     * @param Billboard billboard we want to search for
+//     * @return true or false to whether the billboard exist
+//     * @throws SQLException
+//     */
+//    private boolean checkBillboard(String Billboard) throws SQLException {
+//        boolean existing = false;
+//
+//        Statement statement = Server.connection.createStatement();
+//        ResultSet rs = statement.executeQuery("SELECT BillboardName FROM Billboard");
+//
+//        while (rs.next()){
+//            if (Billboard.equals(rs.getString(1))){
+//                existing = true;
+//                break;
+//            }
+//        }
+//        statement.close();
+//        return existing;
+//    }
 }

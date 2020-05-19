@@ -7,7 +7,6 @@ import org.w3c.dom.Element;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.stream.util.StreamReaderDelegate;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
@@ -15,13 +14,11 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.concurrent.atomic.AtomicReference;
 
 public class XMLFunctions {
 
     public void makeXML(String billboardName, String textColour, String backgroundColour,
-                        String message, String image, String information) throws ParserConfigurationException {
+                        String message, String image, String information, String informationColour) throws ParserConfigurationException {
         String path = "xmlBillboards" + billboardName + ".xml";
         try {
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newDefaultInstance();
@@ -59,9 +56,17 @@ public class XMLFunctions {
 
             //information element
             Element info = document.createElement("information");
-            Attr infoColour = document.createAttribute("colour");
-            infoColour.setValue(textColour);
-            info.setAttributeNode(infoColour);
+            if (informationColour == "") {
+                Attr infoColour = document.createAttribute("colour");
+                infoColour.setValue("Black");
+                info.setAttributeNode(infoColour);
+                info.appendChild(document.createTextNode(information));
+            } else {
+                Attr infoColour = document.createAttribute("colour");
+                infoColour.setValue(textColour);
+                info.setAttributeNode(infoColour);
+                info.appendChild(document.createTextNode(information));
+            }
             billboard.appendChild(info);
 
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
@@ -76,6 +81,10 @@ public class XMLFunctions {
         } catch (TransformerException e) {
             e.printStackTrace();
         }
+    }
+
+    public void extractXML() {
+
     }
 
 }

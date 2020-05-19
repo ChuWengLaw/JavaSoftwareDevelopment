@@ -18,13 +18,13 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class CreateXML {
+public class XMLFunctions {
 
     public void makeXML(String billboardName, String textColour, String backgroundColour,
                         String message, String image, String information) throws ParserConfigurationException {
-        String path = "xmlBillboards"+billboardName+".xml";
-        try
-        {DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newDefaultInstance();
+        String path = "xmlBillboards" + billboardName + ".xml";
+        try {
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newDefaultInstance();
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
 
             Document document = documentBuilder.newDocument();
@@ -46,14 +46,14 @@ public class CreateXML {
 
             //picture element
             Element pic = document.createElement("picture");
-            if(image.startsWith("http")){
+            if (image.startsWith("http")) {
                 Attr picURL = document.createAttribute("url");
                 picURL.setValue(image);
                 pic.setAttributeNode(picURL);
-            } else{
-               Attr picData = document.createAttribute("data");
-               picData.setValue(image);
-               pic.setAttributeNode(picData);
+            } else {
+                Attr picData = document.createAttribute("data");
+                picData.setValue(image);
+                pic.setAttributeNode(picData);
             }
             billboard.appendChild(pic);
 
@@ -69,7 +69,7 @@ public class CreateXML {
             DOMSource domSource = new DOMSource(document);
             StreamResult streamResult = new StreamResult(new File(path));
 
-            transformer.transform(domSource,streamResult);
+            transformer.transform(domSource, streamResult);
 
         } catch (ParserConfigurationException | TransformerConfigurationException e) {
             e.printStackTrace();

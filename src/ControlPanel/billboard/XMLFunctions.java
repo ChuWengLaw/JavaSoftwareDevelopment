@@ -35,9 +35,15 @@ public class XMLFunctions {
 
             //message element
             Element bbMessage = document.createElement("message");
-            Attr textCol = document.createAttribute("colour");
+            if (textColour==""){
+                Attr textCol = document.createAttribute("colour");
+                textCol.setValue("Black");
+                bbMessage.setAttributeNode(textCol);
+            }
+            else
+            {Attr textCol = document.createAttribute("colour");
             textCol.setValue(textColour);
-            bbMessage.setAttributeNode(textCol);
+            bbMessage.setAttributeNode(textCol);}
             bbMessage.appendChild(document.createTextNode(message));
             billboard.appendChild(bbMessage);
 
@@ -58,12 +64,12 @@ public class XMLFunctions {
             Element info = document.createElement("information");
             if (informationColour == "") {
                 Attr infoColour = document.createAttribute("colour");
-                infoColour.setValue("Black");
+                infoColour.setValue(textColour);
                 info.setAttributeNode(infoColour);
                 info.appendChild(document.createTextNode(information));
             } else {
                 Attr infoColour = document.createAttribute("colour");
-                infoColour.setValue(textColour);
+                infoColour.setValue(informationColour);
                 info.setAttributeNode(infoColour);
                 info.appendChild(document.createTextNode(information));
             }

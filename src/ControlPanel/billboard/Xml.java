@@ -1,4 +1,5 @@
 package ControlPanel.billboard;
 
-public class xml {
+public class Xml {
+
 }

@@ -46,9 +46,15 @@ public class CreateXML {
 
             //picture element
             Element pic = document.createElement("picture");
-            Attr picURL = document.createAttribute("url");
-            picURL.setValue(image);
-            pic.setAttributeNode(picURL);
+            if(image.startsWith("http")){
+                Attr picURL = document.createAttribute("url");
+                picURL.setValue(image);
+                pic.setAttributeNode(picURL);
+            } else{
+               Attr picData = document.createAttribute("data");
+               picData.setValue(image);
+               pic.setAttributeNode(picData);
+            }
             billboard.appendChild(pic);
 
             //information element

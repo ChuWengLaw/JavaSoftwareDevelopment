@@ -22,7 +22,7 @@ public class CreateXML {
 
     public void makeXML(String billboardName, String textColour, String backgroundColour,
                         String message, String image, String information) throws ParserConfigurationException {
-        String path = "./"+billboardName+".xml";
+        String path = "xmlBillboards"+billboardName+".xml";
         try
         {DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newDefaultInstance();
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();

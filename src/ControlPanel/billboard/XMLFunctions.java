@@ -17,6 +17,17 @@ import java.io.File;
 
 public class XMLFunctions {
 
+    /**
+     * @author Lachlan
+     * @param billboardName
+     * @param textColour
+     * @param backgroundColour
+     * @param message
+     * @param image
+     * @param information
+     * @param informationColour
+     * @throws ParserConfigurationException
+     */
     public void makeXML(String billboardName, String textColour, String backgroundColour,
                         String message, String image, String information, String informationColour) throws ParserConfigurationException {
         String path = "xmlBillboards" + billboardName + ".xml";

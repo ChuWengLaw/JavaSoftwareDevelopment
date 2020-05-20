@@ -8,7 +8,9 @@ import java.awt.event.ActionListener;
 import java.awt.*;
 import java.io.IOException;
 
-
+/**
+ * This class creates the GUI to be used to create a billboard
+ */
 public class CreateBillboardGUI extends JFrame {
     //define element to be used
     private JButton btnSubmit;
@@ -34,7 +36,9 @@ public class CreateBillboardGUI extends JFrame {
     private JPanel panel = new JPanel(new GridBagLayout());
     private GridBagConstraints constraints = new GridBagConstraints();
 
-    //constructor
+    /**
+     * Constructor initialises the GUI creation.
+     */
     public CreateBillboardGUI() throws HeadlessException {
         super("Create Billboard");
         createGUI();

@@ -7,7 +7,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.*;
 
-
+/**
+ * This class creates the GUI to be used to display the information
+ * of a selected billboard
+ */
 public class InformationGUI extends JFrame {
 
     //define buttons
@@ -25,6 +28,9 @@ public class InformationGUI extends JFrame {
     private JPanel panel = new JPanel(new GridBagLayout());
     private GridBagConstraints constraints = new GridBagConstraints();
 
+    /**
+     * Constructor initialises the GUI creation.
+     */
     public InformationGUI() throws HeadlessException {
         super("Billboard Information");
         createGUI();
@@ -48,6 +54,7 @@ public class InformationGUI extends JFrame {
                 BBInfoRequest temp = new BBInfoRequest(txtBillboardName.getText());
                 try{
                     Client.connectServer(temp);
+                    txtInfo.setText(Client.getInfo());
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }

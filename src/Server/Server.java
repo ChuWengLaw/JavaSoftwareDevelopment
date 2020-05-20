@@ -263,5 +263,13 @@ public class Server {
             bb.DeleteBillboard(temp.getBillboardName());
             oos.flush();
         }
+        else if (o instanceof BBInfoRequest) {
+            BBInfoRequest temp = (BBInfoRequest) o;
+            BillboardSQL bb = new BillboardSQL();
+            String info = bb.GetBillboardInfo(temp.getBillboardName());
+            BBInfoReply bbInfoReply = new BBInfoReply(info);
+            oos.writeObject(bbInfoReply);
+            oos.flush();
+        }
     }
 }

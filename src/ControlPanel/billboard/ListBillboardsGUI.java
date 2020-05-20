@@ -12,15 +12,21 @@ import java.util.Vector;
 
 
 /**
-  * List all the existing billboards in the database
-  * @author Law
+  * This class creates the GUI to be used to display all the existing
+  * billboards from the database
   */
 public class ListBillboardsGUI extends JFrame {
+    /**
+     * Constructor initialises the GUI creation.
+     */
     public ListBillboardsGUI() throws HeadlessException {
         super("List Billboards");
         createGUI();
     }
-
+    /**
+     * Creates JTable from database
+     * @author Law
+     */
     private void createGUI() {
         try{
             Statement statement = Server.connection.createStatement();

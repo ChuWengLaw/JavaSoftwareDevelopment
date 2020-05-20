@@ -9,6 +9,10 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import javax.swing.*;
 
+/**
+ * This class creates the GUI to be used to display the available options for
+ * managing billboard
+ */
 public class BillBoardManagementGUI extends JFrame {
 
     //define the buttons
@@ -21,13 +25,16 @@ public class BillBoardManagementGUI extends JFrame {
     private JPanel bBMenu = new JPanel(new GridBagLayout());
     private GridBagConstraints constraints = new GridBagConstraints();
 
+    /**
+     * Constructor initialises the GUI creation.
+     */
     public BillBoardManagementGUI(){
         super("Billboard Management");
         createGUI();
     }
     private void createGUI(){
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        // Window Listener
+        // Window Listener to prevent user from pressing other buttons in menu window
         WindowListener windowListener = new WindowListener() {
             @Override
             public void windowOpened(WindowEvent e) {

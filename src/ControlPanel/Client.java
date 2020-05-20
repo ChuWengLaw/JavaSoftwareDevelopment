@@ -6,10 +6,19 @@ import java.io.*;
 import java.net.Socket;
 import java.util.Properties;
 
+/**
+ * This class setups a stateless connection to the server socket whenever
+ * an action is performed in other billboard/user GUI classes
+ */
 public class Client {
     private static Object requestReply;
     private static boolean requestState;
+    private static String info = "";
 
+    /**
+     * Connects to server (connection read from network.props)
+     * @param args The object encapsulating the data inputs to be sent to server
+     */
     public static void connectServer(Object args) throws IOException, InterruptedException, ClassNotFoundException {
         // Set up socket.
         Properties props = new Properties();
@@ -62,5 +71,12 @@ public class Client {
             GernalReply gernalReply = (GernalReply) requestReply;
             requestState = gernalReply.isRequestState();
         }
+        else if (requestReply instanceof BBInfoReply){
+            BBInfoReply bbInfoReply = (BBInfoReply) requestReply;
+            info = bbInfoReply.getInformation();
+        }
+    }
+    public static String getInfo() {
+        return info;
     }
 }

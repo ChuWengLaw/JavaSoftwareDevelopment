@@ -52,8 +52,8 @@ public class Server {
                     + "BillboardName VARCHAR(30) PRIMARY KEY NOT NULL UNIQUE,"
                     + "ScheduleTime DATETIME NOT NULL,"
                     + "Duration INT NOT NULL,"
-                    + "RecurType VARCHAR(10),"
-                    + "RecurDuration INT" + ");"; //only required for minutes
+                    + "RecurType INT NOT NULL,"
+                    + "RecurDuration INT NOT NULL" + ");"; //only required for minutes
 
     private static ServerSocket serverSocket;
 

@@ -2,6 +2,8 @@ package ControlPanel.user;
 
 import ControlPanel.*;
 import Server.*;
+import Server.Request.DeleteUserRequest;
+
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
@@ -47,24 +49,14 @@ public class DeleteUserWin extends JFrame{
         super.addWindowListener(windowListener);
 
         ActionListener listener = e -> {
+            DeleteUserRequest deleteUser = new DeleteUserRequest(usernamefield.getText());
             try{
-                if(Main.loginUser.getUserName().equals(usernamefield.getText())){
-                    JOptionPane.showMessageDialog(null, "You can't delete yourself, you knobhead");
-                } else if(!CheckUserSQL(usernamefield.getText())){
-                    JOptionPane.showMessageDialog(null, "Username does not exist");
-                }
-                else if(usernamefield.getText().isEmpty()) {
-                    JOptionPane.showMessageDialog(null, "Username field is empty");
-                }
-                else{
-                    DeleteUserSQL(usernamefield.getText());
-                    DeleteUserBillboardSQL(usernamefield.getText());
-                    JOptionPane.showMessageDialog(null,"User has been deleted");
-                }
+                Client.connectServer(deleteUser);
             }
-            catch (SQLException ex){
+            catch (Exception ex){
                 ex.printStackTrace();
             }
+            usernamefield.getText();
         };
 
         deletebutton.addActionListener(listener);

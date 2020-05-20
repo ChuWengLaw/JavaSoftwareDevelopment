@@ -1,22 +1,16 @@
 package Server.Request;
 
+import javax.swing.*;
 import java.io.Serializable;
-import java.util.Vector;
 
 public class ListUserReply implements Serializable {
-    private Vector data;
-    private Vector columnheader;
+    private JTable table;
 
-    public ListUserReply(Vector data, Vector columnheader){
-        this.data = data;
-        this.columnheader = columnheader;
+    public ListUserReply(JTable table){
+        this.table = table;
     }
 
-    public Vector getData() {
-        return data;
-    }
-
-    public Vector getColumnheader() {
-        return columnheader;
+    public JTable getTable() {
+        return table;
     }
 }

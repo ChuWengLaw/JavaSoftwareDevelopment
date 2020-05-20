@@ -1,8 +1,7 @@
 package ControlPanel.billboard;
 
-import org.w3c.dom.Attr;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
+import Server.Server;
+import org.w3c.dom.*;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -18,7 +17,6 @@ import java.io.File;
 public class XMLFunctions {
 
     /**
-     * @author Lachlan
      * @param billboardName
      * @param textColour
      * @param backgroundColour
@@ -27,10 +25,11 @@ public class XMLFunctions {
      * @param information
      * @param informationColour
      * @throws ParserConfigurationException
+     * @author Lachlan
      */
     public void makeXML(String billboardName, String textColour, String backgroundColour,
                         String message, String image, String information, String informationColour) throws ParserConfigurationException {
-        String path = "xmlBillboards" + billboardName + ".xml";
+        String path = "xmlBillboards/" + billboardName + ".xml";
         try {
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newDefaultInstance();
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
@@ -46,15 +45,15 @@ public class XMLFunctions {
 
             //message element
             Element bbMessage = document.createElement("message");
-            if (textColour==""){
+            if (textColour == "") {
                 Attr textCol = document.createAttribute("colour");
                 textCol.setValue("Black");
                 bbMessage.setAttributeNode(textCol);
+            } else {
+                Attr textCol = document.createAttribute("colour");
+                textCol.setValue(textColour);
+                bbMessage.setAttributeNode(textCol);
             }
-            else
-            {Attr textCol = document.createAttribute("colour");
-            textCol.setValue(textColour);
-            bbMessage.setAttributeNode(textCol);}
             bbMessage.appendChild(document.createTextNode(message));
             billboard.appendChild(bbMessage);
 
@@ -100,8 +99,63 @@ public class XMLFunctions {
         }
     }
 
-    public void extractXML() {
+    /**
+     * @param filePath
+     * @author Lachlan
+     */
+    public void extractXML(String filePath) {
+        String backgroundColour = null;
+        String textColour = null;
+        String message = null;
+        String image = null;
+        String information = null;
+        String informationColour = null;
+        try {
+            File XmlFile = new File(filePath);
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+            Document document = documentBuilder.parse(XmlFile);
 
+            document.getDocumentElement().normalize();
+
+            NodeList nodeList = document.getElementsByTagName("*");
+
+            for (int i = 0; i < nodeList.getLength(); i++) {
+                Node node = nodeList.item(i);
+                if (node.getNodeType() == Node.ELEMENT_NODE) {
+                    Element element = (Element) node;
+                    if (element.getTagName().startsWith("picture")) {
+                        if (element.hasAttribute("url")) {
+                            image = element.getAttribute("url");
+                        }
+                        if (element.hasAttribute("data")) {
+                            image = element.getAttribute("data");
+                        }
+                    }
+                    if (element.getTagName().startsWith("billboard")) {
+                        backgroundColour = element.getAttribute("background");
+                    }
+                    if (element.getTagName().startsWith("message")) {
+                        message = element.getTextContent();
+                        textColour = element.getAttribute("colour");
+                    }
+                    if (element.getTagName().startsWith("information")) {
+                        information = element.getTextContent();
+                        informationColour = element.getAttribute("colour");
+                    }
+                }
+            }
+
+            System.out.println(message);
+            System.out.println(image);
+            System.out.println(backgroundColour);
+            System.out.println(textColour);
+            System.out.println(information);
+            System.out.println(informationColour);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }

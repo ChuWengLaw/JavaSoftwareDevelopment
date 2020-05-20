@@ -73,8 +73,6 @@ public class DeleteBillboardGUI extends JFrame {
             }
         });
 
-
-
         constraints.anchor = GridBagConstraints.WEST;
         constraints.insets = new Insets(2,2,2,2);
 

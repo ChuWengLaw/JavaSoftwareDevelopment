@@ -2,12 +2,15 @@ package Server;
 
 import ControlPanel.User;
 import Server.Request.*;
+
+import javax.swing.*;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.*;
+import java.util.List;
 import java.util.Properties;
 import java.util.Random;
 
@@ -191,7 +194,7 @@ public class Server {
                 oos.flush();
             }
         }
-        else if (o instanceof CreateUserRequest){
+        else if (o instanceof CreateUserRequest) {
             CreateUserRequest createUserRequest = (CreateUserRequest) o;
             boolean createState = !checkUserSQL(createUserRequest.getUserName());
 
@@ -204,8 +207,7 @@ public class Server {
                 GernalReply gernalReply = new GernalReply(createState);
                 oos.writeObject(gernalReply);
                 oos.flush();
-            }
-            else{
+            } else {
                 GernalReply gernalReply = new GernalReply(createState);
                 oos.writeObject(gernalReply);
                 oos.flush();
@@ -249,6 +251,17 @@ public class Server {
                 oos.writeObject(gernalReply);
                 oos.flush();
             }
+        }
+        else if(o instanceof DeleteUserRequest){
+            DeleteUserRequest deleteUser = (DeleteUserRequest) o;
+            deleteUserBillboardSQL(deleteUser.getUserName());
+            oos.flush();
+        }
+        else if (o instanceof ListUserRequest){
+            ListUserRequest listUser = (ListUserRequest) o;
+            ListUserReply listUserReply = new ListUserReply(listUserSQL());
+            oos.writeObject(listUserReply);
+            oos.flush();
         }
         else if (o instanceof CreateBBRequest) {
             CreateBBRequest temp = (CreateBBRequest) o;

@@ -4,6 +4,7 @@ import Server.Request.*;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.List;
 import java.util.Properties;
 
 /**
@@ -70,6 +71,10 @@ public class Client {
         else if (requestReply instanceof GernalReply){
             GernalReply gernalReply = (GernalReply) requestReply;
             requestState = gernalReply.isRequestState();
+        }
+        else if (requestReply instanceof ListUserReply){
+            ListUserReply listUserReply = (ListUserReply) requestReply;
+            Main.listUserWin.getTable(listUserReply.getTable());
         }
         else if (requestReply instanceof BBInfoReply){
             BBInfoReply bbInfoReply = (BBInfoReply) requestReply;

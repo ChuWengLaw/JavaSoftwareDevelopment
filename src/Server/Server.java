@@ -38,7 +38,8 @@ public class Server {
                     + "BackGroundColour VARCHAR(30),"
                     + "Message VARCHAR(30),"
                     + "Image VARCHAR(30),"
-                    + "Information VARCHAR(30)" + ");";
+                    + "Information VARCHAR(30),"
+                    + "InfoColour VARCHAR(30)"+ ");";
 
     private static final String CREATE_USER_TABLE =
             "CREATE TABLE IF NOT EXISTS User ("

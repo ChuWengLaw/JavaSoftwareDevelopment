@@ -112,4 +112,15 @@ public class UserSQL {
         pstatement.executeUpdate();
         pstatement.close();
     }
+
+    static void changePasswordSQL(String userName, String newPassword, String saltString) throws SQLException {
+        PreparedStatement pstatement = Server.connection.prepareStatement("UPDATE user " +
+                "SET userPassword = ?, saltValue = ? WHERE userName = ? " );
+
+        pstatement.setString(1, newPassword);
+        pstatement.setString(2,saltString);
+        pstatement.setString(3, userName);
+        pstatement.executeUpdate();
+        pstatement.close();
+    }
 }

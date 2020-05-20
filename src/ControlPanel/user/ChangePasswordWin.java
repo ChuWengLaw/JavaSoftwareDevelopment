@@ -2,11 +2,13 @@ package ControlPanel.user;
 
 import ControlPanel.*;
 import Server.*;
+import Server.Request.ChangePasswordRequest;
 
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -33,8 +35,8 @@ public class ChangePasswordWin extends JFrame {
 
             @Override
             public void windowClosed(WindowEvent e) {
-                Main.userManagementWin.setEnabled(true);
-                Main.userManagementWin.setVisible(true);
+                Main.userProfileWin.setEnabled(true);
+                Main.userProfileWin.setVisible(true);
             }
 
             @Override
@@ -57,16 +59,21 @@ public class ChangePasswordWin extends JFrame {
                 JOptionPane.showMessageDialog(null,"Password field cannot be empty.");
             }
             else{
+                ChangePasswordRequest changePasswordRequest = new ChangePasswordRequest(Main.loginUser.getUserName(), passwordTextField.getText());
+
                 try {
-                    String saltString = Server.saltString();
-                    String hashPassword = Server.hashAString(passwordTextField.getText()+saltString);
-                    changePasswordSQL(Main.loginUser, hashPassword, saltString);
-                } catch (SQLException | NoSuchAlgorithmException ex) {
+                    Client.connectServer(changePasswordRequest);
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                } catch (InterruptedException ex) {
+                    ex.printStackTrace();
+                } catch (ClassNotFoundException ex) {
                     ex.printStackTrace();
                 }
 
-                passwordTextField.setText(null);
-                JOptionPane.showMessageDialog(null, "Change applied!");
+                if(Client.isRequestState()){
+                    JOptionPane.showMessageDialog(null, "Password change!");
+                }
             }
         };
         changeButton.addActionListener(changeListener);
@@ -94,16 +101,5 @@ public class ChangePasswordWin extends JFrame {
         // Display the window
         setLocation(900,350);
         pack();
-    }
-
-    private void changePasswordSQL(User user, String newPassword, String saltString) throws SQLException {
-        PreparedStatement pstatement = Server.connection.prepareStatement("UPDATE user " +
-                "SET userPassword = ?, saltValue = ? WHERE userName = ? " );
-
-        pstatement.setString(1, newPassword);
-        pstatement.setString(2,saltString);
-        pstatement.setString(3, user.getUserName());
-        pstatement.executeUpdate();
-        pstatement.close();
     }
 }

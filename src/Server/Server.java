@@ -200,13 +200,13 @@ public class Server {
                 createUserSQL(createUserRequest.getUserName(), hasedPassword, createUserRequest.isCreateBillboardsPermission(),
                         createUserRequest.isEditAllBillboardPermission(), createUserRequest.isScheduleBillboardsPermission(),
                         createUserRequest.isEditUsersPermission(), saltString);
-                GernalReply gernalReply = new GernalReply(createState);
-                oos.writeObject(gernalReply);
+                GeneralReply generalReply = new GeneralReply(createState);
+                oos.writeObject(generalReply);
                 oos.flush();
             }
             else{
-                GernalReply gernalReply = new GernalReply(createState);
-                oos.writeObject(gernalReply);
+                GeneralReply generalReply = new GeneralReply(createState);
+                oos.writeObject(generalReply);
                 oos.flush();
             }
         }
@@ -237,17 +237,27 @@ public class Server {
                 String hasedPassword = hashAString(editUserRequest.getUserPassword() + saltString);
                 editUserSQL(editUserRequest.getUserName(), hasedPassword, editUserRequest.isCreateBillboardsPermission(), editUserRequest.isEditAllBillboardPermission(),
                 editUserRequest.isScheduleBillboardsPermission(), editUserRequest.isEditUsersPermission(), saltString);
-                GernalReply gernalReply = new GernalReply(editState);
-                oos.writeObject(gernalReply);
+                GeneralReply generalReply = new GeneralReply(editState);
+                oos.writeObject(generalReply);
                 oos.flush();
             }
             else{
                 editUserSQL(editUserRequest.getUserName(), editUserRequest.isCreateBillboardsPermission(), editUserRequest.isEditAllBillboardPermission(),
                         editUserRequest.isScheduleBillboardsPermission(), editUserRequest.isEditUsersPermission());
-                GernalReply gernalReply = new GernalReply(editState);
-                oos.writeObject(gernalReply);
+                GeneralReply generalReply = new GeneralReply(editState);
+                oos.writeObject(generalReply);
                 oos.flush();
             }
+        }
+        else if(o instanceof ChangePasswordRequest){
+            ChangePasswordRequest changePasswordRequest = (ChangePasswordRequest)o;
+            String saltString = saltString();
+            String hasedPassword = hashAString(changePasswordRequest.getNewPassword() + saltString);
+            boolean changeState = true;
+            changePasswordSQL(changePasswordRequest.getUserName(), hasedPassword, saltString);
+            GeneralReply generalReply = new GeneralReply(changeState);
+            oos.writeObject(generalReply);
+            oos.flush();
         }
         else if (o instanceof CreateBBRequest) {
             CreateBBRequest temp = (CreateBBRequest) o;

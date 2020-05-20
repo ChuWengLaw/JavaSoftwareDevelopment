@@ -8,8 +8,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.IOException;
-import java.security.NoSuchAlgorithmException;
-import java.sql.*;
 import javax.swing.*;
 
 public class CreateUserWin extends JFrame{

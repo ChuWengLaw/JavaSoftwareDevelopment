@@ -1,13 +1,11 @@
 package Server.Request;
 
-import ControlPanel.User;
-
 import java.io.Serializable;
 
-public class GernalReply implements Serializable{
+public class GeneralReply implements Serializable{
     private boolean requestState;
 
-    public GernalReply(boolean requestState){
+    public GeneralReply(boolean requestState){
         this.requestState = requestState;
     }
 

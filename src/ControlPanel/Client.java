@@ -58,9 +58,9 @@ public class Client {
                 Main.editUserWin.editedUser = searchReply.getUser();
             }
         }
-        else if (requestReply instanceof GernalReply){
-            GernalReply gernalReply = (GernalReply) requestReply;
-            requestState = gernalReply.isRequestState();
+        else if (requestReply instanceof GeneralReply){
+            GeneralReply generalReply = (GeneralReply) requestReply;
+            requestState = generalReply.isRequestState();
         }
     }
 }

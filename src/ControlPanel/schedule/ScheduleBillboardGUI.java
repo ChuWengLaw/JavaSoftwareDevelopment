@@ -55,7 +55,7 @@ public class ScheduleBillboardGUI extends JFrame {
 
                 if (Check_Valid_Inputs())
                 {
-                    System.out.println("Correct Inputs");
+                    //System.out.println("Correct Inputs");
                     //Create Schedule Requests
 
                     txtBillboardName.setText("");

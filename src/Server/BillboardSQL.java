@@ -2,6 +2,7 @@ package Server;
 
 import javax.swing.*;
 import java.sql.*;
+import java.util.Vector;
 
 public class BillboardSQL {
     /**
@@ -85,15 +86,34 @@ public class BillboardSQL {
      * This function creates a public method to retrieve
      * all of the billboards' contents from database
      * @author Law
-     * @param BillBoardName name of the billboard
+     * @param Token session token
      * @exception SQLException if sql query error occurs
      */
-    public void ListBillboards(String BillBoardName) throws SQLException {
+    public JTable ListBillboards(String Token) throws SQLException {
+        JTable table = new JTable();
         try {
             ResultSet list = Server.statement.executeQuery("SELECT * FROM Billboard"/*ORDER BY ScheduleValue (i.e. how ever we are going to schedule) ASC*/+";");
+            ResultSetMetaData rsmd = list.getMetaData();
+            int columnCount = rsmd.getColumnCount();
+            Vector columnHeader = new Vector(columnCount);
+            for (int i = 1; i<= columnCount; i++){
+                columnHeader.add(rsmd.getColumnName(i));
+            }
+            Vector data = new Vector();
+            Vector row = new Vector();
+
+            while(list.next()) {
+                row = new Vector(columnCount);
+                for (int i = 1; i <= columnCount; i++) {
+                    row.add(list.getString(i));
+                }
+                data.add(row);
+            }
+            table = new JTable(data,columnHeader);
         } catch (SQLException e) {
             System.out.println(e);
         }
+        return table;
     }
 
     /**

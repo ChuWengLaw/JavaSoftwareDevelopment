@@ -284,5 +284,12 @@ public class Server {
             oos.writeObject(bbInfoReply);
             oos.flush();
         }
+        else if (o instanceof ListBBRequest){
+            ListBBRequest listBBRequest = (ListBBRequest) o;
+            BillboardSQL bb = new BillboardSQL();
+            ListBBReply listBBReply = new ListBBReply(bb.ListBillboards(listBBRequest.getSessionToken()));
+            oos.writeObject(listBBReply);
+            oos.flush();
+        }
     }
 }

@@ -1,7 +1,9 @@
 package ControlPanel;
 
+import ControlPanel.billboard.ListBillboardsGUI;
 import Server.Request.*;
 
+import javax.swing.*;
 import java.io.*;
 import java.net.Socket;
 import java.util.List;
@@ -15,6 +17,7 @@ public class Client {
     private static Object requestReply;
     private static boolean requestState;
     private static String info = "";
+    private static JTable listBBTable;
 
     /**
      * Connects to server (connection read from network.props)
@@ -80,8 +83,15 @@ public class Client {
             BBInfoReply bbInfoReply = (BBInfoReply) requestReply;
             info = bbInfoReply.getInformation();
         }
+        else if (requestReply instanceof ListBBReply){
+            ListBBReply listBBReply = (ListBBReply) requestReply;
+            listBBTable = listBBReply.getTable();
+        }
     }
     public static String getInfo() {
         return info;
+    }
+    public static JTable getBBTable() {
+        return listBBTable;
     }
 }

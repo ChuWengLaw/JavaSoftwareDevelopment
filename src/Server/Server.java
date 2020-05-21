@@ -276,5 +276,11 @@ public class Server {
             bb.DeleteBillboard(temp.getBillboardName());
             oos.flush();
         }
+        else if (o instanceof ScheduleBillboardRequest) {
+            ScheduleBillboardRequest temp = (ScheduleBillboardRequest) o;
+            ScheduleSQL Schedule = new ScheduleSQL();
+            Schedule.ScheduleBillboard(temp.getBillboardName(),temp.getScheduledTime(), temp.getDuration(),temp.getReoccurType(),temp.getReoccurAmount());
+            oos.flush();
+        }
     }
 }

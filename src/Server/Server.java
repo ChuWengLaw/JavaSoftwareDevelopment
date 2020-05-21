@@ -53,7 +53,7 @@ public class Server {
 
     private static final String CREATE_SCHEDULE_TABLE =
             "CREATE TABLE IF NOT EXISTS Schedule ("
-                    + "BillboardName VARCHAR(30) PRIMARY KEY NOT NULL UNIQUE,"
+                    + "BillboardName VARCHAR(30) NOT NULL,"
                     + "ScheduleTime DATETIME NOT NULL,"
                     + "Duration INT NOT NULL,"
                     + "RecurType INT NOT NULL,"

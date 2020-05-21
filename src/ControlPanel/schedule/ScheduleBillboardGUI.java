@@ -67,14 +67,6 @@ public class ScheduleBillboardGUI extends JFrame {
                         ex.printStackTrace();
                     }
 
-
-
-
-
-
-
-
-
                     txtBillboardName.setText("");
                     txtScheduledTime.setText("");
                     txtDuration.setText("");

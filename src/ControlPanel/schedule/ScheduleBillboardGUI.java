@@ -4,6 +4,7 @@ import ControlPanel.Client;
 import ControlPanel.Main;
 import ControlPanel.billboard.CreateBillboardGUI;
 import Server.Request.CreateBBRequest;
+import Server.Request.ScheduleBillboardRequest;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -50,13 +51,29 @@ public class ScheduleBillboardGUI extends JFrame {
             //when the submit button is click make covert the inputs into string. then execute the CreateEditBilloard from the Billboard Class
             @Override
             public void actionPerformed(ActionEvent e) {
-
-
-
                 if (Check_Valid_Inputs())
                 {
                     //System.out.println("Correct Inputs");
                     //Create Schedule Requests
+                    ScheduleBillboardRequest temp = new ScheduleBillboardRequest(txtBillboardName.getText(), txtScheduledTime.getText(),
+                            txtDuration.getText(), txtReoccurType.getText(), txtReoccurAmount.getText());
+                    try {
+                        Client.connectServer(temp);
+                    } catch (InterruptedException ex) {
+                        ex.printStackTrace();
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    } catch (ClassNotFoundException ex) {
+                        ex.printStackTrace();
+                    }
+
+
+
+
+
+
+
+
 
                     txtBillboardName.setText("");
                     txtScheduledTime.setText("");

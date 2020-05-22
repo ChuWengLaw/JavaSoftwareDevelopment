@@ -31,7 +31,7 @@ public class CreateBillboardGUI extends JFrame {
     private JTextField txtImage;
     private JTextField txtInformation;
     private JTextField txtInformationColour;
-
+    
     //define the strings to be used in the SQL
     private String strBillboardName;
     private JPanel panel = new JPanel(new GridBagLayout());

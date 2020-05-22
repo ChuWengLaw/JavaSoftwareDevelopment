@@ -2,12 +2,12 @@ package ControlPanel;
 
 import Server.Request.*;
 
+import javax.swing.*;
 import java.io.*;
 import java.net.Socket;
 import java.util.Properties;
 
 public class Client {
-    private static Object requestReply;
     private static boolean requestState;
 
     public static void connectServer(Object args) throws IOException, InterruptedException, ClassNotFoundException {
@@ -48,6 +48,7 @@ public class Client {
 
             if (requestState){
                 Main.loginUser = loginReply.getUser();
+                Main.loginUser.setSessionToken(loginReply.getSessionToken());
             }
         }
         else if (requestReply instanceof SearchReply){
@@ -57,6 +58,18 @@ public class Client {
             if (requestState){
                 Main.editUserWin.editedUser = searchReply.getUser();
             }
+        }
+        else if (requestReply instanceof LogoutReply){
+            LogoutReply logoutReply = (LogoutReply) requestReply;
+
+            // Display different message upon different logout reason.
+            if(logoutReply.isExpired()){
+                JOptionPane.showMessageDialog(null, "Session expired, system logged out.");
+            }
+            else{
+                JOptionPane.showMessageDialog(null, "Successfully logged out!");
+            }
+            System.exit(0);
         }
         else if (requestReply instanceof GeneralReply){
             GeneralReply generalReply = (GeneralReply) requestReply;

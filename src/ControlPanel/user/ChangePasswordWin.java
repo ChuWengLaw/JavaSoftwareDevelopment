@@ -59,7 +59,8 @@ public class ChangePasswordWin extends JFrame {
                 JOptionPane.showMessageDialog(null,"Password field cannot be empty.");
             }
             else{
-                ChangePasswordRequest changePasswordRequest = new ChangePasswordRequest(Main.loginUser.getUserName(), passwordTextField.getText());
+                ChangePasswordRequest changePasswordRequest = new ChangePasswordRequest(Main.loginUser.getSessionToken(),
+                        Main.loginUser.getUserName(), passwordTextField.getText());
 
                 try {
                     Client.connectServer(changePasswordRequest);

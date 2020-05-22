@@ -1,10 +1,14 @@
 
 package ControlPanel.user;
 
+import ControlPanel.Client;
 import ControlPanel.Main;
 import ControlPanel.billboard.BillBoardManagementGUI;
+import Server.Request.LogoutRequest;
+
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import javax.swing.*;
 
 /**
@@ -26,6 +30,7 @@ public class MenuWin extends JFrame {
     private JButton billboardManageButton = new JButton("Billboard management");
     private JButton editUserButton = new JButton("User management");
     private JButton userProfileButton = new JButton("User profile");
+    private JButton logoutButton = new JButton("Log out");
     private JPanel panel = new JPanel(new GridBagLayout());
     private GridBagConstraints constraints = new GridBagConstraints();
 
@@ -55,8 +60,23 @@ public class MenuWin extends JFrame {
         };
         userProfileButton.addActionListener(userProfileListener);
 
+        ActionListener logoutListener =  e -> {
+            LogoutRequest logoutRequest = new LogoutRequest(Main.loginUser.getSessionToken());
+
+            try {
+                Client.connectServer(logoutRequest);
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            } catch (InterruptedException ex) {
+                ex.printStackTrace();
+            } catch (ClassNotFoundException ex) {
+                ex.printStackTrace();
+            }
+        };
+        logoutButton.addActionListener(logoutListener);
+
         // Panel setting
-        constraints.anchor = GridBagConstraints.WEST;
+        constraints.anchor = GridBagConstraints.EAST;
         constraints.insets = new Insets(10, 10, 10, 10);
 
         constraints.gridx = 0;
@@ -69,6 +89,9 @@ public class MenuWin extends JFrame {
         constraints.gridx = 2;
         panel.add(userProfileButton, constraints);
 
+        constraints.gridy = 1;
+        panel.add(logoutButton, constraints);
+
         getContentPane().add(panel);
 
         // Display the window
@@ -80,7 +103,7 @@ public class MenuWin extends JFrame {
      * This is a method that setup the enability of the edit user button
      * depends on the edit user permission
      *
-     * @param editUserPermission The edit user permission of the login user.s
+     * @param editUserPermission The edit user permission of the login users.
      */
     public void userManagementEnable(boolean editUserPermission) {
         editUserButton.setEnabled(editUserPermission);

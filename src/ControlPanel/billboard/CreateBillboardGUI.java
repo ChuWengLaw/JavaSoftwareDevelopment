@@ -3,7 +3,6 @@ package ControlPanel.billboard;
 import ControlPanel.Client;
 import Server.Request.CreateBBRequest;
 import javax.swing.*;
-import javax.xml.parsers.ParserConfigurationException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.*;
@@ -60,13 +59,15 @@ public class CreateBillboardGUI extends JFrame {
             //when the submit button is click make covert the inputs into string. then execute the CreateEditBilloard from the Billboard Class
             @Override
             public void actionPerformed(ActionEvent e) {
+                if(txtBillboardName.getText().isBlank()){
+                    JOptionPane.showMessageDialog(null,"Please Enter a Billboard Name.");
+                }
                 CreateBBRequest temp = new CreateBBRequest(txtBillboardName.getText(), txtTextColour.getText(),
                         txtBackgroundColour.getText(), txtMessage.getText(), txtImage.getText(), txtInformation.getText());
                 try {
                     Client.connectServer(temp);
 
-                    XMLFunctions xmlFunctions = new XMLFunctions();
-                    xmlFunctions.makeXML(txtBillboardName.getText(), txtTextColour.getText(),
+                    new MakeXMLFile(txtBillboardName.getText(), txtTextColour.getText(),
                             txtBackgroundColour.getText(), txtMessage.getText(), txtImage.getText(), txtInformation.getText(), txtInformationColour.getText());
                 } catch (InterruptedException ex) {
                     ex.printStackTrace();
@@ -74,7 +75,7 @@ public class CreateBillboardGUI extends JFrame {
                     ex.printStackTrace();
                 } catch (ClassNotFoundException ex) {
                     ex.printStackTrace();
-                } catch (ParserConfigurationException ex) {
+                } catch (Exception ex) {
                     ex.printStackTrace();
                 }
                 //clear the textFeilds once the SQL code has been executed

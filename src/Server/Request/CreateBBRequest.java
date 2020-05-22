@@ -22,9 +22,7 @@ public class CreateBBRequest implements Serializable {
     public String getAuthor() {
         return author;
     }
-    public String getTextColour() {
-        return TextColour;
-    }
+    public String getTextColour() { return TextColour; }
     public String getBackgroundColour() {
         return BackgroundColour;
     }

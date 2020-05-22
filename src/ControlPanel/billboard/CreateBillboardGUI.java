@@ -3,6 +3,7 @@ package ControlPanel.billboard;
 import ControlPanel.Client;
 import Server.Request.CreateBBRequest;
 import javax.swing.*;
+import javax.xml.parsers.ParserConfigurationException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.*;
@@ -20,6 +21,7 @@ public class CreateBillboardGUI extends JFrame {
     private JLabel lblMessage;
     private JLabel lblImage;
     private JLabel lblInformation;
+    private JLabel lblInformationColour;
 
     //define the text boxes
     private JTextField txtBillboardName;
@@ -28,6 +30,7 @@ public class CreateBillboardGUI extends JFrame {
     private JTextField txtMessage;
     private JTextField txtImage;
     private JTextField txtInformation;
+    private JTextField txtInformationColour;
 
     //define the strings to be used in the SQL
     private String strBillboardName;
@@ -61,11 +64,17 @@ public class CreateBillboardGUI extends JFrame {
                         txtBackgroundColour.getText(), txtMessage.getText(), txtImage.getText(), txtInformation.getText());
                 try {
                     Client.connectServer(temp);
+
+                    XMLFunctions xmlFunctions = new XMLFunctions();
+                    xmlFunctions.makeXML(txtBillboardName.getText(), txtTextColour.getText(),
+                            txtBackgroundColour.getText(), txtMessage.getText(), txtImage.getText(), txtInformation.getText(), txtInformationColour.getText());
                 } catch (InterruptedException ex) {
                     ex.printStackTrace();
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 } catch (ClassNotFoundException ex) {
+                    ex.printStackTrace();
+                } catch (ParserConfigurationException ex) {
                     ex.printStackTrace();
                 }
                 //clear the textFeilds once the SQL code has been executed
@@ -86,6 +95,7 @@ public class CreateBillboardGUI extends JFrame {
         lblMessage = createLabel("Message:");
         lblImage = createLabel("Image");
         lblInformation = createLabel("Information:");
+        lblInformationColour = createLabel("Information Colour:");
 
         //create the text boxes to receive the data
         txtBillboardName = createText();
@@ -94,6 +104,7 @@ public class CreateBillboardGUI extends JFrame {
         txtMessage = createText();
         txtImage = createText();
         txtInformation = createText();
+        txtInformationColour = createText();
 
         constraints.anchor = GridBagConstraints.WEST;
         constraints.insets=new Insets(10,10,10,10);
@@ -112,6 +123,8 @@ public class CreateBillboardGUI extends JFrame {
         panel.add(lblImage,constraints);
         constraints.gridy=5;
         panel.add(lblInformation,constraints);
+        constraints.gridy=6;
+        panel.add(lblInformationColour,constraints);
 
         //add txtfeilds to panel
         constraints.gridx =1;
@@ -127,13 +140,15 @@ public class CreateBillboardGUI extends JFrame {
         panel.add(txtImage,constraints);
         constraints.gridy=5;
         panel.add(txtInformation,constraints);
+        constraints.gridy =6;
+        panel.add(txtInformationColour,constraints);
 
         //add button to panel
         constraints.gridwidth =2;
         constraints.insets = new Insets(5,10,5,10);
         constraints.anchor = GridBagConstraints.EAST;
         constraints.gridx=0;
-        constraints.gridy=7;
+        constraints.gridy=8;
         panel.add(btnSubmit,constraints);
 
         getContentPane().add(panel);

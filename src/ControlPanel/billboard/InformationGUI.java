@@ -2,6 +2,7 @@ package ControlPanel.billboard;
 
 import ControlPanel.Client;
 import Server.Request.BBInfoRequest;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -32,9 +33,10 @@ public class InformationGUI extends JFrame {
 
     /**
      * creates the base GUI to be used to display the billboard information
+     *
      * @author Lachlan
      */
-    private void createGUI(){
+    private void createGUI() {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLayout(new BorderLayout());
 
@@ -46,10 +48,14 @@ public class InformationGUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 BBInfoRequest temp = new BBInfoRequest(txtBillboardName.getText());
-                try{
-                    Client.connectServer(temp);
-                } catch (Exception ex) {
-                    ex.printStackTrace();
+                if (txtBillboardName.getText().isBlank()) {
+                    JOptionPane.showMessageDialog(null,"Please Enter a Billboard Name.");
+                } else {
+                    try {
+                        Client.connectServer(temp);
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
                 }
             }
         });
@@ -85,10 +91,10 @@ public class InformationGUI extends JFrame {
         panel.add(txtBillboardName, constraints);
 
         constraints.gridx = 0;
-        constraints.gridy =1;
-        panel.add(lblInfo,constraints);
+        constraints.gridy = 1;
+        panel.add(lblInfo, constraints);
 
-        constraints.gridx =1;
+        constraints.gridx = 1;
         panel.add(txtInfo, constraints);
 
         constraints.gridwidth = 2;
@@ -98,20 +104,21 @@ public class InformationGUI extends JFrame {
         constraints.gridy = 3;
         panel.add(btnGetInfo, constraints);
         constraints.anchor = GridBagConstraints.WEST;
-        panel.add(btnClear,constraints);
+        panel.add(btnClear, constraints);
 
         getContentPane().add(panel);
 
         // Display the window
-        setLocation(900,350);
+        setLocation(900, 350);
         pack();
         setVisible(true);
     }
 
     /**
      * creates a text box
-     * @author Lachlan
+     *
      * @return the text box
+     * @author Lachlan
      */
     private JTextField createText() {
         JTextField textField = new JTextField(20);
@@ -120,9 +127,10 @@ public class InformationGUI extends JFrame {
 
     /**
      * creates a label with the text which has been input
-     * @author Lachlan
+     *
      * @param text the text which will be displayed in the label
      * @return the label
+     * @author Lachlan
      */
     private JLabel createLabel(String text) {
         JLabel label = new JLabel();
@@ -132,9 +140,10 @@ public class InformationGUI extends JFrame {
 
     /**
      * creates a button with the text which has been input
-     * @author Lachlan
+     *
      * @param text the text which will be displayed inside the button
      * @return the button
+     * @author Lachlan
      */
     private JButton createButton(String text) {
         JButton button = new JButton();

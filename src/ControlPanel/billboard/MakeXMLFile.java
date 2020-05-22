@@ -14,21 +14,20 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.File;
 
-public class XMLFunctions {
+public class MakeXMLFile {
 
     /**
-     * @param billboardName name of the billboardName
-     * @param textColour the message text colour
-     * @param backgroundColour the background colour
-     * @param message the message
-     * @param image the image
-     * @param information the information
-     * @param informationColour the information text colour
-     * @throws ParserConfigurationException
+     * @param billboardName
+     * @param textColour
+     * @param backgroundColour
+     * @param message
+     * @param image
+     * @param information
+     * @param informationColour
      * @author Lachlan
      */
-    public static void makeXML(String billboardName, String textColour, String backgroundColour,
-                               String message, String image, String information, String informationColour) throws ParserConfigurationException {
+    public MakeXMLFile(String billboardName, String textColour, String backgroundColour,
+                       String message, String image, String information, String informationColour) {
         String path = "src/xmlBillboards/" + billboardName + ".xml";
         try {
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newDefaultInstance();
@@ -39,7 +38,7 @@ public class XMLFunctions {
             Element billboard = document.createElement("billboard");
             document.appendChild(billboard);
 
-            if (backgroundColour == "" || backgroundColour == null) {
+            if (backgroundColour.isBlank()) {
                 Attr background = document.createAttribute("background");
                 background.setValue("White");
                 billboard.setAttributeNode(background);
@@ -49,10 +48,10 @@ public class XMLFunctions {
                 billboard.setAttributeNode(background);
             }
 
-            if (message != "" || message != null) {
+            if (!message.isBlank()) {
                 //message element
                 Element bbMessage = document.createElement("message");
-                if (textColour == "" || textColour == null) {
+                if (textColour.isBlank()) {
                     Attr textCol = document.createAttribute("colour");
                     textCol.setValue("Black");
                     bbMessage.setAttributeNode(textCol);
@@ -65,7 +64,7 @@ public class XMLFunctions {
                 billboard.appendChild(bbMessage);
             }
 
-            if (image != "" || image != null) {
+            if (!image.isBlank()) {
                 //picture element
                 Element pic = document.createElement("picture");
                 if (image.startsWith("http")) {
@@ -80,10 +79,10 @@ public class XMLFunctions {
                 billboard.appendChild(pic);
             }
 
-            if (information != "" || information != null) {
+            if (!information.isBlank()) {
                 //information element
                 Element info = document.createElement("information");
-                if (informationColour == "" || informationColour == null) {
+                if (informationColour.isBlank()) {
                     Attr infoColour = document.createAttribute("colour");
                     infoColour.setValue(textColour);
                     info.setAttributeNode(infoColour);
@@ -112,63 +111,5 @@ public class XMLFunctions {
         System.out.println("XML file Created");
     }
 
-    /**
-     * @param filePath file which is being extracted
-     * @author Lachlan
-     */
-    public void extractXML(String filePath) {
-        String backgroundColour = null;
-        String textColour = null;
-        String message = null;
-        String image = null;
-        String information = null;
-        String informationColour = null;
-        try {
-            File XmlFile = new File(filePath);
-            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-            Document document = documentBuilder.parse(XmlFile);
-
-            document.getDocumentElement().normalize();
-
-            NodeList nodeList = document.getElementsByTagName("*");
-
-            for (int i = 0; i < nodeList.getLength(); i++) {
-                Node node = nodeList.item(i);
-                if (node.getNodeType() == Node.ELEMENT_NODE) {
-                    Element element = (Element) node;
-                    if (element.getTagName().startsWith("picture")) {
-                        if (element.hasAttribute("url")) {
-                            image = element.getAttribute("url");
-                        }
-                        if (element.hasAttribute("data")) {
-                            image = element.getAttribute("data");
-                        }
-                    }
-                    if (element.getTagName().startsWith("billboard")) {
-                        backgroundColour = element.getAttribute("background");
-                    }
-                    if (element.getTagName().startsWith("message")) {
-                        message = element.getTextContent();
-                        textColour = element.getAttribute("colour");
-                    }
-                    if (element.getTagName().startsWith("information")) {
-                        information = element.getTextContent();
-                        informationColour = element.getAttribute("colour");
-                    }
-                }
-            }
-
-            System.out.println(message);
-            System.out.println(image);
-            System.out.println(backgroundColour);
-            System.out.println(textColour);
-            System.out.println(information);
-            System.out.println(informationColour);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
 }

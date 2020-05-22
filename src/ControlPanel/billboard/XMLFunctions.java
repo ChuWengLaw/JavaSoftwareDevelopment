@@ -29,7 +29,7 @@ public class XMLFunctions {
      */
     public static void makeXML(String billboardName, String textColour, String backgroundColour,
                                String message, String image, String information, String informationColour) throws ParserConfigurationException {
-        String path = "xmlFiles/" + billboardName + ".xml";
+        String path = "src/xmlBillboards/" + billboardName + ".xml";
         try {
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newDefaultInstance();
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();

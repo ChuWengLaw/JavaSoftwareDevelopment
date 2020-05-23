@@ -19,6 +19,7 @@ public class ListUserWin extends JFrame{
 
     public ListUserWin(){
         super("List of users");
+        super.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         WindowListener windowListener = new WindowListener() {
             @Override
             public void windowOpened(WindowEvent e) {}
@@ -45,17 +46,9 @@ public class ListUserWin extends JFrame{
             public void windowDeactivated(WindowEvent e) {}
         };
         super.addWindowListener(windowListener);
-        /**
-         * @author Foo
-         * This section retrieves the listed user information and puts them in a vector
-         * It then displays the user information stored in the vector through JTable
-         */
 
         setSize(500,120);
         setLocation(900,350);
-
-        panel.setLayout(new BorderLayout());
-        getContentPane().add(panel);
         }
 
         public void createTableSQL() throws SQLException {
@@ -67,16 +60,23 @@ public class ListUserWin extends JFrame{
                 ex.printStackTrace();
             }
         }
-        public void getTable(JTable table){
+        public void getTable(JTable table, boolean validSession){
+        if (validSession){
             super.setSize(500,120);
             super.setLocationRelativeTo(null);
-            super.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             JPanel panel = new JPanel();
             JScrollPane scrollpane = new JScrollPane(table);
             panel.setLayout(new BorderLayout());
             panel.add(scrollpane, BorderLayout.CENTER);
             super.setContentPane(panel);
             super.setVisible(true);
+        }
+        else{
+            JOptionPane.showMessageDialog(null,"Invalid Session token");
+            System.out.println(Client.isRequestState());
+            super.dispose();
+        }
+
         }
     }
 

@@ -2,6 +2,7 @@ package ControlPanel;
 
 import Server.Request.*;
 
+import javax.swing.*;
 import java.io.*;
 import java.net.Socket;
 import java.util.List;
@@ -46,7 +47,6 @@ public class Client {
         if (requestReply instanceof LoginReply){
             LoginReply loginReply = (LoginReply) requestReply;
             requestState = loginReply.isLoginState();
-
             if (requestState){
                 Main.loginUser = loginReply.getUser();
             }
@@ -54,18 +54,18 @@ public class Client {
         else if (requestReply instanceof SearchReply){
             SearchReply searchReply = (SearchReply) requestReply;
             requestState = searchReply.isRequestState();
-
             if (requestState){
                 Main.editUserWin.editedUser = searchReply.getUser();
             }
         }
         else if (requestReply instanceof GernalReply){
+            System.out.println(requestState + "3");
             GernalReply gernalReply = (GernalReply) requestReply;
             requestState = gernalReply.isRequestState();
         }
         else if (requestReply instanceof ListUserReply){
             ListUserReply listUserReply = (ListUserReply) requestReply;
-            Main.listUserWin.getTable(listUserReply.getTable());
+            Main.listUserWin.getTable(listUserReply.getTable(), listUserReply.isValidSession());
         }
     }
 }

@@ -254,14 +254,37 @@ public class Server {
         }
         else if(o instanceof DeleteUserRequest){
             DeleteUserRequest deleteUser = (DeleteUserRequest) o;
-            deleteUserBillboardSQL(deleteUser.getUserName());
-            oos.flush();
+            boolean checkDeleteUser = checkUserSQL(deleteUser.getUserName());
+            if (checkDeleteUser){
+                deleteUserBillboardSQL(deleteUser.getUserName());
+                GernalReply generalReply = new GernalReply(true);
+                oos.writeObject(generalReply);
+                oos.flush();
+            }
+            else{
+                GernalReply generalReply = new GernalReply(false);
+                oos.writeObject(generalReply);
+                oos.flush();
+            }
         }
         else if (o instanceof ListUserRequest){
             ListUserRequest listUser = (ListUserRequest) o;
-            ListUserReply listUserReply = new ListUserReply(listUserSQL());
-            oos.writeObject(listUserReply);
-            oos.flush();
+            boolean validSession = false;
+            System.out.println(validSession);
+            //Insert code here to check if session is valid
+            //Default value to true for now
+            if (validSession){
+                ListUserReply listUserReply = new ListUserReply(listUserSQL(), validSession);
+                oos.writeObject(listUserReply);
+                oos.flush();
+            }
+            else{
+                System.out.println(validSession);
+                ListUserReply listUserReply = new ListUserReply(listUserSQL(), validSession);
+                oos.writeObject(listUserReply);
+                oos.flush();
+            }
+
         }
         else if (o instanceof CreateBBRequest) {
             CreateBBRequest temp = (CreateBBRequest) o;

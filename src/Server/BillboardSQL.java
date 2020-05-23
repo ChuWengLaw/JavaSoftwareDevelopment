@@ -2,28 +2,14 @@ package Server;
 
 import javax.swing.*;
 import java.sql.*;
+import java.util.Vector;
 
 public class BillboardSQL {
-
-    /* attributes
-    User Creator
-    Billboard Name
-    Text on Billboard
-    Colour of Text and background
-    Images
-    */
-//overloading constructors depending on info submitted.  OR
-    //One constructor but when you create a new billboard it inputs '0' to show that there was no input
-    //when you click create billboard you first enter a name and it checks if it exists
-
     /**
-     *  This function establish a connection to database and　retrieving data from the XML file
-     *  holding the address list.
-     *  @author Law
+     * Constructor containing the SQL methods.
      */
     public BillboardSQL() {}
 
-    //use the GetCreateBillboardPermission() method
     /**
      * This function creates a public method to create/edit
      * the selected billboard content in database
@@ -37,10 +23,9 @@ public class BillboardSQL {
      * @param BillboardInformation Information in the billboard
      * @exception SQLException if sql query error occurs
      */
-
     public void CreateBillboard(String BillboardName, String CreatedByUserName, String BillboardTextColour,
                                     String BillboardBackgroundColour, String BillboardMessage,
-                                    String BillboardPicture, String BillboardInformation) throws SQLException {
+                                    String BillboardPicture, String BillboardInformation, String InformationColour) throws SQLException {
 
         /* Flags for checking billboard existence */
         boolean ExistFlag = false;
@@ -62,91 +47,73 @@ public class BillboardSQL {
                 ResultSet update = Server.statement.executeQuery("UPDATE Billboard SET UserName = '" +
                         CreatedByUserName + "',TextColour = '" + BillboardTextColour + "',BackGroundColour = '" +
                         BillboardBackgroundColour + "',Message = '" + BillboardMessage + "',Image = '" + BillboardPicture +
-                        "',Information = '" + BillboardInformation + "' WHERE BillboardName = '" + BillboardName + "';");
+                        "',Information = '" + BillboardInformation + "',InformationColour = '" + InformationColour + "' WHERE BillboardName = '" + BillboardName + "';");
             }
             //if billboard does not exist it will create a new billboard
             else {
                 ResultSet insert = Server.statement.executeQuery("INSERT INTO Billboard VALUES ('" +
                         BillboardName + "','" + CreatedByUserName + "','" + BillboardTextColour +
                         "','" + BillboardBackgroundColour + "','" + BillboardMessage + "','" +
-                        BillboardPicture + "','" + BillboardInformation + "');");
+                        BillboardPicture + "','" + BillboardInformation + "','" + InformationColour + "');");
             }
         } catch (SQLException e) {
             System.out.println(e);
         }
     }
 
-
-//    public void EditBillboard(String BillboardName, String CreatedByUserName, String BillboardTextColour,
-//                                    String BillboardBackgroundColour, String BillboardMessage,
-//                                    String BillboardPicture, String BillboardInformation) throws SQLException {
-//
-//        /* Flags for checking billboard existence */
-//        boolean ExistFlag = false;
-//
-//
-//        try {
-//            ResultSet resultSet = Server.statement.executeQuery("SELECT * FROM Billboard");
-//            while (resultSet.next()) {
-//                if ( BillboardName.equals(resultSet.getString("BillboardName")) ) {
-//                    ExistFlag = true;
-//                    break;
-//                }
-//                else {
-//                    ExistFlag = false;
-//                }
-//            }
-//            //if it exists it will edit it
-//            if (ExistFlag == true) {
-//
-//                ResultSet update = Server.statement.executeQuery("UPDATE Billboard SET UserName = '" + CreatedByUserName + "',TextColour = '" + BillboardTextColour +
-//                        "',BackGroundColour = '" + BillboardBackgroundColour + "',Message = '" + BillboardMessage + "',Image = '" +
-//                        BillboardPicture + "',Information = '" + BillboardInformation + "' WHERE BillboardName = '" + BillboardName + "';");
-//
-//
-//            }
-//
-//
-//            //if it doesnt exist it will prompt to create a new billboard
-//            else {
-//                JOptionPane.showMessageDialog(null,"Doesn't exist please create instead.");
-//            }
-//        } catch (SQLException e) {
-//            System.out.println(e);
-//
-//        }
-//    }
-
-
     /**
      * This function creates a public method to retrieve
      * the selected billboard information from database
      * @author Law
      * @param BillBoardName name of the billboard
+     * @return Information of the billboard in string
      * @exception SQLException if sql query error occurs
      */
-    public void GetBillboardInfo(String BillBoardName) throws SQLException {
+    public String GetBillboardInfo(String BillBoardName) throws SQLException {
+        String info = "";
         try {
-            ResultSet info = Server.statement.executeQuery("SELECT Information FROM Billboard WHERE BillboardName = '"
+            ResultSet getInfo = Server.statement.executeQuery("SELECT Information FROM Billboard WHERE BillboardName = '"
                     + BillBoardName + "';");
+            getInfo.next();
+            info = getInfo.getString("Information");
         } catch (SQLException e) {
             System.out.println(e);
         }
+        return info;
     }
 
     /**
      * This function creates a public method to retrieve
      * all of the billboards' contents from database
      * @author Law
-     * @param BillBoardName name of the billboard
+     * @param Token session token
      * @exception SQLException if sql query error occurs
      */
-    public void ListBillboards(String BillBoardName) throws SQLException {
+    public JTable ListBillboards(String Token) throws SQLException {
+        JTable table = new JTable();
         try {
             ResultSet list = Server.statement.executeQuery("SELECT * FROM Billboard"/*ORDER BY ScheduleValue (i.e. how ever we are going to schedule) ASC*/+";");
+            ResultSetMetaData rsmd = list.getMetaData();
+            int columnCount = rsmd.getColumnCount();
+            Vector columnHeader = new Vector(columnCount);
+            for (int i = 1; i<= columnCount; i++){
+                columnHeader.add(rsmd.getColumnName(i));
+            }
+            Vector data = new Vector();
+            Vector row = new Vector();
+
+            while(list.next()) {
+                row = new Vector(columnCount);
+                for (int i = 1; i <= columnCount; i++) {
+                    row.add(list.getString(i));
+                }
+                data.add(row);
+            }
+            table = new JTable(data,columnHeader);
         } catch (SQLException e) {
             System.out.println(e);
         }
+        return table;
     }
 
     /**
@@ -158,7 +125,8 @@ public class BillboardSQL {
      */
     public void DeleteBillboard(String BillBoardName) throws SQLException {
         try {
-            ResultSet delete = Server.statement.executeQuery("DELETE FROM Billboard WHERE BillboardName = '" + BillBoardName + "';");
+            ResultSet deleteBB = Server.statement.executeQuery("DELETE FROM Billboard WHERE BillboardName = '" + BillBoardName + "';");
+            ResultSet deleteSchedule = Server.statement.executeQuery("DELETE FROM Schedule WHERE BillboardName = '" + BillBoardName + "';");
         } catch (SQLException e) {
             System.out.println(e);
         }

@@ -1,6 +1,8 @@
 package ControlPanel.user;
 
+import ControlPanel.Client;
 import ControlPanel.Main;
+import Server.Request.ListUserRequest;
 import Server.Server;
 
 import javax.swing.*;
@@ -17,7 +19,7 @@ public class ListUserWin extends JFrame{
 
     public ListUserWin(){
         super("List of users");
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        super.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         WindowListener windowListener = new WindowListener() {
             @Override
             public void windowOpened(WindowEvent e) {}
@@ -44,58 +46,63 @@ public class ListUserWin extends JFrame{
             public void windowDeactivated(WindowEvent e) {}
         };
         super.addWindowListener(windowListener);
-        /**
-         * @author Foo
-         * This section retrieves the listed user information and puts them in a vector
-         * It then displays the user information stored in the vector through JTable
-         */
 
         setSize(500,120);
         setLocation(900,350);
-
-        panel.setLayout(new BorderLayout());
-        getContentPane().add(panel);
         }
 
         public void createTableSQL() throws SQLException {
-            Statement statement = Server.connection.createStatement();
-            ResultSet rs = statement.executeQuery(
-                    "select userName,CreateBillboardsPermission,EditAllBillboardPermission," +
-                            "ScheduleBillboardsPermission, EditUsersPermission from user");
-            ResultSetMetaData rsmd = rs.getMetaData();
-            int columnCount = rsmd.getColumnCount();
-            Vector column  = new Vector(columnCount);
-
-            for (int i = 1; i<= columnCount; i++){
-                column.add(rsmd.getColumnName(i));
+            ListUserRequest listUser = new ListUserRequest("Miku");
+            try{
+                Client.connectServer(listUser);
             }
-
-            Vector data = new Vector();
-            Vector row = new Vector();
-
-            while(rs.next()) {
-                row = new Vector(columnCount);
-                for (int i = 1; i <= columnCount; i++) {
-                    row.add(rs.getString(i));
-                }
-
-                data.add(row);
-                table = new JTable(data,column);
-                scrollpane = new JScrollPane(table);
-                panel.add(scrollpane, BorderLayout.CENTER);
-                getContentPane().add(panel);
+            catch (Exception ex){
+                ex.printStackTrace();
             }
-
-            JFrame frame = new JFrame();
-            frame.setSize(500,120);
-            frame.setLocationRelativeTo(null);
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        }
+        public void getTable(JTable table, boolean validSession){
+        if (validSession){
+            super.setSize(500,120);
+            super.setLocationRelativeTo(null);
             JPanel panel = new JPanel();
-            JTable table = new JTable(data,column);
             JScrollPane scrollpane = new JScrollPane(table);
             panel.setLayout(new BorderLayout());
             panel.add(scrollpane, BorderLayout.CENTER);
-            frame.setContentPane(panel);
-            frame.setVisible(true);
+            super.setContentPane(panel);
+            super.setVisible(true);
+        }
+        else{
+            JOptionPane.showMessageDialog(null,"Invalid Session token");
+            System.out.println(Client.isRequestState());
+            super.dispose();
+        }
+
         }
     }
+
+//            Statement statement = Server.connection.createStatement();
+//            ResultSet rs = statement.executeQuery(
+//                    "select userName,CreateBillboardsPermission,EditAllBillboardPermission," +
+//                            "ScheduleBillboardsPermission, EditUsersPermission from user");
+//            ResultSetMetaData rsmd = rs.getMetaData();
+//            int columnCount = rsmd.getColumnCount();
+//            Vector columnheader  = new Vector(columnCount);
+//
+//            for (int i = 1; i<= columnCount; i++){
+//                columnheader.add(rsmd.getColumnName(i));
+//            }
+//
+//            Vector data = new Vector();
+//            Vector row = new Vector();
+//
+//            while(rs.next()) {
+//                row = new Vector(columnCount);
+//                for (int i = 1; i <= columnCount; i++) {
+//                    row.add(rs.getString(i));
+//                    data.add(row);
+//                    table = new JTable(data,columnheader);
+//                    scrollpane = new JScrollPane(table);
+//                    panel.add(scrollpane, BorderLayout.CENTER);
+//                    getContentPane().add(panel);
+//                }
+//            }

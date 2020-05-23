@@ -2,6 +2,8 @@ package ControlPanel.user;
 
 import ControlPanel.*;
 import Server.*;
+import Server.Request.DeleteUserRequest;
+
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
@@ -47,24 +49,27 @@ public class DeleteUserWin extends JFrame{
         super.addWindowListener(windowListener);
 
         ActionListener listener = e -> {
-            try{
-                if(Main.loginUser.getUserName().equals(usernamefield.getText())){
-                    JOptionPane.showMessageDialog(null, "You can't delete yourself, you knobhead");
-                } else if(!CheckUserSQL(usernamefield.getText())){
-                    JOptionPane.showMessageDialog(null, "Username does not exist");
+            if (usernamefield.getText().isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Username cannot be empty");
+            }
+            else{
+                DeleteUserRequest deleteUser = new DeleteUserRequest(usernamefield.getText());
+                try{
+                    Client.connectServer(deleteUser);
                 }
-                else if(usernamefield.getText().isEmpty()) {
-                    JOptionPane.showMessageDialog(null, "Username field is empty");
+                catch (Exception ex){
+                    ex.printStackTrace();
+                }
+                if (Client.isRequestState()){
+                    JOptionPane.showMessageDialog(null, "User has been deleted");
+                    System.out.println(Client.isRequestState());
                 }
                 else{
-                    DeleteUserSQL(usernamefield.getText());
-                    DeleteUserBillboardSQL(usernamefield.getText());
-                    JOptionPane.showMessageDialog(null,"User has been deleted");
+                    JOptionPane.showMessageDialog(null, "User does not exist");
                 }
+                usernamefield.setText("");
             }
-            catch (SQLException ex){
-                ex.printStackTrace();
-            }
+
         };
 
         deletebutton.addActionListener(listener);
@@ -88,62 +93,4 @@ public class DeleteUserWin extends JFrame{
         setLocation(900,350);
         pack();
     }
-    /**
-     * @author Foo
-     * @param userName
-     * @exception SQLException , happens if any sql query error happens
-     * This method checks if the user exists in the table for the entered user
-     */
-    private boolean CheckUserSQL(String userName) throws SQLException {
-        User user = new User();
-        boolean existing = false;
-        Statement statement = Server.connection.createStatement();
-        ResultSet resultSet = statement.executeQuery("SELECT userName FROM user");
-        while(resultSet.next()){
-            if(userName.equals(resultSet.getString(1))){
-                existing = true;
-                break;
-            }
-        }
-        statement.close();
-        return existing;
-
-    }
-    /**
-     * @author Foo
-     * @param userName
-     * @exception SQLException , happens if any sql query error happens
-     * This method deletes the user that has been entered into the textfield
-     */
-    private void DeleteUserSQL(String userName) throws SQLException {
-        if(userName != usernamefield.getText()){
-            PreparedStatement deletestatement = Server.connection.prepareStatement("delete from user where userName=?");
-            deletestatement.setString(1,userName);
-            deletestatement.executeQuery();
-            deletestatement.close();
-        }
-        else{
-            JOptionPane.showMessageDialog(null,"why");
-        }
-    }
-    /**
-     * @author Foo
-     * @param userName
-     * @exception SQLException , happens if any sql query error happens
-     * This method deletes every billboard that was created by the deleted user
-     */
-    private void DeleteUserBillboardSQL (String userName) throws SQLException{
-        try{
-            PreparedStatement deletebillboardstatement = Server.connection.prepareStatement(
-                    "delete from billboard where UserName=?"
-            );
-            deletebillboardstatement.setString(1,userName);
-            deletebillboardstatement.executeQuery();
-            deletebillboardstatement.close();
-        }
-        catch(SQLException e){
-            System.out.println();
-        }
-    }
-
 }

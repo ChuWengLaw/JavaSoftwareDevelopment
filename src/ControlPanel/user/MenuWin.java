@@ -4,6 +4,7 @@ package ControlPanel.user;
 import ControlPanel.Client;
 import ControlPanel.Main;
 import ControlPanel.billboard.BillBoardManagementGUI;
+import ControlPanel.schedule.CalanderScheduleGUI;
 import Server.Request.LogoutRequest;
 
 import java.awt.*;
@@ -29,6 +30,7 @@ public class MenuWin extends JFrame {
      */
     private JButton billboardManageButton = new JButton("Billboard management");
     private JButton editUserButton = new JButton("User management");
+    private JButton scheduleBillboardButton = new JButton("Schedule Billboard");
     private JButton userProfileButton = new JButton("User profile");
     private JButton logoutButton = new JButton("Log out");
     private JPanel panel = new JPanel(new GridBagLayout());
@@ -52,6 +54,9 @@ public class MenuWin extends JFrame {
         ActionListener editBillboardListener = e -> new BillBoardManagementGUI();
         billboardManageButton.addActionListener(editBillboardListener);
 
+        ActionListener scheduleBillboardListener = e -> new CalanderScheduleGUI();
+        scheduleBillboardButton.addActionListener(scheduleBillboardListener);
+      
         ActionListener userProfileListener = e -> {
             Main.userProfileWin.setVisible(true);
             Main.userProfileWin.setCheckBox(Main.loginUser.getCreateBillboardsPermission(), Main.loginUser.getEditAllBillboardPermission(),
@@ -91,6 +96,9 @@ public class MenuWin extends JFrame {
 
         constraints.gridy = 1;
         panel.add(logoutButton, constraints);
+      
+        constraints.gridy = 2;
+        panel.add(scheduleBillboardButton, constraints);
 
         getContentPane().add(panel);
 

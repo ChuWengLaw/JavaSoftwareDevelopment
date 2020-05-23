@@ -2,13 +2,15 @@ package ControlPanel.billboard;
 
 import ControlPanel.Client;
 import Server.Request.DeleteBBRequest;
-import Server.BillboardSQL;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.*;
 
-
+/**
+ * This class creates the GUI to be used to delete a selected
+ * billboard
+ */
 public class DeleteBillboardGUI extends JFrame {
     //set the width of the GUI
     public static final int WIDTH = 350;
@@ -27,7 +29,9 @@ public class DeleteBillboardGUI extends JFrame {
     private GridBagConstraints constraints = new GridBagConstraints();
 
 
-    //constructor
+    /**
+     * Constructor initialises the GUI creation.
+     */
     public DeleteBillboardGUI() throws HeadlessException {
         super("Delete Billboard");
         createGUI();
@@ -67,8 +71,6 @@ public class DeleteBillboardGUI extends JFrame {
                 txtBillboardName.setText("");
             }
         });
-
-
 
         constraints.anchor = GridBagConstraints.WEST;
         constraints.insets = new Insets(2,2,2,2);

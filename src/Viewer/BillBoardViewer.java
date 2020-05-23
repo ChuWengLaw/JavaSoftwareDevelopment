@@ -110,37 +110,12 @@ public class BillBoardViewer extends JFrame {
         // Create a new image.
         ImageIcon myPicture = new ImageIcon(ImageIO.read(new File("src/Viewer/Image/0341b9f3f27a6ba0a3b8de6de9d864949f0dbc23.jpg"))
         .getScaledInstance(screenWidth, screenHeight, Image.SCALE_SMOOTH));
-
         try{
-//            Statement statement = Main.connection.createStatement();
-//            ResultSet rs = statement.executeQuery(
-//                    "SELECT BillboardName, UserName, TextColour, " +
-//                            "BackGroundColour, Message, Image, Information FROM billboard");
-//            ResultSetMetaData rsmd = rs.getMetaData();
-//            int columnCount = rsmd.getColumnCount();
-//            Vector column  = new Vector(columnCount);
-//            for (int i = 1; i<= columnCount; i++){
-//
-//                column.add(rsmd.getColumnName(i));
-//            }
-//            Vector data = new Vector();
-//            Vector row = new Vector();
-//            while(rs.next()){
-//                row = new Vector(columnCount);
-//                for (int i = 1; i <= columnCount; i++){
-//                    row.add(rs.getString(i));
-//                }
-//                data.add(row);
-//            }
-
-//            JLabel label = new JLabel();
-//            label.setText(text);
-//            JTable table = new JTable(data,column);
-//            JScrollPane scrollpane = new JScrollPane(table);
-
+            myPicture = ImageIO.read(new File("src/Viewer/Image/soyeon-idle-pfantaken-Favim.com-6382977.jpg"));
         }
         catch(Exception e) {
             //TODO: Display Error Screen
+            myPicture = ImageIO.read(new File("src/Viewer/Image/soyeon-idle-pfantaken-Favim.com-6382977.jpg"));
         }
 
         picLabel.setIcon(myPicture);

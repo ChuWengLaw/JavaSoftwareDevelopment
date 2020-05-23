@@ -2,11 +2,13 @@ package Server;
 
 import ControlPanel.User;
 
+import javax.swing.*;
+import javax.xml.transform.Result;
+import java.awt.*;
 import java.security.NoSuchAlgorithmException;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.Vector;
 
 public class UserSQL {
     // Method for SQL execution.
@@ -63,6 +65,41 @@ public class UserSQL {
         pstatement.setString(7, saltValue);
         pstatement.executeUpdate();
         pstatement.close();
+    }
+    static void deleteUserBillboardSQL(String userName) throws SQLException {
+        PreparedStatement deleteUserStatement = Server.connection.prepareStatement("DELETE FROM user WHERE userName = ?");
+        PreparedStatement deleteUserBillboardStatement = Server.connection.prepareStatement("DELETE from Billboard WHERE userName =?");
+        deleteUserStatement.setString(1, userName);
+        deleteUserBillboardStatement.setString(1,userName);
+        deleteUserStatement.executeQuery();
+        deleteUserBillboardStatement.executeQuery();
+        deleteUserBillboardStatement.close();
+        deleteUserStatement.close();
+    }
+    static JTable listUserSQL() throws SQLException {
+        JTable table = new JTable();
+        Statement listUserStatement = Server.connection.createStatement();
+        ResultSet rs = listUserStatement.executeQuery(
+                "select userName, CreateBillboardsPermission, EditAllBillboardPermission,"
+                + "ScheduleBillboardsPermission, EditUsersPermission from user");
+        ResultSetMetaData rsmd = rs.getMetaData();
+        int columnCount = rsmd.getColumnCount();
+        Vector columnHeader = new Vector(columnCount);
+        for (int i = 1; i<= columnCount; i++){
+            columnHeader.add(rsmd.getColumnName(i));
+        }
+        Vector data = new Vector();
+        Vector row = new Vector();
+
+        while(rs.next()) {
+            row = new Vector(columnCount);
+            for (int i = 1; i <= columnCount; i++) {
+                row.add(rs.getString(i));
+            }
+            data.add(row);
+        }
+        table = new JTable(data,columnHeader);
+        return table;
     }
 
     static boolean checkUserSQL(String userName) throws SQLException {

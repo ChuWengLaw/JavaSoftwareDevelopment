@@ -18,7 +18,7 @@ user to carry out various management tasks, such as changing which billboards ar
 times. The server will store its information in a MariaDB database. \
 
 Link below shows the basic structure of how the system works.  
-![Click Me](https://discordapp.com/channels/690739854425980940/690739854425980944/711447469841580053)
+![Click Me](https://imgur.com/hmxviLP)
 
 #### Packages
 Packages

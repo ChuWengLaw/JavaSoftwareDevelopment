@@ -2,7 +2,6 @@ package ControlPanel.billboard;
 
 import ControlPanel.Client;
 import Server.Request.CreateBBRequest;
-import org.mariadb.jdbc.internal.com.read.resultset.SelectResultSet;
 
 import javax.swing.*;
 import java.awt.*;
@@ -35,8 +34,8 @@ public class EditBillboardGUI extends JFrame {
     private JTextField txtInformationColour;
 
     //define the panel and gridbag to be used for the GUI layout
-    private JPanel panel = new JPanel(new GridBagLayout());
-    private GridBagConstraints constraints = new GridBagConstraints();
+    private JPanel editBBPanel = new JPanel(new GridBagLayout());
+    private GridBagConstraints editBBConstraints = new GridBagConstraints();
 
     public EditBillboardGUI() throws HeadlessException {
         super("Create Billboard");
@@ -64,7 +63,7 @@ public class EditBillboardGUI extends JFrame {
                     //otherwise edit the billboard
                 } else {
                     CreateBBRequest temp = new CreateBBRequest(txtBillboardName.getText(), txtTextColour.getText(),
-                            txtBackgroundColour.getText(), txtMessage.getText(), txtImage.getText(), txtInformation.getText());
+                            txtBackgroundColour.getText(), txtMessage.getText(), txtImage.getText(), txtInformation.getText(), txtInformationColour.getText());
 
                     try {
                         Client.connectServer(temp);
@@ -119,54 +118,54 @@ public class EditBillboardGUI extends JFrame {
         txtInformation.setEditable(false);
         txtInformationColour.setEditable(false);
 
-        constraints.anchor = GridBagConstraints.WEST;
-        constraints.insets = new Insets(10, 10, 10, 10);
+        editBBConstraints.anchor = GridBagConstraints.WEST;
+        editBBConstraints.insets = new Insets(10, 10, 10, 10);
 
         //add labels to panel
-        constraints.gridx = 0;
-        constraints.gridy = 0;
-        panel.add(lblBillboardName, constraints);
-        constraints.gridy = 1;
-        panel.add(lblTextColour, constraints);
-        constraints.gridy = 2;
-        panel.add(lblBackgroundColour, constraints);
-        constraints.gridy = 3;
-        panel.add(lblMessage, constraints);
-        constraints.gridy = 4;
-        panel.add(lblImage, constraints);
-        constraints.gridy = 5;
-        panel.add(lblInformation, constraints);
-        constraints.gridy = 6;
-        panel.add(lblInformationColour, constraints);
+        editBBConstraints.gridx = 0;
+        editBBConstraints.gridy = 0;
+        editBBPanel.add(lblBillboardName, editBBConstraints);
+        editBBConstraints.gridy = 1;
+        editBBPanel.add(lblTextColour, editBBConstraints);
+        editBBConstraints.gridy = 2;
+        editBBPanel.add(lblBackgroundColour, editBBConstraints);
+        editBBConstraints.gridy = 3;
+        editBBPanel.add(lblMessage, editBBConstraints);
+        editBBConstraints.gridy = 4;
+        editBBPanel.add(lblImage, editBBConstraints);
+        editBBConstraints.gridy = 5;
+        editBBPanel.add(lblInformation, editBBConstraints);
+        editBBConstraints.gridy = 6;
+        editBBPanel.add(lblInformationColour, editBBConstraints);
 
         //add txtfeilds to panel
-        constraints.gridx = 1;
-        constraints.gridy = 0;
-        panel.add(txtBillboardName, constraints);
-        constraints.gridy = 1;
-        panel.add(txtTextColour, constraints);
-        constraints.gridy = 2;
-        panel.add(txtBackgroundColour, constraints);
-        constraints.gridy = 3;
-        panel.add(txtMessage, constraints);
-        constraints.gridy = 4;
-        panel.add(txtImage, constraints);
-        constraints.gridy = 5;
-        panel.add(txtInformation, constraints);
-        constraints.gridy = 6;
-        panel.add(txtInformationColour, constraints);
+        editBBConstraints.gridx = 1;
+        editBBConstraints.gridy = 0;
+        editBBPanel.add(txtBillboardName, editBBConstraints);
+        editBBConstraints.gridy = 1;
+        editBBPanel.add(txtTextColour, editBBConstraints);
+        editBBConstraints.gridy = 2;
+        editBBPanel.add(txtBackgroundColour, editBBConstraints);
+        editBBConstraints.gridy = 3;
+        editBBPanel.add(txtMessage, editBBConstraints);
+        editBBConstraints.gridy = 4;
+        editBBPanel.add(txtImage, editBBConstraints);
+        editBBConstraints.gridy = 5;
+        editBBPanel.add(txtInformation, editBBConstraints);
+        editBBConstraints.gridy = 6;
+        editBBPanel.add(txtInformationColour, editBBConstraints);
 
         //add buttons to panel
-        constraints.insets = new Insets(5, 10, 5, 10);
-        constraints.anchor = GridBagConstraints.EAST;
-        constraints.gridx = 0;
-        constraints.gridy = 8;
-        panel.add(btnSumbit, constraints);
-        constraints.gridx = 1;
-        panel.add(btnSearch, constraints);
+        editBBConstraints.insets = new Insets(5, 10, 5, 10);
+        editBBConstraints.anchor = GridBagConstraints.EAST;
+        editBBConstraints.gridx = 0;
+        editBBConstraints.gridy = 8;
+        editBBPanel.add(btnSumbit, editBBConstraints);
+        editBBConstraints.gridx = 1;
+        editBBPanel.add(btnSearch, editBBConstraints);
 
 
-        getContentPane().add(panel);
+        getContentPane().add(editBBPanel);
         setLocation(900, 350);
 
         pack();

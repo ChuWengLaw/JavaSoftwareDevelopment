@@ -66,6 +66,8 @@ public class CreateBillboardGUI extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 if (txtBillboardName.getText().isBlank()) {
                     JOptionPane.showMessageDialog(null, "Please Enter a Billboard Name.");
+                } else if (txtBillboardName.getText().contains(" ")) {
+                    JOptionPane.showMessageDialog(null, "Please Enter the Name as One Word");
                 } else {
                     CreateBBRequest temp = new CreateBBRequest(txtBillboardName.getText(), txtTextColour.getText(),
                             txtBackgroundColour.getText(), txtMessage.getText(), txtImage.getText(), txtInformation.getText());

@@ -44,38 +44,13 @@ public class BillBoardViewer extends JFrame {
 }
 
     private void update() throws IOException {
-        Image myPicture = ImageIO.read(new File("src/Viewer/Image/soyeon-idle-pfantaken-Favim.com-6382977.jpg"));
-
+        Image myPicture;
         try{
-//            Statement statement = Main.connection.createStatement();
-//            ResultSet rs = statement.executeQuery(
-//                    "SELECT BillboardName, UserName, TextColour, " +
-//                            "BackGroundColour, Message, Image, Information FROM billboard");
-//            ResultSetMetaData rsmd = rs.getMetaData();
-//            int columnCount = rsmd.getColumnCount();
-//            Vector column  = new Vector(columnCount);
-//            for (int i = 1; i<= columnCount; i++){
-//
-//                column.add(rsmd.getColumnName(i));
-//            }
-//            Vector data = new Vector();
-//            Vector row = new Vector();
-//            while(rs.next()){
-//                row = new Vector(columnCount);
-//                for (int i = 1; i <= columnCount; i++){
-//                    row.add(rs.getString(i));
-//                }
-//                data.add(row);
-//            }
-
-//            JLabel label = new JLabel();
-//            label.setText(text);
-//            JTable table = new JTable(data,column);
-//            JScrollPane scrollpane = new JScrollPane(table);
-
+            myPicture = ImageIO.read(new File("src/Viewer/Image/soyeon-idle-pfantaken-Favim.com-6382977.jpg"));
         }
         catch(Exception e) {
             //TODO: Display Error Screen
+            myPicture = ImageIO.read(new File("src/Viewer/Image/soyeon-idle-pfantaken-Favim.com-6382977.jpg"));
         }
 
         picLabel.setIcon(new ImageIcon(myPicture));

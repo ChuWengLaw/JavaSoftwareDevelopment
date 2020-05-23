@@ -3,10 +3,10 @@ package Server.Request;
 import java.io.Serializable;
 
 public class CreateBBRequest implements Serializable {
-    private String BillboardName, author, TextColour, BackgroundColour, Message, Image, Information;
+    private String BillboardName, author, TextColour, BackgroundColour, Message, Image, Information, InformationColour;
 
     public CreateBBRequest(String BillboardName, String TextColour, String BackgroundColour,
-                           String Message, String Image, String Information) {
+                           String Message, String Image, String Information, String InformationColour) {
         this.BillboardName = BillboardName;
         this.author = "a";
         this.TextColour = TextColour;
@@ -14,6 +14,7 @@ public class CreateBBRequest implements Serializable {
         this.Message = Message;
         this.Image = Image;
         this.Information= Information;
+        this.InformationColour = InformationColour;
     }
 
     public String getBillboardName() {
@@ -22,9 +23,7 @@ public class CreateBBRequest implements Serializable {
     public String getAuthor() {
         return author;
     }
-    public String getTextColour() {
-        return TextColour;
-    }
+    public String getTextColour() { return TextColour; }
     public String getBackgroundColour() {
         return BackgroundColour;
     }
@@ -37,4 +36,5 @@ public class CreateBBRequest implements Serializable {
     public String getInformation() {
         return Information;
     }
+    public String getInformationColour() { return InformationColour; }
 }

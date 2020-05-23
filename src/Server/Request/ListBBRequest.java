@@ -1,6 +1,14 @@
 package Server.Request;
 
-import Server.Server;
+import java.io.Serializable;
 
-public class ListBBRequest {
+public class ListBBRequest implements Serializable {
+    private String sessionToken;
+    public ListBBRequest(String sessionToken){
+        this.sessionToken = sessionToken;
+    }
+
+    public String getSessionToken() {
+        return sessionToken;
+    }
 }

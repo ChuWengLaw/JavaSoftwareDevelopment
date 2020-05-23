@@ -70,10 +70,9 @@ public class CreateBillboardGUI extends JFrame {
                     CreateBBRequest temp = new CreateBBRequest(txtBillboardName.getText(), txtTextColour.getText(), txtBackgroundColour.getText(),
                             txtMessage.getText(), txtImage.getText(), txtInformation.getText(), txtInformationColour.getText());
                     try {
-                        Client.connectServer(temp);
-
                         new MakeXMLFile(txtBillboardName.getText(), txtTextColour.getText(),
                                 txtBackgroundColour.getText(), txtMessage.getText(), txtImage.getText(), txtInformation.getText(), txtInformationColour.getText());
+                        Client.connectServer(temp);
                     } catch (InterruptedException ex) {
                         ex.printStackTrace();
                     } catch (IOException ex) {

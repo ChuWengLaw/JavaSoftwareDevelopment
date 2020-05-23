@@ -47,7 +47,7 @@ public class BillboardSQL {
                 ResultSet update = Server.statement.executeQuery("UPDATE Billboard SET UserName = '" +
                         CreatedByUserName + "',TextColour = '" + BillboardTextColour + "',BackGroundColour = '" +
                         BillboardBackgroundColour + "',Message = '" + BillboardMessage + "',Image = '" + BillboardPicture +
-                        "',Information = '" + BillboardInformation + "',InformationColour = '" + InformationColour + "' WHERE BillboardName = '" + BillboardName + "';");
+                        "',Information = '" + BillboardInformation + "',InfoColour = '" + InformationColour + "' WHERE BillboardName = '" + BillboardName + "';");
             }
             //if billboard does not exist it will create a new billboard
             else {

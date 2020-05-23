@@ -67,8 +67,8 @@ public class CreateBillboardGUI extends JFrame {
                 if (txtBillboardName.getText().isBlank()) {
                     JOptionPane.showMessageDialog(null, "Please Enter a Billboard Name.");
                 } else {
-                    CreateBBRequest temp = new CreateBBRequest(txtBillboardName.getText(), txtTextColour.getText(),
-                            txtBackgroundColour.getText(), txtMessage.getText(), txtImage.getText(), txtInformation.getText());
+                    CreateBBRequest temp = new CreateBBRequest(txtBillboardName.getText(), txtTextColour.getText(), txtBackgroundColour.getText(),
+                            txtMessage.getText(), txtImage.getText(), txtInformation.getText(), txtInformationColour.getText());
                     try {
                         Client.connectServer(temp);
 
@@ -91,6 +91,7 @@ public class CreateBillboardGUI extends JFrame {
                 txtMessage.setText("");
                 txtImage.setText("");
                 txtInformation.setText("");
+                txtInformationColour.setText("");
             }
         });
 

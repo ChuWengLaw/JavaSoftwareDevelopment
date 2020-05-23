@@ -2,7 +2,6 @@ package ControlPanel.billboard;
 
 import ControlPanel.Client;
 import Server.Request.DeleteBBRequest;
-import Server.BillboardSQL;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

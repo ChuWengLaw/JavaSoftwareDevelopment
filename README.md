@@ -15,10 +15,10 @@ central control hub for all billboard viewers connected to it. The server will n
 and users will not interact with it directly. Instead, users will run a second client program, the
 Billboard Control Panel. This will be a GUI application that will connect to the server and allow the
 user to carry out various management tasks, such as changing which billboards are shown at which
-times. The server will store its information in a MariaDB database. \
+times. The server will store its information in a MariaDB database. 
 
 Link below shows the basic structure of how the system works.  
-![Click Me](https://discordapp.com/channels/690739854425980940/690739854425980944/711447469841580053)
+![Click Me](https://imgur.com/hmxviLP)
 
 #### Packages
 Packages

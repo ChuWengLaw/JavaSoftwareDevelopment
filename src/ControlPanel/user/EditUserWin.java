@@ -1,20 +1,15 @@
 package ControlPanel.user;
+
 import ControlPanel.Client;
 import ControlPanel.Main;
 import ControlPanel.User;
 import Server.Request.EditUserRequest;
 import Server.Request.SearchRequest;
-
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.IOException;
-import java.security.NoSuchAlgorithmException;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import javax.swing.*;
 
 public class EditUserWin extends JFrame{
@@ -88,7 +83,7 @@ public class EditUserWin extends JFrame{
                         "Administrators are not allow to change their own permission");
             }
             else{
-                SearchRequest searchRequest = new SearchRequest(userNameTextField.getText());
+                SearchRequest searchRequest = new SearchRequest(Main.loginUser.getSessionToken(), userNameTextField.getText());
 
                 try {
                     Client.connectServer(searchRequest);
@@ -155,7 +150,8 @@ public class EditUserWin extends JFrame{
                 }
             }
             else{
-                EditUserRequest editUserRequest = new EditUserRequest(userNameTextField.getText(), passwordTextField.getText(), checkBox1.isSelected(), checkBox2.isSelected(),
+                EditUserRequest editUserRequest = new EditUserRequest(Main.loginUser.getSessionToken(), userNameTextField.getText(),
+                        passwordTextField.getText(), checkBox1.isSelected(), checkBox2.isSelected(),
                         checkBox3.isSelected(), checkBox4.isSelected(), !passwordTextField.getText().isEmpty());
 
                 try {

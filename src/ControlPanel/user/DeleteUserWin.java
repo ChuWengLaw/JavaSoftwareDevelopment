@@ -49,14 +49,27 @@ public class DeleteUserWin extends JFrame{
         super.addWindowListener(windowListener);
 
         ActionListener listener = e -> {
-            DeleteUserRequest deleteUser = new DeleteUserRequest(usernamefield.getText());
-            try{
-                Client.connectServer(deleteUser);
+            if (usernamefield.getText().isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Username cannot be empty");
             }
-            catch (Exception ex){
-                ex.printStackTrace();
+            else{
+                DeleteUserRequest deleteUser = new DeleteUserRequest(usernamefield.getText());
+                try{
+                    Client.connectServer(deleteUser);
+                }
+                catch (Exception ex){
+                    ex.printStackTrace();
+                }
+                if (Client.isRequestState()){
+                    JOptionPane.showMessageDialog(null, "User has been deleted");
+                    System.out.println(Client.isRequestState());
+                }
+                else{
+                    JOptionPane.showMessageDialog(null, "User does not exist");
+                }
+                usernamefield.setText("");
             }
-            usernamefield.getText();
+
         };
 
         deletebutton.addActionListener(listener);

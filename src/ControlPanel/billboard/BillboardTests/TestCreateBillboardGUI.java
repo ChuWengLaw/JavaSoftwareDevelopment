@@ -30,6 +30,7 @@ public class TestCreateBillboardGUI {
     public void TestCreateBBRequestBBTextColour() {
         CreateBBRequest createBBRequest = new CreateBBRequest("chad", "blue", "black",
                 "hello world", "unknown.xml", "one plus one is zero", "white");
+        assertEquals("blue", createBBRequest.getTextColour());
     }
     /* Test 4: Check if the input billboard background colour has been successfully encapsulated in the request object  */
     @Test

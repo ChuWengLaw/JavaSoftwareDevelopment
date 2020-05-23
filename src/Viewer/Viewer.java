@@ -2,8 +2,8 @@ package Viewer;
 
 import java.io.IOException;
 
-public class Main {
-    public Main() {
+public class Viewer {
+    public Viewer() {
 
     }
 

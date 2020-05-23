@@ -1,4 +1,6 @@
 package ControlPanel;
+import Server.SessionToken;
+
 import java.io.Serializable;
 
 
@@ -9,6 +11,7 @@ public class User implements Serializable {
     private boolean editAllBillboardPermission;
     private boolean scheduleBillboardsPermission;
     private boolean editUsersPermission;
+    private SessionToken sessionToken;
 
 //Default constructor should throw an error because below info is required
 
@@ -62,6 +65,14 @@ public class User implements Serializable {
 
     public Boolean getEditUsersPermission() {
         return editUsersPermission;
+    }
+
+    public SessionToken getSessionToken() {
+        return sessionToken;
+    }
+
+    public void setSessionToken(SessionToken sessionToken) {
+        this.sessionToken = sessionToken;
     }
 }
 

@@ -389,23 +389,23 @@ public class Server {
             oos.writeObject(logoutReply);
             oos.flush();
         }
-        else if(o instanceof DeleteUserRequest){
-            DeleteUserRequest deleteUser = (DeleteUserRequest) o;
+        else if(clientRequest instanceof DeleteUserRequest){
+            DeleteUserRequest deleteUser = (DeleteUserRequest) clientRequest;
             boolean checkDeleteUser = checkUserSQL(deleteUser.getUserName());
             if (checkDeleteUser){
                 deleteUserBillboardSQL(deleteUser.getUserName());
-                GernalReply generalReply = new GernalReply(true);
+                GeneralReply generalReply = new GeneralReply(true);
                 oos.writeObject(generalReply);
                 oos.flush();
             }
             else{
-                GernalReply generalReply = new GernalReply(false);
+                GeneralReply generalReply = new GeneralReply(false);
                 oos.writeObject(generalReply);
                 oos.flush();
             }
         }
-        else if (o instanceof ListUserRequest){
-            ListUserRequest listUser = (ListUserRequest) o;
+        else if (clientRequest instanceof ListUserRequest){
+            ListUserRequest listUser = (ListUserRequest) clientRequest;
             boolean validSession = false;
             System.out.println(validSession);
             //Insert code here to check if session is valid
@@ -436,22 +436,22 @@ public class Server {
             bb.DeleteBillboard(temp.getBillboardName());
             oos.flush();
         }
-        else if (o instanceof BBInfoRequest) {
-            BBInfoRequest temp = (BBInfoRequest) o;
+        else if (clientRequest instanceof BBInfoRequest) {
+            BBInfoRequest temp = (BBInfoRequest) clientRequest;
             BillboardSQL bb = new BillboardSQL();
             String info = bb.GetBillboardInfo(temp.getBillboardName());
             BBInfoReply bbInfoReply = new BBInfoReply(info);
             oos.writeObject(bbInfoReply);
             oos.flush();
         }
-        else if (o instanceof ListBBRequest) {
-            ListBBRequest listBBRequest = (ListBBRequest) o;
+        else if (clientRequest instanceof ListBBRequest) {
+            ListBBRequest listBBRequest = (ListBBRequest) clientRequest;
             BillboardSQL bb = new BillboardSQL();
             ListBBReply listBBReply = new ListBBReply(bb.ListBillboards(listBBRequest.getSessionToken()));
             oos.writeObject(listBBReply);
         }
-        else if (o instanceof ScheduleBillboardRequest) {
-            ScheduleBillboardRequest temp = (ScheduleBillboardRequest) o;
+        else if (clientRequest instanceof ScheduleBillboardRequest) {
+            ScheduleBillboardRequest temp = (ScheduleBillboardRequest) clientRequest;
             ScheduleSQL Schedule = new ScheduleSQL();
             Schedule.ScheduleBillboard(temp.getBillboardName(),temp.getScheduledTime(), temp.getDuration(),temp.getReoccurType(),temp.getReoccurAmount());
             oos.flush();

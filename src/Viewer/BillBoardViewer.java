@@ -110,13 +110,13 @@ public class BillBoardViewer extends JFrame {
         // Create a new image.
         ImageIcon myPicture = new ImageIcon(ImageIO.read(new File("src/Viewer/Image/0341b9f3f27a6ba0a3b8de6de9d864949f0dbc23.jpg"))
         .getScaledInstance(screenWidth, screenHeight, Image.SCALE_SMOOTH));
-        try{
-            myPicture = ImageIO.read(new File("src/Viewer/Image/soyeon-idle-pfantaken-Favim.com-6382977.jpg"));
-        }
-        catch(Exception e) {
-            //TODO: Display Error Screen
-            myPicture = ImageIO.read(new File("src/Viewer/Image/soyeon-idle-pfantaken-Favim.com-6382977.jpg"));
-        }
+//        try{
+//            myPicture = ImageIO.read(new File("src/Viewer/Image/soyeon-idle-pfantaken-Favim.com-6382977.jpg"));
+//        }
+//        catch(Exception e) {
+//            //TODO: Display Error Screen
+//            myPicture = ImageIO.read(new File("src/Viewer/Image/soyeon-idle-pfantaken-Favim.com-6382977.jpg"));
+//        }
 
         picLabel.setIcon(myPicture);
         panel.setLayout(new BorderLayout());

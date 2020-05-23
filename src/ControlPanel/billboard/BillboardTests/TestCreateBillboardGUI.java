@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TestCreateBillboardGUI {
     /* Test 1: Construct a empty request */
-    @BeforeEach @Test
+    @BeforeEach @DynamicTest
     public void TestEmptyCreateBBRequest() {
         CreateBBRequest createBBRequest;
     }

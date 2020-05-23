@@ -294,5 +294,11 @@ public class Server {
             Schedule.ScheduleBillboard(temp.getBillboardName(),temp.getScheduledTime(), temp.getDuration(),temp.getReoccurType(),temp.getReoccurAmount());
             oos.flush();
         }
+        else if (o instanceof DeleteScheduleRequest) {
+            DeleteScheduleRequest temp = (DeleteScheduleRequest) o;
+            ScheduleSQL Schedule = new ScheduleSQL();
+            Schedule.DeleteSchedule(temp.getScheduledName(),temp.getScheduledTime());
+            oos.flush();
+        }
     }
 }

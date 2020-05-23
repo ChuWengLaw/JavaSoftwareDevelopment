@@ -36,4 +36,16 @@ public class ScheduleSQL {
 
     }
 
+    public void DeleteSchedule(String BillboardName, String DateTime) throws SQLException {
+        //boolean ExistFlag = false;
+        Server.statement.executeQuery("DELETE FROM Schedule WHERE BillboardName = '" + BillboardName + "';");
+
+        //try {
+            //Server.statement.executeQuery("DELETE FROM Schedule WHERE (BillboardName = '" +
+                        //BillboardName + "' AND ScheduleTime = '" + DateTime + "');");
+            //Server.statement.executeQuery("DELETE FROM Schedule WHERE BillboardName = '" + BillboardName + "';");
+        //} catch (SQLException e) {
+          //  System.out.println(e);
+        //}
+    }
 }

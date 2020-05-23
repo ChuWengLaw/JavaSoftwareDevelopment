@@ -18,6 +18,7 @@ import javax.swing.border.EmptyBorder;
 public class CalanderScheduleGUI extends JFrame {
 
     private JButton btnBillboardScheduler = new JButton();
+    private JButton btnDeleteSchedule = new JButton();
     private JPanel pnlScheduleMenu = new JPanel(new GridBagLayout());
     private GridBagConstraints constraints = new GridBagConstraints();
 
@@ -43,6 +44,15 @@ public class CalanderScheduleGUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 new ScheduleBillboardGUI();
+            }
+        });
+
+        btnDeleteSchedule.setText("Delete a Scheduled Billboard");
+
+        btnDeleteSchedule.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new DeleteScheduleGUI();
             }
         });
 
@@ -81,6 +91,9 @@ public class CalanderScheduleGUI extends JFrame {
         constraints.gridx = 0;
         constraints.gridy = 0;
         pnlScheduleMenu.add(btnBillboardScheduler, constraints);
+        constraints.gridx = 0;
+        constraints.gridy = 1;
+        pnlScheduleMenu.add(btnDeleteSchedule, constraints);
         constraints.gridx = 0;
         constraints.gridy = 1;
 

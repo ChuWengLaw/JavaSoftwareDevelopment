@@ -1,6 +1,9 @@
 package ControlPanel.billboard;
 
+import ControlPanel.Client;
 import Server.*;
+import Server.Request.ListBBReply;
+import Server.Request.ListBBRequest;
 
 
 import javax.swing.*;
@@ -12,51 +15,45 @@ import java.util.Vector;
 
 
 /**
-  * List all the existing billboards in the database
-  * @author Law
+  * This class creates the GUI to be used to display all the existing
+  * billboards from the database
   */
 public class ListBillboardsGUI extends JFrame {
+    private JPanel panel = new JPanel();
+    /**
+     * Constructor initialises the GUI creation.
+     */
     public ListBillboardsGUI() throws HeadlessException {
         super("List Billboards");
         createGUI();
     }
-
+    /**
+     * Gets the JTable from server
+     * @author Law
+     */
     private void createGUI() {
+        ListBBRequest listBBRequest = new ListBBRequest("token");
         try{
-            Statement statement = Server.connection.createStatement();
-            ResultSet rs = statement.executeQuery(
-                    "SELECT BillboardName, UserName, TextColour, " +
-                            "BackGroundColour, Message, Image, Information FROM billboard");
-            ResultSetMetaData rsmd = rs.getMetaData();
-            int columnCount = rsmd.getColumnCount();
-            Vector column  = new Vector(columnCount);
-            for (int i = 1; i<= columnCount; i++){
+            Client.connectServer(listBBRequest);
+        }
+        catch (Exception ex){
+            ex.printStackTrace();
+        }
 
-                column.add(rsmd.getColumnName(i));
-            }
-            Vector data = new Vector();
-            Vector row = new Vector();
-            while(rs.next()){
-                row = new Vector(columnCount);
-                for (int i = 1; i <= columnCount; i++){
-                    row.add(rs.getString(i));
-                }
-                data.add(row);
-            }
-            JFrame frame = new JFrame();
-            frame.setSize(500,400);
-            frame.setLocationRelativeTo(null);
-            frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-            JPanel panel = new JPanel();
-            JTable table = new JTable(data,column);
-            JScrollPane scrollpane = new JScrollPane(table);
-            panel.setLayout(new BorderLayout());
-            panel.add(scrollpane, BorderLayout.CENTER);
-            frame.setContentPane(panel);
-            frame.setVisible(true);
-        }
-        catch(Exception e) {
-            JOptionPane.showMessageDialog(null, e);
-        }
+        setSize(500,120);
+        setLocation(900,350);
+
+        panel.setLayout(new BorderLayout());
+        getContentPane().add(panel);
+
+        super.setSize(500,120);
+        super.setLocationRelativeTo(null);
+        super.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        JPanel panel = new JPanel();
+        JScrollPane scrollpane = new JScrollPane(Client.getBBTable());
+        panel.setLayout(new BorderLayout());
+        panel.add(scrollpane, BorderLayout.CENTER);
+        super.setContentPane(panel);
+        super.setVisible(true);
     }
 }

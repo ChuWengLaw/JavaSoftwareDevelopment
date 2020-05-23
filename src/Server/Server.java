@@ -3,14 +3,12 @@ package Server;
 import ControlPanel.User;
 import Server.Request.*;
 
-import javax.swing.*;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.*;
-import java.util.List;
 import java.util.Properties;
 import java.util.Random;
 
@@ -275,6 +273,20 @@ public class Server {
             BillboardSQL bb = new BillboardSQL();
             bb.DeleteBillboard(temp.getBillboardName());
             oos.flush();
+        }
+        else if (o instanceof BBInfoRequest) {
+            BBInfoRequest temp = (BBInfoRequest) o;
+            BillboardSQL bb = new BillboardSQL();
+            String info = bb.GetBillboardInfo(temp.getBillboardName());
+            BBInfoReply bbInfoReply = new BBInfoReply(info);
+            oos.writeObject(bbInfoReply);
+            oos.flush();
+        }
+        else if (o instanceof ListBBRequest) {
+            ListBBRequest listBBRequest = (ListBBRequest) o;
+            BillboardSQL bb = new BillboardSQL();
+            ListBBReply listBBReply = new ListBBReply(bb.ListBillboards(listBBRequest.getSessionToken()));
+            oos.writeObject(listBBReply);
         }
         else if (o instanceof ScheduleBillboardRequest) {
             ScheduleBillboardRequest temp = (ScheduleBillboardRequest) o;

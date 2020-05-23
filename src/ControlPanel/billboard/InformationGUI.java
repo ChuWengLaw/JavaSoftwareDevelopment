@@ -49,7 +49,7 @@ public class InformationGUI extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 BBInfoRequest temp = new BBInfoRequest(txtBillboardName.getText());
                 if (txtBillboardName.getText().isBlank()) {
-                    JOptionPane.showMessageDialog(null,"Please Enter a Billboard Name.");
+                    JOptionPane.showMessageDialog(null,"Please enter a Billboard name.");
                 } else {
                     try {
                         Client.connectServer(temp);

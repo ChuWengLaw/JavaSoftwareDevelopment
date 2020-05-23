@@ -25,7 +25,7 @@ public class BillboardSQL {
      */
     public void CreateBillboard(String BillboardName, String CreatedByUserName, String BillboardTextColour,
                                     String BillboardBackgroundColour, String BillboardMessage,
-                                    String BillboardPicture, String BillboardInformation) throws SQLException {
+                                    String BillboardPicture, String BillboardInformation, String InformationColour) throws SQLException {
 
         /* Flags for checking billboard existence */
         boolean ExistFlag = false;
@@ -47,14 +47,14 @@ public class BillboardSQL {
                 ResultSet update = Server.statement.executeQuery("UPDATE Billboard SET UserName = '" +
                         CreatedByUserName + "',TextColour = '" + BillboardTextColour + "',BackGroundColour = '" +
                         BillboardBackgroundColour + "',Message = '" + BillboardMessage + "',Image = '" + BillboardPicture +
-                        "',Information = '" + BillboardInformation + "' WHERE BillboardName = '" + BillboardName + "';");
+                        "',Information = '" + BillboardInformation + "',InformationColour = '" + InformationColour + "' WHERE BillboardName = '" + BillboardName + "';");
             }
             //if billboard does not exist it will create a new billboard
             else {
                 ResultSet insert = Server.statement.executeQuery("INSERT INTO Billboard VALUES ('" +
                         BillboardName + "','" + CreatedByUserName + "','" + BillboardTextColour +
                         "','" + BillboardBackgroundColour + "','" + BillboardMessage + "','" +
-                        BillboardPicture + "','" + BillboardInformation + "');");
+                        BillboardPicture + "','" + BillboardInformation + "','" + InformationColour + "');");
             }
         } catch (SQLException e) {
             System.out.println(e);
@@ -125,7 +125,8 @@ public class BillboardSQL {
      */
     public void DeleteBillboard(String BillBoardName) throws SQLException {
         try {
-            ResultSet delete = Server.statement.executeQuery("DELETE FROM Billboard WHERE BillboardName = '" + BillBoardName + "';");
+            ResultSet deleteBB = Server.statement.executeQuery("DELETE FROM Billboard WHERE BillboardName = '" + BillBoardName + "';");
+            ResultSet deleteSchedule = Server.statement.executeQuery("DELETE FROM Schedule WHERE BillboardName = '" + BillBoardName + "';");
         } catch (SQLException e) {
             System.out.println(e);
         }

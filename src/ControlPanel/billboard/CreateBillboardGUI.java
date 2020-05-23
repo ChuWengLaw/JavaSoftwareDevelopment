@@ -69,8 +69,8 @@ public class CreateBillboardGUI extends JFrame {
                 } else if (txtBillboardName.getText().contains(" ")) {
                     JOptionPane.showMessageDialog(null, "Please Enter the Name as One Word");
                 } else {
-                    CreateBBRequest temp = new CreateBBRequest(txtBillboardName.getText(), txtTextColour.getText(),
-                            txtBackgroundColour.getText(), txtMessage.getText(), txtImage.getText(), txtInformation.getText());
+                    CreateBBRequest temp = new CreateBBRequest(txtBillboardName.getText(), txtTextColour.getText(), txtBackgroundColour.getText(),
+                            txtMessage.getText(), txtImage.getText(), txtInformation.getText(), txtInformationColour.getText());
                     try {
                         Client.connectServer(temp);
 
@@ -93,6 +93,7 @@ public class CreateBillboardGUI extends JFrame {
                 txtMessage.setText("");
                 txtImage.setText("");
                 txtInformation.setText("");
+                txtInformationColour.setText("");
             }
         });
 

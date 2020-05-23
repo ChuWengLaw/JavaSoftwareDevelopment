@@ -265,7 +265,7 @@ public class Server {
             CreateBBRequest temp = (CreateBBRequest) o;
             BillboardSQL bb = new BillboardSQL();
             bb.CreateBillboard(temp.getBillboardName(), temp.getAuthor(), temp.getTextColour(), temp.getBackgroundColour(),
-                    temp.getMessage(), temp.getImage(), temp.getInformation());
+                    temp.getMessage(), temp.getImage(), temp.getInformation(), temp.getInformationColour());
             oos.flush();
         }
         else if (o instanceof DeleteBBRequest) {

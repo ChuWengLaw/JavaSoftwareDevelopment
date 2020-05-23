@@ -2,8 +2,8 @@ package ControlPanel.billboard;
 
 import ControlPanel.Client;
 import Server.Request.CreateBBRequest;
+
 import javax.swing.*;
-import javax.xml.parsers.ParserConfigurationException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.*;
@@ -33,7 +33,7 @@ public class CreateBillboardGUI extends JFrame {
     private JTextField txtImage;
     private JTextField txtInformation;
     private JTextField txtInformationColour;
-    
+
     //define the strings to be used in the SQL
     private String strBillboardName;
     private JPanel panel = new JPanel(new GridBagLayout());
@@ -64,22 +64,25 @@ public class CreateBillboardGUI extends JFrame {
             //when the submit button is click make covert the inputs into string. then execute the CreateEditBilloard from the Billboard Class
             @Override
             public void actionPerformed(ActionEvent e) {
-                CreateBBRequest temp = new CreateBBRequest(txtBillboardName.getText(), txtTextColour.getText(),
-                        txtBackgroundColour.getText(), txtMessage.getText(), txtImage.getText(), txtInformation.getText());
-                try {
-                    Client.connectServer(temp);
+                if (txtBillboardName.getText().isBlank()) {
+                    JOptionPane.showMessageDialog(null, "Please Enter a Billboard Name.");
+                } else {
+                    CreateBBRequest temp = new CreateBBRequest(txtBillboardName.getText(), txtTextColour.getText(),
+                            txtBackgroundColour.getText(), txtMessage.getText(), txtImage.getText(), txtInformation.getText());
+                    try {
+                        Client.connectServer(temp);
 
-                    XMLFunctions xmlFunctions = new XMLFunctions();
-                    xmlFunctions.makeXML(txtBillboardName.getText(), txtTextColour.getText(),
-                            txtBackgroundColour.getText(), txtMessage.getText(), txtImage.getText(), txtInformation.getText(), txtInformationColour.getText());
-                } catch (InterruptedException ex) {
-                    ex.printStackTrace();
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                } catch (ClassNotFoundException ex) {
-                    ex.printStackTrace();
-                } catch (ParserConfigurationException ex) {
-                    ex.printStackTrace();
+                        new MakeXMLFile(txtBillboardName.getText(), txtTextColour.getText(),
+                                txtBackgroundColour.getText(), txtMessage.getText(), txtImage.getText(), txtInformation.getText(), txtInformationColour.getText());
+                    } catch (InterruptedException ex) {
+                        ex.printStackTrace();
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    } catch (ClassNotFoundException ex) {
+                        ex.printStackTrace();
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
                 }
                 //clear the textFeilds once the SQL code has been executed
                 txtBillboardName.setText("");
@@ -111,49 +114,49 @@ public class CreateBillboardGUI extends JFrame {
         txtInformationColour = createText();
 
         constraints.anchor = GridBagConstraints.WEST;
-        constraints.insets=new Insets(10,10,10,10);
+        constraints.insets = new Insets(10, 10, 10, 10);
 
         //add labels to panel
-        constraints.gridx=0;
-        constraints.gridy=0;
-        panel.add(lblBillboardName,constraints);
-        constraints.gridy=1;
-        panel.add(lblTextColour,constraints);
-        constraints.gridy=2;
-        panel.add(lblBackgroundColour,constraints);
-        constraints.gridy=3;
-        panel.add(lblMessage,constraints);
-        constraints.gridy=4;
-        panel.add(lblImage,constraints);
-        constraints.gridy=5;
-        panel.add(lblInformation,constraints);
-        constraints.gridy=6;
-        panel.add(lblInformationColour,constraints);
+        constraints.gridx = 0;
+        constraints.gridy = 0;
+        panel.add(lblBillboardName, constraints);
+        constraints.gridy = 1;
+        panel.add(lblTextColour, constraints);
+        constraints.gridy = 2;
+        panel.add(lblBackgroundColour, constraints);
+        constraints.gridy = 3;
+        panel.add(lblMessage, constraints);
+        constraints.gridy = 4;
+        panel.add(lblImage, constraints);
+        constraints.gridy = 5;
+        panel.add(lblInformation, constraints);
+        constraints.gridy = 6;
+        panel.add(lblInformationColour, constraints);
 
         //add txtfeilds to panel
-        constraints.gridx =1;
-        constraints.gridy=0;
-        panel.add(txtBillboardName,constraints);
-        constraints.gridy=1;
-        panel.add(txtTextColour,constraints);
-        constraints.gridy=2;
-        panel.add(txtBackgroundColour,constraints);
-        constraints.gridy=3;
-        panel.add(txtMessage,constraints);
-        constraints.gridy=4;
-        panel.add(txtImage,constraints);
-        constraints.gridy=5;
-        panel.add(txtInformation,constraints);
-        constraints.gridy =6;
-        panel.add(txtInformationColour,constraints);
+        constraints.gridx = 1;
+        constraints.gridy = 0;
+        panel.add(txtBillboardName, constraints);
+        constraints.gridy = 1;
+        panel.add(txtTextColour, constraints);
+        constraints.gridy = 2;
+        panel.add(txtBackgroundColour, constraints);
+        constraints.gridy = 3;
+        panel.add(txtMessage, constraints);
+        constraints.gridy = 4;
+        panel.add(txtImage, constraints);
+        constraints.gridy = 5;
+        panel.add(txtInformation, constraints);
+        constraints.gridy = 6;
+        panel.add(txtInformationColour, constraints);
 
         //add button to panel
-        constraints.gridwidth =2;
-        constraints.insets = new Insets(5,10,5,10);
+        constraints.gridwidth = 2;
+        constraints.insets = new Insets(5, 10, 5, 10);
         constraints.anchor = GridBagConstraints.EAST;
-        constraints.gridx=0;
-        constraints.gridy=8;
-        panel.add(btnSubmit,constraints);
+        constraints.gridx = 0;
+        constraints.gridy = 8;
+        panel.add(btnSubmit, constraints);
 
         getContentPane().add(panel);
         //set the location of the GUI

@@ -60,7 +60,6 @@ public class CalanderScheduleGUI extends JFrame {
         });
         //###########################list billboards change to list scheduled
         WeeklyScheduleRequest WeeklyScheduleRequest = new WeeklyScheduleRequest();
-
         try{
             Client.connectServer(WeeklyScheduleRequest);
         }
@@ -68,12 +67,13 @@ public class CalanderScheduleGUI extends JFrame {
             ex.printStackTrace();
         }
 
-        String[][] ArrayInfo = Client.getScheduleArray();
-        //for (int i = 0; i<ArrayInfo.length;i++)
-        //{
-           // System.out.println(ArrayInfo[i][0]);
-            //System.out.println(ArrayInfo[i][1]);
-        //}
+        //super.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        //JPanel panel = new JPanel();
+        JScrollPane scrollpane = new JScrollPane(Client.getScheduleTable());
+        //panel.setLayout(new BorderLayout());
+        constraints.gridy = 10;
+        constraints.gridx = 10;
+        pnlScheduleMenu.add(scrollpane, constraints);
         //###########################list billboards change to list scheduled
 
 

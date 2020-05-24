@@ -51,33 +51,30 @@ public class ScheduleSQL {
         }
     }
 
-    public String[][] ScheduledInformation() throws SQLException {
+    public JTable ScheduledInformation() throws SQLException {
+        JTable table = new JTable();
         try {
-            ResultSet resultSet = Server.statement.executeQuery("SELECT BillboardName, ScheduleTime FROM Schedule;");
-            ResultSetMetaData rsmd = resultSet.getMetaData();
+            ResultSet list = Server.statement.executeQuery("SELECT BillboardName, ScheduleTime FROM Schedule;");
+            ResultSetMetaData rsmd = list.getMetaData();
             int columnCount = rsmd.getColumnCount();
-
-            String[][] ScheduleArray = new String[1][columnCount];
-            while(resultSet.next()) {
-                String[] CurrentRow = new String[columnCount];
-                for (int i = 1; i <= columnCount; i++) {
-                    CurrentRow[i] = resultSet.getString(i);
-                }
-                ScheduleArray = AddRowSchedule(ScheduleArray, CurrentRow);
+            Vector columnHeader = new Vector(columnCount);
+            for (int i = 1; i<= columnCount; i++){
+                columnHeader.add(rsmd.getColumnName(i));
             }
-            return ScheduleArray;
+            Vector data = new Vector();
+            Vector row = new Vector();
+
+            while(list.next()) {
+                row = new Vector(columnCount);
+                for (int i = 1; i <= columnCount; i++) {
+                    row.add(list.getString(i));
+                }
+                data.add(row);
+            }
+            table = new JTable(data,columnHeader);
         } catch (SQLException e) {
             System.out.println(e);
-
         }
-        return new String[1][1];
-    }
-
-    public static String[][] AddRowSchedule(String[][] Init, String[] ToAdd)
-    {
-        String[][] Output = new String[Init[0].length+1][ToAdd.length];
-        Output[Output[0].length][0] = ToAdd[0];
-        Output[Output[0].length][1] = ToAdd[1];
-        return Output;
+        return table;
     }
 }

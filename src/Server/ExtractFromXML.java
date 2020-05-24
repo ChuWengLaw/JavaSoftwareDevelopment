@@ -1,4 +1,4 @@
-package ControlPanel.billboard;
+package Server;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -9,7 +9,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.File;
 
-public class ExractFromXML {
+public class ExtractFromXML {
 
     public String backgroundColour;
     public String textColour;
@@ -22,9 +22,9 @@ public class ExractFromXML {
      * This constructor takes the xml file name and extracts the data from the xml and
      * putting the into the public strings above
      * @author Lachlan
-     * @param fileName the part of the name before the .xml
+     * @param fileName name of the file including .xml extension
      */
-    public ExractFromXML(String fileName) {
+    public ExtractFromXML(String fileName) {
         String backgroundColour = null;
         String textColour = null;
         String message = null;
@@ -32,7 +32,7 @@ public class ExractFromXML {
         String information = null;
         String informationColour = null;
         try {
-            File XmlFile = new File("src/xmlBillboards/" + fileName + ".xml");
+            File XmlFile = new File("src/xmlBillboards/" + fileName);
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document document = documentBuilder.parse(XmlFile);

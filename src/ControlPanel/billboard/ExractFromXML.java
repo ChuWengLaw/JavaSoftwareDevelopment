@@ -7,16 +7,18 @@ import org.w3c.dom.NodeList;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import java.awt.*;
 import java.io.File;
+import java.lang.reflect.Field;
 
 public class ExractFromXML {
 
-    public String backgroundColour;
-    public String textColour;
+    public Color backgroundColour;
+    public Color textColour;
     public String message;
     public String image;
     public String information;
-    public String informationColour;
+    public Color informationColour;
 
     /**
      * This constructor takes the xml file name and extracts the data from the xml and
@@ -25,12 +27,12 @@ public class ExractFromXML {
      * @param fileName the part of the name before the .xml
      */
     public ExractFromXML(String fileName) {
-        String backgroundColour = null;
-        String textColour = null;
+        Color backgroundColour = null;
+        Color textColour = null;
         String message = null;
         String image = null;
         String information = null;
-        String informationColour = null;
+        Color informationColour = null;
         try {
             File XmlFile = new File("src/xmlBillboards/" + fileName + ".xml");
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
@@ -54,15 +56,18 @@ public class ExractFromXML {
                         }
                     }
                     if (element.getTagName().startsWith("billboard")) {
-                        backgroundColour = element.getAttribute("background");
+                        Field backGroundColourField = Class.forName("java.awt.Color").getField(element.getAttribute("background"));
+                        backgroundColour = (Color)backGroundColourField.get(null);
                     }
                     if (element.getTagName().startsWith("message")) {
                         message = element.getTextContent();
-                        textColour = element.getAttribute("colour");
+                        Field textColourField = Class.forName("java.awt.Color").getField(element.getAttribute("colour"));
+                        textColour = (Color)textColourField.get(null);
                     }
                     if (element.getTagName().startsWith("information")) {
                         information = element.getTextContent();
-                        informationColour = element.getAttribute("colour");
+                        Field infoColourField = Class.forName("java.awt.Color").getField(element.getAttribute("colour"));
+                        informationColour = (Color)infoColourField.get(null);
                     }
                 }
             }

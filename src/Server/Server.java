@@ -2,7 +2,6 @@ package Server;
 
 import ControlPanel.User;
 import Server.Request.*;
-
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -18,6 +17,7 @@ public class Server {
     public static Connection connection;
     public static Statement statement;
     private static List<SessionToken> sessionTokens = new ArrayList<SessionToken>();
+    private static ServerSocket serverSocket;
     private static int expiryHour = 24;
 
     /**
@@ -58,8 +58,6 @@ public class Server {
                     + "Duration INT NOT NULL,"
                     + "RecurType INT NOT NULL,"
                     + "RecurDuration INT NOT NULL" + ");"; //only required for minutes
-
-    private static ServerSocket serverSocket;
 
     public static void main(String[] args) throws IOException, ClassNotFoundException, SQLException, NoSuchAlgorithmException {
         /* Initiate database connection */
@@ -148,7 +146,12 @@ public class Server {
         }
     }
 
-    // Method for hashing and salting.
+    /**
+     *
+     * @param hashString
+     * @return
+     * @throws NoSuchAlgorithmException
+     */
     public static String hashAString(String hashString) throws NoSuchAlgorithmException {
         MessageDigest md = MessageDigest.getInstance("SHA-256");
         byte[] hash = md.digest(hashString.getBytes());
@@ -161,6 +164,10 @@ public class Server {
         return sb.toString();
     }
 
+    /**
+     *
+     * @return
+     */
     public static String randomString(){
         Random rng = new Random();
         byte[] saltBytes = new byte[32];
@@ -174,7 +181,11 @@ public class Server {
         return sb.toString();
     }
 
-    // Method that checks the availability of the session token
+    /**
+     *
+     * @param sessionToken
+     * @return
+     */
     private static boolean tokenCheck(SessionToken sessionToken){
         boolean tokenAvailableState;
 
@@ -196,7 +207,43 @@ public class Server {
         return tokenAvailableState;
     }
 
-    // Server request method
+    /**
+     *
+     * @param sessionToken
+     * @return
+     */
+    private static SessionToken findSessionToken(SessionToken sessionToken){
+        for(int i  = 0; i <= sessionTokens.size(); i++){
+            if(sessionTokens.get(i).getSessionTokenString().equals(sessionToken.getSessionTokenString())){
+                sessionToken = sessionTokens.get(i);
+                break;
+            }
+        }
+
+        return sessionToken;
+    }
+
+    /**
+     *
+     * @param sessionToken
+     */
+    private static void resetSessionTokenTime(SessionToken sessionToken){
+        for (int i = 0; i <= sessionTokens.size(); i++) {
+            if (sessionTokens.get(i).getSessionTokenString().equals(sessionToken.getSessionTokenString())) {
+                sessionTokens.get(i).setUsedTime(LocalDateTime.now());
+                break;
+            }
+        }
+    }
+
+    /**
+     *
+     * @param clientRequest
+     * @param oos
+     * @throws SQLException
+     * @throws NoSuchAlgorithmException
+     * @throws IOException
+     */
     private static void requestExecute(Object clientRequest, ObjectOutputStream oos) throws SQLException, NoSuchAlgorithmException, IOException {
         if (clientRequest instanceof LoginRequest){
             LoginRequest loginRequest = (LoginRequest) clientRequest;
@@ -222,15 +269,7 @@ public class Server {
         }
         else if (clientRequest instanceof CreateUserRequest){
             CreateUserRequest createUserRequest = (CreateUserRequest) clientRequest;
-            SessionToken sessionToken = null;
-
-            // Find the session token in the list.
-            for(int i  = 0; i <= sessionTokens.size(); i++){
-                if(sessionTokens.get(i).getSessionTokenString().equals(createUserRequest.getSessionToken().getSessionTokenString())){
-                    sessionToken = sessionTokens.get(i);
-                    break;
-                }
-            }
+            SessionToken sessionToken = findSessionToken(createUserRequest.getSessionToken());
 
             // Remove session token from the list and send a logout request if it expired.
             if (!tokenCheck(createUserRequest.getSessionToken())){
@@ -242,12 +281,7 @@ public class Server {
                 boolean createState = !checkUserSQL(createUserRequest.getUserName());
 
                 // Reset the used time of the session token.
-                for (int i = 0; i <= sessionTokens.size(); i++) {
-                    if (sessionTokens.get(i).getSessionTokenString().equals(sessionToken) {
-                        sessionTokens.get(i).setUsedTime(LocalDateTime.now());
-                        break;
-                    }
-                }
+                resetSessionTokenTime(sessionToken);
 
                 if (createState) {
                     String saltString = randomString();
@@ -269,15 +303,7 @@ public class Server {
         }
         else if (clientRequest instanceof SearchRequest) {
             SearchRequest searchRequest = (SearchRequest) clientRequest;
-            SessionToken sessionToken = null;
-
-            // Find the session token in the list.
-            for (int i = 0; i <= sessionTokens.size(); i++) {
-                if (sessionTokens.get(i).getSessionTokenString().equals(searchRequest.getSessionToken().getSessionTokenString())) {
-                    sessionToken = sessionTokens.get(i);
-                    break;
-                }
-            }
+            SessionToken sessionToken = findSessionToken(searchRequest.getSessionToken());
 
             // Remove session token from the list and send a logout request if it expired.
             if (!tokenCheck(searchRequest.getSessionToken())) {
@@ -289,12 +315,7 @@ public class Server {
                 boolean searchState = checkUserSQL(searchRequest.getUserName());
 
                 // Reset the used time of the session token.
-                for (int i = 0; i <= sessionTokens.size(); i++) {
-                    if (sessionTokens.get(i).getSessionTokenString().equals(sessionToken) {
-                        sessionTokens.get(i).setUsedTime(LocalDateTime.now());
-                        break;
-                    }
-                }
+                resetSessionTokenTime(sessionToken);
 
                 // Reply based on the existence of the user name that was searched.
                 if (searchState) {
@@ -313,15 +334,7 @@ public class Server {
         else if (clientRequest instanceof EditUserRequest){
             EditUserRequest editUserRequest = (EditUserRequest)clientRequest;
             boolean havePassword = editUserRequest.isHavePassword();
-            SessionToken sessionToken = null;
-
-            // Find the session token in the list.
-            for (int i = 0; i <= sessionTokens.size(); i++) {
-                if (sessionTokens.get(i).getSessionTokenString().equals(editUserRequest.getSessionToken().getSessionTokenString())) {
-                    sessionToken = sessionTokens.get(i);
-                    break;
-                }
-            }
+            SessionToken sessionToken = findSessionToken(editUserRequest.getSessionToken());
 
             // Remove session token from the list and send a logout request if it expired.
             if (!tokenCheck(editUserRequest.getSessionToken())) {
@@ -331,12 +344,7 @@ public class Server {
             }
             else{
                 // Reset the used time of the session token.
-                for (int i = 0; i <= sessionTokens.size(); i++) {
-                    if (sessionTokens.get(i).getSessionTokenString().equals(sessionToken) {
-                        sessionTokens.get(i).setUsedTime(LocalDateTime.now());
-                        break;
-                    }
-                }
+                resetSessionTokenTime(sessionToken);
 
                 // Edit SQL depends whether a new password is passed in, so when the password field is empty,
                 // the password won't change.
@@ -362,15 +370,7 @@ public class Server {
             ChangePasswordRequest changePasswordRequest = (ChangePasswordRequest)clientRequest;
             String saltString = randomString();
             String hashedPassword = hashAString(changePasswordRequest.getNewPassword() + saltString);
-            SessionToken sessionToken = null;
-
-            // Find the session token in the list.
-            for (int i = 0; i <= sessionTokens.size(); i++) {
-                if (sessionTokens.get(i).getSessionTokenString().equals(changePasswordRequest.getSessionToken().getSessionTokenString())) {
-                    sessionToken = sessionTokens.get(i);
-                    break;
-                }
-            }
+            SessionToken sessionToken = findSessionToken(changePasswordRequest.getSessionToken());
 
             // Remove session token from the list and send a logout request if it expired.
             if(!tokenCheck(changePasswordRequest.getSessionToken())){
@@ -380,12 +380,7 @@ public class Server {
             }
             else{
                 // Reset the used time of the session token.
-                for (int i = 0; i <= sessionTokens.size(); i++) {
-                    if (sessionTokens.get(i).getSessionTokenString().equals(sessionToken) {
-                        sessionTokens.get(i).setUsedTime(LocalDateTime.now());
-                        break;
-                    }
-                }
+                resetSessionTokenTime(sessionToken);
 
                 changePasswordSQL(changePasswordRequest.getUserName(), hashedPassword, saltString);
                 GeneralReply generalReply = new GeneralReply(true);
@@ -426,16 +421,7 @@ public class Server {
         }
         else if (clientRequest instanceof ListUserRequest){
             ListUserRequest listUserRequest = (ListUserRequest) clientRequest;
-            boolean validSession = true;
-            SessionToken sessionToken = null;
-
-            // Find the session token in the list.
-            for (int i = 0; i <= sessionTokens.size(); i++) {
-                if (sessionTokens.get(i).getSessionTokenString().equals(listUserRequest.getSessionToken().getSessionTokenString())) {
-                    sessionToken = sessionTokens.get(i);
-                    break;
-                }
-            }
+            SessionToken sessionToken = findSessionToken(listUserRequest.getSessionToken());
 
             // Remove session token from the list and send a logout request if it expired.
             if(!tokenCheck(listUserRequest.getSessionToken())){
@@ -445,12 +431,7 @@ public class Server {
             }
             else{
                 // Reset the used time of the session token.
-                for (int i = 0; i <= sessionTokens.size(); i++) {
-                    if (sessionTokens.get(i).getSessionTokenString().equals(sessionToken) {
-                        sessionTokens.get(i).setUsedTime(LocalDateTime.now());
-                        break;
-                    }
-                }
+                resetSessionTokenTime(sessionToken);
 
                 ListUserReply listUserReply = new ListUserReply(listUserSQL(), true);
                 oos.writeObject(listUserReply);

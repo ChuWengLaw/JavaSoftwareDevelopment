@@ -242,7 +242,12 @@ public class Server {
                 boolean createState = !checkUserSQL(createUserRequest.getUserName());
 
                 // Reset the used time of the session token.
-                sessionToken.setUsedTime(LocalDateTime.now());
+                for (int i = 0; i <= sessionTokens.size(); i++) {
+                    if (sessionTokens.get(i).getSessionTokenString().equals(sessionToken) {
+                        sessionTokens.get(i).setUsedTime(LocalDateTime.now());
+                        break;
+                    }
+                }
 
                 if (createState) {
                     String saltString = randomString();
@@ -284,7 +289,12 @@ public class Server {
                 boolean searchState = checkUserSQL(searchRequest.getUserName());
 
                 // Reset the used time of the session token.
-                sessionToken.setUsedTime(LocalDateTime.now());
+                for (int i = 0; i <= sessionTokens.size(); i++) {
+                    if (sessionTokens.get(i).getSessionTokenString().equals(sessionToken) {
+                        sessionTokens.get(i).setUsedTime(LocalDateTime.now());
+                        break;
+                    }
+                }
 
                 // Reply based on the existence of the user name that was searched.
                 if (searchState) {
@@ -321,7 +331,12 @@ public class Server {
             }
             else{
                 // Reset the used time of the session token.
-                sessionToken.setUsedTime(LocalDateTime.now());
+                for (int i = 0; i <= sessionTokens.size(); i++) {
+                    if (sessionTokens.get(i).getSessionTokenString().equals(sessionToken) {
+                        sessionTokens.get(i).setUsedTime(LocalDateTime.now());
+                        break;
+                    }
+                }
 
                 // Edit SQL depends whether a new password is passed in, so when the password field is empty,
                 // the password won't change.
@@ -365,7 +380,13 @@ public class Server {
             }
             else{
                 // Reset the used time of the session token.
-                sessionToken.setUsedTime(LocalDateTime.now());
+                for (int i = 0; i <= sessionTokens.size(); i++) {
+                    if (sessionTokens.get(i).getSessionTokenString().equals(sessionToken) {
+                        sessionTokens.get(i).setUsedTime(LocalDateTime.now());
+                        break;
+                    }
+                }
+
                 changePasswordSQL(changePasswordRequest.getUserName(), hashedPassword, saltString);
                 GeneralReply generalReply = new GeneralReply(true);
                 oos.writeObject(generalReply);
@@ -424,7 +445,13 @@ public class Server {
             }
             else{
                 // Reset the used time of the session token.
-                sessionToken.setUsedTime(LocalDateTime.now());
+                for (int i = 0; i <= sessionTokens.size(); i++) {
+                    if (sessionTokens.get(i).getSessionTokenString().equals(sessionToken) {
+                        sessionTokens.get(i).setUsedTime(LocalDateTime.now());
+                        break;
+                    }
+                }
+
                 ListUserReply listUserReply = new ListUserReply(listUserSQL(), true);
                 oos.writeObject(listUserReply);
                 oos.flush();

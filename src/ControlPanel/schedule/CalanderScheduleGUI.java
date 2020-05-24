@@ -12,6 +12,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -69,11 +70,15 @@ public class CalanderScheduleGUI extends JFrame {
 
         //super.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         //JPanel panel = new JPanel();
-        JScrollPane scrollpane = new JScrollPane(Client.getScheduleTable());
+        //JScrollPane scrollpane = new JScrollPane(Client.getScheduleTable());
+
+        ArrayList<String[]> testing = Client.getScheduleArray();
+        System.out.println(testing.get(0)[0]);
+
         //panel.setLayout(new BorderLayout());
         constraints.gridy = 10;
         constraints.gridx = 10;
-        pnlScheduleMenu.add(scrollpane, constraints);
+        //pnlScheduleMenu.add(scrollpane, constraints);
         //###########################list billboards change to list scheduled
 
 

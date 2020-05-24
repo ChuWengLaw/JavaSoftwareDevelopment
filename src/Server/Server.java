@@ -305,6 +305,7 @@ public class Server {
             ScheduleSQL Schedule = new ScheduleSQL();
             WeeklyScheduleReply weeklyscheduleReply = new WeeklyScheduleReply(Schedule.ScheduledInformation());
             oos.writeObject(weeklyscheduleReply);
+            oos.flush();
         }
     }
 }

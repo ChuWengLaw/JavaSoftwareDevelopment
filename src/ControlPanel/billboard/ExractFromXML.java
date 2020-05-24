@@ -56,17 +56,17 @@ public class ExractFromXML {
                         }
                     }
                     if (element.getTagName().startsWith("billboard")) {
-                        Field backGroundColourField = Class.forName("java.awt.Color").getField(element.getAttribute("background"));
+                        Field backGroundColourField = Class.forName("java.awt.Color").getField(element.getAttribute("background").toLowerCase());
                         backgroundColour = (Color)backGroundColourField.get(null);
                     }
                     if (element.getTagName().startsWith("message")) {
                         message = element.getTextContent();
-                        Field textColourField = Class.forName("java.awt.Color").getField(element.getAttribute("colour"));
+                        Field textColourField = Class.forName("java.awt.Color").getField(element.getAttribute("colour").toLowerCase());
                         textColour = (Color)textColourField.get(null);
                     }
                     if (element.getTagName().startsWith("information")) {
                         information = element.getTextContent();
-                        Field infoColourField = Class.forName("java.awt.Color").getField(element.getAttribute("colour"));
+                        Field infoColourField = Class.forName("java.awt.Color").getField(element.getAttribute("colour").toLowerCase());
                         informationColour = (Color)infoColourField.get(null);
                     }
                 }

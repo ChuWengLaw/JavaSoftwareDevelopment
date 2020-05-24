@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.*;
 import java.io.IOException;
+import java.lang.reflect.Field;
 
 /**
  * This class creates the GUI to be used to create a billboard
@@ -66,34 +67,129 @@ public class CreateBillboardGUI extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 if (txtBillboardName.getText().isBlank()) {
                     JOptionPane.showMessageDialog(null, "Please Enter a Billboard Name.");
-                } else if (txtBillboardName.getText().contains(" ")) {
-                    JOptionPane.showMessageDialog(null, "Please Enter the Name as One Word");
                 } else {
-                    CreateBBRequest temp = new CreateBBRequest(txtBillboardName.getText(), txtTextColour.getText(), txtBackgroundColour.getText(),
-                            txtMessage.getText(), txtImage.getText(), txtInformation.getText(), txtInformationColour.getText());
-                    try {
-                        new MakeXMLFile(txtBillboardName.getText(), txtTextColour.getText(),
-                                txtBackgroundColour.getText(), txtMessage.getText(), txtImage.getText(), txtInformation.getText(), txtInformationColour.getText());
-                        Client.connectServer(temp);
+                    if (txtBillboardName.getText().contains(" ")) {
+                        JOptionPane.showMessageDialog(null, "Please Enter the Name as One Word");
+                    } else if (!(txtTextColour.getText().isBlank() && txtInformationColour.getText().isBlank() && txtBackgroundColour.getText().isBlank())) {
+                        try {
+                            Class.forName("java.awt.Color").getField(txtTextColour.getText());
+
+                        } catch (NoSuchFieldException ex) {
+                            JOptionPane.showMessageDialog(null, "Please enter a valid colour into the text colour field");
+                        } catch (ClassNotFoundException ex) {
+                            ex.printStackTrace();
+                        }
+                        try {
+                            Class.forName("java.awt.Color").getField(txtBackgroundColour.getText());
+                        } catch (NoSuchFieldException ex) {
+                            JOptionPane.showMessageDialog(null, "Please enter a valid colour into the background colour field");
+                        } catch (ClassNotFoundException ex) {
+                            ex.printStackTrace();
+                        }
+                        try {
+                            Class.forName("java.awt.Color").getField(txtInformationColour.getText());
+                        } catch (NoSuchFieldException ex) {
+                            JOptionPane.showMessageDialog(null, "Please enter a valid colour into the information colour field");
+                        } catch (ClassNotFoundException ex) {
+                            ex.printStackTrace();
+                        }
+                    } else if (!(txtTextColour.getText().isBlank() && txtBackgroundColour.getText().isBlank())) {
+                        try {
+                            Class.forName("java.awt.Color").getField(txtTextColour.getText());
+                        } catch (NoSuchFieldException ex) {
+                            JOptionPane.showMessageDialog(null, "Please enter a valid colour into the text colour field");
+                        } catch (ClassNotFoundException ex) {
+                            ex.printStackTrace();
+                        }
+                        try {
+                            Class.forName("java.awt.Color").getField(txtBackgroundColour.getText());
+                        } catch (NoSuchFieldException ex) {
+                            JOptionPane.showMessageDialog(null, "Please enter a valid colour into the background colour field");
+                        } catch (ClassNotFoundException ex) {
+                            ex.printStackTrace();
+                        }
+                    } else if (!(txtTextColour.getText().isBlank() && txtInformationColour.getText().isBlank())) {
+                        try {
+                            Class.forName("java.awt.Color").getField(txtTextColour.getText());
+                        } catch (NoSuchFieldException ex) {
+                            JOptionPane.showMessageDialog(null, "Please enter a valid colour into the text colour field");
+                        } catch (ClassNotFoundException ex) {
+                            ex.printStackTrace();
+                        }
+                        try {
+                            Class.forName("java.awt.Color").getField(txtInformationColour.getText());
+                        } catch (NoSuchFieldException ex) {
+                            JOptionPane.showMessageDialog(null, "Please enter a valid colour into the information colour field");
+                        } catch (ClassNotFoundException ex) {
+                            ex.printStackTrace();
+                        }
+                    } else if (!(txtInformationColour.getText().isBlank() && txtBackgroundColour.getText().isBlank())) {
+                        try {
+                            Class.forName("java.awt.Color").getField(txtBackgroundColour.getText());
+                        } catch (NoSuchFieldException ex) {
+                            JOptionPane.showMessageDialog(null, "Please enter a valid colour into the background colour field");
+                        } catch (ClassNotFoundException ex) {
+                            ex.printStackTrace();
+                        }
+                        try {
+                            Class.forName("java.awt.Color").getField(txtInformationColour.getText());
+                        } catch (NoSuchFieldException ex) {
+                            JOptionPane.showMessageDialog(null, "Please enter a valid colour into the information colour field");
+                        } catch (ClassNotFoundException ex) {
+                            ex.printStackTrace();
+                        }
+                    } else if (!txtTextColour.getText().isBlank()) {
+                        try {
+                            Class.forName("java.awt.Color").getField(txtTextColour.getText());
+                        } catch (ClassNotFoundException ex) {
+                            ex.printStackTrace();
+                        } catch (NoSuchFieldException ex) {
+                            JOptionPane.showMessageDialog(null, "Please enter a valid colour into the text colour field");
+                        }
+                    } else if (!txtBackgroundColour.getText().isBlank()) {
+                        try {
+                            Class.forName("java.awt.Color").getField(txtBackgroundColour.getText());
+                        } catch (ClassNotFoundException ex) {
+                            ex.printStackTrace();
+                        } catch (NoSuchFieldException ex) {
+                            JOptionPane.showMessageDialog(null, "Please enter a valid colour into the background colour field");
+                        }
+                    } else if (!txtInformationColour.getText().isBlank()) {
+                        try {
+                            Class.forName("java.awt.Color").getField(txtInformationColour.getText());
+                        } catch (ClassNotFoundException ex) {
+                            ex.printStackTrace();
+                        } catch (NoSuchFieldException ex) {
+                            JOptionPane.showMessageDialog(null, "Please enter a valid colour into the information colour field");
+                        }
+                    } else {
+                        CreateBBRequest temp = new CreateBBRequest(txtBillboardName.getText(), txtTextColour.getText(), txtBackgroundColour.getText(),
+                                txtMessage.getText(), txtImage.getText(), txtInformation.getText(), txtInformationColour.getText());
+                        try {
+                            new MakeXMLFile(txtBillboardName.getText(), txtTextColour.getText(),
+                                    txtBackgroundColour.getText(), txtMessage.getText(), txtImage.getText(), txtInformation.getText(), txtInformationColour.getText());
+                            Client.connectServer(temp);
 
                         } catch (InterruptedException ex) {
-                        ex.printStackTrace();
-                    } catch (IOException ex) {
-                        ex.printStackTrace();
-                    } catch (ClassNotFoundException ex) {
-                        ex.printStackTrace();
-                    } catch (Exception ex) {
-                        ex.printStackTrace();
+                            ex.printStackTrace();
+                        } catch (IOException ex) {
+                            ex.printStackTrace();
+                        } catch (ClassNotFoundException ex) {
+                            ex.printStackTrace();
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                        }
+                        //clear the textFeilds once the SQL code has been executed
+                        txtBillboardName.setText("");
+                        txtTextColour.setText("");
+                        txtBackgroundColour.setText("");
+                        txtMessage.setText("");
+                        txtImage.setText("");
+                        txtInformation.setText("");
+                        txtInformationColour.setText("");
                     }
+
                 }
-                //clear the textFeilds once the SQL code has been executed
-                txtBillboardName.setText("");
-                txtTextColour.setText("");
-                txtBackgroundColour.setText("");
-                txtMessage.setText("");
-                txtImage.setText("");
-                txtInformation.setText("");
-                txtInformationColour.setText("");
             }
         });
 
@@ -219,6 +315,10 @@ public class CreateBillboardGUI extends JFrame {
         JLabel label = new JLabel();
         label.setText(text);
         return label;
+    }
+
+    private void isColourValid() {
+
     }
 
 //    /**

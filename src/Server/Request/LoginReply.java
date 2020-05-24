@@ -1,20 +1,22 @@
 package Server.Request;
 
 import ControlPanel.User;
+import Server.SessionToken;
+
 import java.io.Serializable;
 
 public class LoginReply implements Serializable {
     private boolean loginState;
-    private String sessionToken;
+    private SessionToken sessionToken;
     private User user;
 
-    public LoginReply(boolean loginState, String sessionToken, User user){
+    public LoginReply(boolean loginState, SessionToken sessionToken, User user){
         this.loginState = loginState;
         this.sessionToken = sessionToken;
         this.user = user;
     }
 
-    public LoginReply(boolean loginState, String sessionToken){
+    public LoginReply(boolean loginState, SessionToken sessionToken){
         this.loginState = loginState;
         this.sessionToken = sessionToken;
         this.user = user;
@@ -24,7 +26,7 @@ public class LoginReply implements Serializable {
         return loginState;
     }
 
-    public String getSessionToken() {
+    public SessionToken getSessionToken() {
         return sessionToken;
     }
 

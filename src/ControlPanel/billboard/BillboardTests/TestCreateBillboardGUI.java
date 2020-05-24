@@ -22,42 +22,54 @@ public class TestCreateBillboardGUI {
     @Test
     public void TestCreateBBRequestBBName() {
         CreateBBRequest createBBRequest = new CreateBBRequest("chad", "blue", "black",
-                "hello world", "unknown.xml", "one plus one is zero","");
+
+                "hello world", "unknown.xml", "one plus one is zero", "white");
+
         assertEquals("chad", createBBRequest.getBillboardName());
     }
     /* Test 3: Check if the input billboard text colour has been successfully encapsulated in the request object  */
     @Test
     public void TestCreateBBRequestBBTextColour() {
         CreateBBRequest createBBRequest = new CreateBBRequest("chad", "blue", "black",
-                "hello world", "unknown.xml", "one plus one is zero","");
+
+                "hello world", "unknown.xml", "one plus one is zero", "white");
+
         assertEquals("blue", createBBRequest.getTextColour());
     }
     /* Test 4: Check if the input billboard background colour has been successfully encapsulated in the request object  */
     @Test
     public void TestCreateBBRequestBackgroundColour() {
         CreateBBRequest createBBRequest = new CreateBBRequest("chad", "blue", "black",
-                "hello world", "unknown.xml", "one plus one is zero","");
+                "hello world", "unknown.xml", "one plus one is zero", "white");
+
         assertEquals("black", createBBRequest.getBackgroundColour());
     }
     /* Test 5: Check if the input billboard message has been successfully encapsulated in the request object  */
     @Test
     public void TestCreateBBRequestMessage() {
         CreateBBRequest createBBRequest = new CreateBBRequest("chad", "blue", "black",
-                "hello world", "unknown.xml", "one plus one is zero","");
+
+                "hello world", "unknown.xml", "one plus one is zero", "white");
+
         assertEquals("hello world", createBBRequest.getMessage());
     }
     /* Test 3: Check if the input billboard image has been successfully encapsulated in the request object  */
     @Test
     public void TestCreateBBRequestImage() {
         CreateBBRequest createBBRequest = new CreateBBRequest("chad", "blue", "black",
-                "hello world", "unknown.xml", "one plus one is zero","");
+
+                "hello world", "unknown.xml", "one plus one is zero", "white");
+
         assertEquals("unknown.xml", createBBRequest.getImage());
     }
     /* Test 3: Check if the input billboard information has been successfully encapsulated in the request object  */
     @Test
     public void TestCreateBBRequestInformation() {
         CreateBBRequest createBBRequest = new CreateBBRequest("chad", "blue", "black",
-                "hello world", "unknown.xml", "one plus one is zero","");
+
+
+                "hello world", "unknown.xml", "one plus one is zero", "white");
+
         assertEquals("one plus one is zero", createBBRequest.getInformation());
     }
 }

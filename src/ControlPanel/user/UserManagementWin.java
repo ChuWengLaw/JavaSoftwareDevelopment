@@ -1,7 +1,6 @@
 package ControlPanel.user;
 
 import ControlPanel.Main;
-
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
@@ -9,7 +8,20 @@ import java.awt.event.WindowListener;
 import java.sql.SQLException;
 import javax.swing.*;
 
+/**
+ * @author Nicholas Tseng
+ * This is the user mangement window class which extends Jframe. In this window,
+ * users can access to four different functions:
+ *
+ * 1. Create new user.
+ * 2. List all user.
+ * 3. Edit user.
+ * 4. Delete user.
+ */
 public class UserManagementWin extends JFrame{
+    /**
+     * Initialize the components in the window.
+     */
     private JButton createUserButton = new JButton("Create a new user");
     private JButton listUserButton = new JButton("List all users");
     private JButton editUserButton = new JButton("Edit user");
@@ -18,6 +30,9 @@ public class UserManagementWin extends JFrame{
     private JPanel panel = new JPanel(new GridBagLayout());
     private GridBagConstraints constraints = new GridBagConstraints();
 
+    /**
+     * This is the construct which will create the user management window.
+     */
     public UserManagementWin(){
         super("User Management");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -112,14 +127,5 @@ public class UserManagementWin extends JFrame{
         // Display the window
         setLocation(900,350);
         pack();
-    }
-
-    public void permission(boolean permission){
-        if(!permission){
-            createUserButton.setEnabled(false);
-            editUserButton.setEnabled(false);
-            deleteUserButton.setEnabled(false);
-            listUserButton.setEnabled(false);
-        }
     }
 }

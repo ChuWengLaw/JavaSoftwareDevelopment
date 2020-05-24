@@ -14,7 +14,6 @@ import java.util.Properties;
  * an action is performed in other billboard/user GUI classes
  */
 public class Client {
-    private static Object requestReply;
     private static boolean requestState;
     private static String info = "";
     private static JTable listBBTable;
@@ -58,26 +57,37 @@ public class Client {
         if (requestReply instanceof LoginReply){
             LoginReply loginReply = (LoginReply) requestReply;
             requestState = loginReply.isLoginState();
-
             if (requestState){
                 Main.loginUser = loginReply.getUser();
+                Main.loginUser.setSessionToken(loginReply.getSessionToken());
             }
         }
         else if (requestReply instanceof SearchReply){
             SearchReply searchReply = (SearchReply) requestReply;
             requestState = searchReply.isRequestState();
-
             if (requestState){
                 Main.editUserWin.editedUser = searchReply.getUser();
             }
         }
-        else if (requestReply instanceof GernalReply){
-            GernalReply gernalReply = (GernalReply) requestReply;
-            requestState = gernalReply.isRequestState();
+        else if (requestReply instanceof LogoutReply){
+            LogoutReply logoutReply = (LogoutReply) requestReply;
+
+            // Display different message upon different logout reason.
+            if(logoutReply.isExpired()){
+                JOptionPane.showMessageDialog(null, "Session expired, system logged out.");
+            }
+            else{
+                JOptionPane.showMessageDialog(null, "Successfully logged out!");
+            }
+            System.exit(0);
+        }
+        else if (requestReply instanceof GeneralReply){
+            GeneralReply generalReply = (GeneralReply) requestReply;
+            requestState = generalReply.isRequestState();
         }
         else if (requestReply instanceof ListUserReply){
             ListUserReply listUserReply = (ListUserReply) requestReply;
-            Main.listUserWin.getTable(listUserReply.getTable());
+            Main.listUserWin.getTable(listUserReply.getTable(), listUserReply.isValidSession());
         }
         else if (requestReply instanceof BBInfoReply){
             BBInfoReply bbInfoReply = (BBInfoReply) requestReply;

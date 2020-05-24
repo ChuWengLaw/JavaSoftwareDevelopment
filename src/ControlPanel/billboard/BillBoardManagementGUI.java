@@ -64,7 +64,6 @@ public class BillBoardManagementGUI extends JFrame {
         super.addWindowListener(windowListener);
         //set up buttons
         btnCreateBB = createButton("Create Billboard");
-        btnEditBB = createButton("Edit Billboard");
         btnDeleteBB = createButton("Delete Billboard");
         btnInfoBB = createButton("Billboard Info");
         btnListBB = createButton("List Existing Billboards");
@@ -73,13 +72,6 @@ public class BillBoardManagementGUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 new CreateBillboardGUI();
-            }
-        });
-
-        btnEditBB.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new EditBillboardGUI();
             }
         });
 
@@ -114,15 +106,12 @@ public class BillBoardManagementGUI extends JFrame {
         bBMenu.add(btnCreateBB, constraints);
 
         constraints.gridx = 1;
-        bBMenu.add(btnEditBB,constraints);
-
-        constraints.gridx = 2;
         bBMenu.add(btnDeleteBB, constraints);
 
-        constraints.gridx = 3;
+        constraints.gridx = 2;
         bBMenu.add(btnInfoBB, constraints);
 
-        constraints.gridx = 4;
+        constraints.gridx = 3;
         bBMenu.add(btnListBB, constraints);
 
         getContentPane().add(bBMenu);

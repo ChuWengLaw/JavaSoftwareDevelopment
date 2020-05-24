@@ -1,11 +1,9 @@
 package Viewer;
 
-import ControlPanel.billboard.ExractFromXML;
+import ControlPanel.billboard.ExtractFromXML;
 
 import javax.imageio.ImageIO;
-import javax.imageio.plugins.jpeg.JPEGImageReadParam;
 import javax.swing.*;
-import javax.swing.colorchooser.ColorChooserComponentFactory;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -13,7 +11,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Field;
 import java.util.concurrent.*;
 
 /**
@@ -29,20 +26,11 @@ public class BillBoardViewer extends JFrame {
     private final int screenWidth = dim.width;
     private final int screenHeight = dim.height;
 
+    ExtractFromXML extractFromXML = new ExtractFromXML("starWars");
 
-    ExractFromXML exractFromXML = new ExractFromXML("starWars");
+    private JLabel lblMessage = new JLabel();
+    private JLabel lblInfo = new JLabel();
 
-    private String message = exractFromXML.message;
-    private Color textColour = exractFromXML.textColour;
-    private String info = exractFromXML.information;
-    private Color infoColour = exractFromXML.informationColour;
-    private Color background = exractFromXML.backgroundColour;
-    private String imageAdress = exractFromXML.image;
-
-    private JLabel lblMessage;
-    private JLabel lblInfo;
-    private JPanel pnlBackground = new JPanel();
-    private JPanel pnlImage;
 
     /**
      * The constructor of the billboard viewer.
@@ -127,8 +115,7 @@ public class BillBoardViewer extends JFrame {
 
     private void update() throws IOException {
         // Create a new image.
-        ImageIcon myPicture = new ImageIcon(ImageIO.read(new File("src/Viewer/Image/0341b9f3f27a6ba0a3b8de6de9d864949f0dbc23.jpg"))
-        .getScaledInstance(screenWidth, screenHeight, Image.SCALE_SMOOTH));
+
 //        try{
 //            myPicture = ImageIO.read(new File("src/Viewer/Image/soyeon-idle-pfantaken-Favim.com-6382977.jpg"));
 //        }
@@ -137,23 +124,117 @@ public class BillBoardViewer extends JFrame {
 //            myPicture = ImageIO.read(new File("src/Viewer/Image/soyeon-idle-pfantaken-Favim.com-6382977.jpg"));
 //        }
 
-        if (!message.isBlank() && info.isBlank() && imageAdress.isBlank()) {
+        if (!extractFromXML.message.isBlank() && extractFromXML.information.isBlank() && extractFromXML.image.isBlank()) {
+            System.out.println("message");
+        } else if (extractFromXML.message.isBlank() && extractFromXML.information.isBlank() && !extractFromXML.image.isBlank()) {
+            ImageIcon myPicture = new ImageIcon(ImageIO.read(new File("src/Viewer/Image/0341b9f3f27a6ba0a3b8de6de9d864949f0dbc23.jpg"))
+                    .getScaledInstance(screenWidth/2, screenHeight/2, Image.SCALE_SMOOTH));
+            picLabel.setIcon(myPicture);
 
-        } else if (message.isBlank() && info.isBlank() && !imageAdress.isBlank()) {
+            panel.setBackground(extractFromXML.backgroundColour);
 
-        } else if (message.isBlank() && !info.isBlank() && imageAdress.isBlank()) {
+            panel.setLayout(new BorderLayout());
+            panel.add(picLabel,BorderLayout.CENTER);
+            getContentPane().add(panel);
 
-        } else if(!message.isBlank() && info.isBlank() && !imageAdress.isBlank()){
+            repaint();
+            setVisible(true);
 
+        } else if (extractFromXML.message.isBlank() && !extractFromXML.information.isBlank() && extractFromXML.image.isBlank()) {
+            lblInfo.setText(extractFromXML.information);
+            lblInfo.setForeground(extractFromXML.informationColour);
+            lblInfo.setPreferredSize(new Dimension((screenWidth/4)*3,screenHeight/2));
+
+            panel.setBackground(extractFromXML.backgroundColour);
+
+            panel.setLayout(new BorderLayout());
+            panel.add(lblInfo,BorderLayout.CENTER);
+            getContentPane().add(panel);
+
+            repaint();
+            setVisible(true);
+        } else if(!extractFromXML.message.isBlank() && extractFromXML.information.isBlank() && !extractFromXML.image.isBlank()){
+            lblMessage.setText(extractFromXML.message);
+            lblMessage.setForeground(extractFromXML.textColour);
+            lblMessage.setPreferredSize(new Dimension(screenWidth,screenHeight/3));
+
+            ImageIcon myPicture = new ImageIcon(ImageIO.read(new File("src/Viewer/Image/0341b9f3f27a6ba0a3b8de6de9d864949f0dbc23.jpg"))
+                    .getScaledInstance(screenWidth/2, screenHeight/2, Image.SCALE_SMOOTH));
+            picLabel.setIcon(myPicture);
+            picLabel.setPreferredSize(new Dimension(screenWidth, (screenHeight/3)*2));
+
+            panel.setBackground(extractFromXML.backgroundColour);
+
+            panel.setLayout(new BorderLayout());
+            panel.add(lblMessage,BorderLayout.NORTH);
+            panel.add(picLabel,BorderLayout.CENTER);
+
+            getContentPane().add(panel);
+            repaint();
+            setVisible(true);
         }
-        else if(!message.isBlank() && !info.isBlank()&& imageAdress.isBlank()){
+        else if(!extractFromXML.message.isBlank() && !extractFromXML.information.isBlank()&& extractFromXML.image.isBlank()){
+            lblMessage.setText(extractFromXML.message);
+            lblMessage.setForeground(extractFromXML.textColour);
+            lblMessage.setPreferredSize(new Dimension(screenWidth,screenHeight/2));
 
+            lblInfo.setText(extractFromXML.information);
+            lblInfo.setForeground(extractFromXML.informationColour);
+            lblInfo.setPreferredSize(new Dimension(screenWidth,screenHeight/2));
+
+            panel.setBackground(extractFromXML.backgroundColour);
+
+            panel.setLayout(new BorderLayout());
+            panel.add(lblMessage,BorderLayout.NORTH);
+            panel.add(lblInfo,BorderLayout.SOUTH);
+
+            getContentPane().add(panel);
+            repaint();
+            setVisible(true);
         }
-        else if(message.isBlank() && !info.isBlank()&& !imageAdress.isBlank()){
+        else if(extractFromXML.message.isBlank() && !extractFromXML.information.isBlank()&& !extractFromXML.image.isBlank()){
+            ImageIcon myPicture = new ImageIcon(ImageIO.read(new File("src/Viewer/Image/0341b9f3f27a6ba0a3b8de6de9d864949f0dbc23.jpg"))
+                    .getScaledInstance(screenWidth/2, screenHeight/2, Image.SCALE_SMOOTH));
+            picLabel.setIcon(myPicture);
+            picLabel.setPreferredSize(new Dimension(screenWidth, (screenHeight/3)*2));
 
+            lblInfo.setText(extractFromXML.information);
+            lblInfo.setForeground(extractFromXML.informationColour);
+            lblInfo.setPreferredSize(new Dimension(screenWidth,screenHeight/3));
+
+            panel.setBackground(extractFromXML.backgroundColour);
+
+            panel.setLayout(new BorderLayout());
+            panel.add(picLabel,BorderLayout.NORTH);
+            panel.add(lblInfo, BorderLayout.SOUTH);
+
+            getContentPane().add(panel);
+            repaint();
+            setVisible(true);
         }
         else{
+            lblMessage.setText(extractFromXML.message);
+            lblMessage.setForeground(extractFromXML.textColour);
+            lblMessage.setPreferredSize(new Dimension(screenWidth/3,screenHeight/3));
 
+            lblInfo.setText(extractFromXML.information);
+            lblInfo.setForeground(extractFromXML.informationColour);
+            lblInfo.setPreferredSize(new Dimension(screenWidth/3,screenHeight/3));
+
+            panel.setBackground(extractFromXML.backgroundColour);
+
+            ImageIcon myPicture = new ImageIcon(ImageIO.read(new File("src/Viewer/Image/0341b9f3f27a6ba0a3b8de6de9d864949f0dbc23.jpg"))
+                    .getScaledInstance(screenWidth/3, screenHeight/3, Image.SCALE_SMOOTH));
+            picLabel.setIcon(myPicture);
+
+            panel.setLayout(new BorderLayout());
+            panel.add(lblMessage, BorderLayout.NORTH);
+            panel.add(picLabel, BorderLayout.CENTER);
+            panel.add(lblInfo, BorderLayout.SOUTH);
+
+            getContentPane().add(panel);
+            repaint();
+            setVisible(true);
         }
 
         /*
@@ -169,10 +250,6 @@ public class BillBoardViewer extends JFrame {
         panel.add(lblMessage, BorderLayout.SOUTH);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
          */
-        picLabel.setIcon(myPicture);
-        panel.setLayout(new BorderLayout());
-        panel.add(picLabel, BorderLayout.CENTER);
-        getContentPane().add(panel);
-        pack();
+
     }
 }

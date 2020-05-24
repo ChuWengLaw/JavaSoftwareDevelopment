@@ -1,13 +1,18 @@
 package Server.Request;
 
+import Server.SessionToken;
+
 import java.io.Serializable;
 
 public class CreateBBRequest implements Serializable {
-    private String BillboardName, TextColour, BackgroundColour, Message, Image, Information, InformationColour;
+    private SessionToken sessionToken;
+    private String BillboardName, UserName, TextColour, BackgroundColour, Message, Image, Information, InformationColour;
 
-    public CreateBBRequest(String BillboardName, String TextColour, String BackgroundColour,
+    public CreateBBRequest(SessionToken sessionToken, String BillboardName, String UserName, String TextColour, String BackgroundColour,
                            String Message, String Image, String Information, String InformationColour) {
+        this.sessionToken = sessionToken;
         this.BillboardName = BillboardName;
+        this.UserName = UserName;
         this.TextColour = TextColour;
         this.BackgroundColour = BackgroundColour;
         this.Message = Message;
@@ -16,9 +21,13 @@ public class CreateBBRequest implements Serializable {
         this.InformationColour = InformationColour;
     }
 
+    public SessionToken getSessionToken() {
+        return sessionToken;
+    }
     public String getBillboardName() {
         return BillboardName;
     }
+    public String getUserName() { return UserName; }
     public String getTextColour() { return TextColour; }
     public String getBackgroundColour() {
         return BackgroundColour;

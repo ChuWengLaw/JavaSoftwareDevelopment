@@ -1,6 +1,7 @@
 package ControlPanel.billboard;
 
 import ControlPanel.Client;
+import ControlPanel.Main;
 import Server.Request.BBInfoRequest;
 
 import javax.swing.*;
@@ -53,7 +54,7 @@ public class InformationGUI extends JFrame {
         btnGetInfo.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                BBInfoRequest temp = new BBInfoRequest(txtBillboardName.getText());
+                BBInfoRequest temp = new BBInfoRequest(Main.loginUser.getSessionToken(), txtBillboardName.getText());
                 if (txtBillboardName.getText().isBlank()) {
                     JOptionPane.showMessageDialog(null,"Please Enter a Billboard Name.");
                 } else {

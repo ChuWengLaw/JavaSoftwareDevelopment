@@ -89,7 +89,7 @@ public class BillboardSQL {
      * @param Token session token
      * @exception SQLException if sql query error occurs
      */
-    public JTable ListBillboards(String Token) throws SQLException {
+    public JTable ListBillboards(SessionToken Token) throws SQLException {
         JTable table = new JTable();
         try {
             ResultSet list = Server.statement.executeQuery("SELECT * FROM Billboard"/*ORDER BY ScheduleValue (i.e. how ever we are going to schedule) ASC*/+";");

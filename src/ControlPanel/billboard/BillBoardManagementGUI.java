@@ -119,7 +119,7 @@ public class BillBoardManagementGUI extends JFrame {
                 if (returnValue == JFileChooser.APPROVE_OPTION) {
                     File selectedFile = jfc.getSelectedFile();
                     System.out.println(selectedFile.getAbsolutePath());
-                    XmlRequest xmlRequest = new XmlRequest(selectedFile);
+                    XmlRequest xmlRequest = new XmlRequest(selectedFile, Main.loginUser.getUserName());
                     try {
                         Client.connectServer(xmlRequest);
                     } catch (IOException ex) {

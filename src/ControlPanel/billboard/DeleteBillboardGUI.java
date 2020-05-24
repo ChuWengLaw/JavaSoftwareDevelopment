@@ -1,6 +1,7 @@
 package ControlPanel.billboard;
 
 import ControlPanel.Client;
+import ControlPanel.Main;
 import Server.Request.DeleteBBRequest;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -61,7 +62,7 @@ public class DeleteBillboardGUI extends JFrame {
             //when the submit button is click make covert the inputs into string. then execute the CreateEditBilloard from the Billboard Class
             @Override
             public void actionPerformed(ActionEvent e) {
-                DeleteBBRequest temp = new DeleteBBRequest(txtBillboardName.getText());
+                DeleteBBRequest temp = new DeleteBBRequest(Main.loginUser.getSessionToken(), txtBillboardName.getText());
                 try {
                     Client.connectServer(temp);
                 } catch (Exception ex) {
@@ -127,20 +128,6 @@ public class DeleteBillboardGUI extends JFrame {
         return textBox;
     }
 
-//    /**
-//     * This function create a JTextField with the input of the text
-//     *
-//     * @param text the text to be displayed
-//     * @return a JTextField with the input of text
-//     * @author Lachlan
-//     */
-//    private JTextField createText(String text) {
-//        JTextField textBox = new JTextField();
-//        textBox.setText(text);
-//        strBillboardName = text;
-//        return textBox;
-//    }
-
     /**
      * This function create a JLabel with the title of the text
      *
@@ -153,41 +140,4 @@ public class DeleteBillboardGUI extends JFrame {
         label.setText(text);
         return label;
     }
-//
-//    private void setBillboardSQL() throws SQLException {
-//        Statement statement = Server.connection.createStatement();
-//        ResultSet resultSet = statement.executeQuery("SELECT * FROM  billboard");
-//
-//        while(resultSet.next()) {
-//            if (txtBillboardName.getText().equals(resultSet.getString(1))){
-//                txtAuthor.setText(resultSet.getString(2));
-//                txtTextColour.setText(resultSet.getString(3));
-//                txtBackgroundColour.setText(resultSet.getString(4));
-//                txtMessage.setText(resultSet.getString(5));
-//                txtImage.setText(resultSet.getString(5));
-//                txtInformation.setText(resultSet.getString(5));
-//                break;
-//            }
-//        }
-//
-//        statement.close();
-//    }
-//
-//    private boolean BillboardCheckSQL(String BillboardName) throws SQLException {
-//        boolean existing = false;
-//
-//        Statement statement = Server.connection.createStatement();
-//        ResultSet resultSet = statement.executeQuery("SELECT BillboardName FROM  billboard");
-//
-//        while(resultSet.next()){
-//            if (BillboardName.equals(resultSet.getString(1))){
-//                existing = true;
-//                break;
-//            }
-//        }
-//
-//        statement.close();
-//        return existing;
-//    }
-
 }

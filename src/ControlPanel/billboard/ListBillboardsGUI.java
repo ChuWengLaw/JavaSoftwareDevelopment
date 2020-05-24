@@ -1,17 +1,11 @@
 package ControlPanel.billboard;
 
 import ControlPanel.Client;
-import Server.*;
-import Server.Request.ListBBReply;
+import ControlPanel.Main;
 import Server.Request.ListBBRequest;
-
 
 import javax.swing.*;
 import java.awt.*;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.Statement;
-import java.util.Vector;
 
 
 /**
@@ -32,7 +26,7 @@ public class ListBillboardsGUI extends JFrame {
      * @author Law
      */
     private void createGUI() {
-        ListBBRequest listBBRequest = new ListBBRequest("token");
+        ListBBRequest listBBRequest = new ListBBRequest(Main.loginUser.getSessionToken());
         try{
             Client.connectServer(listBBRequest);
         }

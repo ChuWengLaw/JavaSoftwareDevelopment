@@ -18,6 +18,7 @@ public class Client {
     private static boolean requestState;
     private static String info = "";
     private static JTable listBBTable;
+    private static JTable ScheduleTable;
 
     /**
      * Connects to server (connection read from network.props)
@@ -87,6 +88,10 @@ public class Client {
             ListBBReply listBBReply = (ListBBReply) requestReply;
             listBBTable = listBBReply.getTable();
         }
+        else if (requestReply instanceof WeeklyScheduleReply){
+            WeeklyScheduleReply ScheduleReply = (WeeklyScheduleReply) requestReply;
+            ScheduleTable = ScheduleReply.getTable();
+        }
     }
     public static String getInfo() {
         return info;
@@ -94,4 +99,5 @@ public class Client {
     public static JTable getBBTable() {
         return listBBTable;
     }
+    public static JTable getScheduleTable() {return ScheduleTable;}
 }

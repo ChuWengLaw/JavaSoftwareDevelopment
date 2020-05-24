@@ -300,5 +300,11 @@ public class Server {
             Schedule.DeleteSchedule(temp.getScheduledName(),temp.getScheduledTime());
             oos.flush();
         }
+        else if (o instanceof WeeklyScheduleRequest) {
+            WeeklyScheduleRequest weeklyscheduleRequest = (WeeklyScheduleRequest) o;
+            ScheduleSQL Schedule = new ScheduleSQL();
+            WeeklyScheduleReply weeklyscheduleReply = new WeeklyScheduleReply(Schedule.ScheduledInformation());
+            oos.writeObject(weeklyscheduleReply);
+        }
     }
 }

@@ -1,7 +1,10 @@
 package ControlPanel.schedule;
 
+import ControlPanel.Client;
 import ControlPanel.Main;
 import ControlPanel.billboard.CreateBillboardGUI;
+import Server.Request.ListBBRequest;
+import Server.Request.WeeklyScheduleRequest;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -55,6 +58,26 @@ public class CalanderScheduleGUI extends JFrame {
                 new DeleteScheduleGUI();
             }
         });
+        //###########################list billboards change to list scheduled
+        WeeklyScheduleRequest WeeklyScheduleRequest = new WeeklyScheduleRequest();
+        try{
+            Client.connectServer(WeeklyScheduleRequest);
+        }
+        catch (Exception ex){
+            ex.printStackTrace();
+        }
+
+        //super.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        //JPanel panel = new JPanel();
+        JScrollPane scrollpane = new JScrollPane(Client.getScheduleTable());
+        //panel.setLayout(new BorderLayout());
+        constraints.gridy = 10;
+        constraints.gridx = 10;
+        pnlScheduleMenu.add(scrollpane, constraints);
+        //###########################list billboards change to list scheduled
+
+
+
 
         //GET SQL DATA ABOUT SCHEDULES Request from database
         int Min_in_Millis = 60000;

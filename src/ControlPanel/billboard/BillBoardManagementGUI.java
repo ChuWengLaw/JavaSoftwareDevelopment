@@ -23,6 +23,7 @@ public class BillBoardManagementGUI extends JFrame {
 
     //define the buttons
     private JButton btnCreateBB;
+    private JButton btnEditBB;
     private JButton btnDeleteBB;
     private JButton btnInfoBB;
     private JButton btnListBB;

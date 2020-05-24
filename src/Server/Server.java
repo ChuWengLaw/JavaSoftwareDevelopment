@@ -243,7 +243,7 @@ public class Server {
 
                 // Reset the used time of the session token.
                 for (int i = 0; i <= sessionTokens.size(); i++) {
-                    if (sessionTokens.get(i).getSessionTokenString().equals(sessionToken) {
+                    if (sessionTokens.get(i).getSessionTokenString().equals(sessionToken.getSessionTokenString())) {
                         sessionTokens.get(i).setUsedTime(LocalDateTime.now());
                         break;
                     }
@@ -290,7 +290,7 @@ public class Server {
 
                 // Reset the used time of the session token.
                 for (int i = 0; i <= sessionTokens.size(); i++) {
-                    if (sessionTokens.get(i).getSessionTokenString().equals(sessionToken) {
+                    if (sessionTokens.get(i).getSessionTokenString().equals(sessionToken.getSessionTokenString())) {
                         sessionTokens.get(i).setUsedTime(LocalDateTime.now());
                         break;
                     }
@@ -332,7 +332,7 @@ public class Server {
             else{
                 // Reset the used time of the session token.
                 for (int i = 0; i <= sessionTokens.size(); i++) {
-                    if (sessionTokens.get(i).getSessionTokenString().equals(sessionToken) {
+                    if (sessionTokens.get(i).getSessionTokenString().equals(sessionToken.getSessionTokenString())) {
                         sessionTokens.get(i).setUsedTime(LocalDateTime.now());
                         break;
                     }
@@ -381,7 +381,7 @@ public class Server {
             else{
                 // Reset the used time of the session token.
                 for (int i = 0; i <= sessionTokens.size(); i++) {
-                    if (sessionTokens.get(i).getSessionTokenString().equals(sessionToken) {
+                    if (sessionTokens.get(i).getSessionTokenString().equals(sessionToken.getSessionTokenString())) {
                         sessionTokens.get(i).setUsedTime(LocalDateTime.now());
                         break;
                     }
@@ -410,19 +410,39 @@ public class Server {
         }
         else if(clientRequest instanceof DeleteUserRequest){
             DeleteUserRequest deleteUser = (DeleteUserRequest) clientRequest;
+            SessionToken sessionToken = null;
             boolean checkDeleteUser = checkUserSQL(deleteUser.getUserName());
-
-            if (checkDeleteUser){
-                deleteUserBillboardSQL(deleteUser.getUserName());
-                GeneralReply generalReply = new GeneralReply(true);
-                oos.writeObject(generalReply);
-                oos.flush();
+            for(int i  = 0; i <= sessionTokens.size(); i++){
+                if(sessionTokens.get(i).getSessionTokenString().equals(deleteUser.getSessionToken().getSessionTokenString())){
+                    sessionToken = sessionTokens.get(i);
+                    break;
+                }
+            }
+            if(!tokenCheck(deleteUser.getSessionToken())){
+                sessionTokens.remove(sessionToken);
+                LogoutReply logoutReply = new LogoutReply(true);
+                oos.writeObject(logoutReply);
             }
             else{
-                GeneralReply generalReply = new GeneralReply(false);
-                oos.writeObject(generalReply);
+                // Reset the used time of the session token.
+                for (int i = 0; i <= sessionTokens.size(); i++) {
+                    if (sessionTokens.get(i).getSessionTokenString().equals(sessionToken.getSessionTokenString())) {
+                        sessionTokens.get(i).setUsedTime(LocalDateTime.now());
+                        break;
+                    }
+                }
+                if (checkDeleteUser){
+                    deleteUserBillboardSQL(deleteUser.getUserName());
+                    GeneralReply generalReply = new GeneralReply(true);
+                    oos.writeObject(generalReply);
+                }
+                else{
+                    GeneralReply generalReply = new GeneralReply(false);
+                    oos.writeObject(generalReply);
+                }
                 oos.flush();
             }
+
         }
         else if (clientRequest instanceof ListUserRequest){
             ListUserRequest listUserRequest = (ListUserRequest) clientRequest;
@@ -446,7 +466,7 @@ public class Server {
             else{
                 // Reset the used time of the session token.
                 for (int i = 0; i <= sessionTokens.size(); i++) {
-                    if (sessionTokens.get(i).getSessionTokenString().equals(sessionToken) {
+                    if (sessionTokens.get(i).getSessionTokenString().equals(sessionToken.getSessionTokenString())) {
                         sessionTokens.get(i).setUsedTime(LocalDateTime.now());
                         break;
                     }

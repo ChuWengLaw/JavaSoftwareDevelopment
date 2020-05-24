@@ -1,16 +1,22 @@
 package Server;
 
+import ControlPanel.Main;
 import ControlPanel.User;
 import Server.Request.*;
 
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.*;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Properties;
+import java.util.Random;
 
 import static Server.UserSQL.*;
 
@@ -426,7 +432,7 @@ public class Server {
         else if (clientRequest instanceof CreateBBRequest) {
             CreateBBRequest temp = (CreateBBRequest) clientRequest;
             BillboardSQL bb = new BillboardSQL();
-            bb.CreateBillboard(temp.getBillboardName(), temp.getAuthor(), temp.getTextColour(), temp.getBackgroundColour(),
+            bb.CreateBillboard(temp.getBillboardName(), Main.loginUser.getUserName(), temp.getTextColour(), temp.getBackgroundColour(),
                     temp.getMessage(), temp.getImage(), temp.getInformation(), temp.getInformationColour());
             oos.flush();
         }
@@ -449,12 +455,32 @@ public class Server {
             BillboardSQL bb = new BillboardSQL();
             ListBBReply listBBReply = new ListBBReply(bb.ListBillboards(listBBRequest.getSessionToken()));
             oos.writeObject(listBBReply);
+            oos.flush();
         }
         else if (clientRequest instanceof ScheduleBillboardRequest) {
             ScheduleBillboardRequest temp = (ScheduleBillboardRequest) clientRequest;
             ScheduleSQL Schedule = new ScheduleSQL();
             Schedule.ScheduleBillboard(temp.getBillboardName(),temp.getScheduledTime(), temp.getDuration(),temp.getReoccurType(),temp.getReoccurAmount());
             oos.flush();
+        }
+        else if (clientRequest instanceof XmlRequest) {
+            XmlRequest xmlRequest = (XmlRequest) clientRequest;
+            // if user exporting a billboard
+            if (xmlRequest.getXmlFile() == null) {
+                new MakeXMLFile(xmlRequest.getXmlName());
+            }
+            // if user import a billboard
+            else {
+                // copy uploaded new xml file to path and extract its info and save it in db
+                String newFileName = xmlRequest.getXmlFile().getName();
+                var newPath = new File("src/xmlBillboards/" + newFileName);
+                Files.copy(xmlRequest.getXmlFile().toPath(), newPath.toPath(),
+                        StandardCopyOption.REPLACE_EXISTING);
+                ExtractFromXML extractFromXML = new ExtractFromXML(newFileName);
+                BillboardSQL bb = new BillboardSQL();
+                bb.CreateBillboard(newFileName, Main.loginUser.getUserName(), extractFromXML.textColour, extractFromXML.backgroundColour,
+                        extractFromXML.message, extractFromXML.image, extractFromXML.information, extractFromXML.informationColour);
+            }
         }
     }
 }

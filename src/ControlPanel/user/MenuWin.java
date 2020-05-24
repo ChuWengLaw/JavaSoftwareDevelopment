@@ -42,7 +42,7 @@ public class MenuWin extends JFrame {
     public MenuWin() {
         // Setting default value of the frame
         super("Menu");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
         // Button setting
         ActionListener editUserListener = e -> {

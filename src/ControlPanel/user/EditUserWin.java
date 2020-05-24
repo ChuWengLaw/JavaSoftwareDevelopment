@@ -10,6 +10,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.IOException;
+import java.net.ConnectException;
 import javax.swing.*;
 
 public class EditUserWin extends JFrame{
@@ -156,30 +157,38 @@ public class EditUserWin extends JFrame{
 
                 try {
                     Client.connectServer(editUserRequest);
+
+                    if(Client.isRequestState()){
+                        userNameTextField.setEditable(true);
+                        passwordTextField.setEditable(false);
+                        checkBox1.setEnabled(false);
+                        checkBox2.setEnabled(false);
+                        checkBox3.setEnabled(false);
+                        checkBox4.setEnabled(false);
+                        editButton.setEnabled(false);
+                        checkBox1.setSelected(false);
+                        checkBox2.setSelected(false);
+                        checkBox3.setSelected(false);
+                        checkBox4.setSelected(false);
+                        editButton.setEnabled(false);
+                        userNameTextField.setText("");
+                        passwordTextField.setText("");
+                        JOptionPane.showMessageDialog(null, "Edit successful!");
+                    }
+                    else{
+                        throw new Exception();
+                    }
+                } catch(ConnectException ex){
+                    JOptionPane.showMessageDialog(null, "Connection fail.");
+                    System.exit(0);
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 } catch (InterruptedException ex) {
                     ex.printStackTrace();
                 } catch (ClassNotFoundException ex) {
                     ex.printStackTrace();
-                }
-
-                if(Client.isRequestState()){
-                    userNameTextField.setEditable(true);
-                    passwordTextField.setEditable(false);
-                    checkBox1.setEnabled(false);
-                    checkBox2.setEnabled(false);
-                    checkBox3.setEnabled(false);
-                    checkBox4.setEnabled(false);
-                    editButton.setEnabled(false);
-                    checkBox1.setSelected(false);
-                    checkBox2.setSelected(false);
-                    checkBox3.setSelected(false);
-                    checkBox4.setSelected(false);
-                    editButton.setEnabled(false);
-                    userNameTextField.setText("");
-                    passwordTextField.setText("");
-                    JOptionPane.showMessageDialog(null, "Edit successful!");
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(null, "Edit fail!");
                 }
             }
         };

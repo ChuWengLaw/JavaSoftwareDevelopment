@@ -4,9 +4,9 @@ import ControlPanel.Client;
 import Server.Request.CreateBBRequest;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.*;
 import java.io.IOException;
 import java.lang.reflect.Field;
 
@@ -166,8 +166,6 @@ public class CreateBillboardGUI extends JFrame {
                         CreateBBRequest temp = new CreateBBRequest(txtBillboardName.getText(), txtTextColour.getText(), txtBackgroundColour.getText(),
                                 txtMessage.getText(), txtImage.getText(), txtInformation.getText(), txtInformationColour.getText());
                         try {
-                            new MakeXMLFile(txtBillboardName.getText(), txtTextColour.getText(),
-                                    txtBackgroundColour.getText(), txtMessage.getText(), txtImage.getText(), txtInformation.getText(), txtInformationColour.getText());
                             Client.connectServer(temp);
 
                         } catch (InterruptedException ex) {
@@ -187,6 +185,7 @@ public class CreateBillboardGUI extends JFrame {
                         txtImage.setText("");
                         txtInformation.setText("");
                         txtInformationColour.setText("");
+
                     }
 
                 }

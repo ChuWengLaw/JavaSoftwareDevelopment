@@ -1,7 +1,8 @@
-package ControlPanel.billboard;
+package Server;
 
-import Server.Server;
-import org.w3c.dom.*;
+import org.w3c.dom.Attr;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -13,22 +14,20 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.File;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class MakeXMLFile {
-
+    private String BillboardName, textColour, backgroundColour, message, image, information, informationColour;
     /**
+     * This method writes the billboard contents into XML format
      * @param billboardName
-     * @param textColour
-     * @param backgroundColour
-     * @param message
-     * @param image
-     * @param information
-     * @param informationColour
      * @author Lachlan
      */
-    public MakeXMLFile(String billboardName, String textColour, String backgroundColour,
-                       String message, String image, String information, String informationColour) {
+    public MakeXMLFile(String billboardName) throws SQLException {
         String path = "src/xmlBillboards/" + billboardName + ".xml";
+        BillboardName = billboardName;
+        ExecuteSQL();
         try {
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newDefaultInstance();
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
@@ -110,6 +109,19 @@ public class MakeXMLFile {
         }
         System.out.println("XML file Created");
     }
-
-
+    /**
+     * This method executes SQL to extract the billboard contents
+     * @author Law
+     */
+    private void ExecuteSQL() throws SQLException {
+        ResultSet getBillboard = Server.statement.executeQuery("SELECT * FROM Billboard WHERE BillboardName = '"
+                + BillboardName + "';");
+        getBillboard.next();
+        backgroundColour = getBillboard.getString("BackGroundColour");
+        message = getBillboard.getString("Message");
+        textColour = getBillboard.getString("TextColour");
+        image = getBillboard.getString("Image");
+        information = getBillboard.getString("Information");
+        informationColour = getBillboard.getString("InfoColour");
+    }
 }

@@ -1,13 +1,19 @@
 package ControlPanel.billboard;
 
+import ControlPanel.Client;
 import ControlPanel.Main;
+import Server.Request.XmlRequest;
 
+import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.filechooser.FileSystemView;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import javax.swing.*;
+import java.io.File;
+import java.io.IOException;
 
 /**
  * This class creates the GUI to be used to display the available options for
@@ -21,6 +27,8 @@ public class BillBoardManagementGUI extends JFrame {
     private JButton btnDeleteBB;
     private JButton btnInfoBB;
     private JButton btnListBB;
+    private JButton btnImport;
+    private JButton btnExport;
 
     //define the JPanel and the GridBagConstraints
     private JPanel bBMenu = new JPanel(new GridBagLayout());
@@ -67,6 +75,8 @@ public class BillBoardManagementGUI extends JFrame {
         btnDeleteBB = createButton("Delete Billboard");
         btnInfoBB = createButton("Billboard Info");
         btnListBB = createButton("List Existing Billboards");
+        btnImport = createButton("Import Billboard");
+        btnExport = createButton("Export Billboard");
 
         btnCreateBB.addActionListener(new ActionListener() {
             @Override
@@ -97,6 +107,40 @@ public class BillBoardManagementGUI extends JFrame {
             }
         });
 
+        btnImport.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //Create a file chooser
+                JFileChooser jfc = new JFileChooser(FileSystemView.getFileSystemView());
+                jfc.setDialogTitle("Select a billboard xml file");
+                jfc.setAcceptAllFileFilterUsed(false);
+                FileNameExtensionFilter filter = new FileNameExtensionFilter("Xml", "xml");
+                jfc.addChoosableFileFilter(filter);
+                int returnValue = jfc.showOpenDialog(null);
+                if (returnValue == JFileChooser.APPROVE_OPTION) {
+                    File selectedFile = jfc.getSelectedFile();
+                    System.out.println(selectedFile.getAbsolutePath());
+                    XmlRequest xmlRequest = new XmlRequest(selectedFile);
+                    try {
+                        Client.connectServer(xmlRequest);
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    } catch (InterruptedException ex) {
+                        ex.printStackTrace();
+                    } catch (ClassNotFoundException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+            }
+        });
+
+        btnExport.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new ExportXmlGUI();
+            }
+        });
+
         // Panel setting
         constraints.anchor = GridBagConstraints.WEST;
         constraints.insets = new Insets(10, 10, 10, 10);
@@ -114,6 +158,11 @@ public class BillBoardManagementGUI extends JFrame {
         constraints.gridx = 3;
         bBMenu.add(btnListBB, constraints);
 
+        constraints.gridx = 4;
+        bBMenu.add(btnImport, constraints);
+
+        constraints.gridx = 5;
+        bBMenu.add(btnExport, constraints);
         getContentPane().add(bBMenu);
 
         // Display the window

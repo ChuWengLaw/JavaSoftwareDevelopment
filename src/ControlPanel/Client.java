@@ -1,12 +1,10 @@
 package ControlPanel;
 
-import ControlPanel.billboard.ListBillboardsGUI;
 import Server.Request.*;
 
 import javax.swing.*;
 import java.io.*;
 import java.net.Socket;
-import java.util.List;
 import java.util.Properties;
 
 /**
@@ -53,7 +51,7 @@ public class Client {
         return requestState;
     }
 
-    private static void executeReply(Object requestReply){
+    private static void executeReply(Object requestReply) throws IOException {
         if (requestReply instanceof LoginReply){
             LoginReply loginReply = (LoginReply) requestReply;
             requestState = loginReply.isLoginState();

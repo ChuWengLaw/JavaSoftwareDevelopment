@@ -288,6 +288,13 @@ public class Server {
             ListBBReply listBBReply = new ListBBReply(bb.ListBillboards(listBBRequest.getSessionToken()));
             oos.writeObject(listBBReply);
         }
+        else if (o instanceof WeeklyScheduleRequest) {
+            WeeklyScheduleRequest weeklyscheduleRequest = (WeeklyScheduleRequest) o;
+            ScheduleSQL Schedule = new ScheduleSQL();
+            WeeklyScheduleReply weeklyscheduleReply = new WeeklyScheduleReply(Schedule.ScheduledInformation());
+            oos.writeObject(weeklyscheduleReply);
+            oos.flush();
+        }
         else if (o instanceof ScheduleBillboardRequest) {
             ScheduleBillboardRequest temp = (ScheduleBillboardRequest) o;
             ScheduleSQL Schedule = new ScheduleSQL();
@@ -300,11 +307,6 @@ public class Server {
             Schedule.DeleteSchedule(temp.getScheduledName(),temp.getScheduledTime());
             oos.flush();
         }
-        else if (o instanceof WeeklyScheduleRequest) {
-            WeeklyScheduleRequest weeklyscheduleRequest = (WeeklyScheduleRequest) o;
-            ScheduleSQL Schedule = new ScheduleSQL();
-            WeeklyScheduleReply weeklyscheduleReply = new WeeklyScheduleReply(Schedule.ScheduledInformation());
-            oos.writeObject(weeklyscheduleReply);
-        }
+
     }
 }

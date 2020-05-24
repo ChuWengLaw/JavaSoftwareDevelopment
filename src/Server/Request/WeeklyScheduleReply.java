@@ -4,13 +4,13 @@ import javax.swing.*;
 import java.io.Serializable;
 
 public class WeeklyScheduleReply implements Serializable {
-    private JTable table;
+    private String[][] Information;
 
-    public WeeklyScheduleReply(JTable table){
-        this.table = table;
+    public WeeklyScheduleReply(String[][] Information){
+        this.Information = Information;
     }
 
-    public JTable getTable() {
-        return table;
+    public String[][] getArray() {
+        return Information;
     }
 }

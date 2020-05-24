@@ -18,7 +18,7 @@ public class Client {
     private static boolean requestState;
     private static String info = "";
     private static JTable listBBTable;
-    private static JTable ScheduleTable;
+    private static String[][] ScheduleArray;
 
     /**
      * Connects to server (connection read from network.props)
@@ -41,10 +41,12 @@ public class Client {
 
         ObjectOutputStream oos = new ObjectOutputStream(outputStream);
         ObjectInputStream ois = new ObjectInputStream(inputStream);
+
         oos.writeObject(args);
         oos.flush();
 
         Object requestReply = ois.readObject();
+
         executeReply(requestReply);
 
         ois.close();
@@ -90,7 +92,7 @@ public class Client {
         }
         else if (requestReply instanceof WeeklyScheduleReply){
             WeeklyScheduleReply ScheduleReply = (WeeklyScheduleReply) requestReply;
-            ScheduleTable = ScheduleReply.getTable();
+            ScheduleArray = ScheduleReply.getArray();
         }
     }
     public static String getInfo() {
@@ -99,5 +101,5 @@ public class Client {
     public static JTable getBBTable() {
         return listBBTable;
     }
-    public static JTable getScheduleTable() {return ScheduleTable;}
+    public static String[][] getScheduleArray() {return ScheduleArray;}
 }

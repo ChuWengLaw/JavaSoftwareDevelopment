@@ -51,30 +51,33 @@ public class ScheduleSQL {
         }
     }
 
-    public JTable ScheduledInformation() throws SQLException {
-        JTable table = new JTable();
+    public String[][] ScheduledInformation() throws SQLException {
         try {
-            ResultSet list = Server.statement.executeQuery("SELECT BillboardName, ScheduleTime FROM Schedule;");
-            ResultSetMetaData rsmd = list.getMetaData();
+            ResultSet resultSet = Server.statement.executeQuery("SELECT BillboardName, ScheduleTime FROM Schedule;");
+            ResultSetMetaData rsmd = resultSet.getMetaData();
             int columnCount = rsmd.getColumnCount();
-            Vector columnHeader = new Vector(columnCount);
-            for (int i = 1; i<= columnCount; i++){
-                columnHeader.add(rsmd.getColumnName(i));
-            }
-            Vector data = new Vector();
-            Vector row = new Vector();
 
-            while(list.next()) {
-                row = new Vector(columnCount);
+            String[][] ScheduleArray = new String[1][columnCount];
+            while(resultSet.next()) {
+                String[] CurrentRow = new String[columnCount];
                 for (int i = 1; i <= columnCount; i++) {
-                    row.add(list.getString(i));
+                    CurrentRow[i] = resultSet.getString(i);
                 }
-                data.add(row);
+                ScheduleArray = AddRowSchedule(ScheduleArray, CurrentRow);
             }
-            table = new JTable(data,columnHeader);
+            return ScheduleArray;
         } catch (SQLException e) {
             System.out.println(e);
+
         }
-        return table;
+        return new String[1][1];
+    }
+
+    public static String[][] AddRowSchedule(String[][] Init, String[] ToAdd)
+    {
+        String[][] Output = new String[Init[0].length+1][ToAdd.length];
+        Output[Output[0].length][0] = ToAdd[0];
+        Output[Output[0].length][1] = ToAdd[1];
+        return Output;
     }
 }

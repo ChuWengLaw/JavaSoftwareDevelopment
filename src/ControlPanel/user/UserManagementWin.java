@@ -86,11 +86,7 @@ public class UserManagementWin extends JFrame{
         ActionListener listActionListener = e-> {
             Main.listUserWin.setVisible(true);
 
-            try {
-                Main.listUserWin.createTableSQL();
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-            }
+            Main.listUserWin.createTableSQL();
 
             super.setEnabled(false);
         };

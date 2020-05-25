@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.IOException;
+import java.net.ConnectException;
 import javax.swing.*;
 
 /**
@@ -16,9 +17,7 @@ import javax.swing.*;
  * users can create a new user.
  */
 public class CreateUserWin extends JFrame{
-        /**
-         * Initialize the components in the window.
-         */
+        // Initialize the components in the window.
         private JLabel labelUserName = new JLabel("User Name");
         private JLabel labelPassword = new JLabel("Selected password");
         private JLabel labelpermission1 = new JLabel("Create billboards");
@@ -83,18 +82,23 @@ public class CreateUserWin extends JFrame{
 
                                 try {
                                         Client.connectServer(createUserRequest);
-                                } catch (IOException ex) {
+
+                                        if (Client.isRequestState()){
+                                                JOptionPane.showMessageDialog(null,"User creation successful!");
+                                        }
+                                        else{
+                                                throw new Exception();
+                                        }
+                                } catch(ConnectException ex) {
+                                        JOptionPane.showMessageDialog(null, "Connection fail.");
+                                        System.exit(0);
+                                }catch (IOException ex) {
                                         ex.printStackTrace();
                                 } catch (InterruptedException ex) {
                                         ex.printStackTrace();
                                 } catch (ClassNotFoundException ex) {
                                         ex.printStackTrace();
-                                }
-
-                                if (Client.isRequestState()){
-                                        JOptionPane.showMessageDialog(null,"User creation successful!");
-                                }
-                                else{
+                                } catch (Exception ex) {
                                         JOptionPane.showMessageDialog(null, "User name existed!");
                                 }
                         }

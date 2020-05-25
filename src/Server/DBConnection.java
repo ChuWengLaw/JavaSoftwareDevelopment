@@ -11,6 +11,7 @@ import java.util.Properties;
 
 /**
  * Sample Code for database setup (Read from db.props)
+ *
  * @author Law
  * @exception SQLException if a database access error occurs or the url is
  * {@code null}

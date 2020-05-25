@@ -17,29 +17,43 @@ public class CreateBBRequest implements Serializable {
         this.BackgroundColour = BackgroundColour;
         this.Message = Message;
         this.Image = Image;
-        this.Information= Information;
+        this.Information = Information;
         this.InformationColour = InformationColour;
     }
 
     public SessionToken getSessionToken() {
         return sessionToken;
     }
+
     public String getBillboardName() {
         return BillboardName;
     }
-    public String getUserName() { return UserName; }
-    public String getTextColour() { return TextColour; }
+
+    public String getUserName() {
+        return UserName;
+    }
+
+    public String getTextColour() {
+        return TextColour;
+    }
+
     public String getBackgroundColour() {
         return BackgroundColour;
     }
+
     public String getMessage() {
         return Message;
     }
+
     public String getImage() {
         return Image;
     }
+
     public String getInformation() {
         return Information;
     }
-    public String getInformationColour() { return InformationColour; }
+
+    public String getInformationColour() {
+        return InformationColour;
+    }
 }

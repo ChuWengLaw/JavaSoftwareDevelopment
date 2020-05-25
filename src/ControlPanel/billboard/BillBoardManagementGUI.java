@@ -36,22 +36,26 @@ public class BillBoardManagementGUI extends JFrame {
 
     /**
      * Constructor initialises the GUI creation.
+     *
      * @throws HeadlessException
      */
     public BillBoardManagementGUI() throws HeadlessException {
         super("Billboard Management");
         createGUI();
     }
-    private void createGUI(){
+
+    private void createGUI() {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         // Window Listener to prevent user from pressing other buttons in menu window
         WindowListener windowListener = new WindowListener() {
             @Override
             public void windowOpened(WindowEvent e) {
-                Main.menuWin.setEnabled(false);}
+                Main.menuWin.setEnabled(false);
+            }
 
             @Override
-            public void windowClosing(WindowEvent e) {}
+            public void windowClosing(WindowEvent e) {
+            }
 
             @Override
             public void windowClosed(WindowEvent e) {
@@ -59,16 +63,20 @@ public class BillBoardManagementGUI extends JFrame {
             }
 
             @Override
-            public void windowIconified(WindowEvent e) {}
+            public void windowIconified(WindowEvent e) {
+            }
 
             @Override
-            public void windowDeiconified(WindowEvent e) {}
+            public void windowDeiconified(WindowEvent e) {
+            }
 
             @Override
-            public void windowActivated(WindowEvent e) {}
+            public void windowActivated(WindowEvent e) {
+            }
 
             @Override
-            public void windowDeactivated(WindowEvent e) {}
+            public void windowDeactivated(WindowEvent e) {
+            }
         };
         super.addWindowListener(windowListener);
         //set up buttons
@@ -166,7 +174,7 @@ public class BillBoardManagementGUI extends JFrame {
         getContentPane().add(bBMenu);
 
         // Display the window
-        setLocation(900,350);
+        setLocation(900, 350);
         pack();
         repaint();
         setVisible(true);
@@ -174,11 +182,12 @@ public class BillBoardManagementGUI extends JFrame {
 
     /**
      * Creates the button
-     * @author Lachlan
+     *
      * @param text the text on the button
      * @return the formatted button
+     * @author Lachlan
      */
-    private JButton createButton (String text){
+    private JButton createButton(String text) {
         JButton button = new JButton();
         button.setText(text);
         return button;

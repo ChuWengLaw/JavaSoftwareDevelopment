@@ -37,10 +37,10 @@ public class UserSQL {
         Statement statement = Server.connection.createStatement();
         ResultSet resultSet = statement.executeQuery("SELECT userName, userPassword, saltValue FROM user");
 
-        while(resultSet.next()){
-            String hasedRecievedString = Server.hashAString(userPassword+resultSet.getString(3));
+        while (resultSet.next()) {
+            String hasedRecievedString = Server.hashAString(userPassword + resultSet.getString(3));
 
-            if (userName.equals(resultSet.getString(1)) && hasedRecievedString.equals(resultSet.getString(2))){
+            if (userName.equals(resultSet.getString(1)) && hasedRecievedString.equals(resultSet.getString(2))) {
                 correctPassword = true;
                 break;
             }
@@ -66,39 +66,41 @@ public class UserSQL {
         pstatement.executeUpdate();
         pstatement.close();
     }
+
     static void deleteUserBillboardSQL(String userName) throws SQLException {
         PreparedStatement deleteUserStatement = Server.connection.prepareStatement("DELETE FROM user WHERE userName = ?");
         PreparedStatement deleteUserBillboardStatement = Server.connection.prepareStatement("DELETE from Billboard WHERE userName =?");
         deleteUserStatement.setString(1, userName);
-        deleteUserBillboardStatement.setString(1,userName);
+        deleteUserBillboardStatement.setString(1, userName);
         deleteUserStatement.executeQuery();
         deleteUserBillboardStatement.executeQuery();
         deleteUserBillboardStatement.close();
         deleteUserStatement.close();
     }
+
     static JTable listUserSQL() throws SQLException {
         JTable table = new JTable();
         Statement listUserStatement = Server.connection.createStatement();
         ResultSet rs = listUserStatement.executeQuery(
                 "select userName, CreateBillboardsPermission, EditAllBillboardPermission,"
-                + "ScheduleBillboardsPermission, EditUsersPermission from user");
+                        + "ScheduleBillboardsPermission, EditUsersPermission from user");
         ResultSetMetaData rsmd = rs.getMetaData();
         int columnCount = rsmd.getColumnCount();
         Vector columnHeader = new Vector(columnCount);
-        for (int i = 1; i<= columnCount; i++){
+        for (int i = 1; i <= columnCount; i++) {
             columnHeader.add(rsmd.getColumnName(i));
         }
         Vector data = new Vector();
         Vector row = new Vector();
 
-        while(rs.next()) {
+        while (rs.next()) {
             row = new Vector(columnCount);
             for (int i = 1; i <= columnCount; i++) {
                 row.add(rs.getString(i));
             }
             data.add(row);
         }
-        table = new JTable(data,columnHeader);
+        table = new JTable(data, columnHeader);
         return table;
     }
 
@@ -108,8 +110,8 @@ public class UserSQL {
         Statement statement = Server.connection.createStatement();
         ResultSet resultSet = statement.executeQuery("SELECT userName FROM  user");
 
-        while(resultSet.next()){
-            if (userName.equals(resultSet.getString(1))){
+        while (resultSet.next()) {
+            if (userName.equals(resultSet.getString(1))) {
                 existing = true;
                 break;
             }
@@ -124,7 +126,7 @@ public class UserSQL {
                             boolean scheduleBillboardsPermission, boolean editUsersPermission, String saltValue) throws SQLException {
         PreparedStatement pstatement = Server.connection.prepareStatement("UPDATE user " +
                 "SET userPassword = ?,  createBillboardsPermission = ?, editAllBillboardPermission = ?, " +
-                "scheduleBillboardsPermission = ?, editUsersPermission = ?, saltValue = ? WHERE userName = ? " );
+                "scheduleBillboardsPermission = ?, editUsersPermission = ?, saltValue = ? WHERE userName = ? ");
         pstatement.setString(1, userPassword);
         pstatement.setBoolean(2, createBillboardsPermission);
         pstatement.setBoolean(3, editAllBillboardPermission);
@@ -140,7 +142,7 @@ public class UserSQL {
                             boolean scheduleBillboardsPermission, boolean editUserPermission) throws SQLException {
         PreparedStatement pstatement = Server.connection.prepareStatement("UPDATE user " +
                 "SET  createBillboardsPermission = ?, editAllBillboardPermission = ?, " +
-                "scheduleBillboardsPermission = ?, editUsersPermission = ? WHERE userName = ? " );
+                "scheduleBillboardsPermission = ?, editUsersPermission = ? WHERE userName = ? ");
         pstatement.setBoolean(1, createBillboardsPermission);
         pstatement.setBoolean(2, editAllBillboardPermission);
         pstatement.setBoolean(3, scheduleBillboardsPermission);
@@ -152,10 +154,10 @@ public class UserSQL {
 
     static void changePasswordSQL(String userName, String newPassword, String saltString) throws SQLException {
         PreparedStatement pstatement = Server.connection.prepareStatement("UPDATE user " +
-                "SET userPassword = ?, saltValue = ? WHERE userName = ? " );
+                "SET userPassword = ?, saltValue = ? WHERE userName = ? ");
 
         pstatement.setString(1, newPassword);
-        pstatement.setString(2,saltString);
+        pstatement.setString(2, saltString);
         pstatement.setString(3, userName);
         pstatement.executeUpdate();
         pstatement.close();

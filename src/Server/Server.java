@@ -21,6 +21,7 @@ import static Server.UserSQL.*;
 public class Server {
     public static Connection connection;
     public static Statement statement;
+    private static String BillBoardName = "";
     private static List<SessionToken> sessionTokens = new ArrayList<SessionToken>();
     private static ServerSocket serverSocket;
     private static int expiryHour = 24;
@@ -535,6 +536,54 @@ public class Server {
                 }
 
                 oos.writeObject(generalReply);
+            }
+            oos.flush();
+        }
+        // If the request is an instance of edit billboard request
+        else if (clientRequest instanceof EditBBRequest) {
+            EditBBRequest temp = (EditBBRequest) clientRequest;
+            SessionToken sessionToken = null;
+
+            // Find the session token in the list.
+            for(int i  = 0; i <= sessionTokens.size(); i++){
+                if(sessionTokens.get(i).getSessionTokenString().equals(temp.getSessionToken().getSessionTokenString())){
+                    sessionToken = sessionTokens.get(i);
+                    break;
+                }
+            }
+            // Remove session token from the list and send a logout request if it expired.
+            if (!tokenCheck(temp.getSessionToken())){
+                sessionTokens.remove(sessionToken);
+                LogoutReply logoutReply = new LogoutReply(true);
+                oos.writeObject(logoutReply);
+            }
+            else {
+                // Reset the used time of the session token.
+                sessionToken.setUsedTime(LocalDateTime.now());
+                GeneralReply generalReply;
+                // Execute edit query and return general reply indicating success
+                try {
+                    // update edited billboard
+                    if (temp.getBillboardName() == null) {
+                        BillboardSQL bb = new BillboardSQL();
+                        bb.CreateBillboard(BillBoardName, temp.getLoginUser(), temp.getEditTextColour(), temp.getEditBGColour(),
+                                temp.getEditMsg(), temp.getEditImg(), temp.getEditInfo(), temp.getEditInfoColour());
+                        generalReply = new GeneralReply(true);
+                        oos.writeObject(generalReply);
+                    }
+                    // return the contents of the billboard
+                    else {
+                        BillBoardName = temp.getBillboardName();
+                        BillboardSQL bb = new BillboardSQL();
+                        bb.EditBillboard(BillBoardName);
+                        EditBBReply editBBReply = new EditBBReply(bb.textColour, bb.backgroundColour, bb.message,
+                                bb.image, bb.information, bb.informationColour);
+                        oos.writeObject(editBBReply);
+                    }
+                } catch (Exception e) {
+                    generalReply = new GeneralReply(false);
+                    oos.writeObject(generalReply);
+                }
             }
             oos.flush();
         }

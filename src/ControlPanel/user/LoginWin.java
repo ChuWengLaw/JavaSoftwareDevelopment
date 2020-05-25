@@ -5,6 +5,7 @@ import Server.Request.LoginRequest;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.net.ConnectException;
 import javax.swing.*;
 
 /**
@@ -46,20 +47,25 @@ public class LoginWin extends JFrame implements Runnable{
             LoginRequest loginRequest = new LoginRequest(idTextField.getText(), String.valueOf(passwordTextField.getPassword()));
             try {
                 Client.connectServer(loginRequest);
+
+                if (Client.isRequestState()){
+                    super.dispose();
+                    Main.menuWin.setVisible(true);
+                    Main.menuWin.userManagementEnable(Main.loginUser.getEditUsersPermission());
+                }
+                else{
+                    throw new Exception();
+                }
+            } catch(ConnectException ex){
+                JOptionPane.showMessageDialog(null, "Connection fail.");
+                System.exit(0);
             } catch (IOException ex) {
                 ex.printStackTrace();
             } catch (InterruptedException ex) {
                 ex.printStackTrace();
             } catch (ClassNotFoundException ex) {
                 ex.printStackTrace();
-            }
-
-            if (Client.isRequestState()){
-                super.dispose();
-                Main.menuWin.setVisible(true);
-                Main.menuWin.userManagementEnable(Main.loginUser.getEditUsersPermission());
-            }
-            else{
+            } catch (Exception ex) {
                 JOptionPane.showMessageDialog(null,"Invalid user name or password");
             }
         };

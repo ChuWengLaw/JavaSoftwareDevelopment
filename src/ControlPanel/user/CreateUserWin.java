@@ -8,11 +8,17 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.IOException;
-import java.security.NoSuchAlgorithmException;
-import java.sql.*;
 import javax.swing.*;
 
+/**
+ * @author Nicholas Tseng
+ * This is the create user window class extends JFrame. In this window,
+ * users can create a new user.
+ */
 public class CreateUserWin extends JFrame{
+        /**
+         * Initialize the components in the window.
+         */
         private JLabel labelUserName = new JLabel("User Name");
         private JLabel labelPassword = new JLabel("Selected password");
         private JLabel labelpermission1 = new JLabel("Create billboards");
@@ -29,6 +35,9 @@ public class CreateUserWin extends JFrame{
         private JPanel panel = new JPanel(new GridBagLayout());
         private GridBagConstraints constraints = new GridBagConstraints();
 
+        /**
+         * This is the constructor which will create the create user window.
+         */
         public CreateUserWin(){
                 // Setting default value of the frame
                 super("Create New Account");
@@ -68,7 +77,8 @@ public class CreateUserWin extends JFrame{
                                 JOptionPane.showMessageDialog(null,"User name and password field cannot be empty");
                         }
                         else{
-                                CreateUserRequest createUserRequest = new CreateUserRequest(userNameTextField.getText(), String.valueOf(passwordTextField.getPassword()), checkBox1.isSelected(),
+                                CreateUserRequest createUserRequest = new CreateUserRequest(Main.loginUser.getSessionToken(),
+                                        userNameTextField.getText(), String.valueOf(passwordTextField.getPassword()), checkBox1.isSelected(),
                                         checkBox2.isSelected(), checkBox3.isSelected(), checkBox4.isSelected());
 
                                 try {

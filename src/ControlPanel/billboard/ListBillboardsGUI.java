@@ -1,17 +1,11 @@
 package ControlPanel.billboard;
 
 import ControlPanel.Client;
-import Server.*;
-import Server.Request.ListBBReply;
+import ControlPanel.Main;
 import Server.Request.ListBBRequest;
-
 
 import javax.swing.*;
 import java.awt.*;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.Statement;
-import java.util.Vector;
 
 
 /**
@@ -22,17 +16,19 @@ public class ListBillboardsGUI extends JFrame {
     private JPanel panel = new JPanel();
     /**
      * Constructor initialises the GUI creation.
+     * @throws HeadlessException
      */
     public ListBillboardsGUI() throws HeadlessException {
         super("List Billboards");
         createGUI();
     }
     /**
-     * Gets the JTable from server
+     * Creates GUI and receive the JTable from server
      * @author Law
      */
     private void createGUI() {
-        ListBBRequest listBBRequest = new ListBBRequest("token");
+        // sends request to server
+        ListBBRequest listBBRequest = new ListBBRequest(Main.loginUser.getSessionToken());
         try{
             Client.connectServer(listBBRequest);
         }

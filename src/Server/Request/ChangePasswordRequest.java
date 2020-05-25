@@ -4,13 +4,15 @@ import Server.SessionToken;
 
 import java.io.Serializable;
 
-public class SearchRequest implements Serializable {
+public class ChangePasswordRequest implements Serializable {
     private SessionToken sessionToken;
     private String userName;
+    private String newPassword;
 
-    public SearchRequest(SessionToken sessionToken, String userName){
+    public ChangePasswordRequest(SessionToken sessionToken, String userName, String newPassword){
         this.sessionToken = sessionToken;
         this.userName = userName;
+        this.newPassword =newPassword;
     }
 
     public SessionToken getSessionToken() {
@@ -19,5 +21,9 @@ public class SearchRequest implements Serializable {
 
     public String getUserName() {
         return userName;
+    }
+
+    public String getNewPassword() {
+        return newPassword;
     }
 }

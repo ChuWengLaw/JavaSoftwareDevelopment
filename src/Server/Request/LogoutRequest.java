@@ -4,9 +4,10 @@ import Server.SessionToken;
 
 import java.io.Serializable;
 
-public class ListBBRequest implements Serializable {
+public class LogoutRequest implements Serializable {
     private SessionToken sessionToken;
-    public ListBBRequest(SessionToken sessionToken){
+
+    public LogoutRequest(SessionToken sessionToken){
         this.sessionToken = sessionToken;
     }
 

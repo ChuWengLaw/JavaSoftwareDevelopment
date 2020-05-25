@@ -2,15 +2,21 @@ package ControlPanel.user;
 
 import ControlPanel.*;
 import Server.Request.LoginRequest;
-
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import javax.swing.*;
 
-import static ControlPanel.Client.connectServer;
-
+/**
+ * @author Nicholas Tseng
+ * This is the login window class extends JFrame. In this window,
+ * users can login by typing their username and password. If the login fail,
+ * a message window will pop up and users can try login again.
+ */
 public class LoginWin extends JFrame implements Runnable{
+    /**
+     * Initialize the components in the window.
+     */
     private JLabel labelUserID = new JLabel("User ID");
     private JLabel labelPassword= new JLabel("Password");
     private JTextField idTextField = new JTextField(20);
@@ -19,11 +25,19 @@ public class LoginWin extends JFrame implements Runnable{
     private JPanel panel = new JPanel(new GridBagLayout());
     private GridBagConstraints constraints = new GridBagConstraints();
 
+    /**
+     * This is the constructor which will create the login window.
+     */
     public LoginWin(){
         // Setting default value of the frame
         super("Login");
     }
 
+    /**
+     * This is the actual method that create the GUI of the login window.
+     * It is implemented in such way that it can be invoked later
+     * and the program will not crash easily.
+     */
     private void createGUI() {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -43,7 +57,7 @@ public class LoginWin extends JFrame implements Runnable{
             if (Client.isRequestState()){
                 super.dispose();
                 Main.menuWin.setVisible(true);
-                Main.userManagementWin.permission(true);
+                Main.menuWin.userManagementEnable(Main.loginUser.getEditUsersPermission());
             }
             else{
                 JOptionPane.showMessageDialog(null,"Invalid user name or password");
@@ -84,6 +98,9 @@ public class LoginWin extends JFrame implements Runnable{
         setVisible(true);
     }
 
+    /**
+     * Override the method run(), it will call the method createGUI().
+     */
     @Override
     public void run() {
         createGUI();

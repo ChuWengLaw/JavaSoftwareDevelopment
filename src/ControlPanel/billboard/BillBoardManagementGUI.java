@@ -1,13 +1,19 @@
 package ControlPanel.billboard;
 
+import ControlPanel.Client;
 import ControlPanel.Main;
+import Server.Request.XmlRequest;
 
+import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.filechooser.FileSystemView;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import javax.swing.*;
+import java.io.File;
+import java.io.IOException;
 
 /**
  * This class creates the GUI to be used to display the available options for
@@ -17,9 +23,12 @@ public class BillBoardManagementGUI extends JFrame {
 
     //define the buttons
     private JButton btnCreateBB;
+    private JButton btnEditBB;
     private JButton btnDeleteBB;
     private JButton btnInfoBB;
     private JButton btnListBB;
+    private JButton btnImport;
+    private JButton btnExport;
 
     //define the JPanel and the GridBagConstraints
     private JPanel bBMenu = new JPanel(new GridBagLayout());
@@ -27,8 +36,9 @@ public class BillBoardManagementGUI extends JFrame {
 
     /**
      * Constructor initialises the GUI creation.
+     * @throws HeadlessException
      */
-    public BillBoardManagementGUI(){
+    public BillBoardManagementGUI() throws HeadlessException {
         super("Billboard Management");
         createGUI();
     }
@@ -66,33 +76,68 @@ public class BillBoardManagementGUI extends JFrame {
         btnDeleteBB = createButton("Delete Billboard");
         btnInfoBB = createButton("Billboard Info");
         btnListBB = createButton("List Existing Billboards");
-
+        btnImport = createButton("Import Billboard");
+        btnExport = createButton("Export Billboard");
+        // Create/Edit billboard
         btnCreateBB.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 new CreateBillboardGUI();
             }
         });
-
+        // Delete billboard
         btnDeleteBB.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 new DeleteBillboardGUI();
             }
         });
-
-
+        // Get billboard's information
         btnInfoBB.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 new InformationGUI();
             }
         });
-
+        // List billboards
         btnListBB.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 new ListBillboardsGUI();
+            }
+        });
+        // Import billboard
+        btnImport.addActionListener(new ActionListener() {
+            // sends request to server
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //Create a file chooser
+                JFileChooser jfc = new JFileChooser(FileSystemView.getFileSystemView());
+                jfc.setDialogTitle("Select a billboard xml file");
+                jfc.setAcceptAllFileFilterUsed(false);
+                FileNameExtensionFilter filter = new FileNameExtensionFilter("Xml", "xml");
+                jfc.addChoosableFileFilter(filter);
+                int returnValue = jfc.showOpenDialog(null);
+                if (returnValue == JFileChooser.APPROVE_OPTION) {
+                    File selectedFile = jfc.getSelectedFile();
+                    XmlRequest xmlRequest = new XmlRequest(selectedFile, Main.loginUser.getUserName());
+                    try {
+                        Client.connectServer(xmlRequest);
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    } catch (InterruptedException ex) {
+                        ex.printStackTrace();
+                    } catch (ClassNotFoundException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+            }
+        });
+        // Export billboard
+        btnExport.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new ExportXmlGUI();
             }
         });
 
@@ -113,6 +158,11 @@ public class BillBoardManagementGUI extends JFrame {
         constraints.gridx = 3;
         bBMenu.add(btnListBB, constraints);
 
+        constraints.gridx = 4;
+        bBMenu.add(btnImport, constraints);
+
+        constraints.gridx = 5;
+        bBMenu.add(btnExport, constraints);
         getContentPane().add(bBMenu);
 
         // Display the window

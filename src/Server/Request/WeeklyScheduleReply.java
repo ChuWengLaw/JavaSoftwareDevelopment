@@ -2,16 +2,15 @@ package Server.Request;
 
 import javax.swing.*;
 import java.io.Serializable;
-import java.util.ArrayList;
 
 public class WeeklyScheduleReply implements Serializable {
-    private ArrayList<String[]> Array;
+    private JTable table;
 
-    public WeeklyScheduleReply(ArrayList<String[]> Array){
-        this.Array = Array;
+    public WeeklyScheduleReply(JTable table){
+        this.table = table;
     }
 
-    public ArrayList<String[]> getArray() {
-        return Array;
+    public JTable getTable() {
+        return table;
     }
 }

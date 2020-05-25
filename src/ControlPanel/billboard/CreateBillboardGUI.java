@@ -9,7 +9,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-import java.lang.reflect.Field;
 
 /**
  * This class creates the GUI to be used to create a billboard
@@ -164,30 +163,29 @@ public class CreateBillboardGUI extends JFrame {
                         } catch (NoSuchFieldException ex) {
                             JOptionPane.showMessageDialog(null, "Please enter a valid colour into the information colour field");
                         }
-                    } else {
-                        CreateBBRequest temp = new CreateBBRequest(Main.loginUser.getSessionToken(), txtBillboardName.getText(), Main.loginUser.getUserName(), txtTextColour.getText(), txtBackgroundColour.getText(),
-                                txtMessage.getText(), txtImage.getText(), txtInformation.getText(), txtInformationColour.getText());
-                        try {
-                            Client.connectServer(temp);
-
-                        } catch (InterruptedException ex) {
-                            ex.printStackTrace();
-                        } catch (IOException ex) {
-                            ex.printStackTrace();
-                        } catch (ClassNotFoundException ex) {
-                            ex.printStackTrace();
-                        } catch (Exception ex) {
-                            ex.printStackTrace();
-                        }
-                        //clear the textFeilds once the SQL code has been executed
-                        txtBillboardName.setText("");
-                        txtTextColour.setText("");
-                        txtBackgroundColour.setText("");
-                        txtMessage.setText("");
-                        txtImage.setText("");
-                        txtInformation.setText("");
-                        txtInformationColour.setText("");
                     }
+                    CreateBBRequest temp = new CreateBBRequest(Main.loginUser.getSessionToken(), txtBillboardName.getText(), Main.loginUser.getUserName(), txtTextColour.getText(), txtBackgroundColour.getText(),
+                            txtMessage.getText(), txtImage.getText(), txtInformation.getText(), txtInformationColour.getText());
+                    try {
+                        Client.connectServer(temp);
+
+                    } catch (InterruptedException ex) {
+                        ex.printStackTrace();
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    } catch (ClassNotFoundException ex) {
+                        ex.printStackTrace();
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+                    //clear the textFeilds once the SQL code has been executed
+                    txtBillboardName.setText("");
+                    txtTextColour.setText("");
+                    txtBackgroundColour.setText("");
+                    txtMessage.setText("");
+                    txtImage.setText("");
+                    txtInformation.setText("");
+                    txtInformationColour.setText("");
                 }
             }
         });

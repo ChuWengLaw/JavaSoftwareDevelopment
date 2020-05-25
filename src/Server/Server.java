@@ -217,7 +217,7 @@ public class Server {
         boolean tokenAvailableState;
 
         // This is used for testing, so the token will expire after one minute of hanging.
-        if(sessionToken.getUsedTime().plusMinutes(1).isAfter(LocalDateTime.now())){
+        if(sessionToken.getUsedTime().plusMinutes(5).isAfter(LocalDateTime.now())){
             tokenAvailableState = true;
         }
         else{
@@ -573,7 +573,7 @@ public class Server {
                 // Return a reply object containing the information of the billboard
                 try {
                     BillboardSQL bb = new BillboardSQL();
-                    bb.DeleteBillboard(temp.getBillboardName());
+                    bb.GetBillboardInfo(temp.getBillboardName());
                     String info = bb.GetBillboardInfo(temp.getBillboardName());
                     BBInfoReply bbInfoReply = new BBInfoReply(info);
                     oos.writeObject(bbInfoReply);
@@ -635,12 +635,13 @@ public class Server {
             else {
                 // copy uploaded new xml file to path then extract its contents and save it in db
                 String newFileName = xmlRequest.getXmlFile().getName();
+                String billboardName = newFileName.replaceFirst("[.][^.]+$", "");
                 var newPath = new File("src/xmlBillboards/" + newFileName);
                 Files.copy(xmlRequest.getXmlFile().toPath(), newPath.toPath(),
                         StandardCopyOption.REPLACE_EXISTING);
                 ExtractFromXML extractFromXML = new ExtractFromXML(newFileName);
                 BillboardSQL bb = new BillboardSQL();
-                bb.CreateBillboard(newFileName, xmlRequest.getUserName(), extractFromXML.TxtColourStr, extractFromXML.BGColourStr,
+                bb.CreateBillboard(billboardName, xmlRequest.getUserName(), extractFromXML.TxtColourStr, extractFromXML.BGColourStr,
                         extractFromXML.message, extractFromXML.image, extractFromXML.information, extractFromXML.InfoColourStr);
             }
         }

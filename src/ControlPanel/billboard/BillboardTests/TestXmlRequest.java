@@ -37,7 +37,7 @@ public class TestXmlRequest {
     /* Test 4: Check if billboard name has been successfully encapsulated in the Request object for exporting */
     @Test
     public void TestExportBillboard() {
-        XmlRequest xmlRequest = new XmlRequest("test.xml");
-        assertEquals("test.xml", xmlRequest.getXmlName());
+        XmlRequest xmlRequest = new XmlRequest("test1.xml");
+        assertEquals("test1.xml", xmlRequest.getXmlName());
     }
 }

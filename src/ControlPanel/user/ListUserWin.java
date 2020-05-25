@@ -12,22 +12,20 @@ import java.awt.event.WindowListener;
 import java.sql.*;
 import java.util.Vector;
 
-public class ListUserWin extends JFrame {
+public class ListUserWin extends JFrame{
     private JPanel panel = new JPanel();
     private JTable table = new JTable();
     private JScrollPane scrollpane;
 
-    public ListUserWin() {
+    public ListUserWin(){
         super("List of users");
         super.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         WindowListener windowListener = new WindowListener() {
             @Override
-            public void windowOpened(WindowEvent e) {
-            }
+            public void windowOpened(WindowEvent e) {}
 
             @Override
-            public void windowClosing(WindowEvent e) {
-            }
+            public void windowClosing(WindowEvent e) {}
 
             @Override
             public void windowClosed(WindowEvent e) {
@@ -36,39 +34,35 @@ public class ListUserWin extends JFrame {
             }
 
             @Override
-            public void windowIconified(WindowEvent e) {
-            }
+            public void windowIconified(WindowEvent e) {}
 
             @Override
-            public void windowDeiconified(WindowEvent e) {
-            }
+            public void windowDeiconified(WindowEvent e) {}
 
             @Override
-            public void windowActivated(WindowEvent e) {
-            }
+            public void windowActivated(WindowEvent e) {}
 
             @Override
-            public void windowDeactivated(WindowEvent e) {
-            }
+            public void windowDeactivated(WindowEvent e) {}
         };
         super.addWindowListener(windowListener);
 
-        setSize(500, 120);
-        setLocation(900, 350);
-    }
-
-    public void createTableSQL() throws SQLException {
-        ListUserRequest listUser = new ListUserRequest("Miku");
-        try {
-            Client.connectServer(listUser);
-        } catch (Exception ex) {
-            ex.printStackTrace();
+        setSize(500,120);
+        setLocation(900,350);
         }
-    }
 
-    public void getTable(JTable table, boolean validSession) {
-        if (validSession) {
-            super.setSize(500, 120);
+        public void createTableSQL() throws SQLException {
+            ListUserRequest listUser = new ListUserRequest("Miku");
+            try{
+                Client.connectServer(listUser);
+            }
+            catch (Exception ex){
+                ex.printStackTrace();
+            }
+        }
+        public void getTable(JTable table, boolean validSession){
+        if (validSession){
+            super.setSize(500,120);
             super.setLocationRelativeTo(null);
             JPanel panel = new JPanel();
             JScrollPane scrollpane = new JScrollPane(table);
@@ -76,14 +70,15 @@ public class ListUserWin extends JFrame {
             panel.add(scrollpane, BorderLayout.CENTER);
             super.setContentPane(panel);
             super.setVisible(true);
-        } else {
-            JOptionPane.showMessageDialog(null, "Invalid Session token");
+        }
+        else{
+            JOptionPane.showMessageDialog(null,"Invalid Session token");
             System.out.println(Client.isRequestState());
             super.dispose();
         }
 
+        }
     }
-}
 
 //            Statement statement = Server.connection.createStatement();
 //            ResultSet rs = statement.executeQuery(

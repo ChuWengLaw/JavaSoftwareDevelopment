@@ -7,7 +7,7 @@ public class ListUserReply implements Serializable {
     private JTable table;
     private boolean validSession;
 
-    public ListUserReply(JTable table, boolean validSession) {
+    public ListUserReply(JTable table, boolean validSession){
         this.table = table;
         this.validSession = validSession;
     }

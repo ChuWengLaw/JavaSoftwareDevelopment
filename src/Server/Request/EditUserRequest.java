@@ -14,8 +14,8 @@ public class EditUserRequest implements Serializable {
     private boolean editUsersPermission;
     private boolean havePassword;
 
-    public EditUserRequest(SessionToken sessionToken, String userName, String userPassword, boolean createBillboardsPermission,
-                           boolean editAllBillboardPermission, boolean scheduleBillboardsPermission, boolean editUsersPermission, boolean havePassword) {
+    public EditUserRequest(SessionToken sessionToken, String userName, String userPassword,  boolean createBillboardsPermission,
+                           boolean editAllBillboardPermission, boolean scheduleBillboardsPermission, boolean editUsersPermission, boolean havePassword){
         this.sessionToken = sessionToken;
         this.userName = userName;
         this.userPassword = userPassword;
@@ -26,8 +26,8 @@ public class EditUserRequest implements Serializable {
         this.havePassword = havePassword;
     }
 
-    public EditUserRequest(String userName, boolean createBillboardsPermission,
-                           boolean editAllBillboardPermission, boolean scheduleBillboardsPermission, boolean editUsersPermission, boolean havePassword) {
+    public EditUserRequest(String userName,  boolean createBillboardsPermission,
+                           boolean editAllBillboardPermission, boolean scheduleBillboardsPermission, boolean editUsersPermission, boolean havePassword){
         this.userName = userName;
         this.createBillboardsPermission = createBillboardsPermission;
         this.editAllBillboardPermission = editAllBillboardPermission;

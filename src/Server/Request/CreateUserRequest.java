@@ -4,7 +4,7 @@ import Server.SessionToken;
 
 import java.io.Serializable;
 
-public class CreateUserRequest implements Serializable {
+public class CreateUserRequest implements Serializable{
     private SessionToken sessionToken;
     private String userName;
     private String userPassword;
@@ -13,8 +13,8 @@ public class CreateUserRequest implements Serializable {
     private boolean scheduleBillboardsPermission;
     private boolean editUsersPermission;
 
-    public CreateUserRequest(SessionToken sessionToken, String userName, String userPassword, boolean createBillboardsPermission,
-                             boolean editAllBillboardPermission, boolean scheduleBillboardsPermission, boolean editUsersPermission) {
+    public CreateUserRequest(SessionToken sessionToken, String userName, String userPassword,  boolean createBillboardsPermission,
+                             boolean editAllBillboardPermission, boolean scheduleBillboardsPermission, boolean editUsersPermission){
         this.sessionToken = sessionToken;
         this.userName = userName;
         this.userPassword = userPassword;

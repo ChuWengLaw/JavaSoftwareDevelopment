@@ -8,26 +8,24 @@ public class BillboardSQL {
     /**
      * BillboardSQL constructor.
      */
-    public BillboardSQL() {
-    }
+    public BillboardSQL() {}
 
     /**
      * This function creates a public method to create/edit
      * the selected billboard content in database
-     *
-     * @param BillboardName             Name of the billboard
-     * @param CreatedByUserName         Name of the billboard's owner
-     * @param BillboardTextColour       Text colour of the billboard
-     * @param BillboardBackgroundColour Background colour of the billboard
-     * @param BillboardMessage          Message in the billboard
-     * @param BillboardPicture          Image Url in the billboard
-     * @param BillboardInformation      Information in the billboard
-     * @throws SQLException if sql query error occurs
      * @author Law
+     * @param BillboardName Name of the billboard
+     * @param CreatedByUserName Name of the billboard's owner
+     * @param BillboardTextColour Text colour of the billboard
+     * @param BillboardBackgroundColour Background colour of the billboard
+     * @param BillboardMessage Message in the billboard
+     * @param BillboardPicture Image Url in the billboard
+     * @param BillboardInformation Information in the billboard
+     * @throws SQLException if sql query error occurs
      */
     public void CreateBillboard(String BillboardName, String CreatedByUserName, String BillboardTextColour,
-                                String BillboardBackgroundColour, String BillboardMessage,
-                                String BillboardPicture, String BillboardInformation, String InformationColour) throws SQLException {
+                                    String BillboardBackgroundColour, String BillboardMessage,
+                                    String BillboardPicture, String BillboardInformation, String InformationColour) throws SQLException {
 
         /* Flags for checking billboard existence */
         boolean ExistFlag = false;
@@ -36,10 +34,11 @@ public class BillboardSQL {
         try {
             ResultSet resultSet = Server.statement.executeQuery("SELECT * FROM Billboard");
             while (resultSet.next()) {
-                if (BillboardName.equals(resultSet.getString("BillboardName"))) {
+                if ( BillboardName.equals(resultSet.getString("BillboardName")) ) {
                     ExistFlag = true;
                     break;
-                } else {
+                }
+                else {
                     ExistFlag = false;
                 }
             }
@@ -65,11 +64,10 @@ public class BillboardSQL {
     /**
      * This function creates a public method to retrieve
      * the selected billboard information from database
-     *
+     * @author Law
      * @param BillBoardName name of the billboard
      * @return Information of the billboard in string
      * @throws SQLException if sql query error occurs
-     * @author Law
      */
     public String GetBillboardInfo(String BillBoardName) throws SQLException {
         String info = "";
@@ -87,32 +85,31 @@ public class BillboardSQL {
     /**
      * This function creates a public method to retrieve
      * all of the billboards' contents from database
-     *
+     * @author Law
      * @param Token session token
      * @throws SQLException if sql query error occurs
-     * @author Law
      */
     public JTable ListBillboards(SessionToken Token) throws SQLException {
         JTable table = new JTable();
         try {
-            ResultSet list = Server.statement.executeQuery("SELECT * FROM Billboard"/*ORDER BY ScheduleValue (i.e. how ever we are going to schedule) ASC*/ + ";");
+            ResultSet list = Server.statement.executeQuery("SELECT * FROM Billboard"/*ORDER BY ScheduleValue (i.e. how ever we are going to schedule) ASC*/+";");
             ResultSetMetaData rsmd = list.getMetaData();
             int columnCount = rsmd.getColumnCount();
             Vector columnHeader = new Vector(columnCount);
-            for (int i = 1; i <= columnCount; i++) {
+            for (int i = 1; i<= columnCount; i++){
                 columnHeader.add(rsmd.getColumnName(i));
             }
             Vector data = new Vector();
             Vector row = new Vector();
 
-            while (list.next()) {
+            while(list.next()) {
                 row = new Vector(columnCount);
                 for (int i = 1; i <= columnCount; i++) {
                     row.add(list.getString(i));
                 }
                 data.add(row);
             }
-            table = new JTable(data, columnHeader);
+            table = new JTable(data,columnHeader);
         } catch (SQLException e) {
             System.out.println(e);
         }
@@ -122,10 +119,9 @@ public class BillboardSQL {
     /**
      * This function creates a public method to delete
      * the selected billboard from database
-     *
+     * @author Law
      * @param BillBoardName name of the billboard
      * @throws SQLException if sql query error occurs
-     * @author Law
      */
     public void DeleteBillboard(String BillBoardName) throws SQLException {
         try {

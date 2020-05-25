@@ -18,7 +18,6 @@ public class Client {
 
     /**
      * Connects to server (connection read from network.props)
-     *
      * @param args The object encapsulating the data inputs to be sent to server
      */
     public static void connectServer(Object args) throws IOException, InterruptedException, ClassNotFoundException {
@@ -53,48 +52,53 @@ public class Client {
     }
 
     private static void executeReply(Object requestReply) throws IOException {
-        if (requestReply instanceof LoginReply) {
+        if (requestReply instanceof LoginReply){
             LoginReply loginReply = (LoginReply) requestReply;
             requestState = loginReply.isLoginState();
-            if (requestState) {
+            if (requestState){
                 Main.loginUser = loginReply.getUser();
                 Main.loginUser.setSessionToken(loginReply.getSessionToken());
             }
-        } else if (requestReply instanceof SearchReply) {
+        }
+        else if (requestReply instanceof SearchReply){
             SearchReply searchReply = (SearchReply) requestReply;
             requestState = searchReply.isRequestState();
-            if (requestState) {
+            if (requestState){
                 Main.editUserWin.editedUser = searchReply.getUser();
             }
-        } else if (requestReply instanceof LogoutReply) {
+        }
+        else if (requestReply instanceof LogoutReply){
             LogoutReply logoutReply = (LogoutReply) requestReply;
 
             // Display different message upon different logout reason.
-            if (logoutReply.isExpired()) {
+            if(logoutReply.isExpired()){
                 JOptionPane.showMessageDialog(null, "Session expired, system logged out.");
-            } else {
+            }
+            else{
                 JOptionPane.showMessageDialog(null, "Successfully logged out!");
             }
             System.exit(0);
-        } else if (requestReply instanceof GeneralReply) {
+        }
+        else if (requestReply instanceof GeneralReply){
             GeneralReply generalReply = (GeneralReply) requestReply;
             requestState = generalReply.isRequestState();
-        } else if (requestReply instanceof ListUserReply) {
+        }
+        else if (requestReply instanceof ListUserReply){
             ListUserReply listUserReply = (ListUserReply) requestReply;
             Main.listUserWin.getTable(listUserReply.getTable(), listUserReply.isValidSession());
-        } else if (requestReply instanceof BBInfoReply) {
+        }
+        else if (requestReply instanceof BBInfoReply){
             BBInfoReply bbInfoReply = (BBInfoReply) requestReply;
             info = bbInfoReply.getInformation();
-        } else if (requestReply instanceof ListBBReply) {
+        }
+        else if (requestReply instanceof ListBBReply){
             ListBBReply listBBReply = (ListBBReply) requestReply;
             listBBTable = listBBReply.getTable();
         }
     }
-
     public static String getInfo() {
         return info;
     }
-
     public static JTable getBBTable() {
         return listBBTable;
     }

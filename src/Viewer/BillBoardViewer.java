@@ -265,10 +265,10 @@ public class BillBoardViewer extends JFrame {
             infoTextPane.setBackground(extractFromXML.backgroundColour);
 
             int infoWidth = messageLabel.getFontMetrics(infoTextPane.getFont()).stringWidth(infoTextPane.getText());
-            int infoComponentWidth = screenWidth - 1;
+            int infoComponentWidth = screenWidth-1;
             double infoWidthRatio = (double) infoComponentWidth / (double) infoWidth;
             int infoNewFontSize = (int) (infoTextPane.getFont().getSize() * infoWidthRatio);
-            int infoComponentHeight = (screenHeight / 2) - 1;
+            int infoComponentHeight = (screenHeight / 2)-1;
             int infoFontSizeToUse = Math.min(infoNewFontSize, infoComponentHeight);
             infoTextPane.setFont(new Font(infoTextPane.getFont().getName(), Font.PLAIN, infoFontSizeToUse));
 
@@ -329,9 +329,9 @@ public class BillBoardViewer extends JFrame {
 
             JLabel picture = new JLabel();
             ImageIcon myPicture = new ImageIcon(ImageIO.read(new File("src/Viewer/Image/0341b9f3f27a6ba0a3b8de6de9d864949f0dbc23.jpg"))
-                    .getScaledInstance(screenWidth / 3, screenHeight / 3, Image.SCALE_SMOOTH));
+                    .getScaledInstance(screenWidth/3 , screenHeight/3, Image.SCALE_SMOOTH));
             picture.setIcon(myPicture);
-            picture.setPreferredSize(new Dimension(screenWidth, screenHeight / 3));
+            picture.setPreferredSize(new Dimension(screenWidth, screenHeight/3));
             picture.setHorizontalAlignment(SwingConstants.CENTER);
             picture.setVerticalAlignment(SwingConstants.CENTER);
 
@@ -369,10 +369,10 @@ public class BillBoardViewer extends JFrame {
 
 
             layoutPanel.setLayout(new BorderLayout());
-            layoutPanel.add(picture, BorderLayout.CENTER);
-            layoutPanel.add(messageLabel, BorderLayout.NORTH);
+            layoutPanel.add(picture,BorderLayout.CENTER);
+            layoutPanel.add(messageLabel,BorderLayout.NORTH);
 
-            layoutPanel.add(infoTextPane, BorderLayout.SOUTH);
+            layoutPanel.add(infoTextPane,BorderLayout.SOUTH);
 
             getContentPane().add(layoutPanel);
             repaint();

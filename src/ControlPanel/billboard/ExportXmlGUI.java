@@ -2,7 +2,6 @@ package ControlPanel.billboard;
 
 import ControlPanel.Client;
 import Server.Request.XmlRequest;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -32,7 +31,6 @@ public class ExportXmlGUI extends JFrame {
 
     /**
      * Constructor initialises the GUI creation.
-     *
      * @throws HeadlessException
      */
     public ExportXmlGUI() throws HeadlessException {

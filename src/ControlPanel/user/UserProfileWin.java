@@ -1,14 +1,13 @@
 package ControlPanel.user;
 
 import ControlPanel.*;
-
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import javax.swing.*;
 
-public class UserProfileWin extends JFrame {
+public class UserProfileWin extends JFrame{
     private JLabel labelpermission1 = new JLabel("Create billboards");
     private JLabel labelpermission2 = new JLabel("Edit billboards");
     private JLabel labelpermission3 = new JLabel("Schedule billboards");
@@ -21,7 +20,7 @@ public class UserProfileWin extends JFrame {
     private JPanel panel = new JPanel(new GridBagLayout());
     private GridBagConstraints constraints = new GridBagConstraints();
 
-    public UserProfileWin() {
+    public UserProfileWin(){
         // Setting default value of the frame
         super("Edit User");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -29,12 +28,10 @@ public class UserProfileWin extends JFrame {
         // Window Listener
         WindowListener windowListener = new WindowListener() {
             @Override
-            public void windowOpened(WindowEvent e) {
-            }
+            public void windowOpened(WindowEvent e) {}
 
             @Override
-            public void windowClosing(WindowEvent e) {
-            }
+            public void windowClosing(WindowEvent e) {}
 
             @Override
             public void windowClosed(WindowEvent e) {
@@ -43,20 +40,16 @@ public class UserProfileWin extends JFrame {
             }
 
             @Override
-            public void windowIconified(WindowEvent e) {
-            }
+            public void windowIconified(WindowEvent e) {}
 
             @Override
-            public void windowDeiconified(WindowEvent e) {
-            }
+            public void windowDeiconified(WindowEvent e) {}
 
             @Override
-            public void windowActivated(WindowEvent e) {
-            }
+            public void windowActivated(WindowEvent e) {}
 
             @Override
-            public void windowDeactivated(WindowEvent e) {
-            }
+            public void windowDeactivated(WindowEvent e) {}
         };
         super.addWindowListener(windowListener);
 
@@ -83,28 +76,28 @@ public class UserProfileWin extends JFrame {
         panel.add(labelpermission1, constraints);
 
         constraints.gridx = 1;
-        panel.add(checkBox1, constraints);
+        panel.add(checkBox1,constraints);
 
         constraints.gridx = 0;
         constraints.gridy = 1;
         panel.add(labelpermission2, constraints);
 
         constraints.gridx = 1;
-        panel.add(checkBox2, constraints);
+        panel.add(checkBox2,constraints);
 
         constraints.gridx = 0;
         constraints.gridy = 2;
         panel.add(labelpermission3, constraints);
 
         constraints.gridx = 1;
-        panel.add(checkBox3, constraints);
+        panel.add(checkBox3,constraints);
 
         constraints.gridx = 0;
         constraints.gridy = 3;
         panel.add(labelpermission4, constraints);
 
         constraints.gridx = 1;
-        panel.add(checkBox4, constraints);
+        panel.add(checkBox4,constraints);
 
         constraints.gridx = 1;
         constraints.gridy = 6;
@@ -116,11 +109,11 @@ public class UserProfileWin extends JFrame {
         getContentPane().add(panel);
 
         // Display the window
-        setLocation(900, 350);
+        setLocation(900,350);
         pack();
     }
 
-    public void setCheckBox(boolean isCheck1, boolean isCheck2, boolean isCheck3, boolean isCheck4) {
+    public void setCheckBox(boolean isCheck1, boolean isCheck2, boolean isCheck3, boolean isCheck4){
         checkBox1.setSelected(isCheck1);
         checkBox2.setSelected(isCheck2);
         checkBox3.setSelected(isCheck3);

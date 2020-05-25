@@ -5,7 +5,7 @@ import java.io.Serializable;
 public class DeleteUserRequest implements Serializable {
     private String userName;
 
-    public DeleteUserRequest(String userName) {
+    public DeleteUserRequest(String userName){
         this.userName = userName;
     }
 

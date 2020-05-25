@@ -38,20 +38,21 @@ public class ScheduleBillboardGUI extends JFrame {
     private JTextField txtReoccurAmount = new JTextField(20);
 
 
-    public ScheduleBillboardGUI() {
+    public ScheduleBillboardGUI(){
         super("Schedule Billboard");
         createGUI();
     }
-
     private void createGUI() {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
 
 
         btnSubmit.addActionListener(new ActionListener() {
             //when the submit button is click make covert the inputs into string. then execute the CreateEditBilloard from the Billboard Class
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (Check_Valid_Inputs()) {
+                if (Check_Valid_Inputs())
+                {
                     //System.out.println("Correct Inputs");
                     //Create Schedule Requests
                     ScheduleBillboardRequest temp = new ScheduleBillboardRequest(txtBillboardName.getText(), txtScheduledTime.getText(),
@@ -71,42 +72,47 @@ public class ScheduleBillboardGUI extends JFrame {
                     txtDuration.setText("");
                     txtReoccurType.setText("");
                     txtReoccurAmount.setText("");
-                } else {
-                    JOptionPane.showMessageDialog(null, "Incorrect Inputs");
+                }
+                else
+                {
+                    JOptionPane.showMessageDialog(null,"Incorrect Inputs");
                 }
             }
         });
 
 
+
+
+
         //add labels to panel
-        constraints.gridx = 0;
-        constraints.gridy = 0;
+        constraints.gridx=0;
+        constraints.gridy=0;
 
-        pnlScheduleNewBillboard.add(lblBillboardName, constraints);
-        constraints.gridy = 1;
-        pnlScheduleNewBillboard.add(lblScheduledTime, constraints);
-        constraints.gridy = 3;
-        pnlScheduleNewBillboard.add(lblDuration, constraints);
-        constraints.gridy = 4;
-        pnlScheduleNewBillboard.add(lblReoccurType, constraints);
-        constraints.gridy = 5;
-        pnlScheduleNewBillboard.add(lblReoccurAmount, constraints);
+        pnlScheduleNewBillboard.add(lblBillboardName,constraints);
+        constraints.gridy=1;
+        pnlScheduleNewBillboard.add(lblScheduledTime,constraints);
+        constraints.gridy=3;
+        pnlScheduleNewBillboard.add(lblDuration,constraints);
+        constraints.gridy=4;
+        pnlScheduleNewBillboard.add(lblReoccurType,constraints);
+        constraints.gridy=5;
+        pnlScheduleNewBillboard.add(lblReoccurAmount,constraints);
 
-        constraints.gridx = 1;
-        constraints.gridy = 0;
-        pnlScheduleNewBillboard.add(txtBillboardName, constraints);
-        constraints.gridy = 1;
-        pnlScheduleNewBillboard.add(txtScheduledTime, constraints);
-        constraints.gridy = 3;
-        pnlScheduleNewBillboard.add(txtDuration, constraints);
-        constraints.gridy = 4;
-        pnlScheduleNewBillboard.add(txtReoccurType, constraints);
-        constraints.gridy = 5;
-        pnlScheduleNewBillboard.add(txtReoccurAmount, constraints);
+        constraints.gridx=1;
+        constraints.gridy=0;
+        pnlScheduleNewBillboard.add(txtBillboardName,constraints);
+        constraints.gridy=1;
+        pnlScheduleNewBillboard.add(txtScheduledTime,constraints);
+        constraints.gridy=3;
+        pnlScheduleNewBillboard.add(txtDuration,constraints);
+        constraints.gridy=4;
+        pnlScheduleNewBillboard.add(txtReoccurType,constraints);
+        constraints.gridy=5;
+        pnlScheduleNewBillboard.add(txtReoccurAmount,constraints);
 
-        constraints.gridx = 0;
-        constraints.gridy = 6;
-        pnlScheduleNewBillboard.add(btnSubmit, constraints);
+        constraints.gridx=0;
+        constraints.gridy=6;
+        pnlScheduleNewBillboard.add(btnSubmit,constraints);
 
         getContentPane().add(pnlScheduleNewBillboard);
         //set the location of the GUI
@@ -118,20 +124,26 @@ public class ScheduleBillboardGUI extends JFrame {
 
     }
 
-    private boolean Check_Valid_Inputs() {
+    private boolean Check_Valid_Inputs()
+    {
         DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String BillboardTitle = txtBillboardName.getText();
-        try {
+        try
+        {
             Date date = format.parse(txtScheduledTime.getText());
             int Duration = Integer.parseInt(txtDuration.getText());
             int ReoccurType = Integer.parseInt(txtReoccurType.getText());
             int ReoccurAmount = Integer.parseInt(txtReoccurAmount.getText());
-            if (Duration <= 0 || ReoccurType < 0 || ReoccurType > 3) {
-                return false;
-            } else if (ReoccurType == 3 && ReoccurAmount < Duration) {
+            if (Duration <= 0 || ReoccurType < 0 || ReoccurType > 3)
+            {
                 return false;
             }
-        } catch (Exception e)//NumberFormatException nfe)
+            else if (ReoccurType == 3 && ReoccurAmount < Duration)
+            {
+                return false;
+            }
+        }
+        catch (Exception e)//NumberFormatException nfe)
         {
             return false;
         }

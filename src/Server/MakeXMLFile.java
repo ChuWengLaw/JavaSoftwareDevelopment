@@ -19,10 +19,8 @@ import java.sql.SQLException;
 
 public class MakeXMLFile {
     private String BillboardName, textColour, backgroundColour, message, image, information, informationColour;
-
     /**
      * This method writes the billboard contents into XML format
-     *
      * @param billboardName
      * @author Lachlan
      */
@@ -111,10 +109,8 @@ public class MakeXMLFile {
         }
         System.out.println("XML file Created");
     }
-
     /**
      * This method executes SQL to extract the billboard contents
-     *
      * @author Law
      */
     private void ExecuteSQL() throws SQLException {

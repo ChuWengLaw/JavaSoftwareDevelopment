@@ -1,5 +1,5 @@
 package Server.TestServer;
-import Server.Request.GeneralReply;
+import Server.Reply.GeneralReply;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;

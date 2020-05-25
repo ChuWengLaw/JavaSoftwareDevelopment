@@ -17,9 +17,7 @@ import javax.swing.*;
  * users can create a new user.
  */
 public class CreateUserWin extends JFrame{
-        /**
-         * Initialize the components in the window.
-         */
+        // Initialize the components in the window.
         private JLabel labelUserName = new JLabel("User Name");
         private JLabel labelPassword = new JLabel("Selected password");
         private JLabel labelpermission1 = new JLabel("Create billboards");

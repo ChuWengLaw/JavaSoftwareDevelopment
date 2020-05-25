@@ -1,5 +1,5 @@
 package Server.TestServer;
-import Server.Request.ListUserReply;
+import Server.Reply.ListUserReply;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

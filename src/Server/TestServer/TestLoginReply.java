@@ -1,6 +1,6 @@
 package Server.TestServer;
 import ControlPanel.User;
-import Server.Request.LoginReply;
+import Server.Reply.LoginReply;
 import Server.SessionToken;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

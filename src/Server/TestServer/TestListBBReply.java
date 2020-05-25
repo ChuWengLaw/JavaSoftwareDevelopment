@@ -1,6 +1,6 @@
 package Server.TestServer;
 
-import Server.Request.ListBBReply;
+import Server.Reply.ListBBReply;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

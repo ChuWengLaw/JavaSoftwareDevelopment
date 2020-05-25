@@ -5,12 +5,16 @@ import Server.Request.*;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.*;
 import java.time.LocalDateTime;
-import java.util.*;
-
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Properties;
+import java.util.Random;
 import static Server.UserSQL.*;
 
 public class Server {
@@ -58,7 +62,15 @@ public class Server {
                     + "Duration INT NOT NULL,"
                     + "RecurType INT NOT NULL,"
                     + "RecurDuration INT NOT NULL" + ");"; //only required for minutes
-
+    
+    /**
+     * This method starts up the server socket connection and receives requests from client
+     * @param args
+     * @throws IOException
+     * @throws ClassNotFoundException
+     * @throws SQLException
+     * @throws NoSuchAlgorithmException
+     */
     public static void main(String[] args) throws IOException, ClassNotFoundException, SQLException, NoSuchAlgorithmException {
         /* Initiate database connection */
         initDBConnection();
@@ -67,6 +79,7 @@ public class Server {
         Properties props = new Properties();
         FileInputStream in = null;
         try {
+            // read the network properties from network.props file
             in = new FileInputStream("./network.props");
             props.load(in);
             in.close();
@@ -79,6 +92,7 @@ public class Server {
         }
 
         for (;;) {
+            // Continues running to receive connections from client
             Socket socket = serverSocket.accept();
             System.out.println("Received connection from " + socket.getInetAddress());
 
@@ -97,9 +111,16 @@ public class Server {
         }
     }
 
+    /**
+     * This method instantiates a connection to MariaDB.
+     * Billboard, User and Schedule table will be created upon server start up.
+     * @author Law
+     */
     private static void initDBConnection(){
+        // Connects to MariaDB
         connection = DBConnection.newConnection();
         try {
+            // Creates tables
             statement = connection.createStatement();
             statement.execute(CREATE_BILLBOARD_TABLE);
             statement.execute(CREATE_USER_TABLE);
@@ -147,12 +168,20 @@ public class Server {
     }
 
     /**
+<<<<<<< HEAD
      *
      * @param hashString
      * @return
+=======
+     * This method hashes the salted password of user account.
+     * @param hashString salted password to be hashed
+     * @return salted hashed password
+     * @author Nic
+>>>>>>> 5cbacd2310c588985c045dde63df4e9d2063f6f9
      * @throws NoSuchAlgorithmException
      */
     public static String hashAString(String hashString) throws NoSuchAlgorithmException {
+        // Hashes the password using SHA-256
         MessageDigest md = MessageDigest.getInstance("SHA-256");
         byte[] hash = md.digest(hashString.getBytes());
         StringBuffer sb = new StringBuffer();
@@ -165,8 +194,9 @@ public class Server {
     }
 
     /**
-     *
-     * @return
+     * This method salts password of user account.
+     * @return salted password
+     * @author Nicholas Tseng
      */
     public static String randomString(){
         Random rng = new Random();
@@ -182,15 +212,16 @@ public class Server {
     }
 
     /**
-     *
-     * @param sessionToken
-     * @return
+     * This method checks the availability of the session token, token expires after 24 hours
+     * @param sessionToken Session token to be assigned to user upon logging in
+     * @return state of token availability
+     * @author Nicholas Tseng
      */
     private static boolean tokenCheck(SessionToken sessionToken){
         boolean tokenAvailableState;
 
         // This is used for testing, so the token will expire after one minute of hanging.
-        if(sessionToken.getUsedTime().plusMinutes(1).isAfter(LocalDateTime.now())){
+        if(sessionToken.getUsedTime().plusMinutes(5).isAfter(LocalDateTime.now())){
             tokenAvailableState = true;
         }
         else{
@@ -237,14 +268,17 @@ public class Server {
     }
 
     /**
-     *
-     * @param clientRequest
-     * @param oos
+     * This method filters and executes the request received from client in server.
+     * Server checks the validity of the session tokens and return an appropriate reply to client
+     * @param clientRequest Request sent by client via stateless socket connection after button
+     *                      presses.
+     * @param oos Output stream
      * @throws SQLException
      * @throws NoSuchAlgorithmException
      * @throws IOException
      */
     private static void requestExecute(Object clientRequest, ObjectOutputStream oos) throws SQLException, NoSuchAlgorithmException, IOException {
+        // If the request is an instance of login request
         if (clientRequest instanceof LoginRequest){
             LoginRequest loginRequest = (LoginRequest) clientRequest;
             boolean loginState = checkPasswordSQL(loginRequest.getUserName(), loginRequest.getPassword());
@@ -267,6 +301,7 @@ public class Server {
             }
             oos.flush();
         }
+        // If the request is an instance of create user request
         else if (clientRequest instanceof CreateUserRequest){
             CreateUserRequest createUserRequest = (CreateUserRequest) clientRequest;
             SessionToken sessionToken = findSessionToken(createUserRequest.getSessionToken());
@@ -301,6 +336,7 @@ public class Server {
 
             oos.flush();
         }
+        // If the request is an instance of search user request
         else if (clientRequest instanceof SearchRequest) {
             SearchRequest searchRequest = (SearchRequest) clientRequest;
             SessionToken sessionToken = findSessionToken(searchRequest.getSessionToken());
@@ -331,6 +367,7 @@ public class Server {
 
             oos.flush();
         }
+        // If the request is an instance of edit user request
         else if (clientRequest instanceof EditUserRequest){
             EditUserRequest editUserRequest = (EditUserRequest)clientRequest;
             boolean havePassword = editUserRequest.isHavePassword();
@@ -366,6 +403,7 @@ public class Server {
 
             oos.flush();
         }
+        // If the request is an instance of change password request
         else if(clientRequest instanceof ChangePasswordRequest){
             ChangePasswordRequest changePasswordRequest = (ChangePasswordRequest)clientRequest;
             String saltString = randomString();
@@ -381,13 +419,13 @@ public class Server {
             else{
                 // Reset the used time of the session token.
                 resetSessionTokenTime(sessionToken);
-
                 changePasswordSQL(changePasswordRequest.getUserName(), hashedPassword, saltString);
                 GeneralReply generalReply = new GeneralReply(true);
                 oos.writeObject(generalReply);
             }
             oos.flush();
         }
+        // If the request is an instance of logout request
         else if (clientRequest instanceof  LogoutRequest){
             LogoutRequest logoutRequest = (LogoutRequest) clientRequest;
 
@@ -403,22 +441,44 @@ public class Server {
             oos.writeObject(logoutReply);
             oos.flush();
         }
+        // If the request is an instance of delete user request
         else if(clientRequest instanceof DeleteUserRequest){
             DeleteUserRequest deleteUser = (DeleteUserRequest) clientRequest;
+            SessionToken sessionToken = null;
             boolean checkDeleteUser = checkUserSQL(deleteUser.getUserName());
-
-            if (checkDeleteUser){
-                deleteUserBillboardSQL(deleteUser.getUserName());
-                GeneralReply generalReply = new GeneralReply(true);
-                oos.writeObject(generalReply);
-                oos.flush();
+            for(int i  = 0; i <= sessionTokens.size(); i++){
+                if(sessionTokens.get(i).getSessionTokenString().equals(deleteUser.getSessionToken().getSessionTokenString())){
+                    sessionToken = sessionTokens.get(i);
+                    break;
+                }
+            }
+            if(!tokenCheck(deleteUser.getSessionToken())){
+                sessionTokens.remove(sessionToken);
+                LogoutReply logoutReply = new LogoutReply(true);
+                oos.writeObject(logoutReply);
             }
             else{
-                GeneralReply generalReply = new GeneralReply(false);
-                oos.writeObject(generalReply);
+                // Reset the used time of the session token.
+                for (int i = 0; i <= sessionTokens.size(); i++) {
+                    if (sessionTokens.get(i).getSessionTokenString().equals(sessionToken.getSessionTokenString())) {
+                        sessionTokens.get(i).setUsedTime(LocalDateTime.now());
+                        break;
+                    }
+                }
+                if (checkDeleteUser){
+                    deleteUserBillboardSQL(deleteUser.getUserName());
+                    GeneralReply generalReply = new GeneralReply(true);
+                    oos.writeObject(generalReply);
+                }
+                else{
+                    GeneralReply generalReply = new GeneralReply(false);
+                    oos.writeObject(generalReply);
+                }
                 oos.flush();
             }
+
         }
+        // If the request is an instance of list all users request
         else if (clientRequest instanceof ListUserRequest){
             ListUserRequest listUserRequest = (ListUserRequest) clientRequest;
             SessionToken sessionToken = findSessionToken(listUserRequest.getSessionToken());
@@ -433,43 +493,184 @@ public class Server {
                 // Reset the used time of the session token.
                 resetSessionTokenTime(sessionToken);
 
+                for (int i = 0; i <= sessionTokens.size(); i++) {
+                    if (sessionTokens.get(i).getSessionTokenString().equals(sessionToken.getSessionTokenString())) {
+                        sessionTokens.get(i).setUsedTime(LocalDateTime.now());
+                        break;
+                    }
+                }
+
                 ListUserReply listUserReply = new ListUserReply(listUserSQL(), true);
                 oos.writeObject(listUserReply);
                 oos.flush();
             }
         }
+        // If the request is an instance of create/edit billboard request
         else if (clientRequest instanceof CreateBBRequest) {
             CreateBBRequest temp = (CreateBBRequest) clientRequest;
-            BillboardSQL bb = new BillboardSQL();
-            bb.CreateBillboard(temp.getBillboardName(), temp.getAuthor(), temp.getTextColour(), temp.getBackgroundColour(),
-                    temp.getMessage(), temp.getImage(), temp.getInformation(), temp.getInformationColour());
+            SessionToken sessionToken = null;
+
+            // Find the session token in the list.
+            for(int i  = 0; i <= sessionTokens.size(); i++){
+                if(sessionTokens.get(i).getSessionTokenString().equals(temp.getSessionToken().getSessionTokenString())){
+                    sessionToken = sessionTokens.get(i);
+                    break;
+                }
+            }
+            // Remove session token from the list and send a logout request if it expired.
+            if (!tokenCheck(temp.getSessionToken())){
+                sessionTokens.remove(sessionToken);
+                LogoutReply logoutReply = new LogoutReply(true);
+                oos.writeObject(logoutReply);
+            }
+            else {
+                // Reset the used time of the session token.
+                sessionToken.setUsedTime(LocalDateTime.now());
+                GeneralReply generalReply;
+                // Execute create/edit query and return general reply indicating success
+                try {
+                    BillboardSQL bb = new BillboardSQL();
+                    bb.CreateBillboard(temp.getBillboardName(), temp.getUserName(), temp.getTextColour(), temp.getBackgroundColour(),
+                            temp.getMessage(), temp.getImage(), temp.getInformation(), temp.getInformationColour());
+                    generalReply = new GeneralReply(true);
+                } catch (Exception e) {
+                    generalReply = new GeneralReply(false);
+                }
+
+                oos.writeObject(generalReply);
+            }
             oos.flush();
         }
+        // If the request is an instance of delete billboard request
         else if (clientRequest instanceof DeleteBBRequest) {
             DeleteBBRequest temp = (DeleteBBRequest) clientRequest;
-            BillboardSQL bb = new BillboardSQL();
-            bb.DeleteBillboard(temp.getBillboardName());
+            SessionToken sessionToken = null;
+
+            // Find the session token in the list.
+            for(int i  = 0; i <= sessionTokens.size(); i++){
+                if(sessionTokens.get(i).getSessionTokenString().equals(temp.getSessionToken().getSessionTokenString())){
+                    sessionToken = sessionTokens.get(i);
+                    break;
+                }
+            }
+            // Remove session token from the list and send a logout request if it expired.
+            if (!tokenCheck(temp.getSessionToken())){
+                sessionTokens.remove(sessionToken);
+                LogoutReply logoutReply = new LogoutReply(true);
+                oos.writeObject(logoutReply);
+            }
+            else {
+                // Reset the used time of the session token.
+                sessionToken.setUsedTime(LocalDateTime.now());
+                GeneralReply generalReply;
+                // Execute delete query and return general reply indicating success
+                try {
+                    BillboardSQL bb = new BillboardSQL();
+                    bb.DeleteBillboard(temp.getBillboardName());
+                    generalReply = new GeneralReply(true);
+                } catch (Exception e) {
+                    generalReply = new GeneralReply(false);
+                }
+                oos.writeObject(generalReply);
+            }
             oos.flush();
         }
+        // If the request is an instance of get billboard's information request
         else if (clientRequest instanceof BBInfoRequest) {
             BBInfoRequest temp = (BBInfoRequest) clientRequest;
-            BillboardSQL bb = new BillboardSQL();
-            String info = bb.GetBillboardInfo(temp.getBillboardName());
-            BBInfoReply bbInfoReply = new BBInfoReply(info);
-            oos.writeObject(bbInfoReply);
+            SessionToken sessionToken = null;
+
+            // Find the session token in the list.
+            for(int i  = 0; i <= sessionTokens.size(); i++){
+                if(sessionTokens.get(i).getSessionTokenString().equals(temp.getSessionToken().getSessionTokenString())){
+                    sessionToken = sessionTokens.get(i);
+                    break;
+                }
+            }
+            // Remove session token from the list and send a logout request if it expired.
+            if (!tokenCheck(temp.getSessionToken())){
+                sessionTokens.remove(sessionToken);
+                LogoutReply logoutReply = new LogoutReply(true);
+                oos.writeObject(logoutReply);
+            }
+            else {
+                // Reset the used time of the session token.
+                sessionToken.setUsedTime(LocalDateTime.now());
+                GeneralReply generalReply;
+                // Return a reply object containing the information of the billboard
+                try {
+                    BillboardSQL bb = new BillboardSQL();
+                    bb.GetBillboardInfo(temp.getBillboardName());
+                    String info = bb.GetBillboardInfo(temp.getBillboardName());
+                    BBInfoReply bbInfoReply = new BBInfoReply(info);
+                    oos.writeObject(bbInfoReply);
+                } catch (Exception e) {
+                    generalReply = new GeneralReply(false);
+                    oos.writeObject(generalReply);
+                }
+            }
             oos.flush();
         }
+        // If the request is an instance of list all billboards request
         else if (clientRequest instanceof ListBBRequest) {
             ListBBRequest listBBRequest = (ListBBRequest) clientRequest;
-            BillboardSQL bb = new BillboardSQL();
-            ListBBReply listBBReply = new ListBBReply(bb.ListBillboards(listBBRequest.getSessionToken()));
-            oos.writeObject(listBBReply);
+            SessionToken sessionToken = null;
+
+            // Find the session token in the list.
+            for(int i  = 0; i <= sessionTokens.size(); i++){
+                if(sessionTokens.get(i).getSessionTokenString().equals(listBBRequest.getSessionToken().getSessionTokenString())){
+                    sessionToken = sessionTokens.get(i);
+                    break;
+                }
+            }
+            // Remove session token from the list and send a logout request if it expired.
+            if (!tokenCheck(listBBRequest.getSessionToken())){
+                sessionTokens.remove(sessionToken);
+                LogoutReply logoutReply = new LogoutReply(true);
+                oos.writeObject(logoutReply);
+            }
+            else {
+                // Reset the used time of the session token.
+                sessionToken.setUsedTime(LocalDateTime.now());
+                GeneralReply generalReply;
+                // Return a reply object to the client containing JTable of billboards
+                try {
+                    BillboardSQL bb = new BillboardSQL();
+                    ListBBReply listBBReply = new ListBBReply(bb.ListBillboards(listBBRequest.getSessionToken()));
+                    oos.writeObject(listBBReply);
+                } catch (Exception e) {
+                    generalReply = new GeneralReply(false);
+                    oos.writeObject(generalReply);
+                }
+            }
+            oos.flush();
         }
         else if (clientRequest instanceof ScheduleBillboardRequest) {
             ScheduleBillboardRequest temp = (ScheduleBillboardRequest) clientRequest;
             ScheduleSQL Schedule = new ScheduleSQL();
             Schedule.ScheduleBillboard(temp.getBillboardName(),temp.getScheduledTime(), temp.getDuration(),temp.getReoccurType(),temp.getReoccurAmount());
             oos.flush();
+        }
+        // If the request in an instance of import/export billboard request
+        else if (clientRequest instanceof XmlRequest) {
+            XmlRequest xmlRequest = (XmlRequest) clientRequest;
+            // if the user exports a billboard
+            if (xmlRequest.getXmlFile() == null) {
+                new MakeXMLFile(xmlRequest.getXmlName());
+            }
+            // if the user imports a billboard
+            else {
+                // copy uploaded new xml file to path then extract its contents and save it in db
+                String newFileName = xmlRequest.getXmlFile().getName();
+                String billboardName = newFileName.replaceFirst("[.][^.]+$", "");
+                var newPath = new File("src/xmlBillboards/" + newFileName);
+                Files.copy(xmlRequest.getXmlFile().toPath(), newPath.toPath(),
+                        StandardCopyOption.REPLACE_EXISTING);
+                ExtractFromXML extractFromXML = new ExtractFromXML(newFileName);
+                BillboardSQL bb = new BillboardSQL();
+                bb.CreateBillboard(billboardName, xmlRequest.getUserName(), extractFromXML.TxtColourStr, extractFromXML.BGColourStr,
+                        extractFromXML.message, extractFromXML.image, extractFromXML.information, extractFromXML.InfoColourStr);
+            }
         }
     }
 }

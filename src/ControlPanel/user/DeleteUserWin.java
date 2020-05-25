@@ -51,7 +51,7 @@ public class DeleteUserWin extends JFrame{
                 JOptionPane.showMessageDialog(null, "Username cannot be empty");
             }
             else{
-                DeleteUserRequest deleteUser = new DeleteUserRequest(usernamefield.getText());
+                DeleteUserRequest deleteUser = new DeleteUserRequest(usernamefield.getText(), Main.loginUser.getSessionToken());
 
                 try{
                     Client.connectServer(deleteUser);

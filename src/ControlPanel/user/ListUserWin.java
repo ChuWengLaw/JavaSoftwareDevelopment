@@ -78,10 +78,10 @@ public class ListUserWin extends JFrame {
                 throw new Exception();
             }
         } catch(ConnectException ex){
-            JOptionPane.showMessageDialog(null, "Connection fail.");
+            JOptionPane.showMessageDialog(null, "Connection failed.");
             System.exit(0);
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, "List fails to generate.");
+            JOptionPane.showMessageDialog(null, "Failed to generate list");
         }
     }
 

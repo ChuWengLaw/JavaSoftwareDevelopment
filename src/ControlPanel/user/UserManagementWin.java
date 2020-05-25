@@ -19,9 +19,7 @@ import javax.swing.*;
  * 4. Delete user.
  */
 public class UserManagementWin extends JFrame{
-    /**
-     * Initialize the components in the window.
-     */
+    // Initialize the components in the window.
     private JButton createUserButton = new JButton("Create a new user");
     private JButton listUserButton = new JButton("List all users");
     private JButton editUserButton = new JButton("Edit user");

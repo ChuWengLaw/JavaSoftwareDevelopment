@@ -1,7 +1,6 @@
 package ControlPanel.user;
 
 import ControlPanel.*;
-import Server.*;
 import Server.Request.ChangePasswordRequest;
 
 import java.awt.*;
@@ -9,9 +8,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.IOException;
-import java.security.NoSuchAlgorithmException;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import javax.swing.*;
 
 public class ChangePasswordWin extends JFrame {

@@ -13,13 +13,19 @@ import java.io.IOException;
 import java.net.ConnectException;
 import javax.swing.*;
 
+/**
+ * @author Nicholas Tseng
+ * This is the edit user window class extends JFrame. In this window,
+ * users can edit an existed user information beside the user name.
+ */
 public class EditUserWin extends JFrame{
+    // Initialize the components in the window.
     private JLabel labelUserName = new JLabel("User Name");
     private JLabel labelPassword = new JLabel("Selected password");
-    private JLabel labelpermission1 = new JLabel("Create billboards");
-    private JLabel labelpermission2 = new JLabel("Edit billboards");
-    private JLabel labelpermission3 = new JLabel("Schedule billboards");
-    private JLabel labelpermission4 = new JLabel("Edit users");
+    private JLabel labelPermission1 = new JLabel("Create billboards");
+    private JLabel labelPermission2 = new JLabel("Edit billboards");
+    private JLabel labelPermission3 = new JLabel("Schedule billboards");
+    private JLabel labelPermission4 = new JLabel("Edit users");
     private JTextField userNameTextField = new JTextField(20);
     private JTextField passwordTextField = new JTextField(20);
     private JCheckBox checkBox1 = new JCheckBox("Enable");
@@ -33,6 +39,9 @@ public class EditUserWin extends JFrame{
     private GridBagConstraints constraints = new GridBagConstraints();
     public User editedUser = new User();
 
+    /**
+     * This is the constructor which will create the edit user window.
+     */
     public EditUserWin(){
         // Setting default value of the frame
         super("Edit User");
@@ -231,28 +240,28 @@ public class EditUserWin extends JFrame{
 
         constraints.gridx = 0;
         constraints.gridy = 2;
-        panel.add(labelpermission1, constraints);
+        panel.add(labelPermission1, constraints);
 
         constraints.gridx = 1;
         panel.add(checkBox1, constraints);
 
         constraints.gridx = 0;
         constraints.gridy = 3;
-        panel.add(labelpermission2, constraints);
+        panel.add(labelPermission2, constraints);
 
         constraints.gridx = 1;
         panel.add(checkBox2, constraints);
 
         constraints.gridx = 0;
         constraints.gridy = 4;
-        panel.add(labelpermission3, constraints);
+        panel.add(labelPermission3, constraints);
 
         constraints.gridx = 1;
         panel.add(checkBox3, constraints);
 
         constraints.gridx = 0;
         constraints.gridy = 5;
-        panel.add(labelpermission4, constraints);
+        panel.add(labelPermission4, constraints);
 
         constraints.gridx = 1;
         panel.add(checkBox4, constraints);

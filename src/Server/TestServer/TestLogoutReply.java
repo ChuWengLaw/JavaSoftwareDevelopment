@@ -1,7 +1,5 @@
 package Server.TestServer;
-import ControlPanel.User;
-import Server.Request.LogoutReply;
-import Server.SessionToken;
+import Server.Reply.LogoutReply;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

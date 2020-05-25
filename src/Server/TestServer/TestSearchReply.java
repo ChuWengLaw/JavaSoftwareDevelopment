@@ -1,6 +1,6 @@
 package Server.TestServer;
 import ControlPanel.User;
-import Server.Request.SearchReply;
+import Server.Reply.SearchReply;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

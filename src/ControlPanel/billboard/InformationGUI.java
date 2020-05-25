@@ -1,6 +1,7 @@
 package ControlPanel.billboard;
 
 import ControlPanel.Client;
+import ControlPanel.Main;
 import Server.Request.BBInfoRequest;
 
 import javax.swing.*;
@@ -31,6 +32,7 @@ public class InformationGUI extends JFrame {
 
     /**
      * Constructor initialises the GUI creation.
+     * @throws HeadlessException
      */
     public InformationGUI() throws HeadlessException {
         super("Billboard Information");
@@ -38,9 +40,9 @@ public class InformationGUI extends JFrame {
     }
 
     /**
-     * creates the base GUI to be used to display the billboard information
+     * creates the base GUI to be used to display the billboard information received from server
      *
-     * @author Lachlan
+     * @author Lachlan, Law
      */
     private void createGUI() {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -49,11 +51,11 @@ public class InformationGUI extends JFrame {
         //create the button and what text it will contain
         btnGetInfo = createButton("Get Billboard Info");
 
-        //create an action listener for that button
+        // sends request to server
         btnGetInfo.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                BBInfoRequest temp = new BBInfoRequest(txtBillboardName.getText());
+                BBInfoRequest temp = new BBInfoRequest(Main.loginUser.getSessionToken(), txtBillboardName.getText());
                 if (txtBillboardName.getText().isBlank()) {
                     JOptionPane.showMessageDialog(null,"Please Enter a Billboard Name.");
                 } else {
@@ -157,50 +159,4 @@ public class InformationGUI extends JFrame {
         button.setText(text);
         return button;
     }
-
-//    /**
-//     * function gets the information for a particular billboard
-//     * @author Lachlan
-//     * @param name the name of the Billboard
-//     * @return the information for that billboard
-//     * @throws SQLException
-//     */
-//    private String setInfo(String name) throws SQLException {
-//        Statement statement = Server.connection.createStatement();
-//        ResultSet rs = statement.executeQuery("SELECT BillboardName, Information FROM Billboard");
-//
-//        String result = null;
-//
-//        while (rs.next()){
-//            if(name.equals(rs.getString(1))){
-//                result = rs.getString(2);
-//                break;
-//            }
-//        }
-//
-//        return result;
-//    }
-//
-//    /**
-//     * the function check if a billboard exists
-//     * @author Lachlan
-//     * @param Billboard billboard we want to search for
-//     * @return true or false to whether the billboard exist
-//     * @throws SQLException
-//     */
-//    private boolean checkBillboard(String Billboard) throws SQLException {
-//        boolean existing = false;
-//
-//        Statement statement = Server.connection.createStatement();
-//        ResultSet rs = statement.executeQuery("SELECT BillboardName FROM Billboard");
-//
-//        while (rs.next()){
-//            if (Billboard.equals(rs.getString(1))){
-//                existing = true;
-//                break;
-//            }
-//        }
-//        statement.close();
-//        return existing;
-//    }
 }

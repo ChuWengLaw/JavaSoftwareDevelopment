@@ -6,7 +6,7 @@ import java.util.Vector;
 
 public class BillboardSQL {
     /**
-     * Constructor containing the SQL methods.
+     * BillboardSQL constructor.
      */
     public BillboardSQL() {}
 
@@ -21,12 +21,11 @@ public class BillboardSQL {
      * @param BillboardMessage Message in the billboard
      * @param BillboardPicture Image Url in the billboard
      * @param BillboardInformation Information in the billboard
-     * @param InformationColour
-     * @exception SQLException if sql query error occurs
+     * @throws SQLException if sql query error occurs
      */
     public void CreateBillboard(String BillboardName, String CreatedByUserName, String BillboardTextColour,
-                                String BillboardBackgroundColour, String BillboardMessage,
-                                String BillboardPicture, String BillboardInformation, String InformationColour) throws SQLException {
+                                    String BillboardBackgroundColour, String BillboardMessage,
+                                    String BillboardPicture, String BillboardInformation, String InformationColour) throws SQLException {
 
         /* Flags for checking billboard existence */
         boolean ExistFlag = false;
@@ -68,7 +67,7 @@ public class BillboardSQL {
      * @author Law
      * @param BillBoardName name of the billboard
      * @return Information of the billboard in string
-     * @exception SQLException if sql query error occurs
+     * @throws SQLException if sql query error occurs
      */
     public String GetBillboardInfo(String BillBoardName) throws SQLException {
         String info = "";
@@ -88,9 +87,9 @@ public class BillboardSQL {
      * all of the billboards' contents from database
      * @author Law
      * @param Token session token
-     * @exception SQLException if sql query error occurs
+     * @throws SQLException if sql query error occurs
      */
-    public JTable ListBillboards(String Token) throws SQLException {
+    public JTable ListBillboards(SessionToken Token) throws SQLException {
         JTable table = new JTable();
         try {
             ResultSet list = Server.statement.executeQuery("SELECT * FROM Billboard"/*ORDER BY ScheduleValue (i.e. how ever we are going to schedule) ASC*/+";");
@@ -122,7 +121,7 @@ public class BillboardSQL {
      * the selected billboard from database
      * @author Law
      * @param BillBoardName name of the billboard
-     * @exception SQLException if sql query error occurs
+     * @throws SQLException if sql query error occurs
      */
     public void DeleteBillboard(String BillBoardName) throws SQLException {
         try {

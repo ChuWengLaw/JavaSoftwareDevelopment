@@ -56,6 +56,7 @@ public class Client {
         if (requestReply instanceof LoginReply){
             LoginReply loginReply = (LoginReply) requestReply;
             requestState = loginReply.isLoginState();
+
             if (requestState){
                 Main.loginUser = loginReply.getUser();
                 Main.loginUser.setSessionToken(loginReply.getSessionToken());
@@ -64,6 +65,7 @@ public class Client {
         else if (requestReply instanceof SearchReply){
             SearchReply searchReply = (SearchReply) requestReply;
             requestState = searchReply.isRequestState();
+
             if (requestState){
                 Main.editUserWin.editedUser = searchReply.getUser();
             }
@@ -86,7 +88,8 @@ public class Client {
         }
         else if (requestReply instanceof ListUserReply){
             ListUserReply listUserReply = (ListUserReply) requestReply;
-            Main.listUserWin.getTable(listUserReply.getTable(), listUserReply.isValidSession());
+            Main.listUserWin.getTable(listUserReply.getTable());
+            requestState = listUserReply.isListUserState();
         }
         else if (requestReply instanceof BBInfoReply){
             BBInfoReply bbInfoReply = (BBInfoReply) requestReply;

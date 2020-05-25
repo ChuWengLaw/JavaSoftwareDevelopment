@@ -5,18 +5,18 @@ import java.io.Serializable;
 
 public class ListUserReply implements Serializable {
     private JTable table;
-    private boolean validSession;
+    private boolean listUserState;
 
-    public ListUserReply(JTable table, boolean validSession){
+    public ListUserReply(JTable table, boolean listUserState){
         this.table = table;
-        this.validSession = validSession;
+        this.listUserState = listUserState;
     }
 
     public JTable getTable() {
         return table;
     }
 
-    public boolean isValidSession() {
-        return validSession;
+    public boolean isListUserState() {
+        return listUserState;
     }
 }

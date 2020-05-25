@@ -1,14 +1,12 @@
 package ControlPanel.user;
 
 import ControlPanel.*;
-import Server.*;
 import Server.Request.DeleteUserRequest;
-
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import java.sql.*;
+import java.net.ConnectException;
 import javax.swing.*;
 
 public class DeleteUserWin extends JFrame{
@@ -53,23 +51,26 @@ public class DeleteUserWin extends JFrame{
                 JOptionPane.showMessageDialog(null, "Username cannot be empty");
             }
             else{
-                DeleteUserRequest deleteUser = new DeleteUserRequest(usernamefield.getText());
+                DeleteUserRequest deleteUser = new DeleteUserRequest(usernamefield.getText(), Main.loginUser.getSessionToken());
+
                 try{
                     Client.connectServer(deleteUser);
-                }
-                catch (Exception ex){
-                    ex.printStackTrace();
-                }
-                if (Client.isRequestState()){
-                    JOptionPane.showMessageDialog(null, "User has been deleted");
-                    System.out.println(Client.isRequestState());
-                }
-                else{
+
+                    if (Client.isRequestState()){
+                        JOptionPane.showMessageDialog(null, "User has been deleted");
+                    }
+                    else{
+                        throw new Exception();
+                    }
+                } catch(ConnectException ex){
+                    JOptionPane.showMessageDialog(null, "Connection fail.");
+                    System.exit(0);
+                } catch (Exception ex){
                     JOptionPane.showMessageDialog(null, "User does not exist");
                 }
+
                 usernamefield.setText("");
             }
-
         };
 
         deletebutton.addActionListener(listener);

@@ -11,10 +11,20 @@ public class XmlRequest implements Serializable {
         this.xmlFile = getXmlFile;
         this.UserName = UserName;
     }
+
     public XmlRequest(String xmlName) {
         this.xmlName = xmlName;
     }
-    public File getXmlFile() { return xmlFile; }
-    public String getXmlName() { return xmlName; }
-    public String getUserName() { return UserName; }
+
+    public File getXmlFile() {
+        return xmlFile;
+    }
+
+    public String getXmlName() {
+        return xmlName;
+    }
+
+    public String getUserName() {
+        return UserName;
+    }
 }

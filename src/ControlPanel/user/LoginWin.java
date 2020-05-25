@@ -2,6 +2,7 @@ package ControlPanel.user;
 
 import ControlPanel.*;
 import Server.Request.LoginRequest;
+
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -13,12 +14,12 @@ import javax.swing.*;
  * users can login by typing their username and password. If the login fail,
  * a message window will pop up and users can try login again.
  */
-public class LoginWin extends JFrame implements Runnable{
+public class LoginWin extends JFrame implements Runnable {
     /**
      * Initialize the components in the window.
      */
     private JLabel labelUserID = new JLabel("User ID");
-    private JLabel labelPassword= new JLabel("Password");
+    private JLabel labelPassword = new JLabel("Password");
     private JTextField idTextField = new JTextField(20);
     private JPasswordField passwordTextField = new JPasswordField(20);
     private JButton loginButton = new JButton("Login");
@@ -28,7 +29,7 @@ public class LoginWin extends JFrame implements Runnable{
     /**
      * This is the constructor which will create the login window.
      */
-    public LoginWin(){
+    public LoginWin() {
         // Setting default value of the frame
         super("Login");
     }
@@ -41,8 +42,8 @@ public class LoginWin extends JFrame implements Runnable{
     private void createGUI() {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-         //Button setting
-        ActionListener loginListener = e ->{
+        //Button setting
+        ActionListener loginListener = e -> {
             LoginRequest loginRequest = new LoginRequest(idTextField.getText(), String.valueOf(passwordTextField.getPassword()));
             try {
                 Client.connectServer(loginRequest);
@@ -54,13 +55,12 @@ public class LoginWin extends JFrame implements Runnable{
                 ex.printStackTrace();
             }
 
-            if (Client.isRequestState()){
+            if (Client.isRequestState()) {
                 super.dispose();
                 Main.menuWin.setVisible(true);
                 Main.menuWin.userManagementEnable(Main.loginUser.getEditUsersPermission());
-            }
-            else{
-                JOptionPane.showMessageDialog(null,"Invalid user name or password");
+            } else {
+                JOptionPane.showMessageDialog(null, "Invalid user name or password");
             }
         };
         loginButton.addActionListener(loginListener);
@@ -93,7 +93,7 @@ public class LoginWin extends JFrame implements Runnable{
         getContentPane().add(panel);
 
         // Display the window
-        setLocation(900,350);
+        setLocation(900, 350);
         pack();
         setVisible(true);
     }

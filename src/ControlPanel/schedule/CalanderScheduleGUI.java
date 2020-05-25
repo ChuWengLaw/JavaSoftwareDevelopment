@@ -70,7 +70,7 @@ public class CalanderScheduleGUI extends JFrame {
                 new DeleteScheduleGUI();
             }
         });
-        //###########################list billboards change to list scheduled
+
         WeeklyScheduleRequest WeeklyScheduleRequest = new WeeklyScheduleRequest();
         try{
             Client.connectServer(WeeklyScheduleRequest);
@@ -79,8 +79,6 @@ public class CalanderScheduleGUI extends JFrame {
             ex.printStackTrace();
         }
         ArrayList<String[]> ScheduleArray = Client.getScheduleArray();
-
-        System.out.println(ScheduleArray.get(0)[0]);
         lbl1 = AddInfoToLabel(ScheduleArray, lbl1,CurrentTimeMillis + 0*Day_in_Millis);
         lbl2 = AddInfoToLabel(ScheduleArray, lbl2,CurrentTimeMillis + 1*Day_in_Millis);
         lbl3 = AddInfoToLabel(ScheduleArray, lbl3,CurrentTimeMillis + 2*Day_in_Millis);
@@ -89,34 +87,17 @@ public class CalanderScheduleGUI extends JFrame {
         lbl6 = AddInfoToLabel(ScheduleArray, lbl6,CurrentTimeMillis + 5*Day_in_Millis);
         lbl7 = AddInfoToLabel(ScheduleArray, lbl7,CurrentTimeMillis + 6*Day_in_Millis);
 
-        //...
-        //###########################list billboards change to list scheduled
-
-        int Buffer = 10;
-
-        EmptyBorder border = new EmptyBorder(Buffer,Buffer,Buffer,Buffer);
-
-        // set the border of this component
-        lbl1.setBorder(border);
-        lbl2.setBorder(border);
-        lbl3.setBorder(border);
-        lbl4.setBorder(border);
-        lbl5.setBorder(border);
-        lbl6.setBorder(border);
-        lbl7.setBorder(border);
-
         constraints.anchor = GridBagConstraints.NORTHWEST;
         constraints.insets = new Insets(10, 10, 10, 10);
 
-        constraints.gridx = 0;
+        constraints.gridx = 1;
         constraints.gridy = 0;
         pnlScheduleMenu.add(btnBillboardScheduler, constraints);
-        constraints.gridx = 0;
-        constraints.gridy = 1;
+        constraints.gridx = 2;
         pnlScheduleMenu.add(btnDeleteSchedule, constraints);
-        constraints.gridy = 0;
-        constraints.gridx = 1;
 
+        constraints.gridy = 1;
+        constraints.gridx = 1;
         pnlScheduleMenu.add(lbl1, constraints);
         constraints.gridx = 2;
         pnlScheduleMenu.add(lbl2, constraints);
@@ -133,7 +114,7 @@ public class CalanderScheduleGUI extends JFrame {
 
         getContentPane().add(pnlScheduleMenu);
         // Display the window
-        setLocation(900,350);
+        setLocation(300,350);
         pack();
         repaint();
         setVisible(true);
@@ -153,7 +134,8 @@ public class CalanderScheduleGUI extends JFrame {
             int IntEnd = scheduleArray.get(i)[1].compareTo(StringEnd);
             if (IntStart > 0 && IntEnd < 0)
             {
-                lblIn.setText(lblIn.getText() +"<br/>"+ scheduleArray.get(i)[0] + " " + scheduleArray.get(i)[1]);
+                lblIn.setText(lblIn.getText() +"<br/>"+ scheduleArray.get(i)[0] + "<br/>" +
+                        scheduleArray.get(i)[1].substring(0,scheduleArray.get(i)[1].length()-2));
             }
         }
         lblIn.setText(lblIn.getText() +"</html>");
@@ -165,8 +147,7 @@ public class CalanderScheduleGUI extends JFrame {
         Date datePrint = new Date(millis);
         SimpleDateFormat formatter= new SimpleDateFormat("dd MMMM E");
         JLabel label = new JLabel();
-        label.setText("<html>" + formatter.format(datePrint));
+        label.setText("<html><strong>"+formatter.format(datePrint)+"</strong>");
         return label;
     }
 }
-

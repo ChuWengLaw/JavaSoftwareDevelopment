@@ -3,7 +3,7 @@ import Server.Request.LoginRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-/* These tests are for the data encapsulated in CreateUserRequest object
+/* These tests are for the data encapsulated in LoginWin object
  * Each test will be appropriately commented to describe
  * what the test is doing and what is expected
  */

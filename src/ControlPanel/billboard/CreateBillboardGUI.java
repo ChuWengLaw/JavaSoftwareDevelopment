@@ -1,6 +1,7 @@
 package ControlPanel.billboard;
 
 import ControlPanel.Client;
+import ControlPanel.Main;
 import Server.Request.CreateBBRequest;
 
 import javax.swing.*;
@@ -8,7 +9,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-import java.lang.reflect.Field;
 
 /**
  * This class creates the GUI to be used to create a billboard
@@ -42,6 +42,7 @@ public class CreateBillboardGUI extends JFrame {
 
     /**
      * Constructor initialises the GUI creation.
+     * @throws HeadlessException
      */
     public CreateBillboardGUI() throws HeadlessException {
         super("Create Billboard");
@@ -62,7 +63,7 @@ public class CreateBillboardGUI extends JFrame {
         btnSubmit = createButton("Submit");
         //create and actionListener for the submit button
         btnSubmit.addActionListener(new ActionListener() {
-            //when the submit button is click make covert the inputs into string. then execute the CreateEditBilloard from the Billboard Class
+            // sends request to server
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (txtBillboardName.getText().isBlank()) {
@@ -162,32 +163,29 @@ public class CreateBillboardGUI extends JFrame {
                         } catch (NoSuchFieldException ex) {
                             JOptionPane.showMessageDialog(null, "Please enter a valid colour into the information colour field");
                         }
-                    } else {
-                        CreateBBRequest temp = new CreateBBRequest(txtBillboardName.getText(), txtTextColour.getText(), txtBackgroundColour.getText(),
-                                txtMessage.getText(), txtImage.getText(), txtInformation.getText(), txtInformationColour.getText());
-                        try {
-                            Client.connectServer(temp);
-
-                        } catch (InterruptedException ex) {
-                            ex.printStackTrace();
-                        } catch (IOException ex) {
-                            ex.printStackTrace();
-                        } catch (ClassNotFoundException ex) {
-                            ex.printStackTrace();
-                        } catch (Exception ex) {
-                            ex.printStackTrace();
-                        }
-                        //clear the textFeilds once the SQL code has been executed
-                        txtBillboardName.setText("");
-                        txtTextColour.setText("");
-                        txtBackgroundColour.setText("");
-                        txtMessage.setText("");
-                        txtImage.setText("");
-                        txtInformation.setText("");
-                        txtInformationColour.setText("");
-
                     }
+                    CreateBBRequest temp = new CreateBBRequest(Main.loginUser.getSessionToken(), txtBillboardName.getText(), Main.loginUser.getUserName(), txtTextColour.getText(), txtBackgroundColour.getText(),
+                            txtMessage.getText(), txtImage.getText(), txtInformation.getText(), txtInformationColour.getText());
+                    try {
+                        Client.connectServer(temp);
 
+                    } catch (InterruptedException ex) {
+                        ex.printStackTrace();
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    } catch (ClassNotFoundException ex) {
+                        ex.printStackTrace();
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+                    //clear the textFeilds once the SQL code has been executed
+                    txtBillboardName.setText("");
+                    txtTextColour.setText("");
+                    txtBackgroundColour.setText("");
+                    txtMessage.setText("");
+                    txtImage.setText("");
+                    txtInformation.setText("");
+                    txtInformationColour.setText("");
                 }
             }
         });

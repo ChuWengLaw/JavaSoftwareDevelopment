@@ -14,11 +14,14 @@ import java.lang.reflect.Field;
 public class ExtractFromXML {
 
     public Color backgroundColour;
+    public String BGColourStr;
+    public String TxtColourStr;
     public Color textColour;
     public String message;
     public String image;
     public String information;
     public Color informationColour;
+    public String InfoColourStr;
 
     /**
      * This constructor takes the xml file name and extracts the data from the xml and
@@ -60,28 +63,28 @@ public class ExtractFromXML {
                     if (element.getTagName().startsWith("billboard")) {
                         Field backGroundColourField = Class.forName("java.awt.Color").getField(element.getAttribute("background").toLowerCase());
                         backgroundColour = (Color) backGroundColourField.get(null);
+                        BGColourStr = (String) backGroundColourField.get(null);
                     }
                     if (element.getTagName().startsWith("message")) {
                         message = element.getTextContent();
                         Field textColourField = Class.forName("java.awt.Color").getField(element.getAttribute("colour").toLowerCase());
                         textColour = (Color) textColourField.get(null);
+                        TxtColourStr = (String) textColourField.get(null);
                     }
                     if (element.getTagName().startsWith("information")) {
                         information = element.getTextContent();
                         Field infoColourField = Class.forName("java.awt.Color").getField(element.getAttribute("colour").toLowerCase());
                         informationColour = (Color) infoColourField.get(null);
+                        InfoColourStr = (String) infoColourField.get(null);
                     }
                 }
             }
-
             this.backgroundColour = backgroundColour;
             this.textColour = textColour;
             this.message = message;
             this.image = image;
             this.information = information;
             this.informationColour = informationColour;
-
-
         } catch (Exception e) {
             e.printStackTrace();
         }

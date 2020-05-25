@@ -8,8 +8,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 /**
- * This class creates the GUI to be used to delete a selected
- * billboard
+ * This class creates the GUI to be used to export a selected
+ * billboard to xml format
  */
 public class ExportXmlGUI extends JFrame {
     //set the width of the GUI
@@ -31,6 +31,7 @@ public class ExportXmlGUI extends JFrame {
 
     /**
      * Constructor initialises the GUI creation.
+     * @throws HeadlessException
      */
     public ExportXmlGUI() throws HeadlessException {
         super("Export a billboard");
@@ -38,7 +39,7 @@ public class ExportXmlGUI extends JFrame {
     }
 
     /**
-     * Create the base GUI to be used to create and edit the data
+     * Create the base GUI to be used to export a billboard to xml format
      *
      * @author Law
      */
@@ -56,7 +57,7 @@ public class ExportXmlGUI extends JFrame {
         //create the button and define what text it will contain
         btnSubmit = createButton("Submit");
 
-        //create and actionListener for the submit button
+        // sends request to server
         btnSubmit.addActionListener(new ActionListener() {
             //when the submit button is click make covert the inputs into string. then execute the CreateEditBilloard from the Billboard Class
             @Override
@@ -108,7 +109,7 @@ public class ExportXmlGUI extends JFrame {
      *
      * @param text the text with will be on the button
      * @return a JButton with text on it
-     * @author Lachlan
+     * @author Law
      */
     private JButton createButton(String text) {
         JButton button = new JButton();

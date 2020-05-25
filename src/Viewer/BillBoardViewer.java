@@ -1,6 +1,6 @@
 package Viewer;
 
-import ControlPanel.billboard.ExtractFromXML;
+import Server.ExtractFromXML;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;

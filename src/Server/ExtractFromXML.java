@@ -13,12 +13,15 @@ import java.lang.reflect.Field;
 
 public class ExtractFromXML {
 
-    public String backgroundColour;
-    public String textColour;
+    public Color backgroundColour;
+    public String BGColourStr;
+    public String TxtColourStr;
+    public Color textColour;
     public String message;
     public String image;
     public String information;
-    public String informationColour;
+    public Color informationColour;
+    public String InfoColourStr;
 
     /**
      * This constructor takes the xml file name and extracts the data from the xml and
@@ -28,12 +31,12 @@ public class ExtractFromXML {
      * @author Lachlan
      */
     public ExtractFromXML(String fileName) {
-        String backgroundColour = null;
-        String textColour = null;
+        Color backgroundColour = null;
+        Color textColour = null;
         String message = "";
         String image = "";
         String information = "";
-        String informationColour = null;
+        Color informationColour = null;
 
         try {
             File XmlFile = new File("src/xmlBillboards/" + fileName);
@@ -58,27 +61,30 @@ public class ExtractFromXML {
                         }
                     }
                     if (element.getTagName().startsWith("billboard")) {
-                        backgroundColour = element.getAttribute("background").toLowerCase();
+                        Field backGroundColourField = Class.forName("java.awt.Color").getField(element.getAttribute("background").toLowerCase());
+                        backgroundColour = (Color) backGroundColourField.get(null);
+                        BGColourStr = (String) backGroundColourField.get(null);
                     }
                     if (element.getTagName().startsWith("message")) {
                         message = element.getTextContent();
-                        textColour = element.getAttribute("colour").toLowerCase();
+                        Field textColourField = Class.forName("java.awt.Color").getField(element.getAttribute("colour").toLowerCase());
+                        textColour = (Color) textColourField.get(null);
+                        TxtColourStr = (String) textColourField.get(null);
                     }
                     if (element.getTagName().startsWith("information")) {
                         information = element.getTextContent();
-                        informationColour = element.getAttribute("colour").toLowerCase();
+                        Field infoColourField = Class.forName("java.awt.Color").getField(element.getAttribute("colour").toLowerCase());
+                        informationColour = (Color) infoColourField.get(null);
+                        InfoColourStr = (String) infoColourField.get(null);
                     }
                 }
             }
-
             this.backgroundColour = backgroundColour;
             this.textColour = textColour;
             this.message = message;
             this.image = image;
             this.information = information;
             this.informationColour = informationColour;
-
-
         } catch (Exception e) {
             e.printStackTrace();
         }

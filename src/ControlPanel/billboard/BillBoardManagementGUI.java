@@ -35,8 +35,9 @@ public class BillBoardManagementGUI extends JFrame {
 
     /**
      * Constructor initialises the GUI creation.
+     * @throws HeadlessException
      */
-    public BillBoardManagementGUI(){
+    public BillBoardManagementGUI() throws HeadlessException {
         super("Billboard Management");
         createGUI();
     }
@@ -76,37 +77,37 @@ public class BillBoardManagementGUI extends JFrame {
         btnListBB = createButton("List Existing Billboards");
         btnImport = createButton("Import Billboard");
         btnExport = createButton("Export Billboard");
-
+        // Create/Edit billboard
         btnCreateBB.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 new CreateBillboardGUI();
             }
         });
-
+        // Delete billboard
         btnDeleteBB.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 new DeleteBillboardGUI();
             }
         });
-
-
+        // Get billboard's information
         btnInfoBB.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 new InformationGUI();
             }
         });
-
+        // List billboards
         btnListBB.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 new ListBillboardsGUI();
             }
         });
-
+        // Import billboard
         btnImport.addActionListener(new ActionListener() {
+            // sends request to server
             @Override
             public void actionPerformed(ActionEvent e) {
                 //Create a file chooser
@@ -132,7 +133,7 @@ public class BillBoardManagementGUI extends JFrame {
                 }
             }
         });
-
+        // Export billboard
         btnExport.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

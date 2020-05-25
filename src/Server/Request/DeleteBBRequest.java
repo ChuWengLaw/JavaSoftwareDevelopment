@@ -10,7 +10,7 @@ public class DeleteBBRequest implements Serializable {
 
     public DeleteBBRequest(SessionToken sessionToken, String BillboardName) {
         this.BillboardName = BillboardName;
-
+        this.sessionToken = sessionToken;
     }
 
     public SessionToken getSessionToken() {

@@ -8,7 +8,7 @@ import java.io.File;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-/* The following tests are for the data encapsulated in XmlRequest object
+/** The following tests are for the data encapsulated in XmlRequest object
  *
  * Here we have added comments to explain what each test
  * obliges you to do during Test-Driven Development

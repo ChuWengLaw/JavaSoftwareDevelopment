@@ -42,6 +42,7 @@ public class CreateBillboardGUI extends JFrame {
 
     /**
      * Constructor initialises the GUI creation.
+     * @throws HeadlessException
      */
     public CreateBillboardGUI() throws HeadlessException {
         super("Create Billboard");
@@ -62,7 +63,7 @@ public class CreateBillboardGUI extends JFrame {
         btnSubmit = createButton("Submit");
         //create and actionListener for the submit button
         btnSubmit.addActionListener(new ActionListener() {
-            //when the submit button is click make covert the inputs into string. then execute the CreateEditBilloard from the Billboard Class
+            // sends request to server
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (txtBillboardName.getText().isBlank()) {

@@ -16,16 +16,18 @@ public class ListBillboardsGUI extends JFrame {
     private JPanel panel = new JPanel();
     /**
      * Constructor initialises the GUI creation.
+     * @throws HeadlessException
      */
     public ListBillboardsGUI() throws HeadlessException {
         super("List Billboards");
         createGUI();
     }
     /**
-     * Gets the JTable from server
+     * Creates GUI and receive the JTable from server
      * @author Law
      */
     private void createGUI() {
+        // sends request to server
         ListBBRequest listBBRequest = new ListBBRequest(Main.loginUser.getSessionToken());
         try{
             Client.connectServer(listBBRequest);

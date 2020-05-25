@@ -32,6 +32,7 @@ public class DeleteBillboardGUI extends JFrame {
 
     /**
      * Constructor initialises the GUI creation.
+     * @throws HeadlessException
      */
     public DeleteBillboardGUI() throws HeadlessException {
         super("Delete Billboard");
@@ -41,7 +42,7 @@ public class DeleteBillboardGUI extends JFrame {
     /**
      * Create the base GUI to be used to create and edit the data
      *
-     * @author Lachlan
+     * @author Lachlan, Law
      */
     private void createGUI() {
         setSize(WIDTH, HEIGHT);
@@ -59,7 +60,7 @@ public class DeleteBillboardGUI extends JFrame {
 
         //create and actionListener for the submit button
         btnSubmit.addActionListener(new ActionListener() {
-            //when the submit button is click make covert the inputs into string. then execute the CreateEditBilloard from the Billboard Class
+            // sends request to server
             @Override
             public void actionPerformed(ActionEvent e) {
                 DeleteBBRequest temp = new DeleteBBRequest(Main.loginUser.getSessionToken(), txtBillboardName.getText());

@@ -66,6 +66,14 @@ public class Server {
 
     private static ServerSocket serverSocket;
 
+    /**
+     * This method starts up the server socket connection and receives requests from client
+     * @param args
+     * @throws IOException
+     * @throws ClassNotFoundException
+     * @throws SQLException
+     * @throws NoSuchAlgorithmException
+     */
     public static void main(String[] args) throws IOException, ClassNotFoundException, SQLException, NoSuchAlgorithmException {
         /* Initiate database connection */
         initDBConnection();
@@ -74,6 +82,7 @@ public class Server {
         Properties props = new Properties();
         FileInputStream in = null;
         try {
+            // read the network properties from network.props file
             in = new FileInputStream("./network.props");
             props.load(in);
             in.close();
@@ -86,6 +95,7 @@ public class Server {
         }
 
         for (;;) {
+            // Continues running to receive connections from client
             Socket socket = serverSocket.accept();
             System.out.println("Received connection from " + socket.getInetAddress());
 
@@ -104,9 +114,16 @@ public class Server {
         }
     }
 
+    /**
+     * This method instantiates a connection to MariaDB.
+     * Billboard, User and Schedule table will be created upon server start up.
+     * @author Law
+     */
     private static void initDBConnection(){
+        // Connects to MariaDB
         connection = DBConnection.newConnection();
         try {
+            // Creates tables
             statement = connection.createStatement();
             statement.execute(CREATE_BILLBOARD_TABLE);
             statement.execute(CREATE_USER_TABLE);
@@ -153,8 +170,15 @@ public class Server {
         }
     }
 
-    // Method for hashing and salting.
+    /**
+     * This method hashes the salted password of user account.
+     * @param hashString salted password to be hashed
+     * @return salted hashed password
+     * @author Nic
+     * @throws NoSuchAlgorithmException
+     */
     public static String hashAString(String hashString) throws NoSuchAlgorithmException {
+        // Hashes the password using SHA-256
         MessageDigest md = MessageDigest.getInstance("SHA-256");
         byte[] hash = md.digest(hashString.getBytes());
         StringBuffer sb = new StringBuffer();
@@ -165,7 +189,11 @@ public class Server {
 
         return sb.toString();
     }
-
+    /**
+     * This method salts password of user account.
+     * @return salted password
+     * @author Nic
+     */
     public static String randomString(){
         Random rng = new Random();
         byte[] saltBytes = new byte[32];
@@ -179,7 +207,12 @@ public class Server {
         return sb.toString();
     }
 
-    // Method that checks the availability of the session token
+    /**
+     * This method checks the availability of the session token, token expires after 24 hours
+     * @param sessionToken Session token to be assigned to user upon logging in
+     * @return state of token availability
+     * @author Nic
+     */
     private static boolean tokenCheck(SessionToken sessionToken){
         boolean tokenAvailableState;
 
@@ -201,8 +234,18 @@ public class Server {
         return tokenAvailableState;
     }
 
-    // Server request method
+    /**
+     * This method filters and executes the request received from client in server.
+     * Server checks the validity of the session tokens and return an appropriate reply to client
+     * @param clientRequest Request sent by client via stateless socket connection after button
+     *                      presses.
+     * @param oos Output stream
+     * @throws SQLException
+     * @throws NoSuchAlgorithmException
+     * @throws IOException
+     */
     private static void requestExecute(Object clientRequest, ObjectOutputStream oos) throws SQLException, NoSuchAlgorithmException, IOException {
+        // If the request is an instance of login request
         if (clientRequest instanceof LoginRequest){
             LoginRequest loginRequest = (LoginRequest) clientRequest;
             boolean loginState = checkPasswordSQL(loginRequest.getUserName(), loginRequest.getPassword());
@@ -225,6 +268,7 @@ public class Server {
             }
             oos.flush();
         }
+        // If the request is an instance of create user request
         else if (clientRequest instanceof CreateUserRequest){
             CreateUserRequest createUserRequest = (CreateUserRequest) clientRequest;
             SessionToken sessionToken = null;
@@ -267,6 +311,7 @@ public class Server {
 
             oos.flush();
         }
+        // If the request is an instance of search user request
         else if (clientRequest instanceof SearchRequest) {
             SearchRequest searchRequest = (SearchRequest) clientRequest;
             SessionToken sessionToken = null;
@@ -305,6 +350,7 @@ public class Server {
 
             oos.flush();
         }
+        // If the request is an instance of edit user request
         else if (clientRequest instanceof EditUserRequest){
             EditUserRequest editUserRequest = (EditUserRequest)clientRequest;
             boolean havePassword = editUserRequest.isHavePassword();
@@ -349,6 +395,7 @@ public class Server {
 
             oos.flush();
         }
+        // If the request is an instance of change password request
         else if(clientRequest instanceof ChangePasswordRequest){
             ChangePasswordRequest changePasswordRequest = (ChangePasswordRequest)clientRequest;
             String saltString = randomString();
@@ -379,6 +426,7 @@ public class Server {
             }
             oos.flush();
         }
+        // If the request is an instance of logout request
         else if (clientRequest instanceof  LogoutRequest){
             LogoutRequest logoutRequest = (LogoutRequest) clientRequest;
 
@@ -394,6 +442,7 @@ public class Server {
             oos.writeObject(logoutReply);
             oos.flush();
         }
+        // If the request is an instance of delete user request
         else if(clientRequest instanceof DeleteUserRequest){
             DeleteUserRequest deleteUser = (DeleteUserRequest) clientRequest;
             boolean checkDeleteUser = checkUserSQL(deleteUser.getUserName());
@@ -409,6 +458,7 @@ public class Server {
                 oos.flush();
             }
         }
+        // If the request is an instance of list all users request
         else if (clientRequest instanceof ListUserRequest){
             ListUserRequest listUser = (ListUserRequest) clientRequest;
             boolean validSession = false;
@@ -428,6 +478,7 @@ public class Server {
             }
 
         }
+        // If the request is an instance of create/edit billboard request
         else if (clientRequest instanceof CreateBBRequest) {
             CreateBBRequest temp = (CreateBBRequest) clientRequest;
             SessionToken sessionToken = null;
@@ -449,6 +500,7 @@ public class Server {
                 // Reset the used time of the session token.
                 sessionToken.setUsedTime(LocalDateTime.now());
                 GeneralReply generalReply;
+                // Execute create/edit query and return general reply indicating success
                 try {
                     BillboardSQL bb = new BillboardSQL();
                     bb.CreateBillboard(temp.getBillboardName(), temp.getUserName(), temp.getTextColour(), temp.getBackgroundColour(),
@@ -462,6 +514,7 @@ public class Server {
             }
             oos.flush();
         }
+        // If the request is an instance of delete billboard request
         else if (clientRequest instanceof DeleteBBRequest) {
             DeleteBBRequest temp = (DeleteBBRequest) clientRequest;
             SessionToken sessionToken = null;
@@ -483,6 +536,7 @@ public class Server {
                 // Reset the used time of the session token.
                 sessionToken.setUsedTime(LocalDateTime.now());
                 GeneralReply generalReply;
+                // Execute delete query and return general reply indicating success
                 try {
                     BillboardSQL bb = new BillboardSQL();
                     bb.DeleteBillboard(temp.getBillboardName());
@@ -494,6 +548,7 @@ public class Server {
             }
             oos.flush();
         }
+        // If the request is an instance of get billboard's information request
         else if (clientRequest instanceof BBInfoRequest) {
             BBInfoRequest temp = (BBInfoRequest) clientRequest;
             SessionToken sessionToken = null;
@@ -515,6 +570,7 @@ public class Server {
                 // Reset the used time of the session token.
                 sessionToken.setUsedTime(LocalDateTime.now());
                 GeneralReply generalReply;
+                // Return a reply object containing the information of the billboard
                 try {
                     BillboardSQL bb = new BillboardSQL();
                     bb.DeleteBillboard(temp.getBillboardName());
@@ -528,6 +584,7 @@ public class Server {
             }
             oos.flush();
         }
+        // If the request is an instance of list all billboards request
         else if (clientRequest instanceof ListBBRequest) {
             ListBBRequest listBBRequest = (ListBBRequest) clientRequest;
             SessionToken sessionToken = null;
@@ -549,6 +606,7 @@ public class Server {
                 // Reset the used time of the session token.
                 sessionToken.setUsedTime(LocalDateTime.now());
                 GeneralReply generalReply;
+                // Return a reply object to the client containing JTable of billboards
                 try {
                     BillboardSQL bb = new BillboardSQL();
                     ListBBReply listBBReply = new ListBBReply(bb.ListBillboards(listBBRequest.getSessionToken()));
@@ -566,15 +624,16 @@ public class Server {
             Schedule.ScheduleBillboard(temp.getBillboardName(),temp.getScheduledTime(), temp.getDuration(),temp.getReoccurType(),temp.getReoccurAmount());
             oos.flush();
         }
+        // If the request in an instance of import/export billboard request
         else if (clientRequest instanceof XmlRequest) {
             XmlRequest xmlRequest = (XmlRequest) clientRequest;
-            // if user exporting a billboard
+            // if the user exports a billboard
             if (xmlRequest.getXmlFile() == null) {
                 new MakeXMLFile(xmlRequest.getXmlName());
             }
-            // if user import a billboard
+            // if the user imports a billboard
             else {
-                // copy uploaded new xml file to path and extract its info and save it in db
+                // copy uploaded new xml file to path then extract its contents and save it in db
                 String newFileName = xmlRequest.getXmlFile().getName();
                 var newPath = new File("src/xmlBillboards/" + newFileName);
                 Files.copy(xmlRequest.getXmlFile().toPath(), newPath.toPath(),

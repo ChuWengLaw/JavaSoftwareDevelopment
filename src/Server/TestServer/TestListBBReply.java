@@ -16,10 +16,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TestListBBReply {
     /* Test 1: Construct a empty reply */
-    @BeforeEach @Test
+    @BeforeEach
+    @Test
     public void TestEmptyListBBReply() {
         ListBBReply bbInfoReply;
     }
+
     /* Test 2: Check if billboard table has been successfully encapsulated in the reply object  */
     @Test
     public void TestListBBReply() {

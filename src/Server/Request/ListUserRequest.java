@@ -4,7 +4,8 @@ import java.io.Serializable;
 
 public class ListUserRequest implements Serializable {
     private String sessionToken;
-    public ListUserRequest(String sessionToken){
+
+    public ListUserRequest(String sessionToken) {
         this.sessionToken = sessionToken;
     }
 

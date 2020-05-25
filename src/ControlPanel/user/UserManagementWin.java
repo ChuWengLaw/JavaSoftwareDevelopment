@@ -1,6 +1,7 @@
 package ControlPanel.user;
 
 import ControlPanel.Main;
+
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
@@ -12,13 +13,13 @@ import javax.swing.*;
  * @author Nicholas Tseng
  * This is the user mangement window class which extends Jframe. In this window,
  * users can access to four different functions:
- *
+ * <p>
  * 1. Create new user.
  * 2. List all user.
  * 3. Edit user.
  * 4. Delete user.
  */
-public class UserManagementWin extends JFrame{
+public class UserManagementWin extends JFrame {
     /**
      * Initialize the components in the window.
      */
@@ -33,17 +34,19 @@ public class UserManagementWin extends JFrame{
     /**
      * This is the construct which will create the user management window.
      */
-    public UserManagementWin(){
+    public UserManagementWin() {
         super("User Management");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         // Window Listener
         WindowListener windowListener = new WindowListener() {
             @Override
-            public void windowOpened(WindowEvent e) {}
+            public void windowOpened(WindowEvent e) {
+            }
 
             @Override
-            public void windowClosing(WindowEvent e) {}
+            public void windowClosing(WindowEvent e) {
+            }
 
             @Override
             public void windowClosed(WindowEvent e) {
@@ -51,16 +54,20 @@ public class UserManagementWin extends JFrame{
             }
 
             @Override
-            public void windowIconified(WindowEvent e) {}
+            public void windowIconified(WindowEvent e) {
+            }
 
             @Override
-            public void windowDeiconified(WindowEvent e) {}
+            public void windowDeiconified(WindowEvent e) {
+            }
 
             @Override
-            public void windowActivated(WindowEvent e) {}
+            public void windowActivated(WindowEvent e) {
+            }
 
             @Override
-            public void windowDeactivated(WindowEvent e) {}
+            public void windowDeactivated(WindowEvent e) {
+            }
         };
         super.addWindowListener(windowListener);
 
@@ -83,7 +90,7 @@ public class UserManagementWin extends JFrame{
         };
         deleteUserButton.addActionListener(deleteActionListener);
 
-        ActionListener listActionListener = e-> {
+        ActionListener listActionListener = e -> {
             Main.listUserWin.setVisible(true);
 
             try {
@@ -96,7 +103,7 @@ public class UserManagementWin extends JFrame{
         };
         listUserButton.addActionListener(listActionListener);
 
-        ActionListener changePasswordListener = e-> {
+        ActionListener changePasswordListener = e -> {
             Main.changePasswordWin.setVisible(true);
             super.setEnabled(false);
         };
@@ -116,7 +123,7 @@ public class UserManagementWin extends JFrame{
         constraints.gridx = 2;
         panel.add(editUserButton, constraints);
 
-        constraints.gridx =3;
+        constraints.gridx = 3;
         panel.add(deleteUserButton, constraints);
 
         constraints.gridx = 4;
@@ -125,7 +132,7 @@ public class UserManagementWin extends JFrame{
         getContentPane().add(panel);
 
         // Display the window
-        setLocation(900,350);
+        setLocation(900, 350);
         pack();
     }
 }

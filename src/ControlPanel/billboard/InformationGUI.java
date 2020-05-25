@@ -32,6 +32,7 @@ public class InformationGUI extends JFrame {
 
     /**
      * Constructor initialises the GUI creation.
+     *
      * @throws HeadlessException
      */
     public InformationGUI() throws HeadlessException {
@@ -57,7 +58,7 @@ public class InformationGUI extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 BBInfoRequest temp = new BBInfoRequest(Main.loginUser.getSessionToken(), txtBillboardName.getText());
                 if (txtBillboardName.getText().isBlank()) {
-                    JOptionPane.showMessageDialog(null,"Please Enter a Billboard Name.");
+                    JOptionPane.showMessageDialog(null, "Please Enter a Billboard Name.");
                 } else {
                     try {
                         Client.connectServer(temp);

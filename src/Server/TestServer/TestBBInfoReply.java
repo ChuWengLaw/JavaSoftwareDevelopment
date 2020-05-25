@@ -14,10 +14,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TestBBInfoReply {
     /* Test 1: Construct a empty reply */
-    @BeforeEach @Test
+    @BeforeEach
+    @Test
     public void TestEmptyBBInfoReply() {
         BBInfoReply bbInfoReply;
     }
+
     /* Test 2: Check if the input billboard info has been successfully encapsulated in the reply object  */
     @Test
     public void TestBBInfoReplyBBInfo() {

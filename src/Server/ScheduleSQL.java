@@ -2,21 +2,22 @@ package Server;
 
 import javax.swing.*;
 import java.sql.*;
+
 public class ScheduleSQL {
-    public ScheduleSQL() {}
+    public ScheduleSQL() {
+    }
 
     public void ScheduleBillboard(String BillboardName, String DateTime, int Duration,
-                                int RecurType, int RecurAmount) throws SQLException {
+                                  int RecurType, int RecurAmount) throws SQLException {
         boolean ExistFlag = false;
 
         try {
             ResultSet resultSet = Server.statement.executeQuery("SELECT BillboardName FROM Billboard");
             while (resultSet.next()) {
-                if ( BillboardName.equals(resultSet.getString("BillboardName")) ) {
+                if (BillboardName.equals(resultSet.getString("BillboardName"))) {
                     ExistFlag = true;
                     break;
-                }
-                else {
+                } else {
                     ExistFlag = false;
                 }
             }

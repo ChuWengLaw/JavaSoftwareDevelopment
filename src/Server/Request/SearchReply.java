@@ -8,11 +8,11 @@ public class SearchReply implements Serializable {
     private boolean requestState;
     private User user;
 
-    public SearchReply(boolean requestState){
+    public SearchReply(boolean requestState) {
         this.requestState = requestState;
     }
 
-    public SearchReply(boolean requestState, User user){
+    public SearchReply(boolean requestState, User user) {
         this.requestState = requestState;
         this.user = user;
     }

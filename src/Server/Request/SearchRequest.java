@@ -8,7 +8,7 @@ public class SearchRequest implements Serializable {
     private SessionToken sessionToken;
     private String userName;
 
-    public SearchRequest(SessionToken sessionToken, String userName){
+    public SearchRequest(SessionToken sessionToken, String userName) {
         this.sessionToken = sessionToken;
         this.userName = userName;
     }

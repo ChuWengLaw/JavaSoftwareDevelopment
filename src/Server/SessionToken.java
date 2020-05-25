@@ -7,7 +7,7 @@ public class SessionToken implements Serializable {
     private String sessionTokenString;
     private LocalDateTime usedTime;
 
-    public SessionToken(String sessionToken, LocalDateTime usedTime){
+    public SessionToken(String sessionToken, LocalDateTime usedTime) {
         this.sessionTokenString = sessionToken;
         this.usedTime = usedTime;
     }
@@ -20,7 +20,7 @@ public class SessionToken implements Serializable {
         return usedTime;
     }
 
-    public void setUsedTime(LocalDateTime usedTime){
+    public void setUsedTime(LocalDateTime usedTime) {
         this.usedTime = usedTime;
     }
 }

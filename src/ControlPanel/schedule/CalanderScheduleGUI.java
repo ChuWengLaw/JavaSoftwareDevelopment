@@ -30,10 +30,11 @@ public class CalanderScheduleGUI extends JFrame {
     private JLabel lbl7;
 
 
-    public CalanderScheduleGUI(){
+    public CalanderScheduleGUI() {
         super("Scheduled Billboards");
         createGUI();
     }
+
     private void createGUI() {
 
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -48,23 +49,23 @@ public class CalanderScheduleGUI extends JFrame {
 
         //GET SQL DATA ABOUT SCHEDULES Request from database
         int Min_in_Millis = 60000;
-        int Hour_in_Millis = 60*Min_in_Millis;
-        int Day_in_Millis = 24*Hour_in_Millis;
+        int Hour_in_Millis = 60 * Min_in_Millis;
+        int Day_in_Millis = 24 * Hour_in_Millis;
 
         long CurrentTimeMillis = System.currentTimeMillis();
 
         lbl1 = createLabel(CurrentTimeMillis);
-        lbl2 = createLabel(CurrentTimeMillis + 1*Day_in_Millis);
-        lbl3 = createLabel(CurrentTimeMillis + 2*Day_in_Millis);
-        lbl4 = createLabel(CurrentTimeMillis + 3*Day_in_Millis);
-        lbl5 = createLabel(CurrentTimeMillis + 4*Day_in_Millis);
-        lbl6 = createLabel(CurrentTimeMillis + 5*Day_in_Millis);
-        lbl7 = createLabel(CurrentTimeMillis + 6*Day_in_Millis);
+        lbl2 = createLabel(CurrentTimeMillis + 1 * Day_in_Millis);
+        lbl3 = createLabel(CurrentTimeMillis + 2 * Day_in_Millis);
+        lbl4 = createLabel(CurrentTimeMillis + 3 * Day_in_Millis);
+        lbl5 = createLabel(CurrentTimeMillis + 4 * Day_in_Millis);
+        lbl6 = createLabel(CurrentTimeMillis + 5 * Day_in_Millis);
+        lbl7 = createLabel(CurrentTimeMillis + 6 * Day_in_Millis);
 
         //Border border = BorderFactory.createLineBorder(Color.BLACK, 1);
         int Buffer = 10;
 
-        EmptyBorder border = new EmptyBorder(Buffer,Buffer,Buffer,Buffer);
+        EmptyBorder border = new EmptyBorder(Buffer, Buffer, Buffer, Buffer);
 
         // set the border of this component
         lbl1.setBorder(border);
@@ -100,7 +101,7 @@ public class CalanderScheduleGUI extends JFrame {
 
         getContentPane().add(pnlScheduleMenu);
         // Display the window
-        setLocation(900,350);
+        setLocation(900, 350);
         pack();
         repaint();
         setVisible(true);
@@ -108,7 +109,7 @@ public class CalanderScheduleGUI extends JFrame {
 
     private JLabel createLabel(long millis) {
         Date datePrint = new Date(millis);
-        SimpleDateFormat formatter= new SimpleDateFormat("dd MMMM E");
+        SimpleDateFormat formatter = new SimpleDateFormat("dd MMMM E");
         JLabel label = new JLabel();
         label.setText(formatter.format(datePrint));
         return label;

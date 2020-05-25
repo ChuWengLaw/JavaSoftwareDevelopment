@@ -25,9 +25,7 @@ import javax.swing.*;
  * the button will be disable from them.
  */
 public class MenuWin extends JFrame {
-    /**
-     * Initialize the components in the window.
-     */
+    // Initialize the components in the window.
     private JButton billboardManageButton = new JButton("Billboard management");
     private JButton editUserButton = new JButton("User management");
     private JButton scheduleBillboardButton = new JButton("Schedule Billboard");
@@ -37,7 +35,7 @@ public class MenuWin extends JFrame {
     private GridBagConstraints constraints = new GridBagConstraints();
 
     /**
-     * This is the constructor which will create the menu window.
+     * This is the construct which will create the menu window.
      */
     public MenuWin() {
         // Setting default value of the frame

@@ -1,6 +1,6 @@
 package ControlPanel;
 
-import Server.Request.*;
+import Server.Reply.*;
 
 import javax.swing.*;
 import java.io.*;
@@ -51,7 +51,7 @@ public class Client {
         return requestState;
     }
 
-    private static void executeReply(Object requestReply) throws IOException {
+    private static void executeReply(Object requestReply) {
         if (requestReply instanceof LoginReply){
             LoginReply loginReply = (LoginReply) requestReply;
             requestState = loginReply.isLoginState();
@@ -68,6 +68,8 @@ public class Client {
             if (requestState){
                 Main.editUserWin.editedUser = searchReply.getUser();
             }
+
+            Main.loginUser.setSessionToken(searchReply.getSessionToken());
         }
         else if (requestReply instanceof LogoutReply){
             LogoutReply logoutReply = (LogoutReply) requestReply;
@@ -84,19 +86,23 @@ public class Client {
         else if (requestReply instanceof GeneralReply){
             GeneralReply generalReply = (GeneralReply) requestReply;
             requestState = generalReply.isRequestState();
+            Main.loginUser.setSessionToken(generalReply.getSessionToken());
         }
         else if (requestReply instanceof ListUserReply){
             ListUserReply listUserReply = (ListUserReply) requestReply;
             Main.listUserWin.getTable(listUserReply.getTable());
             requestState = listUserReply.isListUserState();
+            Main.loginUser.setSessionToken(listUserReply.getSessionToken());
         }
         else if (requestReply instanceof BBInfoReply){
             BBInfoReply bbInfoReply = (BBInfoReply) requestReply;
             info = bbInfoReply.getInformation();
+            Main.loginUser.setSessionToken(bbInfoReply.getSessionToken());
         }
         else if (requestReply instanceof ListBBReply){
             ListBBReply listBBReply = (ListBBReply) requestReply;
             listBBTable = listBBReply.getTable();
+            Main.loginUser.setSessionToken(listBBReply.getSessionToken());
         }
     }
     public static String getInfo() {

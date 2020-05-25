@@ -1,9 +1,12 @@
 package Server.TestServer;
-import Server.Request.ListUserReply;
+import Server.Reply.ListUserReply;
+import Server.SessionToken;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import javax.swing.*;
+
+import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -22,14 +25,16 @@ public class TestListUserReply {
     //Test 2: Check if the user table was successfully encapsulated in ListUserReply object
     public void UserTableTestListUserReply(){
         JTable testTable = new JTable();
-        ListUserReply listUserReply = new ListUserReply(testTable, true);
+        SessionToken sessionToken = new SessionToken("abc", LocalDateTime.now());
+        ListUserReply listUserReply = new ListUserReply(sessionToken, testTable, true);
         assertEquals(testTable, listUserReply.getTable());
     }
     @Test
     //Test 2: Check if the ListUserState was successfully encapsulated in ListUserReply object
     public void ListUserStateTestListUserReply(){
         JTable testTable = new JTable();
-        ListUserReply listUserReply = new ListUserReply(testTable, true);
+        SessionToken sessionToken = new SessionToken("abc", LocalDateTime.now());
+        ListUserReply listUserReply = new ListUserReply(sessionToken,testTable, true);
         assertEquals(true, listUserReply.isListUserState());
     }
 }

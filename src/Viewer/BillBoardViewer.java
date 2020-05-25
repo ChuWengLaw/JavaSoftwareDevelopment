@@ -1,6 +1,7 @@
 package Viewer;
 
 import Server.ExtractFromXML;
+import org.mariadb.jdbc.BasePrepareStatement;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -25,16 +26,11 @@ import java.util.concurrent.*;
  * @author Law
  */
 public class BillBoardViewer extends JFrame {
-    private JLabel picLabel = new JLabel();
-    private JPanel panel = new JPanel();
     private Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
     private final int screenWidth = dim.width;
     private final int screenHeight = dim.height;
 
     ExtractFromXML extractFromXML = new ExtractFromXML("starWars.xml");
-
-    private JLabel lblMessage = new JLabel();
-    private JLabel lblInfo = new JLabel();
 
 
     /**
@@ -131,41 +127,25 @@ public class BillBoardViewer extends JFrame {
 //        }
         //only message
         if (!extractFromXML.message.isBlank() && extractFromXML.information.isBlank() && extractFromXML.image.isBlank()) {
-            Color background =null;
-            Color messageColour = null;
-            try {
-                Field backgroundField = Class.forName("java.awt.Color").getField(extractFromXML.backgroundColour);
-                background = (Color) backgroundField.get(null);
-
-                Field messageColourField = Class.forName("java.awt.Color").getField(extractFromXML.textColour);
-                messageColour = (Color) messageColourField.get(null);
-
-            } catch (NoSuchFieldException e) {
-                e.printStackTrace();
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            }
             JPanel messagePanel = new JPanel();
-            messagePanel.setBackground(background);
+            messagePanel.setBackground(extractFromXML.backgroundColour);
 
             JLabel messageLabel = new JLabel();
             messageLabel.setText(extractFromXML.message);
-            messageLabel.setForeground(messageColour);
+            messageLabel.setForeground(extractFromXML.textColour);
             messageLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
             int messageWidth = messageLabel.getFontMetrics(messageLabel.getFont()).stringWidth(messageLabel.getText());
             int componentWidth = screenWidth;
 
-            double widthRatio = (double)componentWidth/(double)messageWidth;
+            double widthRatio = (double) componentWidth / (double) messageWidth;
 
-            int newFontSize = (int)(messageLabel.getFont().getSize()*widthRatio);
+            int newFontSize = (int) (messageLabel.getFont().getSize() * widthRatio);
             int componentHeight = screenHeight;
 
             int fontSizeToUse = Math.min(newFontSize, componentHeight);
 
-            messageLabel.setFont(new Font(messageLabel.getFont().getName(),Font.PLAIN, fontSizeToUse));
+            messageLabel.setFont(new Font(messageLabel.getFont().getName(), Font.PLAIN, fontSizeToUse));
 
 
             messagePanel.setLayout(new BorderLayout());
@@ -178,18 +158,6 @@ public class BillBoardViewer extends JFrame {
         }
         //only image
         else if (extractFromXML.message.isBlank() && extractFromXML.information.isBlank() && !extractFromXML.image.isBlank()) {
-            Color background =null;
-
-            try {
-                Field backgroundField = Class.forName("java.awt.Color").getField(extractFromXML.backgroundColour);
-                background=(Color)backgroundField.get(null);
-            } catch (NoSuchFieldException e) {
-                e.printStackTrace();
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            }
             JLabel picture = new JLabel();
             ImageIcon myPicture = new ImageIcon(ImageIO.read(new File("src/Viewer/Image/0341b9f3f27a6ba0a3b8de6de9d864949f0dbc23.jpg"))
                     .getScaledInstance(screenWidth / 2, screenHeight / 2, Image.SCALE_SMOOTH));
@@ -198,7 +166,7 @@ public class BillBoardViewer extends JFrame {
             picture.setVerticalAlignment(SwingConstants.CENTER);
 
             JPanel picPanel = new JPanel();
-            picPanel.setBackground(background);
+            picPanel.setBackground(extractFromXML.backgroundColour);
 
             picPanel.setLayout(new BorderLayout());
             picPanel.add(picture, BorderLayout.CENTER);
@@ -207,118 +175,210 @@ public class BillBoardViewer extends JFrame {
             repaint();
             setVisible(true);
 
-        } else if (extractFromXML.message.isBlank() && !extractFromXML.information.isBlank() && extractFromXML.image.isBlank()) {
-            Color background = null;
-            Color infoColour=null;
-            try{
-                Field backgroundField = Class.forName("java.awt.Color").getField(extractFromXML.backgroundColour);
-                background = (Color)backgroundField.get(null);
-
-                Field infoField = Class.forName("java.awt.Color").getField(extractFromXML.informationColour);
-                infoColour = (Color)infoField.get(null);
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            } catch (NoSuchFieldException e) {
-                e.printStackTrace();
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            }
-
+        }
+        //info only
+        else if (extractFromXML.message.isBlank() && !extractFromXML.information.isBlank() && extractFromXML.image.isBlank()) {
             JPanel infoPanel = new JPanel();
-            infoPanel.setBackground(background);
+            infoPanel.setBackground(extractFromXML.backgroundColour);
 
             JTextPane infoTextPane = new JTextPane();
             infoTextPane.setText(extractFromXML.information);
             infoTextPane.setEditable(false);
-            infoTextPane.setForeground(infoColour);
-            infoTextPane.setBackground(background);
+            infoTextPane.setForeground(extractFromXML.informationColour);
+            infoTextPane.setBackground(extractFromXML.backgroundColour);
             infoTextPane.setFont(infoTextPane.getFont().deriveFont(32.0f));
 
-            //center the
+            //center the TextPane
             StyledDocument doc = infoTextPane.getStyledDocument();
             SimpleAttributeSet center = new SimpleAttributeSet();
             StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
             doc.setParagraphAttributes(0, doc.getLength(), center, false);
 
             infoPanel.setLayout(new BorderLayout());
-            infoPanel.setBorder(new EmptyBorder(screenHeight/4, (int) screenWidth/8,screenHeight/4,(int) screenWidth/8));
+            infoPanel.setBorder(new EmptyBorder(screenHeight / 4, screenWidth / 8, screenHeight / 4, screenWidth / 8));
             infoPanel.add(infoTextPane, BorderLayout.CENTER);
 
             getContentPane().add(infoPanel);
             repaint();
             setVisible(true);
 
+        }
+        //message and image
+        else if (!extractFromXML.message.isBlank() && extractFromXML.information.isBlank() && !extractFromXML.image.isBlank()) {
+            JPanel layoutPanel = new JPanel();
+            layoutPanel.setBackground(extractFromXML.backgroundColour);
 
-            /*lblInfo.setText(extractFromXML.information);
-            lblInfo.setForeground(extractFromXML.informationColour);
-            lblInfo.setPreferredSize(new Dimension((screenWidth / 4) * 3, screenHeight / 2));
+            JLabel messageLabel = new JLabel();
+            messageLabel.setText(extractFromXML.message);
+            messageLabel.setForeground(extractFromXML.textColour);
+            messageLabel.setHorizontalAlignment(SwingConstants.CENTER);
+            messageLabel.setPreferredSize(new Dimension(screenWidth, (screenHeight / 3)));
 
-            panel.setBackground(extractFromXML.backgroundColour);
+            int messageWidth = messageLabel.getFontMetrics(messageLabel.getFont()).stringWidth(messageLabel.getText());
+            int componentWidth = screenWidth;
 
-            panel.setLayout(new BorderLayout());
-            panel.add(lblInfo, BorderLayout.CENTER);
-            getContentPane().add(panel);
+            double widthRatio = (double) componentWidth / (double) messageWidth;
 
-            repaint();
-            setVisible(true);*/
-        } /*else if (!extractFromXML.message.isBlank() && extractFromXML.information.isBlank() && !extractFromXML.image.isBlank()) {
-            lblMessage.setText(extractFromXML.message);
-            lblMessage.setForeground(extractFromXML.textColour);
-            lblMessage.setPreferredSize(new Dimension(screenWidth, screenHeight / 3));
+            int newFontSize = (int) (messageLabel.getFont().getSize() * widthRatio);
+            int componentHeight = screenHeight / 3;
 
+            int fontSizeToUse = Math.min(newFontSize, componentHeight);
+
+            messageLabel.setFont(new Font(messageLabel.getFont().getName(), Font.PLAIN, fontSizeToUse));
+
+            JLabel picture = new JLabel();
             ImageIcon myPicture = new ImageIcon(ImageIO.read(new File("src/Viewer/Image/0341b9f3f27a6ba0a3b8de6de9d864949f0dbc23.jpg"))
                     .getScaledInstance(screenWidth / 2, screenHeight / 2, Image.SCALE_SMOOTH));
-            picLabel.setIcon(myPicture);
-            picLabel.setPreferredSize(new Dimension(screenWidth, (screenHeight / 3) * 2));
+            picture.setIcon(myPicture);
+            picture.setPreferredSize(new Dimension(screenWidth, (screenHeight / 3) * 2));
+            picture.setHorizontalAlignment(SwingConstants.CENTER);
 
-            panel.setBackground(extractFromXML.backgroundColour);
+            layoutPanel.setLayout(new BorderLayout());
+            layoutPanel.add(messageLabel, BorderLayout.NORTH);
+            layoutPanel.add(picture, BorderLayout.CENTER);
 
-            panel.setLayout(new BorderLayout());
-            panel.add(lblMessage, BorderLayout.NORTH);
-            panel.add(picLabel, BorderLayout.CENTER);
-
-            getContentPane().add(panel);
+            getContentPane().add(layoutPanel);
             repaint();
             setVisible(true);
         } else if (!extractFromXML.message.isBlank() && !extractFromXML.information.isBlank() && extractFromXML.image.isBlank()) {
-            lblMessage.setText(extractFromXML.message);
-            lblMessage.setForeground(extractFromXML.textColour);
-            lblMessage.setPreferredSize(new Dimension(screenWidth, screenHeight / 2));
+            JPanel layoutPanel = new JPanel();
+            layoutPanel.setBackground(extractFromXML.backgroundColour);
 
-            lblInfo.setText(extractFromXML.information);
-            lblInfo.setForeground(extractFromXML.informationColour);
-            lblInfo.setPreferredSize(new Dimension(screenWidth, screenHeight / 2));
+            JLabel messageLabel = new JLabel();
+            messageLabel.setText(extractFromXML.message);
+            messageLabel.setForeground(extractFromXML.textColour);
+            messageLabel.setHorizontalAlignment(SwingConstants.CENTER);
+            messageLabel.setPreferredSize(new Dimension(screenWidth, screenHeight / 2));
 
-            panel.setBackground(extractFromXML.backgroundColour);
+            int messageWidth = messageLabel.getFontMetrics(messageLabel.getFont()).stringWidth(messageLabel.getText());
+            int componentWidth = screenWidth;
+            double widthRatio = (double) componentWidth / (double) messageWidth;
+            int newFontSize = (int) (messageLabel.getFont().getSize() * widthRatio);
+            int componentHeight = screenHeight / 2;
+            int fontSizeToUse = Math.min(newFontSize, componentHeight);
+            messageLabel.setFont(new Font(messageLabel.getFont().getName(), Font.PLAIN, fontSizeToUse));
 
-            panel.setLayout(new BorderLayout());
-            panel.add(lblMessage, BorderLayout.NORTH);
-            panel.add(lblInfo, BorderLayout.SOUTH);
+            JTextPane infoTextPane = new JTextPane();
+            infoTextPane.setText(extractFromXML.information);
+            infoTextPane.setEditable(false);
+            infoTextPane.setForeground(extractFromXML.informationColour);
+            infoTextPane.setBackground(extractFromXML.backgroundColour);
 
-            getContentPane().add(panel);
+            int infoWidth = messageLabel.getFontMetrics(infoTextPane.getFont()).stringWidth(infoTextPane.getText());
+            int infoComponentWidth = screenWidth-1;
+            double infoWidthRatio = (double) infoComponentWidth / (double) infoWidth;
+            int infoNewFontSize = (int) (infoTextPane.getFont().getSize() * infoWidthRatio);
+            int infoComponentHeight = (screenHeight / 2)-1;
+            int infoFontSizeToUse = Math.min(infoNewFontSize, infoComponentHeight);
+            infoTextPane.setFont(new Font(infoTextPane.getFont().getName(), Font.PLAIN, infoFontSizeToUse));
+
+
+            infoTextPane.setPreferredSize(new Dimension(screenWidth, screenHeight / 2));
+
+            //center the TextPane
+            StyledDocument doc = infoTextPane.getStyledDocument();
+            SimpleAttributeSet center = new SimpleAttributeSet();
+            StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
+            doc.setParagraphAttributes(0, doc.getLength(), center, false);
+
+            layoutPanel.setLayout(new BorderLayout());
+            layoutPanel.add(messageLabel, BorderLayout.NORTH);
+            layoutPanel.add(infoTextPane, BorderLayout.SOUTH);
+
+            getContentPane().add(layoutPanel);
             repaint();
             setVisible(true);
         } else if (extractFromXML.message.isBlank() && !extractFromXML.information.isBlank() && !extractFromXML.image.isBlank()) {
+            JPanel layoutPanel = new JPanel();
+            layoutPanel.setBackground(extractFromXML.backgroundColour);
+
+            JLabel picture = new JLabel();
             ImageIcon myPicture = new ImageIcon(ImageIO.read(new File("src/Viewer/Image/0341b9f3f27a6ba0a3b8de6de9d864949f0dbc23.jpg"))
                     .getScaledInstance(screenWidth / 2, screenHeight / 2, Image.SCALE_SMOOTH));
-            picLabel.setIcon(myPicture);
-            picLabel.setPreferredSize(new Dimension(screenWidth, (screenHeight / 3) * 2));
+            picture.setIcon(myPicture);
+            picture.setPreferredSize(new Dimension(screenWidth, (screenHeight / 3) * 2));
+            picture.setHorizontalAlignment(SwingConstants.CENTER);
 
-            lblInfo.setText(extractFromXML.information);
-            lblInfo.setForeground(extractFromXML.informationColour);
-            lblInfo.setPreferredSize(new Dimension(screenWidth, screenHeight / 3));
+            JTextPane infoTextPane = new JTextPane();
+            infoTextPane.setText(extractFromXML.information);
+            infoTextPane.setEditable(false);
+            infoTextPane.setForeground(extractFromXML.informationColour);
+            infoTextPane.setBackground(extractFromXML.backgroundColour);
+            infoTextPane.setPreferredSize(new Dimension(screenWidth, screenHeight / 3));
+            infoTextPane.setFont(infoTextPane.getFont().deriveFont(32.0f));
 
-            panel.setBackground(extractFromXML.backgroundColour);
+            //center the TextPane
+            StyledDocument doc = infoTextPane.getStyledDocument();
+            SimpleAttributeSet center = new SimpleAttributeSet();
+            StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
+            doc.setParagraphAttributes(0, doc.getLength(), center, false);
 
-            panel.setLayout(new BorderLayout());
-            panel.add(picLabel, BorderLayout.NORTH);
-            panel.add(lblInfo, BorderLayout.SOUTH);
+            layoutPanel.setLayout(new BorderLayout());
+            layoutPanel.add(picture, BorderLayout.NORTH);
+            layoutPanel.setBorder(new EmptyBorder(0, screenWidth / 4, 0, screenWidth / 4));
+            layoutPanel.add(infoTextPane, BorderLayout.SOUTH);
 
-            getContentPane().add(panel);
+            getContentPane().add(layoutPanel);
             repaint();
             setVisible(true);
         } else {
-            lblMessage.setText(extractFromXML.message);
+            JPanel layoutPanel = new JPanel();
+            layoutPanel.setBackground(extractFromXML.backgroundColour);
+
+            layoutPanel.setLayout(new BorderLayout());
+
+            JLabel picture = new JLabel();
+            ImageIcon myPicture = new ImageIcon(ImageIO.read(new File("src/Viewer/Image/0341b9f3f27a6ba0a3b8de6de9d864949f0dbc23.jpg"))
+                    .getScaledInstance(screenWidth/3 , screenHeight/3, Image.SCALE_SMOOTH));
+            picture.setIcon(myPicture);
+            picture.setPreferredSize(new Dimension(screenWidth, screenHeight/3));
+            picture.setHorizontalAlignment(SwingConstants.CENTER);
+            picture.setVerticalAlignment(SwingConstants.CENTER);
+
+            JLabel messageLabel = new JLabel();
+            messageLabel.setText(extractFromXML.message);
+            messageLabel.setForeground(extractFromXML.textColour);
+            messageLabel.setHorizontalAlignment(SwingConstants.CENTER);
+            messageLabel.setVerticalAlignment(SwingConstants.CENTER);
+            messageLabel.setPreferredSize(new Dimension(screenWidth, screenHeight / 3));
+
+            int messageWidth = messageLabel.getFontMetrics(messageLabel.getFont()).stringWidth(messageLabel.getText());
+            int componentWidth = screenWidth;
+            double widthRatio = (double) componentWidth / (double) messageWidth;
+            int newFontSize = (int) (messageLabel.getFont().getSize() * widthRatio);
+            int componentHeight = screenHeight / 3;
+            int fontSizeToUse = Math.min(newFontSize, componentHeight);
+            messageLabel.setFont(new Font(messageLabel.getFont().getName(), Font.PLAIN, fontSizeToUse));
+
+            Color thisColor = Color.decode("#7F3FBF");
+
+            JTextPane infoTextPane = new JTextPane();
+            infoTextPane.setText(extractFromXML.information);
+            infoTextPane.setEditable(false);
+            infoTextPane.setForeground(extractFromXML.informationColour);
+            infoTextPane.setBackground(extractFromXML.backgroundColour);
+            infoTextPane.setPreferredSize(new Dimension(screenWidth, screenHeight / 3));
+            infoTextPane.setFont(infoTextPane.getFont().deriveFont(32.0f));
+            infoTextPane.setBorder(new EmptyBorder(0, screenWidth / 8, 0, screenWidth / 8));
+
+            //center the TextPane
+            StyledDocument doc = infoTextPane.getStyledDocument();
+            SimpleAttributeSet center = new SimpleAttributeSet();
+            StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
+            doc.setParagraphAttributes(0, doc.getLength(), center, false);
+
+
+            layoutPanel.setLayout(new BorderLayout());
+            layoutPanel.add(picture,BorderLayout.CENTER);
+            layoutPanel.add(messageLabel,BorderLayout.NORTH);
+
+            layoutPanel.add(infoTextPane,BorderLayout.SOUTH);
+
+            getContentPane().add(layoutPanel);
+            repaint();
+            setVisible(true);
+        }
+            /*lblMessage.setText(extractFromXML.message);
             lblMessage.setForeground(extractFromXML.textColour);
             lblMessage.setPreferredSize(new Dimension(screenWidth / 3, screenHeight / 3));
 

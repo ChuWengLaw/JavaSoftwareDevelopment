@@ -2,7 +2,6 @@ package ControlPanel.billboard;
 
 import ControlPanel.Client;
 import ControlPanel.Main;
-import Server.Request.DeleteBBRequest;
 import Server.Request.EditBBRequest;
 
 import javax.swing.*;
@@ -42,18 +41,21 @@ public class EditBillboardGUI extends JFrame {
 
     //define the strings to be used in the SQL
     private String strBillboardName;
-    private JPanel createBBPanel = new JPanel(new GridBagLayout());
+    private JPanel editBBPanel = new JPanel(new GridBagLayout());
+    private JPanel panel = new JPanel(new GridBagLayout());
     private GridBagConstraints editBBConstraints = new GridBagConstraints();
     private GridBagConstraints constraints = new GridBagConstraints();
 
     /**
      * Constructor initialises the GUI creation.
+     *
      * @throws HeadlessException
      */
     public EditBillboardGUI() throws HeadlessException {
         super("Edit Billboard");
         createGUI();
     }
+
     /**
      * Create the base GUI to be used to find the billboard
      *
@@ -78,38 +80,49 @@ public class EditBillboardGUI extends JFrame {
             // sends request to server
             @Override
             public void actionPerformed(ActionEvent e) {
-                DeleteBBRequest temp = new DeleteBBRequest(Main.loginUser.getSessionToken(), txtBillboardName.getText());
+                panel.setVisible(false);
+                btnSubmit.setVisible(false);
+                lblBillboardName.setVisible(false);
+                txtBillboardName.setVisible(false);
+
+                EditBBRequest temp = new EditBBRequest(Main.loginUser.getSessionToken(), Main.loginUser.getUserName(),
+                        txtBillboardName.getText());
                 try {
                     Client.connectServer(temp);
+                } catch (InterruptedException ex) {
+                    ex.printStackTrace();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                } catch (ClassNotFoundException ex) {
+                    ex.printStackTrace();
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
-                //clear the textField
-                txtBillboardName.setText("");
+                createEditGUI();
             }
         });
 
         constraints.anchor = GridBagConstraints.WEST;
-        constraints.insets = new Insets(2,2,2,2);
+        constraints.insets = new Insets(2, 2, 2, 2);
 
         //add labels to panel
-        constraints.gridx=0;
-        constraints.gridy=0;
-        panel.add(lblBillboardName,constraints);
-        constraints.gridy=1;
+        constraints.gridx = 0;
+        constraints.gridy = 0;
+        panel.add(lblBillboardName, constraints);
+        constraints.gridy = 1;
 
-        //add txtfeilds to panel
-        constraints.gridx =1;
-        constraints.gridy=0;
-        panel.add(txtBillboardName,constraints);
+        //add text fields to panel
+        constraints.gridx = 1;
+        constraints.gridy = 0;
+        panel.add(txtBillboardName, constraints);
 
         //add button to panel
-        constraints.gridwidth =1;
-        constraints.insets = new Insets(5,10,5,10);
+        constraints.gridwidth = 1;
+        constraints.insets = new Insets(5, 10, 5, 10);
         constraints.anchor = GridBagConstraints.CENTER;
-        constraints.gridx=0;
-        constraints.gridy=7;
-        panel.add(btnSubmit,constraints);
+        constraints.gridx = 0;
+        constraints.gridy = 7;
+        panel.add(btnSubmit, constraints);
 
         getContentPane().add(panel);
         //set the location of the GUI
@@ -119,6 +132,7 @@ public class EditBillboardGUI extends JFrame {
         pack();
         setVisible(true);
     }
+
     /**
      * Create the base GUI to be used to edit the billboard
      *
@@ -135,37 +149,32 @@ public class EditBillboardGUI extends JFrame {
             // sends request to server
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (txtBillboardName.getText().isBlank()) {
-                    JOptionPane.showMessageDialog(null, "Please Enter a Billboard Name.");
-                } else {
-                    EditBBRequest temp = new EditBBRequest(Main.loginUser.getSessionToken(), txtBillboardName.getText());
-                    try {
-                        Client.connectServer(temp);
-
-                    } catch (InterruptedException ex) {
-                        ex.printStackTrace();
-                    } catch (IOException ex) {
-                        ex.printStackTrace();
-                    } catch (ClassNotFoundException ex) {
-                        ex.printStackTrace();
-                    } catch (Exception ex) {
-                        ex.printStackTrace();
-                    }
-                    //clear the textFeilds once the SQL code has been executed
-                    txtBillboardName.setText("");
-                    txtTextColour.setText("");
-                    txtBackgroundColour.setText("");
-                    txtMessage.setText("");
-                    txtImage.setText("");
-                    txtInformation.setText("");
-                    txtInformationColour.setText("");
+                EditBBRequest temp = new EditBBRequest(Main.loginUser.getSessionToken(), txtTextColour.getText(), txtBackgroundColour.getText(),
+                        txtMessage.getText(), txtImage.getText(), txtInformation.getText(), txtInformationColour.getText());
+                try {
+                    Client.connectServer(temp);
+                } catch (InterruptedException ex) {
+                    ex.printStackTrace();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                } catch (ClassNotFoundException ex) {
+                    ex.printStackTrace();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
                 }
+                // clear the text fields once the SQL code has been executed
+                txtBillboardName.setText("");
+                txtTextColour.setText("");
+                txtBackgroundColour.setText("");
+                txtMessage.setText("");
+                txtImage.setText("");
+                txtInformation.setText("");
+                txtInformationColour.setText("");
             }
         });
 
 
         //create the labels
-        lblBillboardName = createLabel("Billboard Name:");
         lblTextColour = createLabel("Text Colour:");
         lblBackgroundColour = createLabel("Background Colour:");
         lblMessage = createLabel("Message:");
@@ -174,7 +183,6 @@ public class EditBillboardGUI extends JFrame {
         lblInformationColour = createLabel("Information Colour:");
 
         //create the text boxes to receive the data
-        txtBillboardName = createText();
         txtTextColour = createText();
         txtBackgroundColour = createText();
         txtMessage = createText();
@@ -182,42 +190,45 @@ public class EditBillboardGUI extends JFrame {
         txtInformation = createText();
         txtInformationColour = createText();
 
+        //set the content of billboard in text field
+        txtTextColour.setText(Client.getEditTextColour());
+        txtBackgroundColour.setText(Client.getEditBGColour());
+        txtMessage.setText(Client.getEditMsg());
+        txtImage.setText(Client.getEditImg());
+        txtInformation.setText(Client.getEditInfo());
+        txtInformationColour.setText(Client.getEditInfoColour());
         editBBConstraints.anchor = GridBagConstraints.WEST;
         editBBConstraints.insets = new Insets(10, 10, 10, 10);
 
         //add labels to panel
         editBBConstraints.gridx = 0;
         editBBConstraints.gridy = 0;
-        createBBPanel.add(lblBillboardName, editBBConstraints);
+        editBBPanel.add(lblTextColour, editBBConstraints);
         editBBConstraints.gridy = 1;
-        createBBPanel.add(lblTextColour, editBBConstraints);
+        editBBPanel.add(lblBackgroundColour, editBBConstraints);
         editBBConstraints.gridy = 2;
-        createBBPanel.add(lblBackgroundColour, editBBConstraints);
+        editBBPanel.add(lblMessage, editBBConstraints);
         editBBConstraints.gridy = 3;
-        createBBPanel.add(lblMessage, editBBConstraints);
+        editBBPanel.add(lblImage, editBBConstraints);
         editBBConstraints.gridy = 4;
-        createBBPanel.add(lblImage, editBBConstraints);
+        editBBPanel.add(lblInformation, editBBConstraints);
         editBBConstraints.gridy = 5;
-        createBBPanel.add(lblInformation, editBBConstraints);
-        editBBConstraints.gridy = 6;
-        createBBPanel.add(lblInformationColour, editBBConstraints);
+        editBBPanel.add(lblInformationColour, editBBConstraints);
 
         //add txtfeilds to panel
         editBBConstraints.gridx = 1;
         editBBConstraints.gridy = 0;
-        createBBPanel.add(txtBillboardName, editBBConstraints);
+        editBBPanel.add(txtTextColour, editBBConstraints);
         editBBConstraints.gridy = 1;
-        createBBPanel.add(txtTextColour, editBBConstraints);
+        editBBPanel.add(txtBackgroundColour, editBBConstraints);
         editBBConstraints.gridy = 2;
-        createBBPanel.add(txtBackgroundColour, editBBConstraints);
+        editBBPanel.add(txtMessage, editBBConstraints);
         editBBConstraints.gridy = 3;
-        createBBPanel.add(txtMessage, editBBConstraints);
+        editBBPanel.add(txtImage, editBBConstraints);
         editBBConstraints.gridy = 4;
-        createBBPanel.add(txtImage, editBBConstraints);
+        editBBPanel.add(txtInformation, editBBConstraints);
         editBBConstraints.gridy = 5;
-        createBBPanel.add(txtInformation, editBBConstraints);
-        editBBConstraints.gridy = 6;
-        createBBPanel.add(txtInformationColour, editBBConstraints);
+        editBBPanel.add(txtInformationColour, editBBConstraints);
 
         //add button to panel
         editBBConstraints.gridwidth = 2;
@@ -225,9 +236,9 @@ public class EditBillboardGUI extends JFrame {
         editBBConstraints.anchor = GridBagConstraints.EAST;
         editBBConstraints.gridx = 0;
         editBBConstraints.gridy = 8;
-        createBBPanel.add(btnSubmit, editBBConstraints);
+        editBBPanel.add(btnSubmit, editBBConstraints);
 
-        getContentPane().add(createBBPanel);
+        getContentPane().add(editBBPanel);
         //set the location of the GUI
         setLocation(900, 350);
 
@@ -286,3 +297,4 @@ public class EditBillboardGUI extends JFrame {
         label.setText(text);
         return label;
     }
+}

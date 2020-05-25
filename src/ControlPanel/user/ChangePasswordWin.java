@@ -2,7 +2,6 @@ package ControlPanel.user;
 
 import ControlPanel.*;
 import Server.Request.ChangePasswordRequest;
-
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
@@ -10,6 +9,9 @@ import java.awt.event.WindowListener;
 import java.io.IOException;
 import javax.swing.*;
 
+/**
+ * @author Nicholas Tseng
+ */
 public class ChangePasswordWin extends JFrame {
     private JLabel labelPassword = new JLabel("New password");
     private JTextField passwordTextField= new JTextField(20);

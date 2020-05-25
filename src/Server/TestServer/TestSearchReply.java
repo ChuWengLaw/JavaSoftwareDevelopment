@@ -1,8 +1,11 @@
 package Server.TestServer;
 import ControlPanel.User;
 import Server.Reply.SearchReply;
+import Server.SessionToken;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -22,7 +25,8 @@ public class TestSearchReply {
     public void RequestStateTestSearchReply(){
         User testUser = new User("Bob", true, true,
                 false, false);
-        SearchReply searchReply = new SearchReply(true, testUser);
+        SessionToken sessionToken = new SessionToken("abc", LocalDateTime.now());
+        SearchReply searchReply = new SearchReply(sessionToken, true, testUser);
         assertEquals(true, searchReply.isRequestState());
     }
     @Test
@@ -30,7 +34,8 @@ public class TestSearchReply {
     public void UserTestSearchReply(){
         User testUser = new User("Bob", true, true,
                 false, false);
-        SearchReply searchReply = new SearchReply(true, testUser);
+        SessionToken sessionToken = new SessionToken("abc", LocalDateTime.now());
+        SearchReply searchReply = new SearchReply(sessionToken, true, testUser);
         assertEquals(testUser, searchReply.getUser());
     }
 }

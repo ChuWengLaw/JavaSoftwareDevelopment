@@ -26,7 +26,6 @@ public class TestCreateBillboardGUI {
     /* Test 2: Check if the input billboard name has been successfully encapsulated in the request object  */
     @Test
     public void TestCreateBBRequestBBName() {
-
         CreateBBRequest createBBRequest = new CreateBBRequest(token, "chad", "john","blue", "black",
                 "hello world", "unknown.xml", "one plus one is zero", "white");
         assertEquals("chad", createBBRequest.getBillboardName());
@@ -57,6 +56,7 @@ public class TestCreateBillboardGUI {
     public void TestCreateBBRequestMessage() {
         CreateBBRequest createBBRequest = new CreateBBRequest(token,"chad", "john","blue", "black",
                 "hello world", "unknown.xml", "one plus one is zero", "white");
+
         assertEquals("hello world", createBBRequest.getMessage());
     }
     /* Test 7: Check if the input billboard image has been successfully encapsulated in the request object  */

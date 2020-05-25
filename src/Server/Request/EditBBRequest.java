@@ -1,6 +1,6 @@
 package Server.Request;
 
-import Server.Server;
+import java.io.Serializable;
 
-public class EditBBRequest {
+public class EditBBRequest implements Serializable {
 }

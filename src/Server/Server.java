@@ -640,8 +640,8 @@ public class Server {
                         StandardCopyOption.REPLACE_EXISTING);
                 ExtractFromXML extractFromXML = new ExtractFromXML(newFileName);
                 BillboardSQL bb = new BillboardSQL();
-                bb.CreateBillboard(newFileName, xmlRequest.getUserName(), extractFromXML.textColour, extractFromXML.backgroundColour,
-                        extractFromXML.message, extractFromXML.image, extractFromXML.information, extractFromXML.informationColour);
+                bb.CreateBillboard(newFileName, xmlRequest.getUserName(), extractFromXML.TxtColourStr, extractFromXML.BGColourStr,
+                        extractFromXML.message, extractFromXML.image, extractFromXML.information, extractFromXML.InfoColourStr);
             }
         }
     }

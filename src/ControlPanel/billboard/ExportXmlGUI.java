@@ -1,18 +1,17 @@
 package ControlPanel.billboard;
 
 import ControlPanel.Client;
-import ControlPanel.Main;
-import Server.Request.DeleteBBRequest;
+import Server.Request.XmlRequest;
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.*;
 
 /**
- * This class creates the GUI to be used to delete a selected
- * billboard
+ * This class creates the GUI to be used to export a selected
+ * billboard to xml format
  */
-public class DeleteBillboardGUI extends JFrame {
+public class ExportXmlGUI extends JFrame {
     //set the width of the GUI
     public static final int WIDTH = 350;
     public static final int HEIGHT = 400;
@@ -34,15 +33,15 @@ public class DeleteBillboardGUI extends JFrame {
      * Constructor initialises the GUI creation.
      * @throws HeadlessException
      */
-    public DeleteBillboardGUI() throws HeadlessException {
-        super("Delete Billboard");
+    public ExportXmlGUI() throws HeadlessException {
+        super("Export a billboard");
         createGUI();
     }
 
     /**
-     * Create the base GUI to be used to create and edit the data
+     * Create the base GUI to be used to export a billboard to xml format
      *
-     * @author Lachlan, Law
+     * @author Law
      */
     private void createGUI() {
         setSize(WIDTH, HEIGHT);
@@ -58,12 +57,12 @@ public class DeleteBillboardGUI extends JFrame {
         //create the button and define what text it will contain
         btnSubmit = createButton("Submit");
 
-        //create and actionListener for the submit button
+        // sends request to server
         btnSubmit.addActionListener(new ActionListener() {
-            // sends request to server
+            //when the submit button is click make covert the inputs into string. then execute the CreateEditBilloard from the Billboard Class
             @Override
             public void actionPerformed(ActionEvent e) {
-                DeleteBBRequest temp = new DeleteBBRequest(Main.loginUser.getSessionToken(), txtBillboardName.getText());
+                XmlRequest temp = new XmlRequest(txtBillboardName.getText());
                 try {
                     Client.connectServer(temp);
                 } catch (Exception ex) {
@@ -75,26 +74,26 @@ public class DeleteBillboardGUI extends JFrame {
         });
 
         constraints.anchor = GridBagConstraints.WEST;
-        constraints.insets = new Insets(2,2,2,2);
+        constraints.insets = new Insets(2, 2, 2, 2);
 
         //add labels to panel
-        constraints.gridx=0;
-        constraints.gridy=0;
-        panel.add(lblBillboardName,constraints);
-        constraints.gridy=1;
+        constraints.gridx = 0;
+        constraints.gridy = 0;
+        panel.add(lblBillboardName, constraints);
+        constraints.gridy = 1;
 
         //add txtfeilds to panel
-        constraints.gridx =1;
-        constraints.gridy=0;
-        panel.add(txtBillboardName,constraints);
+        constraints.gridx = 1;
+        constraints.gridy = 0;
+        panel.add(txtBillboardName, constraints);
 
         //add button to panel
-        constraints.gridwidth =1;
-        constraints.insets = new Insets(5,10,5,10);
+        constraints.gridwidth = 1;
+        constraints.insets = new Insets(5, 10, 5, 10);
         constraints.anchor = GridBagConstraints.CENTER;
-        constraints.gridx=0;
-        constraints.gridy=7;
-        panel.add(btnSubmit,constraints);
+        constraints.gridx = 0;
+        constraints.gridy = 7;
+        panel.add(btnSubmit, constraints);
 
         getContentPane().add(panel);
         //set the location of the GUI
@@ -110,7 +109,7 @@ public class DeleteBillboardGUI extends JFrame {
      *
      * @param text the text with will be on the button
      * @return a JButton with text on it
-     * @author Lachlan
+     * @author Law
      */
     private JButton createButton(String text) {
         JButton button = new JButton();
@@ -122,7 +121,7 @@ public class DeleteBillboardGUI extends JFrame {
      * This function create a blank JTextField
      *
      * @return an empty JTextField
-     * @author Lachlan
+     * @author Law
      */
     private JTextField createText() {
         JTextField textBox = new JTextField(20);
@@ -134,7 +133,7 @@ public class DeleteBillboardGUI extends JFrame {
      *
      * @param text the title of the label
      * @return a JLabel with the title of text
-     * @author Lachlan
+     * @author Law
      */
     private JLabel createLabel(String text) {
         JLabel label = new JLabel();

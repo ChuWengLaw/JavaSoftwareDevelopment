@@ -51,7 +51,7 @@ public class Client {
         return requestState;
     }
 
-    private static void executeReply(Object requestReply){
+    private static void executeReply(Object requestReply) throws IOException {
         if (requestReply instanceof LoginReply){
             LoginReply loginReply = (LoginReply) requestReply;
             requestState = loginReply.isLoginState();

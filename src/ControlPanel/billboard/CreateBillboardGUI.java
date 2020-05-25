@@ -317,28 +317,4 @@ public class CreateBillboardGUI extends JFrame {
     private void isColourValid() {
 
     }
-
-//    /**
-//     * This function is used to determine if a billboard already exists
-//     *
-//     * @param billboardName the name of the billboard being created
-//     * @return a boolean value to whether a billboard already exists
-//     * @throws SQLException
-//     * @author Lachlan
-//     */
-//    private Boolean checkDublicate(String billboardName) throws SQLException {
-//        boolean existing = false;
-//
-//        Statement statement = connection.createStatement();
-//        ResultSet rs = statement.executeQuery("SELECT BillboardName FROM Billboard");
-//
-//        while (rs.next()) {
-//            if (billboardName.equals(rs.getString(1))) {
-//                existing = true;
-//                break;
-//            }
-//        }
-//        statement.close();
-//        return existing;
-//    }
 }

@@ -7,10 +7,10 @@ import ControlPanel.billboard.BillBoardManagementGUI;
 import ControlPanel.schedule.CalanderScheduleGUI;
 import Server.Request.LogoutRequest;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-import javax.swing.*;
 
 /**
  * @author Nicholas Tseng
@@ -108,7 +108,7 @@ public class MenuWin extends JFrame {
     }
 
     /**
-     * This is a method that setup the enability of the edit user button
+     * This is a method that setup the availability of the edit user button
      * depends on the edit user permission
      *
      * @param editUserPermission The edit user permission of the login users.

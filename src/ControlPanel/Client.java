@@ -13,8 +13,9 @@ import java.util.Properties;
  */
 public class Client {
     private static boolean requestState;
-    private static String info = "";
+    private static String info;
     private static JTable listBBTable;
+    private static String EditTextColour, EditBGColour, EditMsg, EditImg, EditInfo, EditInfoColour;
 
     /**
      * Connects to server (connection read from network.props)
@@ -95,11 +96,38 @@ public class Client {
             ListBBReply listBBReply = (ListBBReply) requestReply;
             listBBTable = listBBReply.getTable();
         }
+        else if (requestReply instanceof EditBBReply){
+            EditBBReply editBBReply = (EditBBReply) requestReply;
+            EditBGColour = editBBReply.getEditBGColour();
+            EditTextColour = editBBReply.getEditTextColour();
+            EditMsg = editBBReply.getEditMsg();
+            EditImg = editBBReply.getEditImg();
+            EditInfo = editBBReply.getEditInfo();
+            EditInfoColour = editBBReply.getEditInfoColour();
+        }
     }
     public static String getInfo() {
         return info;
     }
     public static JTable getBBTable() {
         return listBBTable;
+    }
+    public static String getEditTextColour() {
+        return EditTextColour;
+    }
+    public static String getEditBGColour() {
+        return EditBGColour;
+    }
+    public static String getEditMsg() {
+        return EditMsg;
+    }
+    public static String getEditImg() {
+        return EditImg;
+    }
+    public static String getEditInfo() {
+        return EditInfo;
+    }
+    public static String getEditInfoColour() {
+        return EditInfoColour;
     }
 }

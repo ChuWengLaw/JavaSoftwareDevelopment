@@ -21,11 +21,12 @@ public class BillboardSQL {
      * @param BillboardMessage Message in the billboard
      * @param BillboardPicture Image Url in the billboard
      * @param BillboardInformation Information in the billboard
+     * @param InformationColour
      * @exception SQLException if sql query error occurs
      */
     public void CreateBillboard(String BillboardName, String CreatedByUserName, String BillboardTextColour,
-                                    String BillboardBackgroundColour, String BillboardMessage,
-                                    String BillboardPicture, String BillboardInformation, String InformationColour) throws SQLException {
+                                String BillboardBackgroundColour, String BillboardMessage,
+                                String BillboardPicture, String BillboardInformation, String InformationColour) throws SQLException {
 
         /* Flags for checking billboard existence */
         boolean ExistFlag = false;

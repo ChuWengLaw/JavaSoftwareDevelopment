@@ -2,13 +2,14 @@ package Server;
 
 import javax.swing.*;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.Vector;
 
 public class ScheduleSQL {
     public ScheduleSQL() {}
 
     public void ScheduleBillboard(String BillboardName, String DateTime, int Duration,
-                                int RecurType, int RecurAmount) throws SQLException {
+                                  int RecurType, int RecurAmount) throws SQLException {
         boolean ExistFlag = false;
 
         try {
@@ -44,37 +45,35 @@ public class ScheduleSQL {
 
         try {
             Server.statement.executeQuery("DELETE FROM Schedule WHERE (BillboardName = '" +
-                        BillboardName + "' AND ScheduleTime = '" + DateTime + "');");
+                    BillboardName + "' AND ScheduleTime = '" + DateTime + "');");
 
         } catch (SQLException e) {
             System.out.println(e);
         }
     }
 
-    public JTable ScheduledInformation() throws SQLException {
-        JTable table = new JTable();
-        try {
-            ResultSet list = Server.statement.executeQuery("SELECT BillboardName, ScheduleTime FROM Schedule;");
-            ResultSetMetaData rsmd = list.getMetaData();
-            int columnCount = rsmd.getColumnCount();
-            Vector columnHeader = new Vector(columnCount);
-            for (int i = 1; i<= columnCount; i++){
-                columnHeader.add(rsmd.getColumnName(i));
-            }
-            Vector data = new Vector();
-            Vector row = new Vector();
+    public ArrayList<String[]> ScheduledInformation() throws SQLException {
+        ArrayList<String[]> ArrayList = new ArrayList<String[]>(1);
 
-            while(list.next()) {
-                row = new Vector(columnCount);
+        try {
+            ResultSet resultset = Server.statement.executeQuery("SELECT BillboardName, ScheduleTime FROM Schedule;");
+            ResultSetMetaData rsmd = resultset.getMetaData();
+            int columnCount = rsmd.getColumnCount();
+
+
+
+            while(resultset.next()) {
+                String[] row = new String[columnCount];
                 for (int i = 1; i <= columnCount; i++) {
-                    row.add(list.getString(i));
+                    row[i-1] = resultset.getString(i);
                 }
-                data.add(row);
+                ArrayList.add(row);
+
             }
-            table = new JTable(data,columnHeader);
+
         } catch (SQLException e) {
             System.out.println(e);
         }
-        return table;
+        return ArrayList;
     }
 }

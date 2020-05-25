@@ -6,6 +6,7 @@ import Server.Request.*;
 import javax.swing.*;
 import java.io.*;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
@@ -18,7 +19,7 @@ public class Client {
     private static boolean requestState;
     private static String info = "";
     private static JTable listBBTable;
-    private static JTable ScheduleTable;
+    private static ArrayList<String[]> ScheduleArray;
 
     /**
      * Connects to server (connection read from network.props)
@@ -90,14 +91,12 @@ public class Client {
         }
         else if (requestReply instanceof WeeklyScheduleReply){
             WeeklyScheduleReply ScheduleReply = (WeeklyScheduleReply) requestReply;
-            ScheduleTable = ScheduleReply.getTable();
+            ScheduleArray = ScheduleReply.getArray();
         }
     }
-    public static String getInfo() {
-        return info;
-    }
-    public static JTable getBBTable() {
-        return listBBTable;
-    }
-    public static JTable getScheduleTable() {return ScheduleTable;}
+    public static String getInfo() { return info; }
+    public static JTable getBBTable() {return listBBTable;}
+    public static ArrayList<String[]> getScheduleArray() {return ScheduleArray;}
 }
+
+

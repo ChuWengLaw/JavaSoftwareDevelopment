@@ -61,21 +61,46 @@ public class ExtractFromXML {
                         }
                     }
                     if (element.getTagName().startsWith("billboard")) {
-                        Field backGroundColourField = Class.forName("java.awt.Color").getField(element.getAttribute("background").toLowerCase());
-                        backgroundColour = (Color) backGroundColourField.get(null);
-                        BGColourStr = (String) backGroundColourField.get(null);
+                        if (element.hasAttribute("background")) {
+                            BGColourStr = element.getAttribute("background");
+                            if (BGColourStr.startsWith("#")) {
+                                backgroundColour = Color.decode(BGColourStr);
+                            } else {
+                                Field backGroundColourField = Class.forName("java.awt.Color").getField(element.getAttribute("background").toLowerCase());
+                                backgroundColour = (Color) backGroundColourField.get(null);
+                            }
+                        } else {
+                            backgroundColour = Color.white;
+                        }
+
                     }
                     if (element.getTagName().startsWith("message")) {
                         message = element.getTextContent();
-                        Field textColourField = Class.forName("java.awt.Color").getField(element.getAttribute("colour").toLowerCase());
-                        textColour = (Color) textColourField.get(null);
-                        TxtColourStr = (String) textColourField.get(null);
+                        if (element.hasAttribute("colour")) {
+                            TxtColourStr = element.getAttribute("colour");
+                            if (TxtColourStr.startsWith("#")) {
+                                textColour = Color.decode(TxtColourStr);
+                            } else {
+                                Field textColourField = Class.forName("java.awt.Color").getField(element.getAttribute("colour").toLowerCase());
+                                textColour = (Color) textColourField.get(null);
+                            }
+                        } else textColour = Color.black;
+
                     }
                     if (element.getTagName().startsWith("information")) {
                         information = element.getTextContent();
-                        Field infoColourField = Class.forName("java.awt.Color").getField(element.getAttribute("colour").toLowerCase());
-                        informationColour = (Color) infoColourField.get(null);
-                        InfoColourStr = (String) infoColourField.get(null);
+                        if (element.hasAttribute("colour")) {
+                            InfoColourStr = element.getAttribute("colour");
+                            if (InfoColourStr.startsWith("#")) {
+                                informationColour = Color.decode(InfoColourStr);
+                            } else {
+                                Field infoColourField = Class.forName("java.awt.Color").getField(element.getAttribute("colour").toLowerCase());
+                                informationColour = (Color) infoColourField.get(null);
+                            }
+                        } else {
+                            informationColour = textColour;
+                        }
+
                     }
                 }
             }

@@ -1,7 +1,11 @@
 package Server.TestServer;
-import Server.Request.GeneralReply;
+import Server.Reply.GeneralReply;
+import Server.SessionToken;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.time.LocalDateTime;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /* These tests are for the data encapsulated in GeneralReply object
@@ -18,7 +22,8 @@ public class TestGeneralReply {
     @Test
     //Test 2: Check if the request state was successfully encapsulated in GeneralReply object
     public void RequestStateTestGeneralReply(){
-        GeneralReply generalReply = new GeneralReply(true);
+        SessionToken sessionToken = new SessionToken("abc", LocalDateTime.now());
+        GeneralReply generalReply = new GeneralReply(sessionToken,true);
         assertEquals(true, generalReply.isRequestState());
     }
 }

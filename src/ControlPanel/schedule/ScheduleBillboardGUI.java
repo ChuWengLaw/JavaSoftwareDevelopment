@@ -34,8 +34,11 @@ public class ScheduleBillboardGUI extends JFrame {
     private JTextField txtBillboardName = new JTextField(20);
     private JTextField txtScheduledTime = new JTextField(20);
     private JTextField txtDuration = new JTextField(20);
-    private JTextField txtReoccurType = new JTextField(20);
+    //private JTextField txtReoccurType = new JTextField(20);
     private JTextField txtReoccurAmount = new JTextField(20);
+
+    JComboBox ReoccureType = new JComboBox();
+
 
 
     public ScheduleBillboardGUI(){
@@ -45,7 +48,10 @@ public class ScheduleBillboardGUI extends JFrame {
     private void createGUI() {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
-
+        ReoccureType.addItem("None");
+        ReoccureType.addItem("1 Day");
+        ReoccureType.addItem("1 Hour");
+        ReoccureType.addItem("(Below) Minutes");
 
         btnSubmit.addActionListener(new ActionListener() {
             //when the submit button is click make covert the inputs into string. then execute the CreateEditBilloard from the Billboard Class
@@ -53,10 +59,15 @@ public class ScheduleBillboardGUI extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 if (Check_Valid_Inputs())
                 {
+                    String value = ReoccureType.getSelectedItem().toString();
+                    if (value.equals("None")) value = "0";
+                    else if (value.equals("1 Day")) value = "1";
+                    else if (value.equals("1 Hour")) value = "2";
+                    else if (value.equals("(Below) Minutes")) value = "3";
                     //System.out.println("Correct Inputs");
                     //Create Schedule Requests
                     ScheduleBillboardRequest temp = new ScheduleBillboardRequest(txtBillboardName.getText(), txtScheduledTime.getText(),
-                            txtDuration.getText(), txtReoccurType.getText(), txtReoccurAmount.getText());
+                            txtDuration.getText(), value, txtReoccurAmount.getText());
                     try {
                         Client.connectServer(temp);
                     } catch (InterruptedException ex) {
@@ -70,7 +81,7 @@ public class ScheduleBillboardGUI extends JFrame {
                     txtBillboardName.setText("");
                     txtScheduledTime.setText("");
                     txtDuration.setText("");
-                    txtReoccurType.setText("");
+                    //ReoccureType.;
                     txtReoccurAmount.setText("");
                 }
                 else
@@ -106,7 +117,7 @@ public class ScheduleBillboardGUI extends JFrame {
         constraints.gridy=3;
         pnlScheduleNewBillboard.add(txtDuration,constraints);
         constraints.gridy=4;
-        pnlScheduleNewBillboard.add(txtReoccurType,constraints);
+        pnlScheduleNewBillboard.add(ReoccureType,constraints);
         constraints.gridy=5;
         pnlScheduleNewBillboard.add(txtReoccurAmount,constraints);
 
@@ -130,15 +141,18 @@ public class ScheduleBillboardGUI extends JFrame {
         String BillboardTitle = txtBillboardName.getText();
         try
         {
+            if (txtReoccurAmount.getText().equals(""))
+            {
+                txtReoccurAmount.setText("0");
+            }
             Date date = format.parse(txtScheduledTime.getText());
             int Duration = Integer.parseInt(txtDuration.getText());
-            int ReoccurType = Integer.parseInt(txtReoccurType.getText());
             int ReoccurAmount = Integer.parseInt(txtReoccurAmount.getText());
-            if (Duration <= 0 || ReoccurType < 0 || ReoccurType > 3)
+            if (Duration <= 0)// || ReoccurType < 0 || ReoccurType > 3)
             {
                 return false;
             }
-            else if (ReoccurType == 3 && ReoccurAmount < Duration)
+            else if (ReoccureType.getSelectedItem().toString().equals("(Below) Minutes") && ReoccurAmount < Duration)
             {
                 return false;
             }

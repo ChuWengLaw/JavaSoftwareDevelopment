@@ -1,10 +1,13 @@
 package ControlPanel;
 
-import Server.Request.*;
+import Server.Reply.*;
+import Server.Request.EditBBReply;
+import Server.Request.WeeklyScheduleReply;
 
 import javax.swing.*;
 import java.io.*;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.Properties;
 
 /**
@@ -15,7 +18,11 @@ public class Client {
     private static boolean requestState;
     private static String info;
     private static JTable listBBTable;
+<<<<<<< HEAD
     private static String EditTextColour, EditBGColour, EditMsg, EditImg, EditInfo, EditInfoColour;
+=======
+    private static ArrayList<String[]> ScheduleArray;
+>>>>>>> 7b65f76ee0e16202142c40b18a1cda5dd5363693
 
     /**
      * Connects to server (connection read from network.props)
@@ -52,7 +59,7 @@ public class Client {
         return requestState;
     }
 
-    private static void executeReply(Object requestReply) throws IOException {
+    private static void executeReply(Object requestReply) {
         if (requestReply instanceof LoginReply){
             LoginReply loginReply = (LoginReply) requestReply;
             requestState = loginReply.isLoginState();
@@ -69,6 +76,8 @@ public class Client {
             if (requestState){
                 Main.editUserWin.editedUser = searchReply.getUser();
             }
+
+            Main.loginUser.setSessionToken(searchReply.getSessionToken());
         }
         else if (requestReply instanceof LogoutReply){
             LogoutReply logoutReply = (LogoutReply) requestReply;
@@ -85,19 +94,27 @@ public class Client {
         else if (requestReply instanceof GeneralReply){
             GeneralReply generalReply = (GeneralReply) requestReply;
             requestState = generalReply.isRequestState();
+            Main.loginUser.setSessionToken(generalReply.getSessionToken());
         }
         else if (requestReply instanceof ListUserReply){
             ListUserReply listUserReply = (ListUserReply) requestReply;
             Main.listUserWin.getTable(listUserReply.getTable());
             requestState = listUserReply.isListUserState();
+            Main.loginUser.setSessionToken(listUserReply.getSessionToken());
         }
         else if (requestReply instanceof BBInfoReply){
             BBInfoReply bbInfoReply = (BBInfoReply) requestReply;
             info = bbInfoReply.getInformation();
+            Main.loginUser.setSessionToken(bbInfoReply.getSessionToken());
         }
         else if (requestReply instanceof ListBBReply){
             ListBBReply listBBReply = (ListBBReply) requestReply;
             listBBTable = listBBReply.getTable();
+            Main.loginUser.setSessionToken(listBBReply.getSessionToken());
+        }
+        else if (requestReply instanceof WeeklyScheduleReply){
+            WeeklyScheduleReply ScheduleReply = (WeeklyScheduleReply) requestReply;
+            ScheduleArray = ScheduleReply.getArray();
         }
         else if (requestReply instanceof EditBBReply){
             EditBBReply editBBReply = (EditBBReply) requestReply;
@@ -109,6 +126,7 @@ public class Client {
             EditInfoColour = editBBReply.getEditInfoColour();
         }
     }
+
     public static String getInfo() {
         return info;
     }
@@ -133,4 +151,7 @@ public class Client {
     public static String getEditInfoColour() {
         return EditInfoColour;
     }
+    public static ArrayList<String[]> getScheduleArray() {return ScheduleArray;}
 }
+
+

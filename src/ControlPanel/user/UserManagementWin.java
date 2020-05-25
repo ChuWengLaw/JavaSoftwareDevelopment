@@ -19,14 +19,11 @@ import javax.swing.*;
  * 4. Delete user.
  */
 public class UserManagementWin extends JFrame{
-    /**
-     * Initialize the components in the window.
-     */
+    // Initialize the components in the window.
     private JButton createUserButton = new JButton("Create a new user");
     private JButton listUserButton = new JButton("List all users");
     private JButton editUserButton = new JButton("Edit user");
     private JButton deleteUserButton = new JButton("Delete user");
-    private JButton changePasswordButton = new JButton("Change password");
     private JPanel panel = new JPanel(new GridBagLayout());
     private GridBagConstraints constraints = new GridBagConstraints();
 
@@ -92,12 +89,6 @@ public class UserManagementWin extends JFrame{
         };
         listUserButton.addActionListener(listActionListener);
 
-        ActionListener changePasswordListener = e-> {
-            Main.changePasswordWin.setVisible(true);
-            super.setEnabled(false);
-        };
-        changePasswordButton.addActionListener(changePasswordListener);
-
         // Panel setting
         constraints.anchor = GridBagConstraints.WEST;
         constraints.insets = new Insets(10, 10, 10, 10);
@@ -114,9 +105,6 @@ public class UserManagementWin extends JFrame{
 
         constraints.gridx =3;
         panel.add(deleteUserButton, constraints);
-
-        constraints.gridx = 4;
-        panel.add(changePasswordButton, constraints);
 
         getContentPane().add(panel);
 

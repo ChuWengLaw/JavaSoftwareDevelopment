@@ -15,10 +15,12 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.net.URL;
+import java.util.Base64;
 import java.util.concurrent.*;
 
 /**
@@ -160,17 +162,28 @@ public class BillBoardViewer extends JFrame {
         }
         //only image
         else if (extractFromXML.message.isBlank() && extractFromXML.information.isBlank() && !extractFromXML.image.isBlank()) {
-
-
-            URL url = new URL(extractFromXML.image);
-            BufferedImage image = ImageIO.read(url);
             JLabel picture = new JLabel();
-            if (image.getWidth() < image.getHeight()) {
-                picture.setIcon(new ImageIcon(image.getScaledInstance(-1, screenHeight / 2, Image.SCALE_SMOOTH)));
+            //if it is a url image
+            if (extractFromXML.image.startsWith("http")) {
+                URL url = new URL(extractFromXML.image);
+                BufferedImage image = ImageIO.read(url);
+                if (image.getWidth() < image.getHeight()) {
+                    picture.setIcon(new ImageIcon(image.getScaledInstance(-1, screenHeight / 2, Image.SCALE_SMOOTH)));
+                } else {
+                    picture.setIcon(new ImageIcon(image.getScaledInstance(screenWidth / 2, -1, Image.SCALE_SMOOTH)));
+                }
+                //else if image is in data form
             } else {
-                picture.setIcon(new ImageIcon(image.getScaledInstance(screenWidth / 2, -1, Image.SCALE_SMOOTH)));
+                byte[] encodedImage;
+                encodedImage = extractFromXML.image.getBytes();
+                byte[] decodedImage = Base64.getDecoder().decode(encodedImage);
+                BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedImage));
+                if (image.getWidth() < image.getHeight() || image.getHeight() == image.getWidth()) {
+                    picture.setIcon(new ImageIcon(image.getScaledInstance(-1, screenHeight / 2, Image.SCALE_SMOOTH)));
+                } else {
+                    picture.setIcon(new ImageIcon(image.getScaledInstance(screenWidth / 2, -1, Image.SCALE_SMOOTH)));
+                }
             }
-
             picture.setHorizontalAlignment(SwingConstants.CENTER);
             picture.setVerticalAlignment(SwingConstants.CENTER);
 
@@ -228,16 +241,30 @@ public class BillBoardViewer extends JFrame {
             int fontSizeToUse = Math.min(newFontSize, componentHeight);
             messageLabel.setFont(new Font(messageLabel.getFont().getName(), Font.PLAIN, fontSizeToUse));
 
-            URL url = new URL(extractFromXML.image);
-            BufferedImage image = ImageIO.read(url);
             JLabel picture = new JLabel();
-            if (image.getWidth() < image.getHeight()) {
-                picture.setIcon(new ImageIcon(image.getScaledInstance(-1, screenHeight / 2, Image.SCALE_SMOOTH)));
+            //if it is a url image
+            if (extractFromXML.image.startsWith("http")) {
+                URL url = new URL(extractFromXML.image);
+                BufferedImage image = ImageIO.read(url);
+                if (image.getWidth() < image.getHeight()) {
+                    picture.setIcon(new ImageIcon(image.getScaledInstance(-1, screenHeight / 2, Image.SCALE_SMOOTH)));
+                } else {
+                    picture.setIcon(new ImageIcon(image.getScaledInstance(screenWidth / 2, -1, Image.SCALE_SMOOTH)));
+                }
+                //else if image is in data form
             } else {
-                picture.setIcon(new ImageIcon(image.getScaledInstance(screenWidth / 2, -1, Image.SCALE_SMOOTH)));
+                byte[] encodedImage;
+                encodedImage = extractFromXML.image.getBytes();
+                byte[] decodedImage = Base64.getDecoder().decode(encodedImage);
+                BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedImage));
+                if (image.getWidth() < image.getHeight() || image.getHeight() == image.getWidth()) {
+                    picture.setIcon(new ImageIcon(image.getScaledInstance(-1, screenHeight / 2, Image.SCALE_SMOOTH)));
+                } else {
+                    picture.setIcon(new ImageIcon(image.getScaledInstance(screenWidth / 2, -1, Image.SCALE_SMOOTH)));
+                }
             }
-            picture.setVerticalAlignment(SwingConstants.CENTER);
             picture.setHorizontalAlignment(SwingConstants.CENTER);
+            picture.setVerticalAlignment(SwingConstants.CENTER);
 
             layoutPanel.setLayout(new BorderLayout());
             layoutPanel.add(messageLabel, BorderLayout.NORTH);
@@ -297,16 +324,30 @@ public class BillBoardViewer extends JFrame {
             JPanel layoutPanel = new JPanel();
             layoutPanel.setBackground(extractFromXML.backgroundColour);
 
-            URL url = new URL(extractFromXML.image);
-            BufferedImage image = ImageIO.read(url);
             JLabel picture = new JLabel();
-            if (image.getWidth() < image.getHeight()) {
-                picture.setIcon(new ImageIcon(image.getScaledInstance(-1, screenHeight / 2, Image.SCALE_SMOOTH)));
+            //if it is a url image
+            if (extractFromXML.image.startsWith("http")) {
+                URL url = new URL(extractFromXML.image);
+                BufferedImage image = ImageIO.read(url);
+                if (image.getWidth() < image.getHeight()) {
+                    picture.setIcon(new ImageIcon(image.getScaledInstance(-1, screenHeight / 2, Image.SCALE_SMOOTH)));
+                } else {
+                    picture.setIcon(new ImageIcon(image.getScaledInstance(screenWidth / 2, -1, Image.SCALE_SMOOTH)));
+                }
+                //else if image is in data form
             } else {
-                picture.setIcon(new ImageIcon(image.getScaledInstance(screenWidth / 2, -1, Image.SCALE_SMOOTH)));
+                byte[] encodedImage;
+                encodedImage = extractFromXML.image.getBytes();
+                byte[] decodedImage = Base64.getDecoder().decode(encodedImage);
+                BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedImage));
+                if (image.getWidth() < image.getHeight() || image.getHeight() == image.getWidth()) {
+                    picture.setIcon(new ImageIcon(image.getScaledInstance(-1, screenHeight / 2, Image.SCALE_SMOOTH)));
+                } else {
+                    picture.setIcon(new ImageIcon(image.getScaledInstance(screenWidth / 2, -1, Image.SCALE_SMOOTH)));
+                }
             }
-            picture.setVerticalAlignment(SwingConstants.CENTER);
             picture.setHorizontalAlignment(SwingConstants.CENTER);
+            picture.setVerticalAlignment(SwingConstants.CENTER);
 
             JLabel infoLabel = new JLabel();
             infoLabel.setText("<HTML>" + extractFromXML.information + "</HTML>");
@@ -339,16 +380,30 @@ public class BillBoardViewer extends JFrame {
             JPanel layoutPanel = new JPanel();
             layoutPanel.setBackground(extractFromXML.backgroundColour);
 
-            URL url = new URL(extractFromXML.image);
-            BufferedImage image = ImageIO.read(url);
             JLabel picture = new JLabel();
-            if (image.getWidth() < image.getHeight()) {
-                picture.setIcon(new ImageIcon(image.getScaledInstance(-1, screenHeight / 3, Image.SCALE_SMOOTH)));
+            //if it is a url image
+            if (extractFromXML.image.startsWith("http")) {
+                URL url = new URL(extractFromXML.image);
+                BufferedImage image = ImageIO.read(url);
+                if (image.getWidth() < image.getHeight()) {
+                    picture.setIcon(new ImageIcon(image.getScaledInstance(-1, screenHeight / 3, Image.SCALE_SMOOTH)));
+                } else {
+                    picture.setIcon(new ImageIcon(image.getScaledInstance(screenWidth / 3, -1, Image.SCALE_SMOOTH)));
+                }
+                //else if image is in data form
             } else {
-                picture.setIcon(new ImageIcon(image.getScaledInstance(screenWidth / 3, -1, Image.SCALE_SMOOTH)));
+                byte[] encodedImage;
+                encodedImage = extractFromXML.image.getBytes();
+                byte[] decodedImage = Base64.getDecoder().decode(encodedImage);
+                BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedImage));
+                if (image.getWidth() < image.getHeight() || image.getHeight() == image.getWidth()) {
+                    picture.setIcon(new ImageIcon(image.getScaledInstance(-1, screenHeight / 3, Image.SCALE_SMOOTH)));
+                } else {
+                    picture.setIcon(new ImageIcon(image.getScaledInstance(screenWidth / 3, -1, Image.SCALE_SMOOTH)));
+                }
             }
-            picture.setVerticalAlignment(SwingConstants.CENTER);
             picture.setHorizontalAlignment(SwingConstants.CENTER);
+            picture.setVerticalAlignment(SwingConstants.CENTER);
 
             JLabel messageLabel = new JLabel();
             messageLabel.setText(extractFromXML.message);
@@ -370,7 +425,6 @@ public class BillBoardViewer extends JFrame {
             infoLabel.setForeground(extractFromXML.informationColour);
             infoLabel.setBackground(extractFromXML.backgroundColour);
             infoLabel.setPreferredSize(new Dimension(screenWidth, screenHeight / 3));
-            //infoLabel.setFont(infoLabel.getFont().deriveFont(32.0f));
             infoLabel.setBorder(new EmptyBorder(0, screenWidth / 8, 0, screenWidth / 8));
 
             int infoWidth = infoLabel.getFontMetrics(infoLabel.getFont()).stringWidth(infoLabel.getText());

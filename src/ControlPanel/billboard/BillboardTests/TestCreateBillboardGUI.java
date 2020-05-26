@@ -21,8 +21,8 @@ public class TestCreateBillboardGUI {
     SessionToken token = new SessionToken("token", LocalDateTime.now());
 
     /* Test 1: Construct a empty request */
-
-    @BeforeEach @DynamicTest
+    @BeforeEach
+    @Test
     public void TestEmptyCreateBBRequest() {
         CreateBBRequest createBBRequest;
     }

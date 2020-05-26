@@ -81,7 +81,6 @@ public class BillBoardManagementGUI extends JFrame {
         super.addWindowListener(windowListener);
         //set up buttons
         btnCreateBB = createButton("Create Billboard");
-        btnEditBB = createButton("Edit Billboard");
         btnDeleteBB = createButton("Delete Billboard");
         btnInfoBB = createButton("Billboard Info");
         btnListBB = createButton("List Existing Billboards");
@@ -92,13 +91,6 @@ public class BillBoardManagementGUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 new CreateBillboardGUI();
-            }
-        });
-        // Edit Billboard
-        btnEditBB.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new EditBillboardGUI();
             }
         });
         // Delete billboard
@@ -166,21 +158,18 @@ public class BillBoardManagementGUI extends JFrame {
         bBMenu.add(btnCreateBB, constraints);
 
         constraints.gridx = 1;
-        bBMenu.add(btnEditBB, constraints);
-
-        constraints.gridx = 2;
         bBMenu.add(btnDeleteBB, constraints);
 
-        constraints.gridx = 3;
+        constraints.gridx = 2;
         bBMenu.add(btnInfoBB, constraints);
 
-        constraints.gridx = 4;
+        constraints.gridx = 3;
         bBMenu.add(btnListBB, constraints);
 
-        constraints.gridx = 5;
+        constraints.gridx = 4;
         bBMenu.add(btnImport, constraints);
 
-        constraints.gridx = 6;
+        constraints.gridx = 5;
         bBMenu.add(btnExport, constraints);
         getContentPane().add(bBMenu);
 
@@ -202,14 +191,5 @@ public class BillBoardManagementGUI extends JFrame {
         JButton button = new JButton();
         button.setText(text);
         return button;
-    }
-    /**
-     * This is a method that setup the availability of the create billboard button
-     * depends on the create billboards permission
-     *
-     * @param createBillboardsPermission The edit user permission of the login users.
-     */
-    public void createBBEnable(boolean createBillboardsPermission) {
-        btnCreateBB.setEnabled(createBillboardsPermission);
     }
 }

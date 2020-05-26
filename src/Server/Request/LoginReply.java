@@ -1,4 +1,4 @@
-package Server.Reply;
+package Server.Request;
 
 import ControlPanel.User;
 import Server.SessionToken;

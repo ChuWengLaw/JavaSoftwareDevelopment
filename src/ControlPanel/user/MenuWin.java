@@ -6,10 +6,10 @@ import ControlPanel.billboard.BillBoardManagementGUI;
 import ControlPanel.schedule.CalanderScheduleGUI;
 import Server.Request.LogoutRequest;
 
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import javax.swing.*;
 
 /**
  * @author Nicholas Tseng
@@ -24,7 +24,9 @@ import java.io.IOException;
  * the button will be disable from them.
  */
 public class MenuWin extends JFrame {
-    // Initialize the components in the window.
+    /**
+     * Initialize the components in the window.
+     */
     private JButton billboardManageButton = new JButton("Billboard management");
     private JButton editUserButton = new JButton("User management");
     private JButton scheduleBillboardButton = new JButton("Schedule Billboard");
@@ -34,12 +36,12 @@ public class MenuWin extends JFrame {
     private GridBagConstraints constraints = new GridBagConstraints();
 
     /**
-     * This is the construct which will create the menu window.
+     * This is the constructor which will create the menu window.
      */
     public MenuWin() {
         // Setting default value of the frame
         super("Menu");
-        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         // Button setting
         ActionListener editUserListener = e -> {
@@ -105,7 +107,7 @@ public class MenuWin extends JFrame {
     }
 
     /**
-     * This is a method that setup the availability of the edit user button
+     * This is a method that setup the enability of the edit user button
      * depends on the edit user permission
      *
      * @param editUserPermission The edit user permission of the login users.

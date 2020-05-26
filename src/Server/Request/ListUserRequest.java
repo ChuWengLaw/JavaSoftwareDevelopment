@@ -1,16 +1,15 @@
 package Server.Request;
 
-import Server.SessionToken;
-
 import java.io.Serializable;
 
 public class ListUserRequest implements Serializable {
-    private SessionToken sessionToken;
-    public ListUserRequest(SessionToken sessionToken){
+    private String sessionToken;
+
+    public ListUserRequest(String sessionToken) {
         this.sessionToken = sessionToken;
     }
 
-    public SessionToken getSessionToken() {
+    public String getSessionToken() {
         return sessionToken;
     }
 }

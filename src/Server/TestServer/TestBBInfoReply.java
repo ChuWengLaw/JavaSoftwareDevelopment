@@ -1,11 +1,8 @@
 package Server.TestServer;
 
-import Server.Reply.BBInfoReply;
-import Server.SessionToken;
+import Server.Request.BBInfoReply;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -26,8 +23,7 @@ public class TestBBInfoReply {
     /* Test 2: Check if the input billboard info has been successfully encapsulated in the reply object  */
     @Test
     public void TestBBInfoReplyBBInfo() {
-        SessionToken sessionToken = new SessionToken("abc", LocalDateTime.now());
-        BBInfoReply bbInfoReply = new BBInfoReply(sessionToken, "Old town road");
+        BBInfoReply bbInfoReply = new BBInfoReply("Old town road");
         assertEquals("Old town road", bbInfoReply.getInformation());
     }
 }

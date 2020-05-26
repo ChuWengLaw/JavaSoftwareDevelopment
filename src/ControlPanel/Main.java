@@ -18,6 +18,8 @@ public class Main {
     public static DeleteUserWin deleteUserWin = new DeleteUserWin();
     public static ListUserWin listUserWin = new ListUserWin();
 
-    public static void main(String[] args) {SwingUtilities.invokeLater(new LoginWin());}
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(new LoginWin());
+    }
 }
 

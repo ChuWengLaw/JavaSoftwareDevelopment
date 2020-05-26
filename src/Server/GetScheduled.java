@@ -1,4 +1,4 @@
-package Viewer;
+package Server;
 
 
 import Server.Server;

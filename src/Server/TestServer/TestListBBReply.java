@@ -1,13 +1,10 @@
 package Server.TestServer;
 
-import Server.Reply.ListBBReply;
-import Server.SessionToken;
+import Server.Request.ListBBReply;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import javax.swing.*;
-
-import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -29,8 +26,7 @@ public class TestListBBReply {
     @Test
     public void TestListBBReply() {
         JTable test = new JTable();
-        SessionToken sessionToken = new SessionToken("abc", LocalDateTime.now());
-        ListBBReply bbInfoReply = new ListBBReply(sessionToken, test);
+        ListBBReply bbInfoReply = new ListBBReply(test);
         assertEquals(test, bbInfoReply.getTable());
     }
 }

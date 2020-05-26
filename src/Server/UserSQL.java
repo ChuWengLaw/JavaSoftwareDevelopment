@@ -3,11 +3,8 @@ package Server;
 import ControlPanel.User;
 
 import javax.swing.*;
-import javax.xml.transform.Result;
-import java.awt.*;
 import java.security.NoSuchAlgorithmException;
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.Vector;
 
 public class UserSQL {

@@ -1,34 +1,30 @@
 package ControlPanel.user;
 
 import ControlPanel.*;
-import Server.*;
 import Server.Request.DeleteUserRequest;
-
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import java.sql.*;
+import java.net.ConnectException;
 import javax.swing.*;
 
-public class DeleteUserWin extends JFrame {
+public class DeleteUserWin extends JFrame{
     private JLabel usernamelabel = new JLabel("Username:");
     private JTextField usernamefield = new JTextField(20);
     private JButton deletebutton = new JButton("Delete");
     private JPanel deletepanel = new JPanel(new GridBagLayout());
     private GridBagConstraints constraints = new GridBagConstraints();
 
-    public DeleteUserWin() {
+    public DeleteUserWin(){
         super("Delete a User");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         WindowListener windowListener = new WindowListener() {
             @Override
-            public void windowOpened(WindowEvent e) {
-            }
+            public void windowOpened(WindowEvent e) {}
 
             @Override
-            public void windowClosing(WindowEvent e) {
-            }
+            public void windowClosing(WindowEvent e) {}
 
             @Override
             public void windowClosed(WindowEvent e) {
@@ -37,42 +33,44 @@ public class DeleteUserWin extends JFrame {
             }
 
             @Override
-            public void windowIconified(WindowEvent e) {
-            }
+            public void windowIconified(WindowEvent e) {}
 
             @Override
-            public void windowDeiconified(WindowEvent e) {
-            }
+            public void windowDeiconified(WindowEvent e) {}
 
             @Override
-            public void windowActivated(WindowEvent e) {
-            }
+            public void windowActivated(WindowEvent e) {}
 
             @Override
-            public void windowDeactivated(WindowEvent e) {
-            }
+            public void windowDeactivated(WindowEvent e) {}
         };
         super.addWindowListener(windowListener);
 
         ActionListener listener = e -> {
             if (usernamefield.getText().isEmpty()) {
                 JOptionPane.showMessageDialog(null, "Username cannot be empty");
-            } else {
-                DeleteUserRequest deleteUser = new DeleteUserRequest(usernamefield.getText());
-                try {
+            }
+            else{
+                DeleteUserRequest deleteUser = new DeleteUserRequest(usernamefield.getText(), Main.loginUser.getSessionToken());
+
+                try{
                     Client.connectServer(deleteUser);
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
-                if (Client.isRequestState()) {
-                    JOptionPane.showMessageDialog(null, "User has been deleted");
-                    System.out.println(Client.isRequestState());
-                } else {
+
+                    if (Client.isRequestState()){
+                        JOptionPane.showMessageDialog(null, "User has been deleted");
+                    }
+                    else{
+                        throw new Exception();
+                    }
+                } catch(ConnectException ex){
+                    JOptionPane.showMessageDialog(null, "Connection fail.");
+                    System.exit(0);
+                } catch (Exception ex){
                     JOptionPane.showMessageDialog(null, "User does not exist");
                 }
+
                 usernamefield.setText("");
             }
-
         };
 
         deletebutton.addActionListener(listener);
@@ -93,7 +91,7 @@ public class DeleteUserWin extends JFrame {
 
         getContentPane().add(deletepanel);
 
-        setLocation(900, 350);
+        setLocation(900,350);
         pack();
     }
 }

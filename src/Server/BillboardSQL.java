@@ -5,6 +5,7 @@ import java.sql.*;
 import java.util.Vector;
 
 public class BillboardSQL {
+    public String backgroundColour, message, textColour, image, information, informationColour;
     /**
      * BillboardSQL constructor.
      */
@@ -60,6 +61,24 @@ public class BillboardSQL {
         } catch (SQLException e) {
             System.out.println(e);
         }
+    }
+
+    /**
+     * This method executes SQL to extract the billboard contents
+     * @param BillboardName
+     * @throws SQLException
+     * @author Law
+     */
+    public void EditBillboard(String BillboardName) throws SQLException {
+        ResultSet getBillboard = Server.statement.executeQuery("SELECT * FROM Billboard WHERE BillboardName = '"
+                + BillboardName + "';");
+        getBillboard.next();
+        backgroundColour = getBillboard.getString("BackGroundColour");
+        message = getBillboard.getString("Message");
+        textColour = getBillboard.getString("TextColour");
+        image = getBillboard.getString("Image");
+        information = getBillboard.getString("Information");
+        informationColour = getBillboard.getString("InfoColour");
     }
 
     /**

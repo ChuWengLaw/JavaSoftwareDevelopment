@@ -1,10 +1,13 @@
 package ControlPanel;
 
-import Server.Request.*;
+import Server.Reply.*;
+import Server.Request.EditBBReply;
+import Server.Request.WeeklyScheduleReply;
 
 import javax.swing.*;
 import java.io.*;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.Properties;
 
 /**
@@ -13,12 +16,16 @@ import java.util.Properties;
  */
 public class Client {
     private static boolean requestState;
-    private static String info = "";
+    private static String info;
     private static JTable listBBTable;
+<<<<<<< HEAD
+    private static String EditTextColour, EditBGColour, EditMsg, EditImg, EditInfo, EditInfoColour;
+=======
+    private static ArrayList<String[]> ScheduleArray;
+>>>>>>> 7b65f76ee0e16202142c40b18a1cda5dd5363693
 
     /**
      * Connects to server (connection read from network.props)
-     *
      * @param args The object encapsulating the data inputs to be sent to server
      */
     public static void connectServer(Object args) throws IOException, InterruptedException, ClassNotFoundException {
@@ -52,50 +59,99 @@ public class Client {
         return requestState;
     }
 
-    private static void executeReply(Object requestReply) throws IOException {
-        if (requestReply instanceof LoginReply) {
+    private static void executeReply(Object requestReply) {
+        if (requestReply instanceof LoginReply){
             LoginReply loginReply = (LoginReply) requestReply;
             requestState = loginReply.isLoginState();
-            if (requestState) {
+
+            if (requestState){
                 Main.loginUser = loginReply.getUser();
                 Main.loginUser.setSessionToken(loginReply.getSessionToken());
             }
-        } else if (requestReply instanceof SearchReply) {
+        }
+        else if (requestReply instanceof SearchReply){
             SearchReply searchReply = (SearchReply) requestReply;
             requestState = searchReply.isRequestState();
-            if (requestState) {
+
+            if (requestState){
                 Main.editUserWin.editedUser = searchReply.getUser();
             }
-        } else if (requestReply instanceof LogoutReply) {
+
+            Main.loginUser.setSessionToken(searchReply.getSessionToken());
+        }
+        else if (requestReply instanceof LogoutReply){
             LogoutReply logoutReply = (LogoutReply) requestReply;
 
             // Display different message upon different logout reason.
-            if (logoutReply.isExpired()) {
+            if(logoutReply.isExpired()){
                 JOptionPane.showMessageDialog(null, "Session expired, system logged out.");
-            } else {
+            }
+            else{
                 JOptionPane.showMessageDialog(null, "Successfully logged out!");
             }
             System.exit(0);
-        } else if (requestReply instanceof GeneralReply) {
+        }
+        else if (requestReply instanceof GeneralReply){
             GeneralReply generalReply = (GeneralReply) requestReply;
             requestState = generalReply.isRequestState();
-        } else if (requestReply instanceof ListUserReply) {
+            Main.loginUser.setSessionToken(generalReply.getSessionToken());
+        }
+        else if (requestReply instanceof ListUserReply){
             ListUserReply listUserReply = (ListUserReply) requestReply;
-            Main.listUserWin.getTable(listUserReply.getTable(), listUserReply.isValidSession());
-        } else if (requestReply instanceof BBInfoReply) {
+            Main.listUserWin.getTable(listUserReply.getTable());
+            requestState = listUserReply.isListUserState();
+            Main.loginUser.setSessionToken(listUserReply.getSessionToken());
+        }
+        else if (requestReply instanceof BBInfoReply){
             BBInfoReply bbInfoReply = (BBInfoReply) requestReply;
             info = bbInfoReply.getInformation();
-        } else if (requestReply instanceof ListBBReply) {
+            Main.loginUser.setSessionToken(bbInfoReply.getSessionToken());
+        }
+        else if (requestReply instanceof ListBBReply){
             ListBBReply listBBReply = (ListBBReply) requestReply;
             listBBTable = listBBReply.getTable();
+            Main.loginUser.setSessionToken(listBBReply.getSessionToken());
+        }
+        else if (requestReply instanceof WeeklyScheduleReply){
+            WeeklyScheduleReply ScheduleReply = (WeeklyScheduleReply) requestReply;
+            ScheduleArray = ScheduleReply.getArray();
+        }
+        else if (requestReply instanceof EditBBReply){
+            EditBBReply editBBReply = (EditBBReply) requestReply;
+            EditBGColour = editBBReply.getEditBGColour();
+            EditTextColour = editBBReply.getEditTextColour();
+            EditMsg = editBBReply.getEditMsg();
+            EditImg = editBBReply.getEditImg();
+            EditInfo = editBBReply.getEditInfo();
+            EditInfoColour = editBBReply.getEditInfoColour();
         }
     }
 
     public static String getInfo() {
         return info;
     }
-
     public static JTable getBBTable() {
         return listBBTable;
     }
+    public static String getEditTextColour() {
+        return EditTextColour;
+    }
+    public static String getEditBGColour() {
+        return EditBGColour;
+    }
+    public static String getEditMsg() {
+        return EditMsg;
+    }
+    public static String getEditImg() {
+        return EditImg;
+    }
+    public static String getEditInfo() {
+        return EditInfo;
+    }
+    public static String getEditInfoColour() {
+        return EditInfoColour;
+    }
+    public static ArrayList<String[]> getScheduleArray() {return ScheduleArray;}
 }
+
+

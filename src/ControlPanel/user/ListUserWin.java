@@ -9,6 +9,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.net.ConnectException;
 import java.sql.*;
 import java.util.Vector;
 
@@ -57,31 +58,35 @@ public class ListUserWin extends JFrame {
         setLocation(900, 350);
     }
 
-    public void createTableSQL() throws SQLException {
-        ListUserRequest listUser = new ListUserRequest("Miku");
+    public void createTableSQL() {
+        ListUserRequest listUser = new ListUserRequest(Main.loginUser.getSessionToken());
+
         try {
             Client.connectServer(listUser);
+
+            if(Client.isRequestState()){
+                super.setSize(500, 120);
+                super.setLocationRelativeTo(null);
+                JPanel panel = new JPanel();
+                JScrollPane scrollpane = new JScrollPane(table);
+                panel.setLayout(new BorderLayout());
+                panel.add(scrollpane, BorderLayout.CENTER);
+                super.setContentPane(panel);
+                super.setVisible(true);
+            }
+            else{
+                throw new Exception();
+            }
+        } catch(ConnectException ex){
+            JOptionPane.showMessageDialog(null, "Connection failed.");
+            System.exit(0);
         } catch (Exception ex) {
-            ex.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Failed to generate list");
         }
     }
 
-    public void getTable(JTable table, boolean validSession) {
-        if (validSession) {
-            super.setSize(500, 120);
-            super.setLocationRelativeTo(null);
-            JPanel panel = new JPanel();
-            JScrollPane scrollpane = new JScrollPane(table);
-            panel.setLayout(new BorderLayout());
-            panel.add(scrollpane, BorderLayout.CENTER);
-            super.setContentPane(panel);
-            super.setVisible(true);
-        } else {
-            JOptionPane.showMessageDialog(null, "Invalid Session token");
-            System.out.println(Client.isRequestState());
-            super.dispose();
-        }
-
+    public void getTable(JTable table) {
+        this.table = table;
     }
 }
 

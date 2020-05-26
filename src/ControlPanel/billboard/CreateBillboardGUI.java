@@ -9,6 +9,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.net.ConnectException;
 
 /**
  * This class creates the GUI to be used to create a billboard
@@ -132,6 +133,15 @@ public class CreateBillboardGUI extends JFrame {
                     try {
                         Client.connectServer(temp);
 
+                        if(Client.isRequestState()){
+                            JOptionPane.showMessageDialog(null, "Billboard created!");
+                        }
+                        else{
+                            throw new Exception();
+                        }
+                    } catch(ConnectException ex){
+                        JOptionPane.showMessageDialog(null, "Connection fail.");
+                        System.exit(0);
                     } catch (InterruptedException ex) {
                         ex.printStackTrace();
                     } catch (IOException ex) {
@@ -139,7 +149,7 @@ public class CreateBillboardGUI extends JFrame {
                     } catch (ClassNotFoundException ex) {
                         ex.printStackTrace();
                     } catch (Exception ex) {
-                        ex.printStackTrace();
+                        JOptionPane.showMessageDialog(null, "Billboard fail to create.");
                     }
                     //clear the textFeilds once the sumbit code has been executed
                     txtBillboardName.setText("");
@@ -304,28 +314,4 @@ public class CreateBillboardGUI extends JFrame {
 
         return valid;
     }
-
-//    /**
-//     * This function is used to determine if a billboard already exists
-//     *
-//     * @param billboardName the name of the billboard being created
-//     * @return a boolean value to whether a billboard already exists
-//     * @throws SQLException
-//     * @author Lachlan
-//     */
-//    private Boolean checkDublicate(String billboardName) throws SQLException {
-//        boolean existing = false;
-//
-//        Statement statement = connection.createStatement();
-//        ResultSet rs = statement.executeQuery("SELECT BillboardName FROM Billboard");
-//
-//        while (rs.next()) {
-//            if (billboardName.equals(rs.getString(1))) {
-//                existing = true;
-//                break;
-//            }
-//        }
-//        statement.close();
-//        return existing;
-//    }
 }

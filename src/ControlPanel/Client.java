@@ -1,8 +1,8 @@
 package ControlPanel;
 
 import Server.Reply.*;
-import Server.Request.EditBBReply;
-import Server.Request.WeeklyScheduleReply;
+import Server.Reply.EditBBReply;
+import Server.Reply.WeeklyScheduleReply;
 
 import javax.swing.*;
 import java.io.*;
@@ -121,6 +121,8 @@ public class Client {
             EditImg = editBBReply.getEditImg();
             EditInfo = editBBReply.getEditInfo();
             EditInfoColour = editBBReply.getEditInfoColour();
+            requestState = true;
+            Main.loginUser.setSessionToken(editBBReply.getSessionToken());
         }
     }
 

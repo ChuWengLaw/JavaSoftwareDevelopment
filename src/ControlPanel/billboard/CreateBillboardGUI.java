@@ -165,7 +165,7 @@ public class CreateBillboardGUI extends JFrame {
                             JOptionPane.showMessageDialog(null, "Please enter a valid colour into the information colour field");
                         }
                     }
-                    CreateBBRequest temp = new CreateBBRequest(Main.loginUser.getSessionToken(), txtBillboardName.getText(), Main.loginUser.getUserName(), txtTextColour.getText(), txtBackgroundColour.getText(),
+                    CreateBBRequest temp = new CreateBBRequest(Main.loginUser.getSessionToken(), txtBillboardName.getText().toLowerCase(), Main.loginUser.getUserName(), txtTextColour.getText(), txtBackgroundColour.getText(),
                             txtMessage.getText(), txtImage.getText(), txtInformation.getText(), txtInformationColour.getText());
                     try {
                         Client.connectServer(temp);

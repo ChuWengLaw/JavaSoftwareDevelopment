@@ -9,6 +9,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.net.ConnectException;
 
 /**
  * This class creates the GUI to be used to edit a billboard
@@ -80,25 +81,32 @@ public class EditBillboardGUI extends JFrame {
             // sends request to server
             @Override
             public void actionPerformed(ActionEvent e) {
-                panel.setVisible(false);
-                btnSubmit.setVisible(false);
-                lblBillboardName.setVisible(false);
-                txtBillboardName.setVisible(false);
-
                 EditBBRequest temp = new EditBBRequest(Main.loginUser.getSessionToken(), Main.loginUser.getUserName(),
-                        txtBillboardName.getText());
+                        txtBillboardName.getText().toLowerCase());
                 try {
                     Client.connectServer(temp);
+                    if(Client.isRequestState()){
+                        JOptionPane.showMessageDialog(null, "Billboard found, opening edit window...");
+                        // hide the previous panel
+                        panel.setVisible(false);
+                        btnSubmit.setVisible(false);
+                        lblBillboardName.setVisible(false);
+                        txtBillboardName.setVisible(false);
+                        createEditGUI();
+                    }
+                    else{
+                        JOptionPane.showMessageDialog(null, "Billboard not found!");
+                    }
+                } catch(ConnectException ex) {
+                    JOptionPane.showMessageDialog(null, "Connection fail.");
+                    System.exit(0);
                 } catch (InterruptedException ex) {
                     ex.printStackTrace();
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 } catch (ClassNotFoundException ex) {
                     ex.printStackTrace();
-                } catch (Exception ex) {
-                    ex.printStackTrace();
                 }
-                createEditGUI();
             }
         });
 
@@ -149,17 +157,117 @@ public class EditBillboardGUI extends JFrame {
             // sends request to server
             @Override
             public void actionPerformed(ActionEvent e) {
+                if (!(txtTextColour.getText().isBlank() && txtInformationColour.getText().isBlank() && txtBackgroundColour.getText().isBlank())) {
+                    try {
+                        Class.forName("java.awt.Color").getField(txtTextColour.getText());
+
+                    } catch (NoSuchFieldException ex) {
+                        JOptionPane.showMessageDialog(null, "Please enter a valid colour into the text colour field");
+                    } catch (ClassNotFoundException ex) {
+                        ex.printStackTrace();
+                    }
+                    try {
+                        Class.forName("java.awt.Color").getField(txtBackgroundColour.getText());
+                    } catch (NoSuchFieldException ex) {
+                        JOptionPane.showMessageDialog(null, "Please enter a valid colour into the background colour field");
+                    } catch (ClassNotFoundException ex) {
+                        ex.printStackTrace();
+                    }
+                    try {
+                        Class.forName("java.awt.Color").getField(txtInformationColour.getText());
+                    } catch (NoSuchFieldException ex) {
+                        JOptionPane.showMessageDialog(null, "Please enter a valid colour into the information colour field");
+                    } catch (ClassNotFoundException ex) {
+                        ex.printStackTrace();
+                    }
+                } else if (!(txtTextColour.getText().isBlank() && txtBackgroundColour.getText().isBlank())) {
+                    try {
+                        Class.forName("java.awt.Color").getField(txtTextColour.getText());
+                    } catch (NoSuchFieldException ex) {
+                        JOptionPane.showMessageDialog(null, "Please enter a valid colour into the text colour field");
+                    } catch (ClassNotFoundException ex) {
+                        ex.printStackTrace();
+                    }
+                    try {
+                        Class.forName("java.awt.Color").getField(txtBackgroundColour.getText());
+                    } catch (NoSuchFieldException ex) {
+                        JOptionPane.showMessageDialog(null, "Please enter a valid colour into the background colour field");
+                    } catch (ClassNotFoundException ex) {
+                        ex.printStackTrace();
+                    }
+                } else if (!(txtTextColour.getText().isBlank() && txtInformationColour.getText().isBlank())) {
+                    try {
+                        Class.forName("java.awt.Color").getField(txtTextColour.getText());
+                    } catch (NoSuchFieldException ex) {
+                        JOptionPane.showMessageDialog(null, "Please enter a valid colour into the text colour field");
+                    } catch (ClassNotFoundException ex) {
+                        ex.printStackTrace();
+                    }
+                    try {
+                        Class.forName("java.awt.Color").getField(txtInformationColour.getText());
+                    } catch (NoSuchFieldException ex) {
+                        JOptionPane.showMessageDialog(null, "Please enter a valid colour into the information colour field");
+                    } catch (ClassNotFoundException ex) {
+                        ex.printStackTrace();
+                    }
+                } else if (!(txtInformationColour.getText().isBlank() && txtBackgroundColour.getText().isBlank())) {
+                    try {
+                        Class.forName("java.awt.Color").getField(txtBackgroundColour.getText());
+                    } catch (NoSuchFieldException ex) {
+                        JOptionPane.showMessageDialog(null, "Please enter a valid colour into the background colour field");
+                    } catch (ClassNotFoundException ex) {
+                        ex.printStackTrace();
+                    }
+                    try {
+                        Class.forName("java.awt.Color").getField(txtInformationColour.getText());
+                    } catch (NoSuchFieldException ex) {
+                        JOptionPane.showMessageDialog(null, "Please enter a valid colour into the information colour field");
+                    } catch (ClassNotFoundException ex) {
+                        ex.printStackTrace();
+                    }
+                } else if (!txtTextColour.getText().isBlank()) {
+                    try {
+                        Class.forName("java.awt.Color").getField(txtTextColour.getText());
+                    } catch (ClassNotFoundException ex) {
+                        ex.printStackTrace();
+                    } catch (NoSuchFieldException ex) {
+                        JOptionPane.showMessageDialog(null, "Please enter a valid colour into the text colour field");
+                    }
+                } else if (!txtBackgroundColour.getText().isBlank()) {
+                    try {
+                        Class.forName("java.awt.Color").getField(txtBackgroundColour.getText());
+                    } catch (ClassNotFoundException ex) {
+                        ex.printStackTrace();
+                    } catch (NoSuchFieldException ex) {
+                        JOptionPane.showMessageDialog(null, "Please enter a valid colour into the background colour field");
+                    }
+                } else if (!txtInformationColour.getText().isBlank()) {
+                    try {
+                        Class.forName("java.awt.Color").getField(txtInformationColour.getText());
+                    } catch (ClassNotFoundException ex) {
+                        ex.printStackTrace();
+                    } catch (NoSuchFieldException ex) {
+                        JOptionPane.showMessageDialog(null, "Please enter a valid colour into the information colour field");
+                    }
+                }
                 EditBBRequest temp = new EditBBRequest(Main.loginUser.getSessionToken(), txtTextColour.getText(), txtBackgroundColour.getText(),
                         txtMessage.getText(), txtImage.getText(), txtInformation.getText(), txtInformationColour.getText());
                 try {
                     Client.connectServer(temp);
+                    if(Client.isRequestState()){
+                        JOptionPane.showMessageDialog(null, "Successfully edited billboard!");
+                    }
+                    else{
+                        JOptionPane.showMessageDialog(null, "Fail to edit billboard!");
+                    }
+                } catch(ConnectException ex) {
+                    JOptionPane.showMessageDialog(null, "Connection fail.");
+                    System.exit(0);
                 } catch (InterruptedException ex) {
                     ex.printStackTrace();
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 } catch (ClassNotFoundException ex) {
-                    ex.printStackTrace();
-                } catch (Exception ex) {
                     ex.printStackTrace();
                 }
                 // clear the text fields once the SQL code has been executed
@@ -252,7 +360,7 @@ public class EditBillboardGUI extends JFrame {
      *
      * @param text the text with will be on the button
      * @return a JButton with text on it
-     * @author Lachlan
+     * @author Law
      */
     private JButton createButton(String text) {
         JButton button = new JButton();
@@ -264,24 +372,10 @@ public class EditBillboardGUI extends JFrame {
      * This function create a blank JTextField
      *
      * @return an empty JTextField
-     * @author Lachlan
+     * @author Law
      */
     private JTextField createText() {
         JTextField textBox = new JTextField(20);
-        return textBox;
-    }
-
-    /**
-     * This function create a JTextField with the input of the text
-     *
-     * @param text the text to be displayed
-     * @return a JTextField with the input of text
-     * @author Lachlan
-     */
-    private JTextField createText(String text) {
-        JTextField textBox = new JTextField();
-        textBox.setText(text);
-        strBillboardName = text;
         return textBox;
     }
 
@@ -290,7 +384,7 @@ public class EditBillboardGUI extends JFrame {
      *
      * @param text the title of the label
      * @return a JLabel with the title of text
-     * @author Lachlan
+     * @author Law
      */
     private JLabel createLabel(String text) {
         JLabel label = new JLabel();

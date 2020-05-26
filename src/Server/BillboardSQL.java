@@ -45,8 +45,7 @@ public class BillboardSQL {
             }
             //If Billboard exists, return an error saying to use edit instead
             if (ExistFlag == true) {
-                ResultSet update = Server.statement.executeQuery("UPDATE Billboard SET UserName = '" +
-                        CreatedByUserName + "',TextColour = '" + BillboardTextColour + "',BackGroundColour = '" +
+                ResultSet update = Server.statement.executeQuery("UPDATE Billboard SET TextColour = '" + BillboardTextColour + "',BackGroundColour = '" +
                         BillboardBackgroundColour + "',Message = '" + BillboardMessage + "',Image = '" + BillboardPicture +
                         "',Information = '" + BillboardInformation + "',InfoColour = '" + InformationColour + "' WHERE BillboardName = '" + BillboardName + "';");
             }
@@ -63,7 +62,7 @@ public class BillboardSQL {
     }
 
     /**
-     * This method executes SQL to extract the billboard contents
+     * This function executes SQL to extract the billboard contents
      * @param BillboardName
      * @throws SQLException
      * @author Law
@@ -78,6 +77,25 @@ public class BillboardSQL {
         image = getBillboard.getString("Image");
         information = getBillboard.getString("Information");
         informationColour = getBillboard.getString("InfoColour");
+    }
+
+    /**
+     * This function executes SQL to edit the billboard contents
+     * @param BillboardName
+     * @param BillboardTextColour
+     * @param BillboardBackgroundColour
+     * @param BillboardMessage
+     * @param BillboardPicture
+     * @param BillboardInformation
+     * @param InformationColour
+     * @throws SQLException
+     * @author Law
+     */
+    public void EditBillboard(String BillboardName, String BillboardTextColour, String BillboardBackgroundColour, String BillboardMessage,
+                              String BillboardPicture, String BillboardInformation, String InformationColour) throws SQLException {
+        ResultSet update = Server.statement.executeQuery("UPDATE Billboard SET TextColour = '" + BillboardTextColour + "',BackGroundColour = '" +
+                BillboardBackgroundColour + "',Message = '" + BillboardMessage + "',Image = '" + BillboardPicture +
+                "',Information = '" + BillboardInformation + "',InfoColour = '" + InformationColour + "' WHERE BillboardName = '" + BillboardName + "';");
     }
 
     /**

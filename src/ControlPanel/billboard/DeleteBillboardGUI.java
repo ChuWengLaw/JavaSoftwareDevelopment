@@ -7,6 +7,7 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.*;
+import java.net.ConnectException;
 
 /**
  * This class creates the GUI to be used to delete a selected
@@ -66,6 +67,15 @@ public class DeleteBillboardGUI extends JFrame {
                 DeleteBBRequest temp = new DeleteBBRequest(Main.loginUser.getSessionToken(), txtBillboardName.getText());
                 try {
                     Client.connectServer(temp);
+                    if(Client.isRequestState()){
+                        JOptionPane.showMessageDialog(null, "Billboard deleted!");
+                    }
+                    else{
+                        throw new Exception();
+                    }
+                } catch(ConnectException ex) {
+                    JOptionPane.showMessageDialog(null, "Connection fail.");
+                    System.exit(0);
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }

@@ -3,6 +3,7 @@ package Server;
 import ControlPanel.User;
 import Server.Reply.*;
 import Server.Request.*;
+
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -16,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 import java.util.Random;
+
 import static Server.UserSQL.*;
 
 public class Server {
@@ -176,7 +178,6 @@ public class Server {
      *
      * @param hashString salted password to be hashed
      * @return salted hashed password
-     * @author Nic
      * @throws NoSuchAlgorithmException
      * @author Nic
      */
@@ -473,7 +474,6 @@ public class Server {
 
         }
         // If the request is an instance of list all users request
-
         else if (clientRequest instanceof ListUserRequest){
             ListUserRequest listUserRequest = (ListUserRequest) clientRequest;
             SessionToken sessionToken = findSessionToken(listUserRequest.getSessionToken());
@@ -487,16 +487,13 @@ public class Server {
             else{
                 // Reset the used time of the session token.
                 resetSessionTokenTime(sessionToken);
-
                 for (int i = 0; i <= sessionTokens.size(); i++) {
                     if (sessionTokens.get(i).getSessionTokenString().equals(sessionToken.getSessionTokenString())) {
                         sessionTokens.get(i).setUsedTime(LocalDateTime.now());
                         break;
                     }
                 }
-
                 ListUserReply listUserReply = new ListUserReply(sessionToken, listUserSQL(), true);
-
                 oos.writeObject(listUserReply);
                 oos.flush();
             }
@@ -516,16 +513,21 @@ public class Server {
                 sessionToken.setUsedTime(LocalDateTime.now());
                 GeneralReply generalReply;
 
-                // Execute create/edit query and return general reply indicating success
-                try {
-                    BillboardSQL bb = new BillboardSQL();
-                    bb.CreateBillboard(temp.getBillboardName(), temp.getUserName(), temp.getTextColour(), temp.getBackgroundColour(),
-                            temp.getMessage(), temp.getImage(), temp.getInformation(), temp.getInformationColour());
-                    generalReply = new GeneralReply(sessionToken,true);
-                } catch (Exception e) {
+                // if the user has the permission to create a billboard
+                if (temp.getCreateBillboardPermission()) {
+                    // Execute create/edit query and return general reply indicating success
+                    try {
+                        BillboardSQL bb = new BillboardSQL();
+                        bb.CreateBillboard(temp.getBillboardName(), temp.getUserName(), temp.getTextColour(), temp.getBackgroundColour(),
+                                temp.getMessage(), temp.getImage(), temp.getInformation(), temp.getInformationColour());
+                        generalReply = new GeneralReply(sessionToken,true);
+                    } catch (Exception e) {
+                        generalReply = new GeneralReply(sessionToken,false);
+                    }
+                }
+                else {
                     generalReply = new GeneralReply(sessionToken,false);
                 }
-
                 oos.writeObject(generalReply);
             }
             oos.flush();
@@ -534,6 +536,7 @@ public class Server {
         else if (clientRequest instanceof EditBBRequest) {
             EditBBRequest temp = (EditBBRequest) clientRequest;
             SessionToken sessionToken = findSessionToken(temp.getSessionToken());
+            BillboardSQL bb = new BillboardSQL();
 
             // Find the session token in the list.
             for(int i  = 0; i <= sessionTokens.size(); i++){
@@ -556,7 +559,6 @@ public class Server {
                 try {
                     // update edited billboard
                     if (temp.getBillboardName() == null) {
-                        BillboardSQL bb = new BillboardSQL();
                         bb.EditBillboard(BillBoardName, temp.getEditTextColour(), temp.getEditBGColour(),
                                 temp.getEditMsg(), temp.getEditImg(), temp.getEditInfo(), temp.getEditInfoColour());
                         generalReply = new GeneralReply(temp.getSessionToken(),true);
@@ -565,11 +567,35 @@ public class Server {
                     // return the contents of the billboard
                     else {
                         BillBoardName = temp.getBillboardName();
-                        BillboardSQL bb = new BillboardSQL();
-                        bb.EditBillboard(BillBoardName);
-                        EditBBReply editBBReply = new EditBBReply(temp.getSessionToken(), bb.textColour, bb.backgroundColour, bb.message,
-                                bb.image, bb.information, bb.informationColour);
-                        oos.writeObject(editBBReply);
+                        Boolean checkOriginOwner = bb.checkBillboardUser(BillBoardName, temp.getLoginUser());
+                        // if the user is the owner of the billboard
+                        if (checkOriginOwner) {
+                            // if the user has edit all billboards or create billboard permission
+                            if (temp.getEditAllBillboardsPermission() || temp.getCreateBillboardPermission()) {
+                                bb.EditBillboard(BillBoardName);
+                                EditBBReply editBBReply = new EditBBReply(temp.getSessionToken(), bb.textColour, bb.backgroundColour, bb.message,
+                                        bb.image, bb.information, bb.informationColour);
+                                oos.writeObject(editBBReply);
+                            }
+                            else {
+                                generalReply = new GeneralReply(temp.getSessionToken(),false);
+                                oos.writeObject(generalReply);
+                            }
+                        }
+                        // if the user is editing billboard owned by other user
+                        else {
+                            // if the user has edit all billboards permission
+                            if (temp.getEditAllBillboardsPermission()) {
+                                bb.EditBillboard(BillBoardName);
+                                EditBBReply editBBReply = new EditBBReply(temp.getSessionToken(), bb.textColour, bb.backgroundColour, bb.message,
+                                        bb.image, bb.information, bb.informationColour);
+                                oos.writeObject(editBBReply);
+                            }
+                            else {
+                                generalReply = new GeneralReply(temp.getSessionToken(),false);
+                                oos.writeObject(generalReply);
+                            }
+                        }
                     }
                 } catch (Exception e) {
                     generalReply = new GeneralReply(temp.getSessionToken(),false);
@@ -582,6 +608,7 @@ public class Server {
         else if (clientRequest instanceof DeleteBBRequest) {
             DeleteBBRequest temp = (DeleteBBRequest) clientRequest;
             SessionToken sessionToken = findSessionToken(temp.getSessionToken());
+            BillboardSQL bb = new BillboardSQL();
 
             // Remove session token from the list and send a logout request if it expired.
             if (!tokenCheck(temp.getSessionToken())) {
@@ -595,13 +622,35 @@ public class Server {
 
                 // Execute delete query and return general reply indicating success
                 try {
-                    BillboardSQL bb = new BillboardSQL();
-                    bb.DeleteBillboard(temp.getBillboardName());
-                    generalReply = new GeneralReply(sessionToken,true);
+                    BillBoardName = temp.getBillboardName();
+                    Boolean checkOriginOwner = bb.checkBillboardUser(BillBoardName, temp.getLoginUser());
+                    // if the user is the owner of the billboard
+                    if (checkOriginOwner) {
+                        // if the user has edit all billboards or create billboard permission
+                        if (temp.getEditAllBillboardsPermission() || temp.getCreateBillboardPermission()) {
+                            bb.DeleteBillboard(temp.getBillboardName());
+                            generalReply = new GeneralReply(sessionToken,true);
+                        }
+                        else {
+                            generalReply = new GeneralReply(temp.getSessionToken(),false);
+                        }
+                    }
+                    // if the user is deleting billboard owned by other user
+                    else {
+                        // if the user has edit all billboards permission
+                        if (temp.getEditAllBillboardsPermission()) {
+                            bb.DeleteBillboard(temp.getBillboardName());
+                            generalReply = new GeneralReply(temp.getSessionToken(),true);
+                        }
+                        else {
+                            generalReply = new GeneralReply(temp.getSessionToken(),false);
+                        }
+                    }
+                    oos.writeObject(generalReply);
                 } catch (Exception e) {
                     generalReply = new GeneralReply(sessionToken,false);
+                    oos.writeObject(generalReply);
                 }
-                oos.writeObject(generalReply);
             }
             oos.flush();
         }

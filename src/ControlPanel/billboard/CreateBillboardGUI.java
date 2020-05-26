@@ -67,6 +67,7 @@ public class CreateBillboardGUI extends JFrame {
             // sends request to server
             @Override
             public void actionPerformed(ActionEvent e) {
+                Boolean txtClr = false, bgClr = false, infoClr = false;
                 if (txtBillboardName.getText().isBlank()) {
                     JOptionPane.showMessageDialog(null, "Please Enter a Billboard Name.");
                 } else {
@@ -75,7 +76,7 @@ public class CreateBillboardGUI extends JFrame {
                     } else if (!(txtTextColour.getText().isBlank() && txtInformationColour.getText().isBlank() && txtBackgroundColour.getText().isBlank())) {
                         try {
                             Class.forName("java.awt.Color").getField(txtTextColour.getText());
-
+                            txtClr = true;
                         } catch (NoSuchFieldException ex) {
                             JOptionPane.showMessageDialog(null, "Please enter a valid colour into the text colour field");
                         } catch (ClassNotFoundException ex) {
@@ -83,6 +84,7 @@ public class CreateBillboardGUI extends JFrame {
                         }
                         try {
                             Class.forName("java.awt.Color").getField(txtBackgroundColour.getText());
+                            bgClr = true;
                         } catch (NoSuchFieldException ex) {
                             JOptionPane.showMessageDialog(null, "Please enter a valid colour into the background colour field");
                         } catch (ClassNotFoundException ex) {
@@ -90,6 +92,7 @@ public class CreateBillboardGUI extends JFrame {
                         }
                         try {
                             Class.forName("java.awt.Color").getField(txtInformationColour.getText());
+                            infoClr = true;
                         } catch (NoSuchFieldException ex) {
                             JOptionPane.showMessageDialog(null, "Please enter a valid colour into the information colour field");
                         } catch (ClassNotFoundException ex) {
@@ -159,43 +162,47 @@ public class CreateBillboardGUI extends JFrame {
                     } else if (!txtInformationColour.getText().isBlank()) {
                         try {
                             Class.forName("java.awt.Color").getField(txtInformationColour.getText());
+
                         } catch (ClassNotFoundException ex) {
                             ex.printStackTrace();
                         } catch (NoSuchFieldException ex) {
                             JOptionPane.showMessageDialog(null, "Please enter a valid colour into the information colour field");
                         }
                     }
-                    CreateBBRequest temp = new CreateBBRequest(Main.loginUser.getSessionToken(), txtBillboardName.getText().toLowerCase(), Main.loginUser.getUserName(), txtTextColour.getText(), txtBackgroundColour.getText(),
-                            txtMessage.getText(), txtImage.getText(), txtInformation.getText(), txtInformationColour.getText());
-                    try {
-                        Client.connectServer(temp);
+                    // if the colour texts are all valid, send request to server
+                    if (txtClr && bgClr && infoClr) {
+                        CreateBBRequest temp = new CreateBBRequest(Main.loginUser.getSessionToken(), txtBillboardName.getText().toLowerCase(), Main.loginUser.getUserName(), txtTextColour.getText(), txtBackgroundColour.getText(),
+                                txtMessage.getText(), txtImage.getText(), txtInformation.getText(), txtInformationColour.getText(), Main.loginUser.getCreateBillboardsPermission());
+                        try {
+                            Client.connectServer(temp);
 
-                        if(Client.isRequestState()){
-                            JOptionPane.showMessageDialog(null, "Billboard created!");
+                            if(Client.isRequestState()){
+                                JOptionPane.showMessageDialog(null, "Billboard created!");
+                            }
+                            else{
+                                JOptionPane.showMessageDialog(null, "You don't have the permission to create a billboard!");
+                            }
+                        } catch(ConnectException ex){
+                            JOptionPane.showMessageDialog(null, "Connection fail.");
+                            System.exit(0);
+                        } catch (InterruptedException ex) {
+                            ex.printStackTrace();
+                        } catch (IOException ex) {
+                            ex.printStackTrace();
+                        } catch (ClassNotFoundException ex) {
+                            ex.printStackTrace();
+                        } catch (Exception ex) {
+                            JOptionPane.showMessageDialog(null, "Billboard fail to create.");
                         }
-                        else{
-                            throw new Exception();
-                        }
-                    } catch(ConnectException ex){
-                        JOptionPane.showMessageDialog(null, "Connection fail.");
-                        System.exit(0);
-                    } catch (InterruptedException ex) {
-                        ex.printStackTrace();
-                    } catch (IOException ex) {
-                        ex.printStackTrace();
-                    } catch (ClassNotFoundException ex) {
-                        ex.printStackTrace();
-                    } catch (Exception ex) {
-                        JOptionPane.showMessageDialog(null, "Billboard fail to create.");
+                        //clear the textFeilds once the SQL code has been executed
+                        txtBillboardName.setText("");
+                        txtTextColour.setText("");
+                        txtBackgroundColour.setText("");
+                        txtMessage.setText("");
+                        txtImage.setText("");
+                        txtInformation.setText("");
+                        txtInformationColour.setText("");
                     }
-                    //clear the textFeilds once the SQL code has been executed
-                    txtBillboardName.setText("");
-                    txtTextColour.setText("");
-                    txtBackgroundColour.setText("");
-                    txtMessage.setText("");
-                    txtImage.setText("");
-                    txtInformation.setText("");
-                    txtInformationColour.setText("");
                 }
             }
         });
@@ -294,20 +301,6 @@ public class CreateBillboardGUI extends JFrame {
      */
     private JTextField createText() {
         JTextField textBox = new JTextField(20);
-        return textBox;
-    }
-
-    /**
-     * This function create a JTextField with the input of the text
-     *
-     * @param text the text to be displayed
-     * @return a JTextField with the input of text
-     * @author Lachlan
-     */
-    private JTextField createText(String text) {
-        JTextField textBox = new JTextField();
-        textBox.setText(text);
-        strBillboardName = text;
         return textBox;
     }
 

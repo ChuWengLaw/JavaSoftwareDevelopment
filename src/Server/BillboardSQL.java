@@ -168,5 +168,23 @@ public class BillboardSQL {
             System.out.println(e);
         }
     }
+
+    /**
+     * This function checks if the request user is the owner of the billboard
+     * @param BillboardName
+     * @param userName
+     * @return True if user is the owner
+     * @throws SQLException
+     */
+    public boolean checkBillboardUser(String BillboardName, String userName) throws SQLException {
+        boolean existing = false;
+
+        ResultSet resultSet = Server.statement.executeQuery("SELECT UserName FROM Billboard WHERE BillboardName = '" + BillboardName + "';");
+        resultSet.next();
+        if (userName.equals(resultSet.getString("UserName"))){
+            existing = true;
+        }
+        return existing;
+    }
 }
 

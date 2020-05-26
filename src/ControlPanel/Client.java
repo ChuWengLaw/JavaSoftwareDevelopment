@@ -102,11 +102,13 @@ public class Client {
         else if (requestReply instanceof BBInfoReply){
             BBInfoReply bbInfoReply = (BBInfoReply) requestReply;
             info = bbInfoReply.getInformation();
+            requestState = true;
             Main.loginUser.setSessionToken(bbInfoReply.getSessionToken());
         }
         else if (requestReply instanceof ListBBReply){
             ListBBReply listBBReply = (ListBBReply) requestReply;
             listBBTable = listBBReply.getTable();
+            requestState = true;
             Main.loginUser.setSessionToken(listBBReply.getSessionToken());
         }
         else if (requestReply instanceof WeeklyScheduleReply){

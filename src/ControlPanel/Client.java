@@ -1,10 +1,13 @@
 package ControlPanel;
 
 import Server.Reply.*;
+import Server.Request.EditBBReply;
+import Server.Request.WeeklyScheduleReply;
 
 import javax.swing.*;
 import java.io.*;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.Properties;
 
 /**
@@ -13,8 +16,13 @@ import java.util.Properties;
  */
 public class Client {
     private static boolean requestState;
-    private static String info = "";
+    private static String info;
     private static JTable listBBTable;
+<<<<<<< HEAD
+    private static String EditTextColour, EditBGColour, EditMsg, EditImg, EditInfo, EditInfoColour;
+=======
+    private static ArrayList<String[]> ScheduleArray;
+>>>>>>> 7b65f76ee0e16202142c40b18a1cda5dd5363693
 
     /**
      * Connects to server (connection read from network.props)
@@ -104,11 +112,46 @@ public class Client {
             listBBTable = listBBReply.getTable();
             Main.loginUser.setSessionToken(listBBReply.getSessionToken());
         }
+        else if (requestReply instanceof WeeklyScheduleReply){
+            WeeklyScheduleReply ScheduleReply = (WeeklyScheduleReply) requestReply;
+            ScheduleArray = ScheduleReply.getArray();
+        }
+        else if (requestReply instanceof EditBBReply){
+            EditBBReply editBBReply = (EditBBReply) requestReply;
+            EditBGColour = editBBReply.getEditBGColour();
+            EditTextColour = editBBReply.getEditTextColour();
+            EditMsg = editBBReply.getEditMsg();
+            EditImg = editBBReply.getEditImg();
+            EditInfo = editBBReply.getEditInfo();
+            EditInfoColour = editBBReply.getEditInfoColour();
+        }
     }
+
     public static String getInfo() {
         return info;
     }
     public static JTable getBBTable() {
         return listBBTable;
     }
+    public static String getEditTextColour() {
+        return EditTextColour;
+    }
+    public static String getEditBGColour() {
+        return EditBGColour;
+    }
+    public static String getEditMsg() {
+        return EditMsg;
+    }
+    public static String getEditImg() {
+        return EditImg;
+    }
+    public static String getEditInfo() {
+        return EditInfo;
+    }
+    public static String getEditInfoColour() {
+        return EditInfoColour;
+    }
+    public static ArrayList<String[]> getScheduleArray() {return ScheduleArray;}
 }
+
+

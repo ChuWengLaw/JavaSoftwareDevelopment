@@ -638,6 +638,12 @@ public class Server {
             WeeklyScheduleReply weeklyscheduleReply = new WeeklyScheduleReply(Schedule.ScheduledInformation());
             oos.writeObject(weeklyscheduleReply);
         }
+        else if (clientRequest instanceof GetCurrentScheduledRequest) {
+            GetCurrentScheduledRequest GetCurrentScheduledRequest = (GetCurrentScheduledRequest) clientRequest;
+            ScheduleSQL Schedule = new ScheduleSQL();
+            GetCurrentScheduledReply getcurrentscheduledReply = new GetCurrentScheduledReply(Schedule.GetTitleCurrentScheduled(), true);
+            oos.writeObject(getcurrentscheduledReply);
+        }
             // If the request in an instance of import/export billboard request
         else if (clientRequest instanceof XmlRequest) {
                 XmlRequest xmlRequest = (XmlRequest) clientRequest;
@@ -659,11 +665,6 @@ public class Server {
                             extractFromXML.message, extractFromXML.image, extractFromXML.information, extractFromXML.InfoColourStr);
                 }
             }
-        else if (clientRequest instanceof GetCurrentScheduledRequest) {
-            GetCurrentScheduledRequest GetCurrentScheduledRequest = (GetCurrentScheduledRequest) clientRequest;
-            ScheduleSQL Schedule = new ScheduleSQL();
-            GetCurrentScheduledReply getcurrentscheduledReply = new GetCurrentScheduledReply(Schedule.GetTitleCurrentScheduled(), true);
-            oos.writeObject(getcurrentscheduledReply);
-        }
+
     }
 }

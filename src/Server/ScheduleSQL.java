@@ -80,24 +80,25 @@ public class ScheduleSQL {
         return ArrayList;
     }
 
-    public static String GetTitleCurrentScheduled() throws SQLException {
+    public String GetTitleCurrentScheduled() throws SQLException {
         String Billboard_to_Display = "No Billboard should be displayed";
+        //System.out.println("Stuck");
         try {
             ResultSet resultSet = Server.statement.executeQuery("SELECT * FROM  schedule");
             SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             int Min_in_Millis = 60000;
             int Hour_in_Millis = 60*Min_in_Millis;
             int Day_in_Millis = 24*Hour_in_Millis;
+            //System.out.println("Stuck2");
 
-
-            outer:
             while(resultSet.next()) {
+                //System.out.println("StuckWhile1");
                 String Billboard_Title = resultSet.getString(1);
                 String Scheduled_Start_Time = resultSet.getString(2);
                 int Duration = resultSet.getInt(3);
-                String Recur_Type = resultSet.getString(4);
+                int Recur_Type = resultSet.getInt(4);
                 int Time_Recur = resultSet.getInt(5);
-
+                //System.out.println(Recur_Type);
                 Scheduled_Start_Time = Scheduled_Start_Time.substring(0, Scheduled_Start_Time.indexOf("."));
                 long Start_Time_Milli = DateStr_2_Millis(Scheduled_Start_Time,formatter);
                 long End_Time_Milli = DateStr_2_Millis(Scheduled_Start_Time,formatter) + (Min_in_Millis*Duration);
@@ -108,28 +109,28 @@ public class ScheduleSQL {
                 if (java_Current_Time > Start_Time_Milli && java_Current_Time < End_Time_Milli)
                 {
                     Billboard_to_Display = Billboard_Title;
-                    break outer;
                 }
-                else if (!Recur_Type.equals("None"))   //change
+                else if (Recur_Type != 0)   //change
                 {
                     while (!(java_Current_Time < Recur_Start))
                     {
+                        //System.out.println(java_Current_Time);
+                        //System.out.println(Recur_Start);
                         if (java_Current_Time > Recur_Start && java_Current_Time < Recur_End)
                         {
                             Billboard_to_Display = Billboard_Title;
-                            break outer;
                         }
-                        if (Recur_Type.equals("1 Day"))
+                        if (Recur_Type == 1)
                         {
                             Recur_Start = Recur_Start + Day_in_Millis;
                             Recur_End = Recur_End + Day_in_Millis;
                         }
-                        else if (Recur_Type.equals("1 Hour"))
+                        else if (Recur_Type == 2)
                         {
                             Recur_Start = Recur_Start + Hour_in_Millis;
                             Recur_End = Recur_End + Hour_in_Millis;
                         }
-                        else if (Recur_Type.equals("(Below) Minutes"))
+                        else if (Recur_Type == 3)
                         {
                             Recur_Start = Recur_Start + (Min_in_Millis*Time_Recur);
                             Recur_End = Recur_End + (Min_in_Millis*Time_Recur);
@@ -137,12 +138,14 @@ public class ScheduleSQL {
                     }
                 }
             }
+
             return Billboard_to_Display;
 
         } catch (SQLException | ParseException e) {
             System.out.println(e);
         }
-        System.out.println(Billboard_to_Display);
+
+
         return Billboard_to_Display;
     }
     public static long DateStr_2_Millis(String In_Date, SimpleDateFormat Format) throws ParseException {

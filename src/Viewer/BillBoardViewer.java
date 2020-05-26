@@ -20,6 +20,7 @@ import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.concurrent.*;
 
 /**
@@ -120,14 +121,15 @@ public class BillBoardViewer extends JFrame {
 
     private void update() throws IOException {
         GetCurrentScheduledRequest GetCurrentScheduledRequest = new GetCurrentScheduledRequest();
-//        try{
-//            ViewerClient.connectServer(GetCurrentScheduledRequest);
-//        }
-//        catch (Exception ex){
-//            ex.printStackTrace();
-//        }
-        //System.out.println(ViewerClient.getScheduledBillboardTitle());
-        System.out.println(ViewerClient.isRequestState());
+        try{
+            Client.connectServer(GetCurrentScheduledRequest);
+        }
+        catch (Exception ex){
+            ex.printStackTrace();
+        }
+        System.out.println(Client.getScheduledBillboardTitle());
+        //System.out.println(ViewerClient.isRequestState());
+
 
         // Create a new image.
 

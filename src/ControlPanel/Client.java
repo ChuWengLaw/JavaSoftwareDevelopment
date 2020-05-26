@@ -122,7 +122,7 @@ public class Client {
     public static String getInfo() { return info; }
     public static JTable getBBTable() {return listBBTable;}
     public static ArrayList<String[]> getScheduleArray() {return ScheduleArray;}
-    public static String getScheduledBillboardTitle() {return ScheduledBillboardTitle;};
+    public static String getScheduledBillboardTitle() {return ScheduledBillboardTitle;}
 }
 
 

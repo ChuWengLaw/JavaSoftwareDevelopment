@@ -1,8 +1,9 @@
 package Server.Reply;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class GetCurrentScheduledReply {
+public class GetCurrentScheduledReply implements Serializable {
     private String BillboardTitle;
     private boolean works;
 

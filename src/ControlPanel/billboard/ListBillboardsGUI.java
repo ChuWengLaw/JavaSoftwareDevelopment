@@ -6,6 +6,7 @@ import Server.Request.ListBBRequest;
 
 import javax.swing.*;
 import java.awt.*;
+import java.net.ConnectException;
 
 
 /**
@@ -35,6 +36,14 @@ public class ListBillboardsGUI extends JFrame {
         ListBBRequest listBBRequest = new ListBBRequest(Main.loginUser.getSessionToken());
         try {
             Client.connectServer(listBBRequest);
+            if (Client.isRequestState()) {
+                JOptionPane.showMessageDialog(null, "Retrieving Billboard list...");
+            } else {
+                throw new Exception();
+            }
+        } catch (ConnectException ex) {
+            JOptionPane.showMessageDialog(null, "Connection fail.");
+            System.exit(0);
         } catch (Exception ex) {
             ex.printStackTrace();
         }

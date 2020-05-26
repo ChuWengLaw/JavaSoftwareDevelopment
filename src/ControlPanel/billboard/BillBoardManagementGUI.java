@@ -14,6 +14,7 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.File;
 import java.io.IOException;
+import java.net.ConnectException;
 
 /**
  * This class creates the GUI to be used to display the available options for
@@ -136,14 +137,25 @@ public class BillBoardManagementGUI extends JFrame {
                 int returnValue = jfc.showOpenDialog(null);
                 if (returnValue == JFileChooser.APPROVE_OPTION) {
                     File selectedFile = jfc.getSelectedFile();
-                    XmlRequest xmlRequest = new XmlRequest(selectedFile, Main.loginUser.getUserName());
+                    XmlRequest xmlRequest = new XmlRequest(Main.loginUser.getSessionToken(), selectedFile, Main.loginUser.getUserName());
                     try {
                         Client.connectServer(xmlRequest);
+                        if(Client.isRequestState()){
+                            JOptionPane.showMessageDialog(null, "Billboard Imported!");
+                        }
+                        else{
+                            throw new Exception();
+                        }
+                    } catch(ConnectException ex) {
+                        JOptionPane.showMessageDialog(null, "Connection fail.");
+                        System.exit(0);
                     } catch (IOException ex) {
                         ex.printStackTrace();
                     } catch (InterruptedException ex) {
                         ex.printStackTrace();
                     } catch (ClassNotFoundException ex) {
+                        ex.printStackTrace();
+                    } catch (Exception ex) {
                         ex.printStackTrace();
                     }
                 }

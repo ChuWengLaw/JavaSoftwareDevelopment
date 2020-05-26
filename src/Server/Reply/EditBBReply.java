@@ -1,11 +1,15 @@
-package Server.Request;
+package Server.Reply;
+
+import Server.SessionToken;
 
 import java.io.Serializable;
 
 public class EditBBReply implements Serializable {
     private String EditTextColour, EditBGColour, EditMsg, EditImg, EditInfo, EditInfoColour;
+    private SessionToken token;
 
-    public EditBBReply(String EditTextColour, String EditBGColour, String EditMsg, String EditImg, String EditInfo, String EditInfoColour) {
+    public EditBBReply(SessionToken token, String EditTextColour, String EditBGColour, String EditMsg, String EditImg, String EditInfo, String EditInfoColour) {
+        this.token = token;
         this.EditTextColour = EditTextColour;
         this.EditBGColour = EditBGColour;
         this.EditMsg = EditMsg;
@@ -32,4 +36,5 @@ public class EditBBReply implements Serializable {
     public String getEditInfoColour() {
         return EditInfoColour;
     }
+    public SessionToken getSessionToken() { return token; }
 }

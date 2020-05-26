@@ -6,12 +6,16 @@ import java.io.Serializable;
 
 public class EditBBRequest implements Serializable {
     private String BillboardName, LoginUser, EditTextColour, EditBGColour, EditMsg, EditImg, EditInfo, EditInfoColour;
+    private Boolean EditAllBillboardsPermission, CreateBillboardPermission;
     private SessionToken sessionToken;
 
-    public EditBBRequest(SessionToken sessionToken, String LoginUser, String BillboardName) {
+    public EditBBRequest(SessionToken sessionToken, String LoginUser, String BillboardName,
+                         Boolean EditAllBillboardsPermission, Boolean CreateBillboardPermission) {
         this.sessionToken = sessionToken;
         this.LoginUser = LoginUser;
         this.BillboardName = BillboardName;
+        this.EditAllBillboardsPermission = EditAllBillboardsPermission;
+        this.CreateBillboardPermission = CreateBillboardPermission;
     }
     public EditBBRequest(SessionToken sessionToken, String EditTextColour, String EditBGColour, String EditMsg,
                          String EditImg, String EditInfo, String EditInfoColour) {
@@ -50,6 +54,14 @@ public class EditBBRequest implements Serializable {
     }
     public String getLoginUser() {
         return LoginUser;
+    }
+
+    public Boolean getEditAllBillboardsPermission() {
+        return EditAllBillboardsPermission;
+    }
+
+    public Boolean getCreateBillboardPermission() {
+        return CreateBillboardPermission;
     }
 }
 

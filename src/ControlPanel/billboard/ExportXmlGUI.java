@@ -1,12 +1,14 @@
 package ControlPanel.billboard;
 
 import ControlPanel.Client;
+import ControlPanel.Main;
 import Server.Request.XmlRequest;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.net.ConnectException;
 
 /**
  * This class creates the GUI to be used to export a selected
@@ -64,9 +66,18 @@ public class ExportXmlGUI extends JFrame {
             //when the submit button is click make covert the inputs into string. then execute the CreateEditBilloard from the Billboard Class
             @Override
             public void actionPerformed(ActionEvent e) {
-                XmlRequest temp = new XmlRequest(txtBillboardName.getText());
+                XmlRequest temp = new XmlRequest(Main.loginUser.getSessionToken(), txtBillboardName.getText());
                 try {
                     Client.connectServer(temp);
+                    if(Client.isRequestState()){
+                        JOptionPane.showMessageDialog(null, "Billboard exported!");
+                    }
+                    else{
+                        JOptionPane.showMessageDialog(null, "Billboard not found!");
+                    }
+                } catch(ConnectException ex) {
+                    JOptionPane.showMessageDialog(null, "Connection fail.");
+                    System.exit(0);
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }

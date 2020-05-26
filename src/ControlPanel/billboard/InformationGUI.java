@@ -8,6 +8,7 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.*;
+import java.net.ConnectException;
 
 /**
  * This class creates the GUI to be used to display the information
@@ -63,6 +64,12 @@ public class InformationGUI extends JFrame {
                     try {
                         Client.connectServer(temp);
                         txtInfo.setText(Client.getInfo());
+                        if(!Client.isRequestState()){
+                            JOptionPane.showMessageDialog(null, "Billboard not found!");
+                        }
+                    } catch(ConnectException ex) {
+                        JOptionPane.showMessageDialog(null, "Connection fail.");
+                        System.exit(0);
                     } catch (Exception ex) {
                         ex.printStackTrace();
                     }

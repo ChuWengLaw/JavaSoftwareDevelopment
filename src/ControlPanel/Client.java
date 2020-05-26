@@ -1,8 +1,8 @@
 package ControlPanel;
 
 import Server.Reply.*;
-import Server.Request.EditBBReply;
-import Server.Request.WeeklyScheduleReply;
+import Server.Reply.EditBBReply;
+import Server.Reply.WeeklyScheduleReply;
 
 import javax.swing.*;
 import java.io.*;
@@ -20,7 +20,6 @@ public class Client {
     private static JTable listBBTable;
     private static String EditTextColour, EditBGColour, EditMsg, EditImg, EditInfo, EditInfoColour;
     private static ArrayList<String[]> ScheduleArray;
-
 
     /**
      * Connects to server (connection read from network.props)
@@ -103,11 +102,13 @@ public class Client {
         else if (requestReply instanceof BBInfoReply){
             BBInfoReply bbInfoReply = (BBInfoReply) requestReply;
             info = bbInfoReply.getInformation();
+            requestState = true;
             Main.loginUser.setSessionToken(bbInfoReply.getSessionToken());
         }
         else if (requestReply instanceof ListBBReply){
             ListBBReply listBBReply = (ListBBReply) requestReply;
             listBBTable = listBBReply.getTable();
+            requestState = true;
             Main.loginUser.setSessionToken(listBBReply.getSessionToken());
         }
         else if (requestReply instanceof WeeklyScheduleReply){
@@ -122,6 +123,8 @@ public class Client {
             EditImg = editBBReply.getEditImg();
             EditInfo = editBBReply.getEditInfo();
             EditInfoColour = editBBReply.getEditInfoColour();
+            requestState = true;
+            Main.loginUser.setSessionToken(editBBReply.getSessionToken());
         }
     }
 

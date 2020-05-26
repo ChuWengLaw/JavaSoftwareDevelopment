@@ -128,7 +128,6 @@ public class BillBoardViewer extends JFrame {
             ex.printStackTrace();
         }
         System.out.println(Client.getScheduledBillboardTitle());
-        //System.out.println(ViewerClient.isRequestState());
 
 
         // Create a new image.

@@ -1,4 +1,4 @@
-package Server.Request;
+package Server.Reply;
 
 import javax.swing.*;
 import java.io.Serializable;

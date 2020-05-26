@@ -20,6 +20,7 @@ public class Client {
     private static String info = "";
     private static JTable listBBTable;
     private static ArrayList<String[]> ScheduleArray;
+    private static String ScheduledBillboardTitle;
 
     /**
      * Connects to server (connection read from network.props)
@@ -113,10 +114,15 @@ public class Client {
             WeeklyScheduleReply ScheduleReply = (WeeklyScheduleReply) requestReply;
             ScheduleArray = ScheduleReply.getArray();
         }
+        else if (requestReply instanceof GetCurrentScheduledReply){
+            GetCurrentScheduledReply ScheduleReply = (GetCurrentScheduledReply) requestReply;
+            ScheduledBillboardTitle = ScheduleReply.getBillboardTitle();
+        }
     }
     public static String getInfo() { return info; }
     public static JTable getBBTable() {return listBBTable;}
     public static ArrayList<String[]> getScheduleArray() {return ScheduleArray;}
+    public static String getScheduledBillboardTitle() {return ScheduledBillboardTitle;};
 }
 
 

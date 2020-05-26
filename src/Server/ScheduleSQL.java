@@ -80,7 +80,7 @@ public class ScheduleSQL {
         return ArrayList;
     }
 
-    public static String GetCurrentScheduled() throws SQLException {
+    public static String GetTitleCurrentScheduled() throws SQLException {
         String Billboard_to_Display = "No Billboard should be displayed";
         try {
             ResultSet resultSet = Server.statement.executeQuery("SELECT * FROM  schedule");
@@ -149,5 +149,29 @@ public class ScheduleSQL {
             Date date = Format.parse(In_Date);
             long millis = date.getTime();
             return millis;
+    }
+
+    public static String[] GetObjectCurrentScheduled(String InputBillboardName) throws SQLException {
+        try {
+            ResultSet resultSet = Server.statement.executeQuery("SELECT * FROM  Billboard");
+            while(resultSet.next()) {
+                if ( InputBillboardName.equals(resultSet.getString("BillboardName")) )
+                {
+                    String BillboardName = resultSet.getString(1);
+                    String UserName = resultSet.getString(2);
+                    String TextColour = resultSet.getString(3);
+                    String BackGroundColour = resultSet.getString(4);
+                    String Message  = resultSet.getString(5);
+                    String Image  = resultSet.getString(6);
+                    String Information = resultSet.getString(7);
+                    String InfoColour = resultSet.getString(8);
+                    String[] Output = {BillboardName,UserName,TextColour,BackGroundColour,Message,Image,Information,InfoColour};
+                    return Output;
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return null;
     }
 }

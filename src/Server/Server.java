@@ -659,6 +659,11 @@ public class Server {
                             extractFromXML.message, extractFromXML.image, extractFromXML.information, extractFromXML.InfoColourStr);
                 }
             }
+        else if (clientRequest instanceof GetCurrentScheduledRequest) {
+            GetCurrentScheduledRequest GetCurrentScheduledRequest = (GetCurrentScheduledRequest) clientRequest;
+            ScheduleSQL Schedule = new ScheduleSQL();
+            GetCurrentScheduledReply getcurrentscheduledReply = new GetCurrentScheduledReply(Schedule.GetTitleCurrentScheduled(), true);
+            oos.writeObject(getcurrentscheduledReply);
         }
     }
-
+}

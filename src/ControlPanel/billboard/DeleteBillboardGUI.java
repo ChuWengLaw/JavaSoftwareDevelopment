@@ -64,14 +64,15 @@ public class DeleteBillboardGUI extends JFrame {
             // sends request to server
             @Override
             public void actionPerformed(ActionEvent e) {
-                DeleteBBRequest temp = new DeleteBBRequest(Main.loginUser.getSessionToken(), txtBillboardName.getText());
+                DeleteBBRequest temp = new DeleteBBRequest(Main.loginUser.getSessionToken(), txtBillboardName.getText(), Main.loginUser.getUserName(),
+                        Main.loginUser.getEditAllBillboardPermission(), Main.loginUser.getCreateBillboardsPermission());
                 try {
                     Client.connectServer(temp);
                     if(Client.isRequestState()){
                         JOptionPane.showMessageDialog(null, "Billboard deleted!");
                     }
                     else{
-                        throw new Exception();
+                        JOptionPane.showMessageDialog(null, "No permission/invalid billboard name!");
                     }
                 } catch(ConnectException ex) {
                     JOptionPane.showMessageDialog(null, "Connection fail.");

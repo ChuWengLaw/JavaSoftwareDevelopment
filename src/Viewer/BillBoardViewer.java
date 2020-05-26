@@ -34,7 +34,7 @@ public class BillBoardViewer extends JFrame {
     private final int screenWidth = dim.width;
     private final int screenHeight = dim.height;
 
-    ExtractFromXML extractFromXML = new ExtractFromXML("starWars.xml");
+    ExtractFromXML extractFromXML = new ExtractFromXML("16.xml");
 
 
     /**
@@ -167,7 +167,7 @@ public class BillBoardViewer extends JFrame {
             if (extractFromXML.image.startsWith("http")) {
                 URL url = new URL(extractFromXML.image);
                 BufferedImage image = ImageIO.read(url);
-                if (image.getWidth() < image.getHeight()) {
+                if (image.getWidth() < image.getHeight()|| image.getHeight() == image.getWidth()) {
                     picture.setIcon(new ImageIcon(image.getScaledInstance(-1, screenHeight / 2, Image.SCALE_SMOOTH)));
                 } else {
                     picture.setIcon(new ImageIcon(image.getScaledInstance(screenWidth / 2, -1, Image.SCALE_SMOOTH)));
@@ -329,7 +329,7 @@ public class BillBoardViewer extends JFrame {
             if (extractFromXML.image.startsWith("http")) {
                 URL url = new URL(extractFromXML.image);
                 BufferedImage image = ImageIO.read(url);
-                if (image.getWidth() < image.getHeight()) {
+                if (image.getWidth() < image.getHeight()|| image.getHeight() == image.getWidth()) {
                     picture.setIcon(new ImageIcon(image.getScaledInstance(-1, screenHeight / 2, Image.SCALE_SMOOTH)));
                 } else {
                     picture.setIcon(new ImageIcon(image.getScaledInstance(screenWidth / 2, -1, Image.SCALE_SMOOTH)));
@@ -385,7 +385,7 @@ public class BillBoardViewer extends JFrame {
             if (extractFromXML.image.startsWith("http")) {
                 URL url = new URL(extractFromXML.image);
                 BufferedImage image = ImageIO.read(url);
-                if (image.getWidth() < image.getHeight()) {
+                if (image.getWidth() < image.getHeight()|| image.getHeight() == image.getWidth()) {
                     picture.setIcon(new ImageIcon(image.getScaledInstance(-1, screenHeight / 3, Image.SCALE_SMOOTH)));
                 } else {
                     picture.setIcon(new ImageIcon(image.getScaledInstance(screenWidth / 3, -1, Image.SCALE_SMOOTH)));

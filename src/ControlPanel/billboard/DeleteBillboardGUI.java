@@ -3,6 +3,7 @@ package ControlPanel.billboard;
 import ControlPanel.Client;
 import ControlPanel.Main;
 import Server.Request.DeleteBBRequest;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -33,6 +34,7 @@ public class DeleteBillboardGUI extends JFrame {
 
     /**
      * Constructor initialises the GUI creation.
+     *
      * @throws HeadlessException
      */
     public DeleteBillboardGUI() throws HeadlessException {
@@ -86,26 +88,26 @@ public class DeleteBillboardGUI extends JFrame {
         });
 
         constraints.anchor = GridBagConstraints.WEST;
-        constraints.insets = new Insets(2,2,2,2);
+        constraints.insets = new Insets(2, 2, 2, 2);
 
         //add labels to panel
-        constraints.gridx=0;
-        constraints.gridy=0;
-        panel.add(lblBillboardName,constraints);
-        constraints.gridy=1;
+        constraints.gridx = 0;
+        constraints.gridy = 0;
+        panel.add(lblBillboardName, constraints);
+        constraints.gridy = 1;
 
         //add txtfeilds to panel
-        constraints.gridx =1;
-        constraints.gridy=0;
-        panel.add(txtBillboardName,constraints);
+        constraints.gridx = 1;
+        constraints.gridy = 0;
+        panel.add(txtBillboardName, constraints);
 
         //add button to panel
-        constraints.gridwidth =1;
-        constraints.insets = new Insets(5,10,5,10);
+        constraints.gridwidth = 1;
+        constraints.insets = new Insets(5, 10, 5, 10);
         constraints.anchor = GridBagConstraints.CENTER;
-        constraints.gridx=0;
-        constraints.gridy=7;
-        panel.add(btnSubmit,constraints);
+        constraints.gridx = 0;
+        constraints.gridy = 7;
+        panel.add(btnSubmit, constraints);
 
         getContentPane().add(panel);
         //set the location of the GUI

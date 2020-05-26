@@ -15,14 +15,26 @@ public class XmlRequest implements Serializable {
         this.xmlFile = getXmlFile;
         this.UserName = UserName;
     }
+
     public XmlRequest(SessionToken token, String xmlName) {
         this.token = token;
         this.xmlName = xmlName;
     }
-    public File getXmlFile() { return xmlFile; }
-    public String getXmlName() { return xmlName; }
-    public String getUserName() { return UserName; }
+
+    public File getXmlFile() {
+        return xmlFile;
+    }
+
+    public String getXmlName() {
+        return xmlName;
+    }
+
+    public String getUserName() {
+        return UserName;
+    }
+
     public SessionToken getSessionToken() {
         return token;
-    };
+    }
+
 }

@@ -21,6 +21,7 @@ public class DeleteBBRequest implements Serializable {
     public SessionToken getSessionToken() {
         return sessionToken;
     }
+
     public String getBillboardName() {
         return BillboardName;
     }

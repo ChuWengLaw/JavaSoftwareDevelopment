@@ -10,13 +10,13 @@ public class LoginReply implements Serializable {
     private SessionToken sessionToken;
     private User user;
 
-    public LoginReply(boolean loginState, SessionToken sessionToken, User user){
+    public LoginReply(boolean loginState, SessionToken sessionToken, User user) {
         this.loginState = loginState;
         this.sessionToken = sessionToken;
         this.user = user;
     }
 
-    public LoginReply(boolean loginState, SessionToken sessionToken){
+    public LoginReply(boolean loginState, SessionToken sessionToken) {
         this.loginState = loginState;
         this.sessionToken = sessionToken;
         this.user = user;

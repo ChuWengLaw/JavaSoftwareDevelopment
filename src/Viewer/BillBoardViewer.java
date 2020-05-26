@@ -1,8 +1,6 @@
 package Viewer;
 
 import Server.ExtractFromXML;
-import org.mariadb.jdbc.BasePrepareStatement;
-
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -16,7 +14,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Field;
 import java.util.concurrent.*;
 
 /**
@@ -39,7 +36,7 @@ public class BillBoardViewer extends JFrame {
      * @throws HeadlessException
      * @throws IOException
      */
-    public BillBoardViewer() throws HeadlessException, IOException {
+    public BillBoardViewer() throws HeadlessException{
         super("Billboard Viewer");
 
         // Set the window to borderless.
@@ -115,7 +112,7 @@ public class BillBoardViewer extends JFrame {
         addKeyListener(keyCloseListener);
     }
 
-    private void update() throws IOException {
+    private void update() throws IOException{
         // Create a new image.
 
 //        try{

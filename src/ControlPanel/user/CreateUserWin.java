@@ -14,7 +14,8 @@ import javax.swing.*;
 /**
  * @author Nicholas Tseng
  * This is the create user window class extends JFrame. In this window,
- * users can create a new user.
+ * users can create a new user by inserting the details in the given text field
+ * and checkboxes.
  */
 public class CreateUserWin extends JFrame{
         // Initialize the components in the window.

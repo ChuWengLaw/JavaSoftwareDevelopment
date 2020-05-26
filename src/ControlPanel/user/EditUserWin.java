@@ -17,6 +17,10 @@ import javax.swing.*;
  * @author Nicholas Tseng
  * This is the edit user window class extends JFrame. In this window,
  * users can edit an existed user information beside the user name.
+ * There are two steps required for a user to edit other users' information:
+ *
+ * 1. Search the user according to the user name given.
+ * 2. Edit the user according to the information provided through the GUI.
  */
 public class EditUserWin extends JFrame{
     // Initialize the components in the window.

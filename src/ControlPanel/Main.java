@@ -10,7 +10,7 @@ public class Main {
 
     // Setting up windows
     public static MenuWin menuWin = new MenuWin();
-    public static UserManagementWin userManagementWin = new UserManagementWin();
+    public statiserManagementWin userManagementWin = new UserManagementWin();
     public static UserProfileWin userProfileWin = new UserProfileWin();
     public static ChangePasswordWin changePasswordWin = new ChangePasswordWin();
     public static CreateUserWin createUserWin = new CreateUserWin();

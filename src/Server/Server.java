@@ -172,20 +172,11 @@ public class Server {
     }
 
     /**
-<<<<<<< HEAD
-     *
-     * @param hashString
-     * @return
-=======
      * This method hashes the salted password of user account.
      *
      * @param hashString salted password to be hashed
      * @return salted hashed password
-<<<<<<< HEAD
-=======
      * @author Nic
->>>>>>> 5cbacd2310c588985c045dde63df4e9d2063f6f9
->>>>>>> c51b2faecd0d09b4571ff4fd8aef7d0804f852d9
      * @throws NoSuchAlgorithmException
      * @author Nic
      */

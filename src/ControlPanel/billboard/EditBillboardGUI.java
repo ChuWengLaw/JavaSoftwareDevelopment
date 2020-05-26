@@ -157,7 +157,7 @@ public class EditBillboardGUI extends JFrame {
             // sends request to server
             @Override
             public void actionPerformed(ActionEvent e) {
-                Boolean txtClr = false, bgClr = false, infoClr = false;
+                boolean txtClr = false, bgClr = false, infoClr = false;
                 if (!(txtTextColour.getText().isBlank() && txtInformationColour.getText().isBlank() && txtBackgroundColour.getText().isBlank())) {
                     try {
                         Class.forName("java.awt.Color").getField(txtTextColour.getText());

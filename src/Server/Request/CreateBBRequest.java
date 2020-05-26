@@ -10,7 +10,7 @@ public class CreateBBRequest implements Serializable {
     private String BillboardName, UserName, TextColour, BackgroundColour, Message, Image, Information, InformationColour;
 
     public CreateBBRequest(SessionToken sessionToken, String BillboardName, String UserName, String TextColour, String BackgroundColour,
-                           String Message, String Image, String Information, String InformationColour, Boolean CreateBillboardPermission) {
+                           String Message, String Image, String Information, String InformationColour, boolean CreateBillboardPermission) {
         this.sessionToken = sessionToken;
         this.BillboardName = BillboardName;
         this.UserName = UserName;

@@ -79,7 +79,7 @@ public class CreateBillboardGUI extends JFrame {
                 //if all colours input are valid proceed
                 else if (isColourValid()) {
                     CreateBBRequest temp = new CreateBBRequest(Main.loginUser.getSessionToken(), txtBillboardName.getText(), Main.loginUser.getUserName(), txtTextColour.getText(), txtBackgroundColour.getText(),
-                            txtMessage.getText(), txtImage.getText(), txtInformation.getText(), txtInformationColour.getText());
+                            txtMessage.getText(), txtImage.getText(), txtInformation.getText(), txtInformationColour.getText(), Main.loginUser.getCreateBillboardsPermission());
                     try {
                         Client.connectServer(temp);
 
@@ -101,14 +101,17 @@ public class CreateBillboardGUI extends JFrame {
                     } catch (Exception ex) {
                         JOptionPane.showMessageDialog(null, "Billboard fail to create.");
                     }
-                    //clear the textFeilds once the sumbit code has been executed
-                    txtBillboardName.setText("");
-                    txtTextColour.setText("");
-                    txtBackgroundColour.setText("");
-                    txtMessage.setText("");
-                    txtImage.setText("");
-                    txtInformation.setText("");
-                    txtInformationColour.setText("");
+                    finally {
+                        //clear the textFeilds once the sumbit code has been executed
+                        txtBillboardName.setText("");
+                        txtTextColour.setText("");
+                        txtBackgroundColour.setText("");
+                        txtMessage.setText("");
+                        txtImage.setText("");
+                        txtInformation.setText("");
+                        txtInformationColour.setText("");
+                    }
+
                 }
             }
         });

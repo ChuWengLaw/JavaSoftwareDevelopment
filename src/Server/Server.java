@@ -140,7 +140,7 @@ public class Server {
                 String testAdmin = "admin";
                 String testPassword = "test1";
                 String testSaltString = randomString();
-                Boolean AdminExists = false;
+                boolean AdminExists = false;
                 String hashedPassword = hashAString(testPassword + testSaltString);
 
                 while (resultSet.next()) {
@@ -567,7 +567,7 @@ public class Server {
                     // return the contents of the billboard
                     else {
                         BillBoardName = temp.getBillboardName();
-                        Boolean checkOriginOwner = bb.checkBillboardUser(BillBoardName, temp.getLoginUser());
+                        boolean checkOriginOwner = bb.checkBillboardUser(BillBoardName, temp.getLoginUser());
                         // if the user is the owner of the billboard
                         if (checkOriginOwner) {
                             // if the user has edit all billboards or create billboard permission
@@ -623,7 +623,7 @@ public class Server {
                 // Execute delete query and return general reply indicating success
                 try {
                     BillBoardName = temp.getBillboardName();
-                    Boolean checkOriginOwner = bb.checkBillboardUser(BillBoardName, temp.getLoginUser());
+                    boolean checkOriginOwner = bb.checkBillboardUser(BillBoardName, temp.getLoginUser());
                     // if the user is the owner of the billboard
                     if (checkOriginOwner) {
                         // if the user has edit all billboards or create billboard permission

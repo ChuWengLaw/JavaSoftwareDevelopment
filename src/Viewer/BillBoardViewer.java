@@ -17,10 +17,16 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
+
 import java.util.ArrayList;
+
+import java.net.URL;
+import java.util.Base64;
 import java.util.concurrent.*;
 
 /**
@@ -34,7 +40,7 @@ public class BillBoardViewer extends JFrame {
     private final int screenWidth = dim.width;
     private final int screenHeight = dim.height;
 
-    ExtractFromXML extractFromXML = new ExtractFromXML("starWars.xml");
+    ExtractFromXML extractFromXML = new ExtractFromXML("16.xml");
 
 
     /**
@@ -173,9 +179,27 @@ public class BillBoardViewer extends JFrame {
         //only image
         else if (extractFromXML.message.isBlank() && extractFromXML.information.isBlank() && !extractFromXML.image.isBlank()) {
             JLabel picture = new JLabel();
-            ImageIcon myPicture = new ImageIcon(ImageIO.read(new File("src/Viewer/Image/0341b9f3f27a6ba0a3b8de6de9d864949f0dbc23.jpg"))
-                    .getScaledInstance(screenWidth / 2, screenHeight / 2, Image.SCALE_SMOOTH));
-            picture.setIcon(myPicture);
+            //if it is a url image
+            if (extractFromXML.image.startsWith("http")) {
+                URL url = new URL(extractFromXML.image);
+                BufferedImage image = ImageIO.read(url);
+                if (image.getWidth() < image.getHeight()|| image.getHeight() == image.getWidth()) {
+                    picture.setIcon(new ImageIcon(image.getScaledInstance(-1, screenHeight / 2, Image.SCALE_SMOOTH)));
+                } else {
+                    picture.setIcon(new ImageIcon(image.getScaledInstance(screenWidth / 2, -1, Image.SCALE_SMOOTH)));
+                }
+                //else if image is in data form
+            } else {
+                byte[] encodedImage;
+                encodedImage = extractFromXML.image.getBytes();
+                byte[] decodedImage = Base64.getDecoder().decode(encodedImage);
+                BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedImage));
+                if (image.getWidth() < image.getHeight() || image.getHeight() == image.getWidth()) {
+                    picture.setIcon(new ImageIcon(image.getScaledInstance(-1, screenHeight / 2, Image.SCALE_SMOOTH)));
+                } else {
+                    picture.setIcon(new ImageIcon(image.getScaledInstance(screenWidth / 2, -1, Image.SCALE_SMOOTH)));
+                }
+            }
             picture.setHorizontalAlignment(SwingConstants.CENTER);
             picture.setVerticalAlignment(SwingConstants.CENTER);
 
@@ -195,22 +219,18 @@ public class BillBoardViewer extends JFrame {
             JPanel infoPanel = new JPanel();
             infoPanel.setBackground(extractFromXML.backgroundColour);
 
-            JTextPane infoTextPane = new JTextPane();
-            infoTextPane.setText(extractFromXML.information);
-            infoTextPane.setEditable(false);
-            infoTextPane.setForeground(extractFromXML.informationColour);
-            infoTextPane.setBackground(extractFromXML.backgroundColour);
-            infoTextPane.setFont(infoTextPane.getFont().deriveFont(32.0f));
+            JLabel infoLabel = new JLabel();
+            infoLabel.setText("<HTML>" + extractFromXML.information + "</HTML>");
+            infoLabel.setForeground(extractFromXML.informationColour);
+            infoLabel.setBackground(extractFromXML.backgroundColour);
+            infoLabel.setFont(infoLabel.getFont().deriveFont(32.0f));
+            infoLabel.setVerticalAlignment(SwingConstants.CENTER);
+            infoLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
-            //center the TextPane
-            StyledDocument doc = infoTextPane.getStyledDocument();
-            SimpleAttributeSet center = new SimpleAttributeSet();
-            StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
-            doc.setParagraphAttributes(0, doc.getLength(), center, false);
 
             infoPanel.setLayout(new BorderLayout());
             infoPanel.setBorder(new EmptyBorder(screenHeight / 4, screenWidth / 8, screenHeight / 4, screenWidth / 8));
-            infoPanel.add(infoTextPane, BorderLayout.CENTER);
+            infoPanel.add(infoLabel, BorderLayout.CENTER);
 
             getContentPane().add(infoPanel);
             repaint();
@@ -228,24 +248,39 @@ public class BillBoardViewer extends JFrame {
             messageLabel.setHorizontalAlignment(SwingConstants.CENTER);
             messageLabel.setPreferredSize(new Dimension(screenWidth, (screenHeight / 3)));
 
+            //set messages font size
             int messageWidth = messageLabel.getFontMetrics(messageLabel.getFont()).stringWidth(messageLabel.getText());
             int componentWidth = screenWidth;
-
             double widthRatio = (double) componentWidth / (double) messageWidth;
-
             int newFontSize = (int) (messageLabel.getFont().getSize() * widthRatio);
             int componentHeight = screenHeight / 3;
-
             int fontSizeToUse = Math.min(newFontSize, componentHeight);
-
             messageLabel.setFont(new Font(messageLabel.getFont().getName(), Font.PLAIN, fontSizeToUse));
 
             JLabel picture = new JLabel();
-            ImageIcon myPicture = new ImageIcon(ImageIO.read(new File("src/Viewer/Image/0341b9f3f27a6ba0a3b8de6de9d864949f0dbc23.jpg"))
-                    .getScaledInstance(screenWidth / 2, screenHeight / 2, Image.SCALE_SMOOTH));
-            picture.setIcon(myPicture);
-            picture.setPreferredSize(new Dimension(screenWidth, (screenHeight / 3) * 2));
+            //if it is a url image
+            if (extractFromXML.image.startsWith("http")) {
+                URL url = new URL(extractFromXML.image);
+                BufferedImage image = ImageIO.read(url);
+                if (image.getWidth() < image.getHeight()) {
+                    picture.setIcon(new ImageIcon(image.getScaledInstance(-1, screenHeight / 2, Image.SCALE_SMOOTH)));
+                } else {
+                    picture.setIcon(new ImageIcon(image.getScaledInstance(screenWidth / 2, -1, Image.SCALE_SMOOTH)));
+                }
+                //else if image is in data form
+            } else {
+                byte[] encodedImage;
+                encodedImage = extractFromXML.image.getBytes();
+                byte[] decodedImage = Base64.getDecoder().decode(encodedImage);
+                BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedImage));
+                if (image.getWidth() < image.getHeight() || image.getHeight() == image.getWidth()) {
+                    picture.setIcon(new ImageIcon(image.getScaledInstance(-1, screenHeight / 2, Image.SCALE_SMOOTH)));
+                } else {
+                    picture.setIcon(new ImageIcon(image.getScaledInstance(screenWidth / 2, -1, Image.SCALE_SMOOTH)));
+                }
+            }
             picture.setHorizontalAlignment(SwingConstants.CENTER);
+            picture.setVerticalAlignment(SwingConstants.CENTER);
 
             layoutPanel.setLayout(new BorderLayout());
             layoutPanel.add(messageLabel, BorderLayout.NORTH);
@@ -254,7 +289,9 @@ public class BillBoardViewer extends JFrame {
             getContentPane().add(layoutPanel);
             repaint();
             setVisible(true);
-        } else if (!extractFromXML.message.isBlank() && !extractFromXML.information.isBlank() && extractFromXML.image.isBlank()) {
+        }
+        //message and info
+        else if (!extractFromXML.message.isBlank() && !extractFromXML.information.isBlank() && extractFromXML.image.isBlank()) {
             JPanel layoutPanel = new JPanel();
             layoutPanel.setBackground(extractFromXML.backgroundColour);
 
@@ -272,65 +309,85 @@ public class BillBoardViewer extends JFrame {
             int fontSizeToUse = Math.min(newFontSize, componentHeight);
             messageLabel.setFont(new Font(messageLabel.getFont().getName(), Font.PLAIN, fontSizeToUse));
 
-            JTextPane infoTextPane = new JTextPane();
-            infoTextPane.setText(extractFromXML.information);
-            infoTextPane.setEditable(false);
-            infoTextPane.setForeground(extractFromXML.informationColour);
-            infoTextPane.setBackground(extractFromXML.backgroundColour);
+            JLabel infoLabel = new JLabel();
+            infoLabel.setText("<HTML>" + extractFromXML.information + "</HTML>");
+            infoLabel.setForeground(extractFromXML.informationColour);
+            infoLabel.setVerticalAlignment(SwingConstants.CENTER);
+            infoLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
-            int infoWidth = messageLabel.getFontMetrics(infoTextPane.getFont()).stringWidth(infoTextPane.getText());
-            int infoComponentWidth = screenWidth-1;
+            int infoWidth = infoLabel.getFontMetrics(infoLabel.getFont()).stringWidth(infoLabel.getText());
+            int infoComponentWidth = screenWidth * 6;
             double infoWidthRatio = (double) infoComponentWidth / (double) infoWidth;
-            int infoNewFontSize = (int) (infoTextPane.getFont().getSize() * infoWidthRatio);
-            int infoComponentHeight = (screenHeight / 2)-1;
+            int infoNewFontSize = (int) (infoLabel.getFont().getSize() * infoWidthRatio);
+            int infoComponentHeight = screenHeight / 2;
             int infoFontSizeToUse = Math.min(infoNewFontSize, infoComponentHeight);
-            infoTextPane.setFont(new Font(infoTextPane.getFont().getName(), Font.PLAIN, infoFontSizeToUse));
-
-
-            infoTextPane.setPreferredSize(new Dimension(screenWidth, screenHeight / 2));
-
-            //center the TextPane
-            StyledDocument doc = infoTextPane.getStyledDocument();
-            SimpleAttributeSet center = new SimpleAttributeSet();
-            StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
-            doc.setParagraphAttributes(0, doc.getLength(), center, false);
+            if (infoFontSizeToUse >= fontSizeToUse) {
+                infoFontSizeToUse = fontSizeToUse - 50;
+            }
+            infoLabel.setFont(new Font(infoLabel.getFont().getName(), Font.PLAIN, infoFontSizeToUse));
+            infoLabel.setPreferredSize(new Dimension(screenWidth, screenHeight / 2));
 
             layoutPanel.setLayout(new BorderLayout());
             layoutPanel.add(messageLabel, BorderLayout.NORTH);
-            layoutPanel.add(infoTextPane, BorderLayout.SOUTH);
+            layoutPanel.add(infoLabel, BorderLayout.SOUTH);
 
             getContentPane().add(layoutPanel);
             repaint();
             setVisible(true);
-        } else if (extractFromXML.message.isBlank() && !extractFromXML.information.isBlank() && !extractFromXML.image.isBlank()) {
+        }
+        //image and info
+        else if (extractFromXML.message.isBlank() && !extractFromXML.information.isBlank() && !extractFromXML.image.isBlank()) {
             JPanel layoutPanel = new JPanel();
             layoutPanel.setBackground(extractFromXML.backgroundColour);
 
             JLabel picture = new JLabel();
-            ImageIcon myPicture = new ImageIcon(ImageIO.read(new File("src/Viewer/Image/0341b9f3f27a6ba0a3b8de6de9d864949f0dbc23.jpg"))
-                    .getScaledInstance(screenWidth / 2, screenHeight / 2, Image.SCALE_SMOOTH));
-            picture.setIcon(myPicture);
-            picture.setPreferredSize(new Dimension(screenWidth, (screenHeight / 3) * 2));
+            //if it is a url image
+            if (extractFromXML.image.startsWith("http")) {
+                URL url = new URL(extractFromXML.image);
+                BufferedImage image = ImageIO.read(url);
+                if (image.getWidth() < image.getHeight()|| image.getHeight() == image.getWidth()) {
+                    picture.setIcon(new ImageIcon(image.getScaledInstance(-1, screenHeight / 2, Image.SCALE_SMOOTH)));
+                } else {
+                    picture.setIcon(new ImageIcon(image.getScaledInstance(screenWidth / 2, -1, Image.SCALE_SMOOTH)));
+                }
+                //else if image is in data form
+            } else {
+                byte[] encodedImage;
+                encodedImage = extractFromXML.image.getBytes();
+                byte[] decodedImage = Base64.getDecoder().decode(encodedImage);
+                BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedImage));
+                if (image.getWidth() < image.getHeight() || image.getHeight() == image.getWidth()) {
+                    picture.setIcon(new ImageIcon(image.getScaledInstance(-1, screenHeight / 2, Image.SCALE_SMOOTH)));
+                } else {
+                    picture.setIcon(new ImageIcon(image.getScaledInstance(screenWidth / 2, -1, Image.SCALE_SMOOTH)));
+                }
+            }
             picture.setHorizontalAlignment(SwingConstants.CENTER);
+            picture.setVerticalAlignment(SwingConstants.CENTER);
 
-            JTextPane infoTextPane = new JTextPane();
-            infoTextPane.setText(extractFromXML.information);
-            infoTextPane.setEditable(false);
-            infoTextPane.setForeground(extractFromXML.informationColour);
-            infoTextPane.setBackground(extractFromXML.backgroundColour);
-            infoTextPane.setPreferredSize(new Dimension(screenWidth, screenHeight / 3));
-            infoTextPane.setFont(infoTextPane.getFont().deriveFont(32.0f));
+            JLabel infoLabel = new JLabel();
+            infoLabel.setText("<HTML>" + extractFromXML.information + "</HTML>");
+            infoLabel.setForeground(extractFromXML.informationColour);
+            infoLabel.setBackground(extractFromXML.backgroundColour);
+            infoLabel.setPreferredSize(new Dimension((screenWidth / 4) * 3, screenHeight / 3));
+            infoLabel.setHorizontalAlignment(SwingConstants.CENTER);
+            infoLabel.setVerticalAlignment(SwingConstants.CENTER);
 
-            //center the TextPane
-            StyledDocument doc = infoTextPane.getStyledDocument();
-            SimpleAttributeSet center = new SimpleAttributeSet();
-            StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
-            doc.setParagraphAttributes(0, doc.getLength(), center, false);
+            int infoWidth = infoLabel.getFontMetrics(infoLabel.getFont()).stringWidth(infoLabel.getText());
+            int infoComponentWidth = ((screenWidth / 4) * 3) * 6;
+            double infoWidthRatio = (double) infoComponentWidth / (double) infoWidth;
+            int infoNewFontSize = (int) (infoLabel.getFont().getSize() * infoWidthRatio);
+            int infoComponentHeight = screenHeight / 3;
+            int infoFontSizeToUse = Math.min(infoNewFontSize, infoComponentHeight);
+            if (infoFontSizeToUse >= 100) {
+                infoFontSizeToUse = 50;
+            }
+            infoLabel.setFont(new Font(infoLabel.getFont().getName(), Font.PLAIN, infoFontSizeToUse));
 
             layoutPanel.setLayout(new BorderLayout());
-            layoutPanel.add(picture, BorderLayout.NORTH);
-            layoutPanel.setBorder(new EmptyBorder(0, screenWidth / 4, 0, screenWidth / 4));
-            layoutPanel.add(infoTextPane, BorderLayout.SOUTH);
+            layoutPanel.add(picture, BorderLayout.CENTER);
+            layoutPanel.setBorder(new EmptyBorder(0, screenWidth / 8, 0, screenWidth / 8));
+            layoutPanel.add(infoLabel, BorderLayout.SOUTH);
 
             getContentPane().add(layoutPanel);
             repaint();
@@ -339,13 +396,28 @@ public class BillBoardViewer extends JFrame {
             JPanel layoutPanel = new JPanel();
             layoutPanel.setBackground(extractFromXML.backgroundColour);
 
-            layoutPanel.setLayout(new BorderLayout());
-
             JLabel picture = new JLabel();
-            ImageIcon myPicture = new ImageIcon(ImageIO.read(new File("src/Viewer/Image/0341b9f3f27a6ba0a3b8de6de9d864949f0dbc23.jpg"))
-                    .getScaledInstance(screenWidth/3 , screenHeight/3, Image.SCALE_SMOOTH));
-            picture.setIcon(myPicture);
-            picture.setPreferredSize(new Dimension(screenWidth, screenHeight/3));
+            //if it is a url image
+            if (extractFromXML.image.startsWith("http")) {
+                URL url = new URL(extractFromXML.image);
+                BufferedImage image = ImageIO.read(url);
+                if (image.getWidth() < image.getHeight()|| image.getHeight() == image.getWidth()) {
+                    picture.setIcon(new ImageIcon(image.getScaledInstance(-1, screenHeight / 3, Image.SCALE_SMOOTH)));
+                } else {
+                    picture.setIcon(new ImageIcon(image.getScaledInstance(screenWidth / 3, -1, Image.SCALE_SMOOTH)));
+                }
+                //else if image is in data form
+            } else {
+                byte[] encodedImage;
+                encodedImage = extractFromXML.image.getBytes();
+                byte[] decodedImage = Base64.getDecoder().decode(encodedImage);
+                BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedImage));
+                if (image.getWidth() < image.getHeight() || image.getHeight() == image.getWidth()) {
+                    picture.setIcon(new ImageIcon(image.getScaledInstance(-1, screenHeight / 3, Image.SCALE_SMOOTH)));
+                } else {
+                    picture.setIcon(new ImageIcon(image.getScaledInstance(screenWidth / 3, -1, Image.SCALE_SMOOTH)));
+                }
+            }
             picture.setHorizontalAlignment(SwingConstants.CENTER);
             picture.setVerticalAlignment(SwingConstants.CENTER);
 
@@ -364,56 +436,35 @@ public class BillBoardViewer extends JFrame {
             int fontSizeToUse = Math.min(newFontSize, componentHeight);
             messageLabel.setFont(new Font(messageLabel.getFont().getName(), Font.PLAIN, fontSizeToUse));
 
-            Color thisColor = Color.decode("#7F3FBF");
+            JLabel infoLabel = new JLabel();
+            infoLabel.setText("<HTML>" + extractFromXML.information + "</HTML>");
+            infoLabel.setForeground(extractFromXML.informationColour);
+            infoLabel.setBackground(extractFromXML.backgroundColour);
+            infoLabel.setPreferredSize(new Dimension(screenWidth, screenHeight / 3));
+            infoLabel.setBorder(new EmptyBorder(0, screenWidth / 8, 0, screenWidth / 8));
 
-            JTextPane infoTextPane = new JTextPane();
-            infoTextPane.setText(extractFromXML.information);
-            infoTextPane.setEditable(false);
-            infoTextPane.setForeground(extractFromXML.informationColour);
-            infoTextPane.setBackground(extractFromXML.backgroundColour);
-            infoTextPane.setPreferredSize(new Dimension(screenWidth, screenHeight / 3));
-            infoTextPane.setFont(infoTextPane.getFont().deriveFont(32.0f));
-            infoTextPane.setBorder(new EmptyBorder(0, screenWidth / 8, 0, screenWidth / 8));
-
-            //center the TextPane
-            StyledDocument doc = infoTextPane.getStyledDocument();
-            SimpleAttributeSet center = new SimpleAttributeSet();
-            StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
-            doc.setParagraphAttributes(0, doc.getLength(), center, false);
+            int infoWidth = infoLabel.getFontMetrics(infoLabel.getFont()).stringWidth(infoLabel.getText());
+            int infoComponentWidth = ((screenWidth / 4) * 3) * 6;
+            double infoWidthRatio = (double) infoComponentWidth / (double) infoWidth;
+            int infoNewFontSize = (int) (infoLabel.getFont().getSize() * infoWidthRatio);
+            int infoComponentHeight = screenHeight / 3;
+            int infoFontSizeToUse = Math.min(infoNewFontSize, infoComponentHeight);
+            if (infoFontSizeToUse >= fontSizeToUse) {
+                infoFontSizeToUse = fontSizeToUse - 50;
+            }
+            infoLabel.setFont(new Font(infoLabel.getFont().getName(), Font.PLAIN, infoFontSizeToUse));
+            infoLabel.setHorizontalAlignment(SwingConstants.CENTER);
+            infoLabel.setVerticalAlignment(SwingConstants.CENTER);
 
 
             layoutPanel.setLayout(new BorderLayout());
-            layoutPanel.add(picture,BorderLayout.CENTER);
-            layoutPanel.add(messageLabel,BorderLayout.NORTH);
-
-            layoutPanel.add(infoTextPane,BorderLayout.SOUTH);
+            layoutPanel.add(picture, BorderLayout.CENTER);
+            layoutPanel.add(messageLabel, BorderLayout.NORTH);
+            layoutPanel.add(infoLabel, BorderLayout.SOUTH);
 
             getContentPane().add(layoutPanel);
             repaint();
             setVisible(true);
         }
-            /*lblMessage.setText(extractFromXML.message);
-            lblMessage.setForeground(extractFromXML.textColour);
-            lblMessage.setPreferredSize(new Dimension(screenWidth / 3, screenHeight / 3));
-
-            lblInfo.setText(extractFromXML.information);
-            lblInfo.setForeground(extractFromXML.informationColour);
-            lblInfo.setPreferredSize(new Dimension(screenWidth / 3, screenHeight / 3));
-
-            panel.setBackground(extractFromXML.backgroundColour);
-
-            ImageIcon myPicture = new ImageIcon(ImageIO.read(new File("src/Viewer/Image/0341b9f3f27a6ba0a3b8de6de9d864949f0dbc23.jpg"))
-                    .getScaledInstance(screenWidth / 3, screenHeight / 3, Image.SCALE_SMOOTH));
-            picLabel.setIcon(myPicture);
-
-            panel.setLayout(new BorderLayout());
-            panel.add(lblMessage, BorderLayout.NORTH);
-            panel.add(picLabel, BorderLayout.CENTER);
-            panel.add(lblInfo, BorderLayout.SOUTH);
-
-            getContentPane().add(panel);
-            repaint();
-            setVisible(true);
-        }*/
     }
 }

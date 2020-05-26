@@ -14,22 +14,24 @@ import javax.swing.*;
  */
 public class ChangePasswordWin extends JFrame {
     private JLabel labelPassword = new JLabel("New password");
-    private JTextField passwordTextField= new JTextField(20);
+    private JTextField passwordTextField = new JTextField(20);
     private JButton changeButton = new JButton("Change");
     private JPanel panel = new JPanel(new GridBagLayout());
     private GridBagConstraints constraints = new GridBagConstraints();
 
-    public ChangePasswordWin(){
+    public ChangePasswordWin() {
         super("Change password");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         // Window Listener
         WindowListener windowListener = new WindowListener() {
             @Override
-            public void windowOpened(WindowEvent e) {}
+            public void windowOpened(WindowEvent e) {
+            }
 
             @Override
-            public void windowClosing(WindowEvent e) {}
+            public void windowClosing(WindowEvent e) {
+            }
 
             @Override
             public void windowClosed(WindowEvent e) {
@@ -38,25 +40,28 @@ public class ChangePasswordWin extends JFrame {
             }
 
             @Override
-            public void windowIconified(WindowEvent e) {}
+            public void windowIconified(WindowEvent e) {
+            }
 
             @Override
-            public void windowDeiconified(WindowEvent e) {}
+            public void windowDeiconified(WindowEvent e) {
+            }
 
             @Override
-            public void windowActivated(WindowEvent e) {}
+            public void windowActivated(WindowEvent e) {
+            }
 
             @Override
-            public void windowDeactivated(WindowEvent e) {}
+            public void windowDeactivated(WindowEvent e) {
+            }
         };
         super.addWindowListener(windowListener);
 
         // Button setting
         ActionListener changeListener = e -> {
-            if(passwordTextField.getText().isEmpty()){
-                JOptionPane.showMessageDialog(null,"Password field cannot be empty.");
-            }
-            else{
+            if (passwordTextField.getText().isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Password field cannot be empty.");
+            } else {
                 ChangePasswordRequest changePasswordRequest = new ChangePasswordRequest(Main.loginUser.getSessionToken(),
                         Main.loginUser.getUserName(), passwordTextField.getText());
 
@@ -70,7 +75,7 @@ public class ChangePasswordWin extends JFrame {
                     ex.printStackTrace();
                 }
 
-                if(Client.isRequestState()){
+                if (Client.isRequestState()) {
                     JOptionPane.showMessageDialog(null, "Password change!");
                 }
             }
@@ -98,7 +103,7 @@ public class ChangePasswordWin extends JFrame {
         getContentPane().add(panel);
 
         // Display the window
-        setLocation(900,350);
+        setLocation(900, 350);
         pack();
     }
 }

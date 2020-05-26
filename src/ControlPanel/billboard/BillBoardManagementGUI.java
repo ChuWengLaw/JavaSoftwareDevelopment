@@ -14,6 +14,7 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.File;
 import java.io.IOException;
+import java.net.ConnectException;
 
 /**
  * This class creates the GUI to be used to display the available options for
@@ -36,22 +37,26 @@ public class BillBoardManagementGUI extends JFrame {
 
     /**
      * Constructor initialises the GUI creation.
+     *
      * @throws HeadlessException
      */
     public BillBoardManagementGUI() throws HeadlessException {
         super("Billboard Management");
         createGUI();
     }
-    private void createGUI(){
+
+    private void createGUI() {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         // Window Listener to prevent user from pressing other buttons in menu window
         WindowListener windowListener = new WindowListener() {
             @Override
             public void windowOpened(WindowEvent e) {
-                Main.menuWin.setEnabled(false);}
+                Main.menuWin.setEnabled(false);
+            }
 
             @Override
-            public void windowClosing(WindowEvent e) {}
+            public void windowClosing(WindowEvent e) {
+            }
 
             @Override
             public void windowClosed(WindowEvent e) {
@@ -59,20 +64,25 @@ public class BillBoardManagementGUI extends JFrame {
             }
 
             @Override
-            public void windowIconified(WindowEvent e) {}
+            public void windowIconified(WindowEvent e) {
+            }
 
             @Override
-            public void windowDeiconified(WindowEvent e) {}
+            public void windowDeiconified(WindowEvent e) {
+            }
 
             @Override
-            public void windowActivated(WindowEvent e) {}
+            public void windowActivated(WindowEvent e) {
+            }
 
             @Override
-            public void windowDeactivated(WindowEvent e) {}
+            public void windowDeactivated(WindowEvent e) {
+            }
         };
         super.addWindowListener(windowListener);
         //set up buttons
         btnCreateBB = createButton("Create Billboard");
+        btnEditBB = createButton("Edit Billboard");
         btnDeleteBB = createButton("Delete Billboard");
         btnInfoBB = createButton("Billboard Info");
         btnListBB = createButton("List Existing Billboards");
@@ -83,6 +93,13 @@ public class BillBoardManagementGUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 new CreateBillboardGUI();
+            }
+        });
+        // Edit Billboard
+        btnEditBB.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new EditBillboardGUI();
             }
         });
         // Delete billboard
@@ -120,14 +137,25 @@ public class BillBoardManagementGUI extends JFrame {
                 int returnValue = jfc.showOpenDialog(null);
                 if (returnValue == JFileChooser.APPROVE_OPTION) {
                     File selectedFile = jfc.getSelectedFile();
-                    XmlRequest xmlRequest = new XmlRequest(selectedFile, Main.loginUser.getUserName());
+                    XmlRequest xmlRequest = new XmlRequest(Main.loginUser.getSessionToken(), selectedFile, Main.loginUser.getUserName());
                     try {
                         Client.connectServer(xmlRequest);
+                        if(Client.isRequestState()){
+                            JOptionPane.showMessageDialog(null, "Billboard Imported!");
+                        }
+                        else{
+                            throw new Exception();
+                        }
+                    } catch(ConnectException ex) {
+                        JOptionPane.showMessageDialog(null, "Connection fail.");
+                        System.exit(0);
                     } catch (IOException ex) {
                         ex.printStackTrace();
                     } catch (InterruptedException ex) {
                         ex.printStackTrace();
                     } catch (ClassNotFoundException ex) {
+                        ex.printStackTrace();
+                    } catch (Exception ex) {
                         ex.printStackTrace();
                     }
                 }
@@ -150,23 +178,26 @@ public class BillBoardManagementGUI extends JFrame {
         bBMenu.add(btnCreateBB, constraints);
 
         constraints.gridx = 1;
-        bBMenu.add(btnDeleteBB, constraints);
+        bBMenu.add(btnEditBB, constraints);
 
         constraints.gridx = 2;
-        bBMenu.add(btnInfoBB, constraints);
+        bBMenu.add(btnDeleteBB, constraints);
 
         constraints.gridx = 3;
-        bBMenu.add(btnListBB, constraints);
+        bBMenu.add(btnInfoBB, constraints);
 
         constraints.gridx = 4;
-        bBMenu.add(btnImport, constraints);
+        bBMenu.add(btnListBB, constraints);
 
         constraints.gridx = 5;
+        bBMenu.add(btnImport, constraints);
+
+        constraints.gridx = 6;
         bBMenu.add(btnExport, constraints);
         getContentPane().add(bBMenu);
 
         // Display the window
-        setLocation(900,350);
+        setLocation(900, 350);
         pack();
         repaint();
         setVisible(true);
@@ -174,13 +205,23 @@ public class BillBoardManagementGUI extends JFrame {
 
     /**
      * Creates the button
-     * @author Lachlan
+     *
      * @param text the text on the button
      * @return the formatted button
+     * @author Lachlan
      */
-    private JButton createButton (String text){
+    private JButton createButton(String text) {
         JButton button = new JButton();
         button.setText(text);
         return button;
+    }
+    /**
+     * This is a method that setup the availability of the create billboard button
+     * depends on the create billboards permission
+     *
+     * @param createBillboardsPermission The edit user permission of the login users.
+     */
+    public void createBBEnable(boolean createBillboardsPermission) {
+        btnCreateBB.setEnabled(createBillboardsPermission);
     }
 }

@@ -8,6 +8,7 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.*;
+import java.net.ConnectException;
 
 /**
  * This class creates the GUI to be used to display the information
@@ -32,6 +33,7 @@ public class InformationGUI extends JFrame {
 
     /**
      * Constructor initialises the GUI creation.
+     *
      * @throws HeadlessException
      */
     public InformationGUI() throws HeadlessException {
@@ -57,11 +59,17 @@ public class InformationGUI extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 BBInfoRequest temp = new BBInfoRequest(Main.loginUser.getSessionToken(), txtBillboardName.getText());
                 if (txtBillboardName.getText().isBlank()) {
-                    JOptionPane.showMessageDialog(null,"Please Enter a Billboard Name.");
+                    JOptionPane.showMessageDialog(null, "Please Enter a Billboard Name.");
                 } else {
                     try {
                         Client.connectServer(temp);
                         txtInfo.setText(Client.getInfo());
+                        if(!Client.isRequestState()){
+                            JOptionPane.showMessageDialog(null, "Billboard not found!");
+                        }
+                    } catch(ConnectException ex) {
+                        JOptionPane.showMessageDialog(null, "Connection fail.");
+                        System.exit(0);
                     } catch (Exception ex) {
                         ex.printStackTrace();
                     }

@@ -78,55 +78,25 @@ public class CreateBillboardGUI extends JFrame {
                 //if any of the colours are a have a code value
                 //if text colour is a code
                 if (txtTextColour.getText().startsWith("#")) {
-                    if (!isColourValid(txtTextColour.getText())) {
+                    if (!isColourCodeValid(txtTextColour.getText())) {
                         JOptionPane.showMessageDialog(null, "Please enter a valid text colour");
                     }
                 }
                 //if background is a code
                 if (txtBackgroundColour.getText().startsWith("#")) {
-                    if (!isColourValid(txtBackgroundColour.getText())) {
+                    if (!isColourCodeValid(txtBackgroundColour.getText())) {
                         JOptionPane.showMessageDialog(null, "Please enter a valid background colour");
                     }
                 }
                 //if info colour is a code
                 if (txtInformationColour.getText().startsWith("#")) {
-                    if (!isColourValid(txtInformationColour.getText())) {
-                        JOptionPane.showMessageDialog(null, "Please enter a valid information colour");
-                    }
-                }
-
-                if (txtTextColour.getText().length()>0 && !txtTextColour.getText().startsWith("#")){
-                    try{
-                        Class.forName("java.awt.Color").getField(txtTextColour.getText());
-                    } catch (ClassNotFoundException ex) {
-                        ex.printStackTrace();
-                    } catch (NoSuchFieldException ex) {
-                        JOptionPane.showMessageDialog(null, "Please enter a valid text colour");
-                    }
-                }
-
-                if (txtBackgroundColour.getText().length()>0 && !txtBackgroundColour.getText().startsWith("#")){
-                    try{
-                        Class.forName("java.awt.Color").getField(txtBackgroundColour.getText());
-                    } catch (ClassNotFoundException ex) {
-                        ex.printStackTrace();
-                    } catch (NoSuchFieldException ex) {
-                        JOptionPane.showMessageDialog(null, "Please enter a valid background colour");
-                    }
-                }
-
-                if (txtInformationColour.getText().length()>0 && !txtInformationColour.getText().startsWith("#")){
-                    try{
-                        Class.forName("java.awt.Color").getField(txtInformationColour.getText());
-                    } catch (ClassNotFoundException ex) {
-                        ex.printStackTrace();
-                    } catch (NoSuchFieldException ex) {
+                    if (!isColourCodeValid(txtInformationColour.getText())) {
                         JOptionPane.showMessageDialog(null, "Please enter a valid information colour");
                     }
                 }
 
                 //if not issues then proceed
-                else {
+                if (isColourValid()) {
                     CreateBBRequest temp = new CreateBBRequest(Main.loginUser.getSessionToken(), txtBillboardName.getText(), Main.loginUser.getUserName(), txtTextColour.getText(), txtBackgroundColour.getText(),
                             txtMessage.getText(), txtImage.getText(), txtInformation.getText(), txtInformationColour.getText());
                     try {
@@ -277,7 +247,7 @@ public class CreateBillboardGUI extends JFrame {
         return label;
     }
 
-    private boolean isColourValid(String codeInput) {
+    private boolean isColourCodeValid(String codeInput) {
         boolean valid = false;
         boolean startsWithHash = false;
         String s2 = codeInput.substring(1);
@@ -303,6 +273,47 @@ public class CreateBillboardGUI extends JFrame {
         }
 
         return valid;
+    }
+
+    private boolean isColourValid() {
+        boolean text = true;
+        boolean back = true;
+        boolean info = true;
+
+        if (txtTextColour.getText().length() > 0 && !txtTextColour.getText().startsWith("#")) {
+            try {
+                Class.forName("java.awt.Color").getField(txtTextColour.getText());
+            } catch (NoSuchFieldException e) {
+                JOptionPane.showMessageDialog(null, "Please enter a valid text colour");
+                text = false;
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+
+        if (txtInformationColour.getText().length() > 0 && !txtTextColour.getText().startsWith("#")) {
+            try {
+                Class.forName("java.awt.Color").getField(txtInformationColour.getText());
+            } catch (NoSuchFieldException e) {
+                JOptionPane.showMessageDialog(null, "Please enter a valid information colour");
+                info = false;
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+
+        if (txtBackgroundColour.getText().length() > 0 && !txtBackgroundColour.getText().startsWith("#")) {
+            try {
+                Class.forName("java.awt.Color").getField(txtBackgroundColour.getText());
+            } catch (NoSuchFieldException e) {
+                JOptionPane.showMessageDialog(null, "Please enter a valid background colour");
+                back = false;
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return text && back && info;
     }
 
 //    /**

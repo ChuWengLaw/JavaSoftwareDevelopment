@@ -542,7 +542,7 @@ public class Server {
         // If the request is an instance of edit billboard request
         else if (clientRequest instanceof EditBBRequest) {
             EditBBRequest temp = (EditBBRequest) clientRequest;
-            SessionToken sessionToken = null;
+            SessionToken sessionToken = findSessionToken(temp.getSessionToken());
 
             // Find the session token in the list.
             for(int i  = 0; i <= sessionTokens.size(); i++){
@@ -566,9 +566,9 @@ public class Server {
                     // update edited billboard
                     if (temp.getBillboardName() == null) {
                         BillboardSQL bb = new BillboardSQL();
-                        bb.CreateBillboard(BillBoardName, temp.getLoginUser(), temp.getEditTextColour(), temp.getEditBGColour(),
+                        bb.EditBillboard(BillBoardName, temp.getEditTextColour(), temp.getEditBGColour(),
                                 temp.getEditMsg(), temp.getEditImg(), temp.getEditInfo(), temp.getEditInfoColour());
-                        generalReply = new GeneralReply(true);
+                        generalReply = new GeneralReply(temp.getSessionToken(),true);
                         oos.writeObject(generalReply);
                     }
                     // return the contents of the billboard
@@ -576,12 +576,12 @@ public class Server {
                         BillBoardName = temp.getBillboardName();
                         BillboardSQL bb = new BillboardSQL();
                         bb.EditBillboard(BillBoardName);
-                        EditBBReply editBBReply = new EditBBReply(bb.textColour, bb.backgroundColour, bb.message,
+                        EditBBReply editBBReply = new EditBBReply(temp.getSessionToken(), bb.textColour, bb.backgroundColour, bb.message,
                                 bb.image, bb.information, bb.informationColour);
                         oos.writeObject(editBBReply);
                     }
                 } catch (Exception e) {
-                    generalReply = new GeneralReply(false);
+                    generalReply = new GeneralReply(temp.getSessionToken(),false);
                     oos.writeObject(generalReply);
                 }
             }
@@ -591,7 +591,6 @@ public class Server {
         else if (clientRequest instanceof DeleteBBRequest) {
             DeleteBBRequest temp = (DeleteBBRequest) clientRequest;
             SessionToken sessionToken = findSessionToken(temp.getSessionToken());
-
 
             // Remove session token from the list and send a logout request if it expired.
             if (!tokenCheck(temp.getSessionToken())) {
@@ -619,7 +618,6 @@ public class Server {
         else if (clientRequest instanceof BBInfoRequest) {
             BBInfoRequest temp = (BBInfoRequest) clientRequest;
             SessionToken sessionToken = findSessionToken(temp.getSessionToken());
-
 
             // Remove session token from the list and send a logout request if it expired.
             if (!tokenCheck(temp.getSessionToken())) {
@@ -649,7 +647,7 @@ public class Server {
         else if (clientRequest instanceof ListBBRequest) {
             ListBBRequest listBBRequest = (ListBBRequest) clientRequest;
             SessionToken sessionToken = findSessionToken(listBBRequest.getSessionToken());
-            
+
             // Remove session token from the list and send a logout request if it expired.
             if (!tokenCheck(listBBRequest.getSessionToken())) {
                 sessionTokens.remove(sessionToken);
@@ -687,27 +685,49 @@ public class Server {
             WeeklyScheduleReply weeklyscheduleReply = new WeeklyScheduleReply(Schedule.ScheduledInformation());
             oos.writeObject(weeklyscheduleReply);
         }
-            // If the request in an instance of import/export billboard request
+        // If the request in an instance of import/export billboard request
         else if (clientRequest instanceof XmlRequest) {
-                XmlRequest xmlRequest = (XmlRequest) clientRequest;
-                // if the user exports a billboard
-                if (xmlRequest.getXmlFile() == null) {
-                    new MakeXMLFile(xmlRequest.getXmlName());
+            XmlRequest xmlRequest = (XmlRequest) clientRequest;
+            SessionToken sessionToken = findSessionToken(xmlRequest.getSessionToken());
+
+            // Remove session token from the list and send a logout request if it expired.
+            if (!tokenCheck(xmlRequest.getSessionToken())) {
+                sessionTokens.remove(sessionToken);
+                LogoutReply logoutReply = new LogoutReply(true);
+                oos.writeObject(logoutReply);
+            } else {
+                // Reset the used time of the session token.
+                sessionToken.setUsedTime(LocalDateTime.now());
+                GeneralReply generalReply;
+
+                // Return a reply object to the client containing JTable of billboards
+                try {
+                    // if the user exports a billboard
+                    if (xmlRequest.getXmlFile() == null) {
+                        new MakeXMLFile(xmlRequest.getXmlName());
+                    }
+                    // if the user imports a billboard
+                    else {
+                        // copy uploaded new xml file to path then extract its contents and save it in db
+                        String newFileName = xmlRequest.getXmlFile().getName();
+                        String billboardName = newFileName.replaceFirst("[.][^.]+$", "");
+                        var newPath = new File("src/xmlBillboards/" + newFileName);
+                        Files.copy(xmlRequest.getXmlFile().toPath(), newPath.toPath(),
+                                StandardCopyOption.REPLACE_EXISTING);
+                        ExtractFromXML extractFromXML = new ExtractFromXML(newFileName);
+                        BillboardSQL bb = new BillboardSQL();
+                        bb.CreateBillboard(billboardName, xmlRequest.getUserName(), extractFromXML.TxtColourStr, extractFromXML.BGColourStr,
+                                extractFromXML.message, extractFromXML.image, extractFromXML.information, extractFromXML.InfoColourStr);
+                    }
+                    generalReply = new GeneralReply(sessionToken, true);
+                } catch (Exception e) {
+                    generalReply = new GeneralReply(sessionToken,false);
                 }
-                // if the user imports a billboard
-                else {
-                    // copy uploaded new xml file to path then extract its contents and save it in db
-                    String newFileName = xmlRequest.getXmlFile().getName();
-                    String billboardName = newFileName.replaceFirst("[.][^.]+$", "");
-                    var newPath = new File("src/xmlBillboards/" + newFileName);
-                    Files.copy(xmlRequest.getXmlFile().toPath(), newPath.toPath(),
-                            StandardCopyOption.REPLACE_EXISTING);
-                    ExtractFromXML extractFromXML = new ExtractFromXML(newFileName);
-                    BillboardSQL bb = new BillboardSQL();
-                    bb.CreateBillboard(billboardName, xmlRequest.getUserName(), extractFromXML.TxtColourStr, extractFromXML.BGColourStr,
-                            extractFromXML.message, extractFromXML.image, extractFromXML.information, extractFromXML.InfoColourStr);
-                }
+                oos.writeObject(generalReply);
+                oos.flush();
             }
         }
     }
+}
+
 

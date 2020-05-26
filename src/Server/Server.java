@@ -568,7 +568,7 @@ public class Server {
                         BillboardSQL bb = new BillboardSQL();
                         bb.CreateBillboard(BillBoardName, temp.getLoginUser(), temp.getEditTextColour(), temp.getEditBGColour(),
                                 temp.getEditMsg(), temp.getEditImg(), temp.getEditInfo(), temp.getEditInfoColour());
-                        generalReply = new GeneralReply(true);
+                        generalReply = new GeneralReply(sessionToken, true);
                         oos.writeObject(generalReply);
                     }
                     // return the contents of the billboard
@@ -581,7 +581,7 @@ public class Server {
                         oos.writeObject(editBBReply);
                     }
                 } catch (Exception e) {
-                    generalReply = new GeneralReply(false);
+                    generalReply = new GeneralReply(sessionToken, false);
                     oos.writeObject(generalReply);
                 }
             }

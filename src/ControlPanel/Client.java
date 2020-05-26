@@ -18,11 +18,8 @@ public class Client {
     private static boolean requestState;
     private static String info;
     private static JTable listBBTable;
-<<<<<<< HEAD
     private static String EditTextColour, EditBGColour, EditMsg, EditImg, EditInfo, EditInfoColour;
-=======
     private static ArrayList<String[]> ScheduleArray;
->>>>>>> 7b65f76ee0e16202142c40b18a1cda5dd5363693
 
     /**
      * Connects to server (connection read from network.props)

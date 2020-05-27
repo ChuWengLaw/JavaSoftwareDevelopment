@@ -73,7 +73,7 @@ public class BillBoardViewer extends JFrame {
         };
 
         ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
-        executor.scheduleAtFixedRate(fifteenSec, 0, 3, TimeUnit.SECONDS);
+        executor.scheduleAtFixedRate(fifteenSec, 0, 15, TimeUnit.SECONDS);
         // Mouse setting
         MouseListener mouseCloseListener = new MouseListener() {
             @Override
@@ -128,12 +128,12 @@ public class BillBoardViewer extends JFrame {
     private void update() throws IOException {
         GetCurrentScheduledRequest GetCurrentScheduledRequest = new GetCurrentScheduledRequest();
         try{
-            Client.connectServer(GetCurrentScheduledRequest);
+            ViewerClient.connectServer(GetCurrentScheduledRequest);
         }
         catch (Exception ex){
             ex.printStackTrace();
         }
-        System.out.println(Client.getScheduledBillboardTitle());
+        System.out.println(ViewerClient.getScheduledBillboardTitle());
 
 
         // Create a new image.

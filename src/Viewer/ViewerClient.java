@@ -64,8 +64,6 @@ public class ViewerClient {
         }
     }
     public static String getInfo() { return info; }
-    public static JTable getBBTable() {return listBBTable;}
-    public static ArrayList<String[]> getScheduleArray() {return ScheduleArray;}
     public static String getScheduledBillboardTitle() {return ScheduledBillboardTitle;};
 }
 

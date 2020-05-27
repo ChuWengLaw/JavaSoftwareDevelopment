@@ -128,12 +128,12 @@ public class BillBoardViewer extends JFrame {
     private void update() throws IOException {
         GetCurrentScheduledRequest GetCurrentScheduledRequest = new GetCurrentScheduledRequest();
         try{
-            ViewerClient.connectServer(GetCurrentScheduledRequest);
+            Client.connectServer(GetCurrentScheduledRequest);
         }
         catch (Exception ex){
             ex.printStackTrace();
         }
-        System.out.println(ViewerClient.getScheduledBillboardTitle());
+        System.out.println(Client.getScheduledBillboardTitle());
 
 
         // Create a new image.

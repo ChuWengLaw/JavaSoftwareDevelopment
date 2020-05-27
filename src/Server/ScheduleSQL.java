@@ -81,7 +81,7 @@ public class ScheduleSQL {
     }
 
     public String GetTitleCurrentScheduled() throws SQLException {
-        String Billboard_to_Display = "No Billboard should be displayed";
+        String Billboard_to_Display = null;
         //System.out.println("Stuck");
         try {
             ResultSet resultSet = Server.statement.executeQuery("SELECT * FROM  schedule");

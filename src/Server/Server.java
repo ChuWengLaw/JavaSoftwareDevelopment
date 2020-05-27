@@ -725,7 +725,13 @@ public class Server {
             WeeklyScheduleReply weeklyscheduleReply = new WeeklyScheduleReply(Schedule.ScheduledInformation());
             oos.writeObject(weeklyscheduleReply);
         }
-        // If the request in an instance of import/export billboard request
+        else if (clientRequest instanceof GetCurrentScheduledRequest) {
+            GetCurrentScheduledRequest GetCurrentScheduledRequest = (GetCurrentScheduledRequest) clientRequest;
+            ScheduleSQL Schedule = new ScheduleSQL();
+            GetCurrentScheduledReply getcurrentscheduledReply = new GetCurrentScheduledReply(Schedule.GetTitleCurrentScheduled(), true);
+            oos.writeObject(getcurrentscheduledReply);
+        }
+            // If the request in an instance of import/export billboard request
         else if (clientRequest instanceof XmlRequest) {
             XmlRequest xmlRequest = (XmlRequest) clientRequest;
             SessionToken sessionToken = findSessionToken(xmlRequest.getSessionToken());
@@ -766,8 +772,8 @@ public class Server {
                 oos.writeObject(generalReply);
                 oos.flush();
             }
+
         }
     }
 }
-
 

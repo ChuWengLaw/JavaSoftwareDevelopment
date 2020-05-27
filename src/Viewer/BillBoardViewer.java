@@ -1,6 +1,9 @@
 package Viewer;
 
+import ControlPanel.Client;
 import Server.ExtractFromXML;
+import Server.Request.GetCurrentScheduledRequest;
+import Server.Request.WeeklyScheduleRequest;
 import org.mariadb.jdbc.BasePrepareStatement;
 
 import javax.imageio.ImageIO;
@@ -19,6 +22,9 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
+
+import java.util.ArrayList;
+
 import java.net.URL;
 import java.util.Base64;
 import java.util.concurrent.*;
@@ -120,6 +126,16 @@ public class BillBoardViewer extends JFrame {
     }
 
     private void update() throws IOException {
+        GetCurrentScheduledRequest GetCurrentScheduledRequest = new GetCurrentScheduledRequest();
+        try{
+            Client.connectServer(GetCurrentScheduledRequest);
+        }
+        catch (Exception ex){
+            ex.printStackTrace();
+        }
+        System.out.println(Client.getScheduledBillboardTitle());
+
+
         // Create a new image.
 
 //        try{

@@ -76,6 +76,7 @@ public class DeleteScheduleGUI extends JFrame {
 
 
 
+        constraints.insets = new Insets(10,10,10,10);
 
         //add labels to panel
         constraints.gridx=0;

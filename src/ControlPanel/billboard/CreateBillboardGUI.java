@@ -3,6 +3,7 @@ package ControlPanel.billboard;
 import ControlPanel.Client;
 import ControlPanel.Main;
 import Server.Request.CreateBBRequest;
+import Server.Request.XmlRequest;
 
 import javax.swing.*;
 import java.awt.*;
@@ -74,19 +75,22 @@ public class CreateBillboardGUI extends JFrame {
                 }
                 //if name is more than one word return appropriate message
                 if (txtBillboardName.getText().contains(" ")) {
-                    JOptionPane.showMessageDialog(null, "Please Enter the Name as One Word");
+                    JOptionPane.showMessageDialog(null, "Please enter the name as one word.");
+                }
+                //if not all colours input are valid proceed
+                if (!isColourValid()) {
+                    JOptionPane.showMessageDialog(null, "Please enter valid colours.");
                 }
                 //if all colours input are valid proceed
                 else if (isColourValid()) {
-                    CreateBBRequest temp = new CreateBBRequest(Main.loginUser.getSessionToken(), txtBillboardName.getText(), Main.loginUser.getUserName(), txtTextColour.getText(), txtBackgroundColour.getText(),
+                    CreateBBRequest createBBRequest = new CreateBBRequest(Main.loginUser.getSessionToken(), txtBillboardName.getText(), Main.loginUser.getUserName(), txtTextColour.getText(), txtBackgroundColour.getText(),
                             txtMessage.getText(), txtImage.getText(), txtInformation.getText(), txtInformationColour.getText(), Main.loginUser.getCreateBillboardsPermission());
                     try {
-                        Client.connectServer(temp);
-
+                        Client.connectServer(createBBRequest);
                         if (Client.isRequestState()) {
                             JOptionPane.showMessageDialog(null, "Billboard created!");
                         } else {
-                            throw new Exception();
+                            JOptionPane.showMessageDialog(null, "Failed to create billboard!");
                         }
                     } catch (ConnectException ex) {
                         JOptionPane.showMessageDialog(null, "Connection fail.");
@@ -99,21 +103,35 @@ public class CreateBillboardGUI extends JFrame {
                         ex.printStackTrace();
                     } catch (Exception ex) {
                         JOptionPane.showMessageDialog(null, "Billboard fail to create.");
-                    } finally {
-                        //clear the textFeilds once the sumbit code has been executed
-                        txtBillboardName.setText("");
-                        txtTextColour.setText("");
-                        txtBackgroundColour.setText("");
-                        txtMessage.setText("");
-                        txtImage.setText("");
-                        txtInformation.setText("");
-                        txtInformationColour.setText("");
                     }
-
+                    XmlRequest xmlRequest = new XmlRequest(Main.loginUser.getSessionToken(), txtBillboardName.getText(), false);
+                    try {
+                        Client.connectServer(xmlRequest);
+                        if (Client.isRequestState()) {
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Failed to create billboard xml!");
+                        }
+                    } catch (ConnectException ex) {
+                        JOptionPane.showMessageDialog(null, "Connection fail.");
+                        System.exit(0);
+                    }catch (IOException ex) {
+                        ex.printStackTrace();
+                    } catch (InterruptedException ex) {
+                        ex.printStackTrace();
+                    } catch (ClassNotFoundException ex) {
+                        ex.printStackTrace();
+                    }
+                    //clear the textFeilds once the sumbit code has been executed
+                    txtBillboardName.setText("");
+                    txtTextColour.setText("");
+                    txtBackgroundColour.setText("");
+                    txtMessage.setText("");
+                    txtImage.setText("");
+                    txtInformation.setText("");
+                    txtInformationColour.setText("");
                 }
             }
         });
-
 
         //create the labels
         lblBillboardName = createLabel("Billboard Name:");
@@ -280,9 +298,9 @@ public class CreateBillboardGUI extends JFrame {
      * @author Lachlan
      */
     private boolean isColourValid() {
-        boolean text = true;
-        boolean back = true;
-        boolean info = true;
+        boolean text = false;
+        boolean back = false;
+        boolean info = false;
 
         //if the textColour isn't empty
         if (txtTextColour.getText().length() > 0) {
@@ -299,6 +317,7 @@ public class CreateBillboardGUI extends JFrame {
             else {
                 try {
                     Class.forName("java.awt.Color").getField(txtTextColour.getText());
+                    text = true;
                 } catch (NoSuchFieldException e) {
                     text = false;
                     JOptionPane.showMessageDialog(null, "Please enter a valid text colour");
@@ -323,6 +342,7 @@ public class CreateBillboardGUI extends JFrame {
             else {
                 try {
                     Class.forName("java.awt.Color").getField(txtInformationColour.getText());
+                    info = true;
                 } catch (NoSuchFieldException e) {
                     info = false;
                     JOptionPane.showMessageDialog(null, "Please enter a valid information colour");
@@ -347,15 +367,14 @@ public class CreateBillboardGUI extends JFrame {
             else {
                 try {
                     Class.forName("java.awt.Color").getField(txtBackgroundColour.getText());
+                    back = true;
                 } catch (NoSuchFieldException e) {
                     back = false;
                     JOptionPane.showMessageDialog(null, "Please enter a valid background colour");
                 } catch (ClassNotFoundException e) {
                     e.printStackTrace();
                 }
-
             }
-
         }
 
         return text && back && info;

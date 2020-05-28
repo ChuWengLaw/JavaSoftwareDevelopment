@@ -7,6 +7,8 @@ import Server.Reply.WeeklyScheduleReply;
 import javax.swing.*;
 import java.io.*;
 import java.net.Socket;
+import java.security.NoSuchAlgorithmException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Properties;
 
@@ -21,6 +23,7 @@ public class Client {
     private static String EditTextColour, EditBGColour, EditMsg, EditImg, EditInfo, EditInfoColour;
     private static ArrayList<String[]> ScheduleArray;
     private static String ScheduledBillboardTitle;
+    private static File exportFile;
 
     /**
      * Connects to server (connection read from network.props)
@@ -57,7 +60,17 @@ public class Client {
         return requestState;
     }
 
+    /**
+     * This method filters and executes the replies received from server in client.
+     * Client refreshes the status of user's session token
+     *
+     * @param requestReply
+     * @throws SQLException
+     * @throws NoSuchAlgorithmException
+     * @throws IOException
+     */
     private static void executeReply(Object requestReply) {
+        // if the server replies to the client login request
         if (requestReply instanceof LoginReply){
             LoginReply loginReply = (LoginReply) requestReply;
             requestState = loginReply.isLoginState();
@@ -67,6 +80,7 @@ public class Client {
                 Main.loginUser.setSessionToken(loginReply.getSessionToken());
             }
         }
+        // if the server replies to the client search user request
         else if (requestReply instanceof SearchReply){
             SearchReply searchReply = (SearchReply) requestReply;
             requestState = searchReply.isRequestState();
@@ -77,6 +91,7 @@ public class Client {
 
             Main.loginUser.setSessionToken(searchReply.getSessionToken());
         }
+        // if the server replies to the client logout request
         else if (requestReply instanceof LogoutReply){
             LogoutReply logoutReply = (LogoutReply) requestReply;
 
@@ -89,39 +104,44 @@ public class Client {
             }
             System.exit(0);
         }
+        // if the server replies in the form of general reply
         else if (requestReply instanceof GeneralReply){
             GeneralReply generalReply = (GeneralReply) requestReply;
             requestState = generalReply.isRequestState();
             Main.loginUser.setSessionToken(generalReply.getSessionToken());
         }
+        // if the server replies to the client list all users request
         else if (requestReply instanceof ListUserReply){
             ListUserReply listUserReply = (ListUserReply) requestReply;
             Main.listUserWin.getTable(listUserReply.getTable());
             requestState = listUserReply.isListUserState();
             Main.loginUser.setSessionToken(listUserReply.getSessionToken());
         }
+        // if the server replies to the client get billboard information request
         else if (requestReply instanceof BBInfoReply){
             BBInfoReply bbInfoReply = (BBInfoReply) requestReply;
             info = bbInfoReply.getInformation();
             requestState = true;
             Main.loginUser.setSessionToken(bbInfoReply.getSessionToken());
         }
+        // if the server replies to the client list all billboards request
         else if (requestReply instanceof ListBBReply){
             ListBBReply listBBReply = (ListBBReply) requestReply;
             listBBTable = listBBReply.getTable();
             requestState = true;
             Main.loginUser.setSessionToken(listBBReply.getSessionToken());
         }
+        // if the server replies to the client weekly schedule request
         else if (requestReply instanceof WeeklyScheduleReply){
             WeeklyScheduleReply ScheduleReply = (WeeklyScheduleReply) requestReply;
             ScheduleArray = ScheduleReply.getArray();
         }
-
+        // if the server replies to the client get current scheduled billboard request
         else if (requestReply instanceof GetCurrentScheduledReply){
             GetCurrentScheduledReply ScheduleReply = (GetCurrentScheduledReply) requestReply;
             ScheduledBillboardTitle = ScheduleReply.getBillboardTitle();
         }
-
+        // if the server replies to the client edit billboard request
         else if (requestReply instanceof EditBBReply){
             EditBBReply editBBReply = (EditBBReply) requestReply;
             EditBGColour = editBBReply.getEditBGColour();
@@ -132,6 +152,13 @@ public class Client {
             EditInfoColour = editBBReply.getEditInfoColour();
             requestState = true;
             Main.loginUser.setSessionToken(editBBReply.getSessionToken());
+        }
+        // if the server replies to the client export billboard request
+        else if (requestReply instanceof XmlReply){
+            XmlReply xmlReply = (XmlReply) requestReply;
+            exportFile = xmlReply.getBillboardXml();
+            requestState = true;
+            Main.loginUser.setSessionToken(xmlReply.getSessionToken());
         }
     }
 
@@ -161,6 +188,10 @@ public class Client {
     }
     public static ArrayList<String[]> getScheduleArray() {return ScheduleArray;}
     public static String getScheduledBillboardTitle() {return ScheduledBillboardTitle;}
+
+    public static File getExportFile() {
+        return exportFile;
+    }
 }
 
 

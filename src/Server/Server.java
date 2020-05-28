@@ -132,8 +132,6 @@ public class Server {
             statement.execute(CREATE_USER_TABLE);
             statement.execute(CREATE_SCHEDULE_TABLE);
 
-//################code below is just to create a test user with no name or password for testing
-
             // Username and Password are added.
             try {
                 ResultSet resultSet = statement.executeQuery("SELECT * FROM user");
@@ -167,7 +165,6 @@ public class Server {
             } catch (NoSuchAlgorithmException e) {
                 e.printStackTrace();
             }
-//#########################above code is just to create a test user with no name or password for testing
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
@@ -561,6 +558,7 @@ public class Server {
                     if (temp.getBillboardName() == null) {
                         bb.EditBillboard(BillBoardName, temp.getEditTextColour(), temp.getEditBGColour(),
                                 temp.getEditMsg(), temp.getEditImg(), temp.getEditInfo(), temp.getEditInfoColour());
+                        new MakeXMLFile(BillBoardName);
                         generalReply = new GeneralReply(temp.getSessionToken(),true);
                         oos.writeObject(generalReply);
                     }
@@ -629,6 +627,8 @@ public class Server {
                         // if the user has edit all billboards or create billboard permission
                         if (temp.getEditAllBillboardsPermission() || temp.getCreateBillboardPermission()) {
                             bb.DeleteBillboard(temp.getBillboardName());
+                            File deleteFile = new File("src/xmlBillboards/" + temp.getBillboardName() + ".xml");
+                            deleteFile.delete();
                             generalReply = new GeneralReply(sessionToken,true);
                         }
                         else {
@@ -640,6 +640,8 @@ public class Server {
                         // if the user has edit all billboards permission
                         if (temp.getEditAllBillboardsPermission()) {
                             bb.DeleteBillboard(temp.getBillboardName());
+                            File deleteFile = new File("src/xmlBillboards/" + temp.getBillboardName() + ".xml");
+                            deleteFile.delete();
                             generalReply = new GeneralReply(temp.getSessionToken(),true);
                         }
                         else {
@@ -701,7 +703,7 @@ public class Server {
                 // Return a reply object to the client containing JTable of billboards
                 try {
                     BillboardSQL bb = new BillboardSQL();
-                    ListBBReply listBBReply = new ListBBReply(sessionToken, bb.ListBillboards(listBBRequest.getSessionToken()));
+                    ListBBReply listBBReply = new ListBBReply(sessionToken, bb.ListBillboards());
                     oos.writeObject(listBBReply);
                 } catch (Exception e) {
                     generalReply = new GeneralReply(sessionToken,false);
@@ -749,8 +751,17 @@ public class Server {
                 // Return a reply object to the client containing JTable of billboards
                 try {
                     // if the user exports a billboard
-                    if (xmlRequest.getXmlFile() == null) {
+                    if (xmlRequest.getXmlFile() == null && xmlRequest.isExportState()) {
+                        String xmlName = xmlRequest.getXmlName() + ".xml";
+                        File exportFile = new File("src/xmlBillboards/" + xmlName);
+                        XmlReply xmlReply = new XmlReply(sessionToken, exportFile);
+                        oos.writeObject(xmlReply);
+                    }
+                    // if the user creates a billboard
+                    if (xmlRequest.getXmlFile() == null && !xmlRequest.isExportState()) {
                         new MakeXMLFile(xmlRequest.getXmlName());
+                        generalReply = new GeneralReply(sessionToken, true);
+                        oos.writeObject(generalReply);
                     }
                     // if the user imports a billboard
                     else {
@@ -764,15 +775,15 @@ public class Server {
                         BillboardSQL bb = new BillboardSQL();
                         bb.CreateBillboard(billboardName, xmlRequest.getUserName(), extractFromXML.TxtColourStr, extractFromXML.BGColourStr,
                                 extractFromXML.message, extractFromXML.image, extractFromXML.information, extractFromXML.InfoColourStr);
+                        generalReply = new GeneralReply(sessionToken, true);
+                        oos.writeObject(generalReply);
                     }
-                    generalReply = new GeneralReply(sessionToken, true);
                 } catch (Exception e) {
                     generalReply = new GeneralReply(sessionToken,false);
+                    oos.writeObject(generalReply);
                 }
-                oos.writeObject(generalReply);
                 oos.flush();
             }
-
         }
     }
 }

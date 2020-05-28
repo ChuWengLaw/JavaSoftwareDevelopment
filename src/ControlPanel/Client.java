@@ -23,11 +23,9 @@ public class Client {
     private static String EditTextColour, EditBGColour, EditMsg, EditImg, EditInfo, EditInfoColour;
     private static ArrayList<String[]> ScheduleArray;
     private static String ScheduledBillboardTitle;
-<<<<<<< HEAD
     private static File exportFile;
-=======
     private static JTable ListScheduleBillboardTable;
->>>>>>> ff243a581f3b67c61a1c8a730ecab966f005f24b
+
 
     /**
      * Connects to server (connection read from network.props)
@@ -197,14 +195,10 @@ public class Client {
     }
     public static ArrayList<String[]> getScheduleArray() {return ScheduleArray;}
     public static String getScheduledBillboardTitle() {return ScheduledBillboardTitle;}
-<<<<<<< HEAD
-
     public static File getExportFile() {
         return exportFile;
     }
-=======
     public static JTable getListScheduleBillboardTable() {return ListScheduleBillboardTable;}
->>>>>>> ff243a581f3b67c61a1c8a730ecab966f005f24b
 }
 
 

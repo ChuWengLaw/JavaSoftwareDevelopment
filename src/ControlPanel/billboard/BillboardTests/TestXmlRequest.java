@@ -46,13 +46,13 @@ public class TestXmlRequest {
     /* Test 4: Check if billboard name has been successfully encapsulated in the Request object for exporting */
     @Test
     public void TestExportBillboard() {
-        XmlRequest xmlRequest = new XmlRequest(token, "test1.xml");
+        XmlRequest xmlRequest = new XmlRequest(token, "test1.xml", true);
         assertEquals("test1.xml", xmlRequest.getXmlName());
     }
     /* Test 5: Check if token has been successfully encapsulated in the Request object for exporting */
     @Test
     public void TestExportBillboardToken() {
-        XmlRequest xmlRequest = new XmlRequest(token, "test1.xml");
+        XmlRequest xmlRequest = new XmlRequest(token, "test1.xml", true);
         assertEquals(token, xmlRequest.getSessionToken());
     }
 }

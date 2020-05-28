@@ -71,7 +71,7 @@ public class BillBoardViewer extends JFrame {
         };
 
         ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
-        executor.scheduleAtFixedRate(fifteenSec, 0, 3, TimeUnit.SECONDS);
+        executor.scheduleAtFixedRate(fifteenSec, 0, 15, TimeUnit.SECONDS);
         // Mouse setting
         MouseListener mouseCloseListener = new MouseListener() {
             @Override

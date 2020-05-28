@@ -35,7 +35,7 @@ import java.util.concurrent.*;
  *
  * @author Law
  */
-public class BillBoardViewer extends JFrame {
+public class BillboardViewer extends JFrame {
     private Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
     private final int screenWidth = dim.width;
     private final int screenHeight = dim.height;
@@ -47,7 +47,7 @@ public class BillBoardViewer extends JFrame {
      * @throws HeadlessException
      * @throws IOException
      */
-    public BillBoardViewer() throws HeadlessException, IOException {
+    public BillboardViewer() throws HeadlessException, IOException {
         super("Billboard Viewer");
 
         // Set the window to borderless.
@@ -123,6 +123,10 @@ public class BillBoardViewer extends JFrame {
         addKeyListener(keyCloseListener);
     }
 
+    /**Updates is called every 15 seconds and will display the currently scheduled billboard for its determined time
+     * @author Lachlan
+     * @throws IOException exception is thrown if connection fails etc.
+     */
     private void update() throws IOException {
         GetCurrentScheduledRequest GetCurrentScheduledRequest = new GetCurrentScheduledRequest();
         try {
@@ -130,9 +134,9 @@ public class BillBoardViewer extends JFrame {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-        String currentBillboard = Client.getScheduledBillboardTitle();
+        String currentBillboardString = Client.getScheduledBillboardTitle();
 
-        if (Client.getScheduledBillboardTitle() == null) {
+        if (currentBillboardString == null) {
             JPanel panel = new JPanel();
             panel.setBackground(Color.black);
 
@@ -165,16 +169,16 @@ public class BillBoardViewer extends JFrame {
             setVisible(true);
 
         } else {
-            ExtractFromXML extractFromXML = new ExtractFromXML(currentBillboard+".xml");
+            ExtractFromXML currentScheduledBillboard = new ExtractFromXML(currentBillboardString+".xml");
 
-
-            if (!extractFromXML.message.isBlank() && extractFromXML.information.isBlank() && extractFromXML.image.isBlank()) {
+            //if only message is present the display only message
+            if (!currentScheduledBillboard.message.isBlank() && currentScheduledBillboard.information.isBlank() && currentScheduledBillboard.image.isBlank()) {
                 JPanel messagePanel = new JPanel();
-                messagePanel.setBackground(extractFromXML.backgroundColour);
+                messagePanel.setBackground(currentScheduledBillboard.backgroundColour);
 
                 JLabel messageLabel = new JLabel();
-                messageLabel.setText(extractFromXML.message);
-                messageLabel.setForeground(extractFromXML.textColour);
+                messageLabel.setText(currentScheduledBillboard.message);
+                messageLabel.setForeground(currentScheduledBillboard.textColour);
                 messageLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
                 int messageWidth = messageLabel.getFontMetrics(messageLabel.getFont()).stringWidth(messageLabel.getText());
@@ -195,12 +199,12 @@ public class BillBoardViewer extends JFrame {
                 setVisible(true);
 
             }
-            //only image
-            else if (extractFromXML.message.isBlank() && extractFromXML.information.isBlank() && !extractFromXML.image.isBlank()) {
+            //if only the image is present display only the image
+            else if (currentScheduledBillboard.message.isBlank() && currentScheduledBillboard.information.isBlank() && !currentScheduledBillboard.image.isBlank()) {
                 JLabel picture = new JLabel();
                 //if it is a url image
-                if (extractFromXML.image.startsWith("http")) {
-                    URL url = new URL(extractFromXML.image);
+                if (currentScheduledBillboard.image.startsWith("http")) {
+                    URL url = new URL(currentScheduledBillboard.image);
                     BufferedImage image = ImageIO.read(url);
                     if (image.getWidth() < image.getHeight() || image.getHeight() == image.getWidth()) {
                         picture.setIcon(new ImageIcon(image.getScaledInstance(-1, screenHeight / 2, Image.SCALE_SMOOTH)));
@@ -210,7 +214,7 @@ public class BillBoardViewer extends JFrame {
                     //else if image is in data form
                 } else {
                     byte[] encodedImage;
-                    encodedImage = extractFromXML.image.getBytes();
+                    encodedImage = currentScheduledBillboard.image.getBytes();
                     byte[] decodedImage = Base64.getDecoder().decode(encodedImage);
                     BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedImage));
                     if (image.getWidth() < image.getHeight() || image.getHeight() == image.getWidth()) {
@@ -223,7 +227,7 @@ public class BillBoardViewer extends JFrame {
                 picture.setVerticalAlignment(SwingConstants.CENTER);
 
                 JPanel picPanel = new JPanel();
-                picPanel.setBackground(extractFromXML.backgroundColour);
+                picPanel.setBackground(currentScheduledBillboard.backgroundColour);
 
                 picPanel.setLayout(new BorderLayout());
                 picPanel.add(picture, BorderLayout.CENTER);
@@ -233,15 +237,15 @@ public class BillBoardViewer extends JFrame {
                 setVisible(true);
 
             }
-            //info only
-            else if (extractFromXML.message.isBlank() && !extractFromXML.information.isBlank() && extractFromXML.image.isBlank()) {
+            //if only the info present the display the info only
+            else if (currentScheduledBillboard.message.isBlank() && !currentScheduledBillboard.information.isBlank() && currentScheduledBillboard.image.isBlank()) {
                 JPanel infoPanel = new JPanel();
-                infoPanel.setBackground(extractFromXML.backgroundColour);
+                infoPanel.setBackground(currentScheduledBillboard.backgroundColour);
 
                 JLabel infoLabel = new JLabel();
-                infoLabel.setText("<HTML>" + extractFromXML.information + "</HTML>");
-                infoLabel.setForeground(extractFromXML.informationColour);
-                infoLabel.setBackground(extractFromXML.backgroundColour);
+                infoLabel.setText("<HTML>" + currentScheduledBillboard.information + "</HTML>");
+                infoLabel.setForeground(currentScheduledBillboard.informationColour);
+                infoLabel.setBackground(currentScheduledBillboard.backgroundColour);
                 infoLabel.setFont(infoLabel.getFont().deriveFont(32.0f));
                 infoLabel.setVerticalAlignment(SwingConstants.CENTER);
                 infoLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -256,14 +260,14 @@ public class BillBoardViewer extends JFrame {
                 setVisible(true);
 
             }
-            //message and image
-            else if (!extractFromXML.message.isBlank() && extractFromXML.information.isBlank() && !extractFromXML.image.isBlank()) {
+            //if the message and image are present then display message and image
+            else if (!currentScheduledBillboard.message.isBlank() && currentScheduledBillboard.information.isBlank() && !currentScheduledBillboard.image.isBlank()) {
                 JPanel layoutPanel = new JPanel();
-                layoutPanel.setBackground(extractFromXML.backgroundColour);
+                layoutPanel.setBackground(currentScheduledBillboard.backgroundColour);
 
                 JLabel messageLabel = new JLabel();
-                messageLabel.setText(extractFromXML.message);
-                messageLabel.setForeground(extractFromXML.textColour);
+                messageLabel.setText(currentScheduledBillboard.message);
+                messageLabel.setForeground(currentScheduledBillboard.textColour);
                 messageLabel.setHorizontalAlignment(SwingConstants.CENTER);
                 messageLabel.setPreferredSize(new Dimension(screenWidth, (screenHeight / 3)));
 
@@ -278,8 +282,8 @@ public class BillBoardViewer extends JFrame {
 
                 JLabel picture = new JLabel();
                 //if it is a url image
-                if (extractFromXML.image.startsWith("http")) {
-                    URL url = new URL(extractFromXML.image);
+                if (currentScheduledBillboard.image.startsWith("http")) {
+                    URL url = new URL(currentScheduledBillboard.image);
                     BufferedImage image = ImageIO.read(url);
                     if (image.getWidth() < image.getHeight()) {
                         picture.setIcon(new ImageIcon(image.getScaledInstance(-1, screenHeight / 2, Image.SCALE_SMOOTH)));
@@ -289,7 +293,7 @@ public class BillBoardViewer extends JFrame {
                     //else if image is in data form
                 } else {
                     byte[] encodedImage;
-                    encodedImage = extractFromXML.image.getBytes();
+                    encodedImage = currentScheduledBillboard.image.getBytes();
                     byte[] decodedImage = Base64.getDecoder().decode(encodedImage);
                     BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedImage));
                     if (image.getWidth() < image.getHeight() || image.getHeight() == image.getWidth()) {
@@ -309,14 +313,14 @@ public class BillBoardViewer extends JFrame {
                 repaint();
                 setVisible(true);
             }
-            //message and info
-            else if (!extractFromXML.message.isBlank() && !extractFromXML.information.isBlank() && extractFromXML.image.isBlank()) {
+            //if message and info are present display the message and info
+            else if (!currentScheduledBillboard.message.isBlank() && !currentScheduledBillboard.information.isBlank() && currentScheduledBillboard.image.isBlank()) {
                 JPanel layoutPanel = new JPanel();
-                layoutPanel.setBackground(extractFromXML.backgroundColour);
+                layoutPanel.setBackground(currentScheduledBillboard.backgroundColour);
 
                 JLabel messageLabel = new JLabel();
-                messageLabel.setText(extractFromXML.message);
-                messageLabel.setForeground(extractFromXML.textColour);
+                messageLabel.setText(currentScheduledBillboard.message);
+                messageLabel.setForeground(currentScheduledBillboard.textColour);
                 messageLabel.setHorizontalAlignment(SwingConstants.CENTER);
                 messageLabel.setPreferredSize(new Dimension(screenWidth, screenHeight / 2));
 
@@ -329,8 +333,8 @@ public class BillBoardViewer extends JFrame {
                 messageLabel.setFont(new Font(messageLabel.getFont().getName(), Font.PLAIN, fontSizeToUse));
 
                 JLabel infoLabel = new JLabel();
-                infoLabel.setText("<HTML>" + extractFromXML.information + "</HTML>");
-                infoLabel.setForeground(extractFromXML.informationColour);
+                infoLabel.setText("<HTML>" + currentScheduledBillboard.information + "</HTML>");
+                infoLabel.setForeground(currentScheduledBillboard.informationColour);
                 infoLabel.setVerticalAlignment(SwingConstants.CENTER);
                 infoLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
@@ -354,15 +358,15 @@ public class BillBoardViewer extends JFrame {
                 repaint();
                 setVisible(true);
             }
-            //image and info
-            else if (extractFromXML.message.isBlank() && !extractFromXML.information.isBlank() && !extractFromXML.image.isBlank()) {
+            //if the image and info are present display the image and info
+            else if (currentScheduledBillboard.message.isBlank() && !currentScheduledBillboard.information.isBlank() && !currentScheduledBillboard.image.isBlank()) {
                 JPanel layoutPanel = new JPanel();
-                layoutPanel.setBackground(extractFromXML.backgroundColour);
+                layoutPanel.setBackground(currentScheduledBillboard.backgroundColour);
 
                 JLabel picture = new JLabel();
                 //if it is a url image
-                if (extractFromXML.image.startsWith("http")) {
-                    URL url = new URL(extractFromXML.image);
+                if (currentScheduledBillboard.image.startsWith("http")) {
+                    URL url = new URL(currentScheduledBillboard.image);
                     BufferedImage image = ImageIO.read(url);
                     if (image.getWidth() < image.getHeight() || image.getHeight() == image.getWidth()) {
                         picture.setIcon(new ImageIcon(image.getScaledInstance(-1, screenHeight / 2, Image.SCALE_SMOOTH)));
@@ -372,7 +376,7 @@ public class BillBoardViewer extends JFrame {
                     //else if image is in data form
                 } else {
                     byte[] encodedImage;
-                    encodedImage = extractFromXML.image.getBytes();
+                    encodedImage = currentScheduledBillboard.image.getBytes();
                     byte[] decodedImage = Base64.getDecoder().decode(encodedImage);
                     BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedImage));
                     if (image.getWidth() < image.getHeight() || image.getHeight() == image.getWidth()) {
@@ -385,9 +389,9 @@ public class BillBoardViewer extends JFrame {
                 picture.setVerticalAlignment(SwingConstants.CENTER);
 
                 JLabel infoLabel = new JLabel();
-                infoLabel.setText("<HTML>" + extractFromXML.information + "</HTML>");
-                infoLabel.setForeground(extractFromXML.informationColour);
-                infoLabel.setBackground(extractFromXML.backgroundColour);
+                infoLabel.setText("<HTML>" + currentScheduledBillboard.information + "</HTML>");
+                infoLabel.setForeground(currentScheduledBillboard.informationColour);
+                infoLabel.setBackground(currentScheduledBillboard.backgroundColour);
                 infoLabel.setPreferredSize(new Dimension((screenWidth / 4) * 3, screenHeight / 3));
                 infoLabel.setHorizontalAlignment(SwingConstants.CENTER);
                 infoLabel.setVerticalAlignment(SwingConstants.CENTER);
@@ -411,14 +415,16 @@ public class BillBoardViewer extends JFrame {
                 getContentPane().add(layoutPanel);
                 repaint();
                 setVisible(true);
-            } else {
+            }
+            //else display the image, message and info
+            else {
                 JPanel layoutPanel = new JPanel();
-                layoutPanel.setBackground(extractFromXML.backgroundColour);
+                layoutPanel.setBackground(currentScheduledBillboard.backgroundColour);
 
                 JLabel picture = new JLabel();
                 //if it is a url image
-                if (extractFromXML.image.startsWith("http")) {
-                    URL url = new URL(extractFromXML.image);
+                if (currentScheduledBillboard.image.startsWith("http")) {
+                    URL url = new URL(currentScheduledBillboard.image);
                     BufferedImage image = ImageIO.read(url);
                     if (image.getWidth() < image.getHeight() || image.getHeight() == image.getWidth()) {
                         picture.setIcon(new ImageIcon(image.getScaledInstance(-1, screenHeight / 3, Image.SCALE_SMOOTH)));
@@ -428,7 +434,7 @@ public class BillBoardViewer extends JFrame {
                     //else if image is in data form
                 } else {
                     byte[] encodedImage;
-                    encodedImage = extractFromXML.image.getBytes();
+                    encodedImage = currentScheduledBillboard.image.getBytes();
                     byte[] decodedImage = Base64.getDecoder().decode(encodedImage);
                     BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedImage));
                     if (image.getWidth() < image.getHeight() || image.getHeight() == image.getWidth()) {
@@ -441,8 +447,8 @@ public class BillBoardViewer extends JFrame {
                 picture.setVerticalAlignment(SwingConstants.CENTER);
 
                 JLabel messageLabel = new JLabel();
-                messageLabel.setText(extractFromXML.message);
-                messageLabel.setForeground(extractFromXML.textColour);
+                messageLabel.setText(currentScheduledBillboard.message);
+                messageLabel.setForeground(currentScheduledBillboard.textColour);
                 messageLabel.setHorizontalAlignment(SwingConstants.CENTER);
                 messageLabel.setVerticalAlignment(SwingConstants.CENTER);
                 messageLabel.setPreferredSize(new Dimension(screenWidth, screenHeight / 3));
@@ -456,9 +462,9 @@ public class BillBoardViewer extends JFrame {
                 messageLabel.setFont(new Font(messageLabel.getFont().getName(), Font.PLAIN, fontSizeToUse));
 
                 JLabel infoLabel = new JLabel();
-                infoLabel.setText("<HTML>" + extractFromXML.information + "</HTML>");
-                infoLabel.setForeground(extractFromXML.informationColour);
-                infoLabel.setBackground(extractFromXML.backgroundColour);
+                infoLabel.setText("<HTML>" + currentScheduledBillboard.information + "</HTML>");
+                infoLabel.setForeground(currentScheduledBillboard.informationColour);
+                infoLabel.setBackground(currentScheduledBillboard.backgroundColour);
                 infoLabel.setPreferredSize(new Dimension(screenWidth, screenHeight / 3));
                 infoLabel.setBorder(new EmptyBorder(0, screenWidth / 8, 0, screenWidth / 8));
 

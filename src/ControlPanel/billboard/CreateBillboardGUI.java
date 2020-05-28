@@ -83,13 +83,12 @@ public class CreateBillboardGUI extends JFrame {
                     try {
                         Client.connectServer(temp);
 
-                        if(Client.isRequestState()){
+                        if (Client.isRequestState()) {
                             JOptionPane.showMessageDialog(null, "Billboard created!");
-                        }
-                        else{
+                        } else {
                             throw new Exception();
                         }
-                    } catch(ConnectException ex){
+                    } catch (ConnectException ex) {
                         JOptionPane.showMessageDialog(null, "Connection fail.");
                         System.exit(0);
                     } catch (InterruptedException ex) {
@@ -100,8 +99,7 @@ public class CreateBillboardGUI extends JFrame {
                         ex.printStackTrace();
                     } catch (Exception ex) {
                         JOptionPane.showMessageDialog(null, "Billboard fail to create.");
-                    }
-                    finally {
+                    } finally {
                         //clear the textFeilds once the sumbit code has been executed
                         txtBillboardName.setText("");
                         txtTextColour.setText("");

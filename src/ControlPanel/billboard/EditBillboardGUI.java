@@ -95,7 +95,7 @@ public class EditBillboardGUI extends JFrame {
                         createEditGUI();
                     }
                     else{
-                        JOptionPane.showMessageDialog(null, "No permission/invalid billboard name");
+                        JOptionPane.showMessageDialog(null, "No permission/invalid billboard name/Currently Scheduled");
                     }
                 } catch(ConnectException ex) {
                     JOptionPane.showMessageDialog(null, "Connection fail.");

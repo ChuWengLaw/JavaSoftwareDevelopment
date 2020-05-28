@@ -1,19 +1,23 @@
 package Server.Request;
 
+import Server.SessionToken;
+
 import javax.swing.*;
 import java.io.Serializable;
 
 public class ScheduleBillboardRequest implements Serializable {
     private String BillboardName, ScheduledTime;
     private int Duration, ReoccurType, ReoccurAmount;
+    private SessionToken sessionToken;
 
     public ScheduleBillboardRequest(String BillboardName, String ScheduledTime, String Duration,
-                                    String ReoccurType, String ReoccurAmount) {
+                                    String ReoccurType, String ReoccurAmount, SessionToken sessionToken) {
         this.BillboardName = BillboardName;
         this.ScheduledTime = ScheduledTime;
         this.Duration = Integer.parseInt(Duration);
         this.ReoccurType = Integer.parseInt(ReoccurType);
         this.ReoccurAmount = Integer.parseInt(ReoccurAmount);
+        this.sessionToken = sessionToken;
     }
 
     public String getBillboardName() {
@@ -34,6 +38,10 @@ public class ScheduleBillboardRequest implements Serializable {
 
     public int getReoccurAmount() {
         return ReoccurAmount;
+    }
+
+    public SessionToken getSessionToken() {
+        return sessionToken;
     }
 
 }

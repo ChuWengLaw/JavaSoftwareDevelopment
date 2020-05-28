@@ -23,7 +23,11 @@ public class Client {
     private static String EditTextColour, EditBGColour, EditMsg, EditImg, EditInfo, EditInfoColour;
     private static ArrayList<String[]> ScheduleArray;
     private static String ScheduledBillboardTitle;
+<<<<<<< HEAD
     private static File exportFile;
+=======
+    private static JTable ListScheduleBillboardTable;
+>>>>>>> ff243a581f3b67c61a1c8a730ecab966f005f24b
 
     /**
      * Connects to server (connection read from network.props)
@@ -141,6 +145,11 @@ public class Client {
             GetCurrentScheduledReply ScheduleReply = (GetCurrentScheduledReply) requestReply;
             ScheduledBillboardTitle = ScheduleReply.getBillboardTitle();
         }
+        // if the server replies to the client list schedule request
+        else if (requestReply instanceof ListScheduleReply){
+            ListScheduleReply listScheduleReply = (ListScheduleReply) requestReply;
+            ListScheduleBillboardTable = listScheduleReply.getTable();
+        }
         // if the server replies to the client edit billboard request
         else if (requestReply instanceof EditBBReply){
             EditBBReply editBBReply = (EditBBReply) requestReply;
@@ -188,10 +197,14 @@ public class Client {
     }
     public static ArrayList<String[]> getScheduleArray() {return ScheduleArray;}
     public static String getScheduledBillboardTitle() {return ScheduledBillboardTitle;}
+<<<<<<< HEAD
 
     public static File getExportFile() {
         return exportFile;
     }
+=======
+    public static JTable getListScheduleBillboardTable() {return ListScheduleBillboardTable;}
+>>>>>>> ff243a581f3b67c61a1c8a730ecab966f005f24b
 }
 
 

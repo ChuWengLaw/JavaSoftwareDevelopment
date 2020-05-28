@@ -3,6 +3,7 @@ package ControlPanel.schedule;
 import ControlPanel.Client;
 import ControlPanel.Main;
 
+import Server.Request.ListScheduleRequest;
 import Server.Request.WeeklyScheduleRequest;
 
 import java.awt.*;
@@ -10,6 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.net.ConnectException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -174,5 +176,32 @@ public class CalanderScheduleGUI extends JFrame {
         JLabel label = new JLabel();
         label.setText("<html><strong>"+formatter.format(datePrint)+"</strong>");
         return label;
+    }
+
+    public static boolean IsCurrentlyScheduled(String BillboardName)
+    {
+        JTable Table;
+        boolean IsScheduled = false;
+        ListScheduleRequest listScheduleRequest = new ListScheduleRequest(Main.loginUser.getSessionToken());
+        try {
+            Client.connectServer(listScheduleRequest);
+        } catch (ConnectException ex) {
+            JOptionPane.showMessageDialog(null, "Connection fail.");
+            System.exit(0);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+        Table = Client.getListScheduleBillboardTable();
+
+        int rows = Table.getRowCount();
+        for (int i = 0; i < rows; i++)
+        {
+            if (Table.getValueAt(i,0).equals(BillboardName))
+            {
+                IsScheduled = true;
+            }
+        }
+        return IsScheduled;
     }
 }

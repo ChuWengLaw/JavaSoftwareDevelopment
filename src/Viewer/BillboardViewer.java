@@ -35,7 +35,7 @@ import java.util.concurrent.*;
  *
  * @author Law
  */
-public class BillBoardViewer extends JFrame {
+public class BillboardViewer extends JFrame {
     private Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
     private final int screenWidth = dim.width;
     private final int screenHeight = dim.height;
@@ -47,7 +47,7 @@ public class BillBoardViewer extends JFrame {
      * @throws HeadlessException
      * @throws IOException
      */
-    public BillBoardViewer() throws HeadlessException, IOException {
+    public BillboardViewer() throws HeadlessException, IOException {
         super("Billboard Viewer");
 
         // Set the window to borderless.

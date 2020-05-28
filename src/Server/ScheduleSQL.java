@@ -144,8 +144,6 @@ public class ScheduleSQL {
         } catch (SQLException | ParseException e) {
             System.out.println(e);
         }
-
-
         return Billboard_to_Display;
     }
     public static long DateStr_2_Millis(String In_Date, SimpleDateFormat Format) throws ParseException {

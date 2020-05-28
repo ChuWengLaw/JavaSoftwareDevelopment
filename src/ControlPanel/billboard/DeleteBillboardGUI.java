@@ -75,7 +75,7 @@ public class DeleteBillboardGUI extends JFrame {
                     }
                     else{
                         JOptionPane.showMessageDialog(null, "No permission/invalid billboard name/Currently Scheduled");
-                    }
+                    } 
                 } catch(ConnectException ex) {
                     JOptionPane.showMessageDialog(null, "Connection fail.");
                     System.exit(0);

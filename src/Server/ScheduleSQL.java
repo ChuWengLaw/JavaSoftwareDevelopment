@@ -175,4 +175,38 @@ public class ScheduleSQL {
         }
         return null;
     }
+
+    public JTable GetScheduledInfo(SessionToken Token) throws SQLException {
+        //, including each
+        //billboard’s name, creator, time scheduled and how long it has been scheduled to run
+        //for.
+        JTable table = new JTable();
+        try {
+            ResultSet resultSet = Server.statement.executeQuery("SELECT s.BillboardName, billboard.UserName, s.ScheduleTime, s.Duration " +
+                    "FROM Schedule AS s " +
+                    "INNER JOIN billboard ON s.BillboardName=billboard.BillboardName" +
+                    ";");
+            ResultSetMetaData rsmd = resultSet.getMetaData();
+            int columnCount = rsmd.getColumnCount();
+            Vector columnHeader = new Vector(columnCount);
+            for (int i = 1; i <= columnCount; i++) {
+                columnHeader.add(rsmd.getColumnName(i));
+            }
+            Vector data = new Vector();
+            Vector row = new Vector();
+
+            while (resultSet.next()) {
+                row = new Vector(columnCount);
+                for (int i = 1; i <= columnCount; i++) {
+                    row.add(resultSet.getString(i));
+                }
+                data.add(row);
+            }
+            table = new JTable(data, columnHeader);
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return table;
+    }
 }
+

@@ -67,7 +67,7 @@ public class ScheduleBillboardGUI extends JFrame {
                     //System.out.println("Correct Inputs");
                     //Create Schedule Requests
                     ScheduleBillboardRequest temp = new ScheduleBillboardRequest(txtBillboardName.getText(), txtScheduledTime.getText(),
-                            txtDuration.getText(), value, txtReoccurAmount.getText());
+                            txtDuration.getText(), value, txtReoccurAmount.getText(), Main.loginUser.getSessionToken());
                     try {
                         Client.connectServer(temp);
                     } catch (InterruptedException ex) {

@@ -22,6 +22,7 @@ public class CalanderScheduleGUI extends JFrame {
 
     private JButton btnBillboardScheduler = new JButton();
     private JButton btnDeleteSchedule = new JButton();
+    private JButton btnViewAllScheduled = new JButton();
     private JPanel pnlScheduleMenu = new JPanel(new GridBagLayout());
     private GridBagConstraints constraints = new GridBagConstraints();
 
@@ -71,6 +72,28 @@ public class CalanderScheduleGUI extends JFrame {
             }
         });
 
+        btnViewAllScheduled.setText("View All Scheduled Billboards");
+
+        btnViewAllScheduled.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new ViewAllScheduledGUI();
+            }
+        });
+
+        if (!Main.loginUser.getScheduleBillboardsPermission())
+        {
+            btnBillboardScheduler.setEnabled(false);
+            btnViewAllScheduled.setEnabled(false);
+            btnDeleteSchedule.setEnabled(false);
+        }
+        else
+        {
+            btnBillboardScheduler.setEnabled(true);
+            btnViewAllScheduled.setEnabled(true);
+            btnDeleteSchedule.setEnabled(true);
+        }
+
         WeeklyScheduleRequest WeeklyScheduleRequest = new WeeklyScheduleRequest();
         try{
             Client.connectServer(WeeklyScheduleRequest);
@@ -95,6 +118,8 @@ public class CalanderScheduleGUI extends JFrame {
         pnlScheduleMenu.add(btnBillboardScheduler, constraints);
         constraints.gridx = 2;
         pnlScheduleMenu.add(btnDeleteSchedule, constraints);
+        constraints.gridx = 3;
+        pnlScheduleMenu.add(btnViewAllScheduled, constraints);
 
         constraints.gridy = 1;
         constraints.gridx = 1;

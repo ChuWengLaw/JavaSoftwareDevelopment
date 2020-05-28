@@ -21,6 +21,7 @@ public class Client {
     private static String EditTextColour, EditBGColour, EditMsg, EditImg, EditInfo, EditInfoColour;
     private static ArrayList<String[]> ScheduleArray;
     private static String ScheduledBillboardTitle;
+    private static JTable ListScheduleBillboardTable;
 
     /**
      * Connects to server (connection read from network.props)
@@ -121,6 +122,10 @@ public class Client {
             GetCurrentScheduledReply ScheduleReply = (GetCurrentScheduledReply) requestReply;
             ScheduledBillboardTitle = ScheduleReply.getBillboardTitle();
         }
+        else if (requestReply instanceof ListScheduleReply){
+            ListScheduleReply listScheduleReply = (ListScheduleReply) requestReply;
+            ListScheduleBillboardTable = listScheduleReply.getTable();
+        }
 
         else if (requestReply instanceof EditBBReply){
             EditBBReply editBBReply = (EditBBReply) requestReply;
@@ -161,6 +166,7 @@ public class Client {
     }
     public static ArrayList<String[]> getScheduleArray() {return ScheduleArray;}
     public static String getScheduledBillboardTitle() {return ScheduledBillboardTitle;}
+    public static JTable getListScheduleBillboardTable() {return ListScheduleBillboardTable;}
 }
 
 

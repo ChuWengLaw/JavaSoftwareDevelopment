@@ -710,14 +710,44 @@ public class Server {
             }
             oos.flush();
         } else if (clientRequest instanceof ScheduleBillboardRequest) {
-            ScheduleBillboardRequest temp = (ScheduleBillboardRequest) clientRequest;
-            ScheduleSQL Schedule = new ScheduleSQL();
-            Schedule.ScheduleBillboard(temp.getBillboardName(), temp.getScheduledTime(), temp.getDuration(), temp.getReoccurType(), temp.getReoccurAmount());
+            ScheduleBillboardRequest scheduleBillboardRequest = (ScheduleBillboardRequest) clientRequest;
+            SessionToken sessionToken = findSessionToken(scheduleBillboardRequest.getSessionToken());
+            if (!tokenCheck(scheduleBillboardRequest.getSessionToken())) {
+                sessionTokens.remove(sessionToken);
+                LogoutReply logoutReply = new LogoutReply(true);
+                oos.writeObject(logoutReply);
+            } else {
+                // Reset the used time of the session token.
+                sessionToken.setUsedTime(LocalDateTime.now());
+                GeneralReply generalReply;
+                try {
+                    ScheduleSQL Schedule = new ScheduleSQL();
+                    Schedule.ScheduleBillboard(scheduleBillboardRequest.getBillboardName(), scheduleBillboardRequest.getScheduledTime(), scheduleBillboardRequest.getDuration(), scheduleBillboardRequest.getReoccurType(), scheduleBillboardRequest.getReoccurAmount());
+                } catch (Exception e) {
+                    generalReply = new GeneralReply(sessionToken, false);
+                    oos.writeObject(generalReply);
+                }
+            }
             oos.flush();
         } else if (clientRequest instanceof DeleteScheduleRequest) {
-            DeleteScheduleRequest temp = (DeleteScheduleRequest) clientRequest;
-            ScheduleSQL Schedule = new ScheduleSQL();
-            Schedule.DeleteSchedule(temp.getScheduledName(), temp.getScheduledTime());
+            DeleteScheduleRequest deleteScheduleRequest = (DeleteScheduleRequest) clientRequest;
+            SessionToken sessionToken = findSessionToken(deleteScheduleRequest.getSessionToken());
+            if (!tokenCheck(deleteScheduleRequest.getSessionToken())) {
+                sessionTokens.remove(sessionToken);
+                LogoutReply logoutReply = new LogoutReply(true);
+                oos.writeObject(logoutReply);
+            } else {
+                // Reset the used time of the session token.
+                sessionToken.setUsedTime(LocalDateTime.now());
+                GeneralReply generalReply;
+                try {
+                    ScheduleSQL Schedule = new ScheduleSQL();
+                    Schedule.DeleteSchedule(deleteScheduleRequest.getScheduledName(), deleteScheduleRequest.getScheduledTime());
+                } catch (Exception e) {
+                    generalReply = new GeneralReply(sessionToken, false);
+                    oos.writeObject(generalReply);
+                }
+            }
             oos.flush();
         } else if (clientRequest instanceof WeeklyScheduleRequest) {
             WeeklyScheduleRequest weeklyscheduleRequest = (WeeklyScheduleRequest) clientRequest;
@@ -730,6 +760,33 @@ public class Server {
             ScheduleSQL Schedule = new ScheduleSQL();
             GetCurrentScheduledReply getcurrentscheduledReply = new GetCurrentScheduledReply(Schedule.GetTitleCurrentScheduled(), true);
             oos.writeObject(getcurrentscheduledReply);
+        }
+        else if (clientRequest instanceof ListScheduleRequest) {
+            ListScheduleRequest listScheduleRequest = (ListScheduleRequest) clientRequest;
+            SessionToken sessionToken = findSessionToken(listScheduleRequest.getSessionToken());
+
+            // Remove session token from the list and send a logout request if it expired.
+            if (!tokenCheck(listScheduleRequest.getSessionToken())) {
+                sessionTokens.remove(sessionToken);
+                LogoutReply logoutReply = new LogoutReply(true);
+                oos.writeObject(logoutReply);
+            } else {
+                // Reset the used time of the session token.
+                sessionToken.setUsedTime(LocalDateTime.now());
+                GeneralReply generalReply;
+
+                // Return a reply object to the client containing JTable of billboards
+                try {
+                    ScheduleSQL Schedule = new ScheduleSQL();
+                    ListScheduleReply listScheduleReply = new ListScheduleReply(sessionToken, Schedule.GetScheduledInfo(sessionToken));
+                    oos.writeObject(listScheduleReply);
+                } catch (Exception e) {
+                    generalReply = new GeneralReply(sessionToken, false);
+                    oos.writeObject(generalReply);
+                }
+
+            }
+            oos.flush();
         }
             // If the request in an instance of import/export billboard request
         else if (clientRequest instanceof XmlRequest) {

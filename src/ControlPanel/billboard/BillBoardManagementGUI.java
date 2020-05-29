@@ -200,7 +200,7 @@ public class BillBoardManagementGUI extends JFrame {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         int width = (int)screenSize.getWidth();
         int height = (int)screenSize.getHeight();
-        setLocation(width/2,height/2);
+        setLocation(width/4,height/4);
         pack();
         repaint();
         setVisible(true);

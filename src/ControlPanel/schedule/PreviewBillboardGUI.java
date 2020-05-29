@@ -1,4 +1,4 @@
-package Viewer;
+package ControlPanel.schedule;
 
 import ControlPanel.Client;
 import Server.ExtractFromXML;
@@ -15,21 +15,16 @@ import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-
 import java.net.URL;
 import java.util.Base64;
-import java.util.concurrent.*;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
-/**
- * Billboard Viewer which connects to billboard server every
- * 15 seconds and display the billboards on screen
- *
- * @author Law
- */
-public class BillboardViewer extends JFrame {
+public class PreviewBillboardGUI  extends JFrame {
     private Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-    private final int screenWidth = dim.width;
-    private final int screenHeight = dim.height;
+    private final int screenWidth = (dim.width/4);
+    private final int screenHeight = (dim.height/4);
     private JPanel panel = new JPanel();
 
     /**
@@ -37,94 +32,32 @@ public class BillboardViewer extends JFrame {
      *
      * @throws HeadlessException
      */
-    public BillboardViewer() throws HeadlessException {
+    public PreviewBillboardGUI(String BillboardName) throws HeadlessException {
         super("Billboard Viewer");
 
-        // Set the window to borderless.
-        setExtendedState(Frame.MAXIMIZED_BOTH);
-        setUndecorated(true);
-        setLocationRelativeTo(null);
         setSize(screenWidth, screenHeight);
 
 
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        try {
+            update(BillboardName);
+        } catch (IOException e) {
 
-        // Connect every 15 seconds
-        Runnable fifteenSec = () -> {
-            try {
-                update();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        };
+        }
 
-        ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
-        executor.scheduleAtFixedRate(fifteenSec, 0, 15, TimeUnit.SECONDS);
-        // Mouse setting
-        MouseListener mouseCloseListener = new MouseListener() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                System.exit(0);
-            }
-
-            @Override
-            public void mousePressed(MouseEvent e) {
-
-            }
-
-            @Override
-            public void mouseReleased(MouseEvent e) {
-
-            }
-
-            @Override
-            public void mouseEntered(MouseEvent e) {
-
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-
-            }
-        };
-        addMouseListener(mouseCloseListener);
-
-        // Keyboard setting
-        KeyListener keyCloseListener = new KeyListener() {
-            @Override
-            public void keyTyped(KeyEvent e) {
-
-            }
-
-            @Override
-            public void keyPressed(KeyEvent e) {
-                if (e.getKeyCode() == 27) {
-                    System.exit(0);
-                }
-            }
-
-            @Override
-            public void keyReleased(KeyEvent e) {
-
-            }
-        };
-        addKeyListener(keyCloseListener);
     }
-
     /**
      * Updates is called every 15 seconds and will display the currently scheduled billboard for its determined time
      *
      * @throws IOException exception is thrown if connection fails etc.
      * @author Lachlan
      */
-    private void update() throws IOException {
+    private void update(String BillboardName) throws IOException {
         //getContentPane().remove(panel);
         panel.removeAll();
 
-        GetCurrentScheduledRequest GetCurrentScheduledRequest = new GetCurrentScheduledRequest();
         try {
-            Client.connectServer(GetCurrentScheduledRequest);
-            String currentBillboardString = Client.getScheduledBillboardTitle();
+            String currentBillboardString = BillboardName;
             if (currentBillboardString == null) {
                 panel.setBackground(Color.black);
                 JLabel lblNoSchedule = new JLabel("No Billboard Scheduled");
@@ -488,38 +421,7 @@ public class BillboardViewer extends JFrame {
                 }
             }
         } catch (Exception ex) {
-
-            panel.setBackground(Color.RED);
-
-            JLabel lblNoServerConection = new JLabel("Not Connected To Server!!!");
-            lblNoServerConection.setFont(lblNoServerConection.getFont().deriveFont(64.0f));
-            lblNoServerConection.setVerticalAlignment(SwingConstants.CENTER);
-            lblNoServerConection.setHorizontalAlignment(SwingConstants.CENTER);
-            lblNoServerConection.setForeground(Color.black);
-
-            JLabel picNoConnection = new JLabel();
-            URL url = new URL("https://cdn.dribbble.com/users/385451/screenshots/5087974/fox-expenses-500.png");
-            BufferedImage image = ImageIO.read(url);
-            picNoConnection.setIcon(new ImageIcon(image.getScaledInstance(-1, (screenHeight / 2), Image.SCALE_SMOOTH)));
-            picNoConnection.setHorizontalAlignment(SwingConstants.CENTER);
-            picNoConnection.setVerticalAlignment(SwingConstants.CENTER);
-
-            JLabel lblMessage = new JLabel();
-            lblMessage.setText("<HTML>Please close the viewer and ensure you are connected to the server. Once connected please run the viewer again.</HTML>");
-            lblMessage.setFont(lblMessage.getFont().deriveFont(32.0f));
-            lblMessage.setForeground(Color.black);
-
-            panel.setLayout(new BorderLayout());
-            panel.setBorder(new EmptyBorder(30, 30, 30, 30));
-            panel.add(lblNoServerConection, BorderLayout.NORTH);
-            panel.add(picNoConnection, BorderLayout.CENTER);
-            panel.add(lblMessage, BorderLayout.SOUTH);
-
-
-            getContentPane().add(panel);
-            repaint();
-            setVisible(true);
-            toFront();
+            JOptionPane.showMessageDialog(null, "Billboard does not exist.");
         }
     }
 }

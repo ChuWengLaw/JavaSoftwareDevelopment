@@ -1,4 +1,3 @@
-
 package ControlPanel.user;
 
 import ControlPanel.Client;
@@ -16,11 +15,11 @@ import java.io.IOException;
  * @author Nicholas Tseng
  * This is the menu window class which extends JFrame. In this window,
  * users can access three different functions:
- *
+ * <p>
  * 1. Billboard management (required permission: at least one of the billboard permission).
  * 2. User management (requierd permission: edit user permission).
  * 3. User profile (required permission: none).
- *
+ * <p>
  * If users are not allow to access any of the function due to permission issue,
  * the button will be disable from them.
  */
@@ -54,7 +53,7 @@ public class MenuWin extends JFrame {
 
         ActionListener scheduleBillboardListener = e -> new CalanderScheduleGUI();
         scheduleBillboardButton.addActionListener(scheduleBillboardListener);
-      
+
         ActionListener userProfileListener = e -> {
             Main.userProfileWin.setVisible(true);
             Main.userProfileWin.setCheckBox(Main.loginUser.getCreateBillboardsPermission(), Main.loginUser.getEditAllBillboardPermission(),
@@ -63,7 +62,7 @@ public class MenuWin extends JFrame {
         };
         userProfileButton.addActionListener(userProfileListener);
 
-        ActionListener logoutListener =  e -> {
+        ActionListener logoutListener = e -> {
             LogoutRequest logoutRequest = new LogoutRequest(Main.loginUser.getSessionToken());
 
             try {
@@ -94,7 +93,7 @@ public class MenuWin extends JFrame {
 
         constraints.gridy = 1;
         panel.add(logoutButton, constraints);
-      
+
         constraints.gridy = 2;
         panel.add(scheduleBillboardButton, constraints);
 

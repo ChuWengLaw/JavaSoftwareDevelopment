@@ -9,10 +9,10 @@ public class ChangePasswordRequest implements Serializable {
     private String userName;
     private String newPassword;
 
-    public ChangePasswordRequest(SessionToken sessionToken, String userName, String newPassword){
+    public ChangePasswordRequest(SessionToken sessionToken, String userName, String newPassword) {
         this.sessionToken = sessionToken;
         this.userName = userName;
-        this.newPassword =newPassword;
+        this.newPassword = newPassword;
     }
 
     public SessionToken getSessionToken() {

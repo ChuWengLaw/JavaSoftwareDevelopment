@@ -1,8 +1,8 @@
-package ControlPanel.billboard;
+package ControlPanel.schedule;
 
 import ControlPanel.Client;
 import ControlPanel.Main;
-import Server.Request.ListBBRequest;
+import Server.Request.ListScheduleRequest;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,34 +13,20 @@ import java.net.ConnectException;
  * This class creates the GUI to be used to display all the existing
  * billboards from the database
  */
-public class ListBillboardsGUI extends JFrame {
+public class ViewAllScheduledGUI extends JFrame {
     private JPanel panel = new JPanel();
+    private JTable Table = new JTable();
 
-    /**
-     * Constructor initialises the GUI creation.
-     *
-     * @throws HeadlessException
-     */
-    public ListBillboardsGUI() throws HeadlessException {
-        super("List Billboards");
+    public ViewAllScheduledGUI() throws HeadlessException {
+        super("All Scheduled");
         createGUI();
     }
 
-    /**
-     * Creates GUI and receive the JTable from server
-     *
-     * @author Law
-     */
     private void createGUI() {
         // sends request to server
-        ListBBRequest listBBRequest = new ListBBRequest(Main.loginUser.getSessionToken());
+        ListScheduleRequest listScheduleRequest = new ListScheduleRequest(Main.loginUser.getSessionToken());
         try {
-            Client.connectServer(listBBRequest);
-            if (Client.isRequestState()) {
-                JOptionPane.showMessageDialog(null, "Retrieving Billboard list...");
-            } else {
-                throw new Exception();
-            }
+            Client.connectServer(listScheduleRequest);
         } catch (ConnectException ex) {
             JOptionPane.showMessageDialog(null, "Connection fail.");
             System.exit(0);
@@ -58,7 +44,10 @@ public class ListBillboardsGUI extends JFrame {
         super.setLocationRelativeTo(null);
         super.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         JPanel panel = new JPanel();
-        JScrollPane scrollpane = new JScrollPane(Client.getBBTable());
+        Table = Client.getListScheduleBillboardTable();
+
+
+        JScrollPane scrollpane = new JScrollPane(Table);
         panel.setLayout(new BorderLayout());
         panel.add(scrollpane, BorderLayout.CENTER);
         super.setContentPane(panel);

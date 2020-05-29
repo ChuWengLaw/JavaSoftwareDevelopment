@@ -3,11 +3,16 @@ package ControlPanel.billboard;
 import ControlPanel.Client;
 import ControlPanel.Main;
 import Server.Request.XmlRequest;
+
 import javax.swing.*;
+import javax.swing.filechooser.FileSystemView;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.net.ConnectException;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 
 /**
  * This class creates the GUI to be used to export a selected
@@ -33,6 +38,7 @@ public class ExportXmlGUI extends JFrame {
 
     /**
      * Constructor initialises the GUI creation.
+     *
      * @throws HeadlessException
      */
     public ExportXmlGUI() throws HeadlessException {
@@ -64,11 +70,23 @@ public class ExportXmlGUI extends JFrame {
             //when the submit button is click make covert the inputs into string. then execute the CreateEditBilloard from the Billboard Class
             @Override
             public void actionPerformed(ActionEvent e) {
-                XmlRequest temp = new XmlRequest(Main.loginUser.getSessionToken(), txtBillboardName.getText());
+                XmlRequest xmlRequest = new XmlRequest(Main.loginUser.getSessionToken(), txtBillboardName.getText().toLowerCase(), true);
                 try {
-                    Client.connectServer(temp);
+                    Client.connectServer(xmlRequest);
                     if(Client.isRequestState()){
-                        JOptionPane.showMessageDialog(null, "Billboard exported!");
+                        try {
+                            //Create a file chooser
+                            JFileChooser jfc = new JFileChooser(FileSystemView.getFileSystemView());
+                            jfc.setDialogTitle("Specify a location to save the file");
+                            int returnValue = jfc.showSaveDialog(null);
+                            if (returnValue == JFileChooser.APPROVE_OPTION) {
+                                File selectedFile = jfc.getSelectedFile();
+                                Files.copy(Client.getExportFile().toPath(), selectedFile.toPath(),
+                                        StandardCopyOption.REPLACE_EXISTING);
+                            }
+                        } catch (Exception ex) {
+                            JOptionPane.showMessageDialog(null, "Xml not found!");
+                        }
                     }
                     else{
                         JOptionPane.showMessageDialog(null, "Billboard not found!");
@@ -77,7 +95,7 @@ public class ExportXmlGUI extends JFrame {
                     JOptionPane.showMessageDialog(null, "Connection fail.");
                     System.exit(0);
                 } catch (Exception ex) {
-                    ex.printStackTrace();
+                    JOptionPane.showMessageDialog(null, "Unexpected error occurred!");
                 }
                 //clear the textField
                 txtBillboardName.setText("");

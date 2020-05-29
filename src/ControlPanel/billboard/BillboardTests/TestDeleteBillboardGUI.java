@@ -26,13 +26,19 @@ public class TestDeleteBillboardGUI {
     /* Test 2: Check if the input billboard name has been successfully encapsulated in the request object  */
     @Test
     public void TestDeleteBBRequestBBName() {
-        DeleteBBRequest deleteBBRequest = new DeleteBBRequest(token, "chad");
+        DeleteBBRequest deleteBBRequest = new DeleteBBRequest(token, "test", "chad", true, true);
+        assertEquals("test", deleteBBRequest.getBillboardName());
+    }
+    /* Test 3: Check if the username has been successfully encapsulated in the request object  */
+    @Test
+    public void TestDeleteBBRequestUserName() {
+        DeleteBBRequest deleteBBRequest = new DeleteBBRequest(token, "test", "chad", true, true);
         assertEquals("chad", deleteBBRequest.getBillboardName());
     }
-    /* Test 3: Check if the input session token has been successfully encapsulated in the request object  */
+    /* Test 4: Check if the input session token has been successfully encapsulated in the request object  */
     @Test
     public void TestDeleteBBRequestToken() {
-        DeleteBBRequest deleteBBRequest = new DeleteBBRequest(token, "chad");
+        DeleteBBRequest deleteBBRequest = new DeleteBBRequest(token, "test", "chad", true, true);
         assertEquals(token, deleteBBRequest.getSessionToken());
     }
 }

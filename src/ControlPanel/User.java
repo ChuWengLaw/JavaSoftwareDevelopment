@@ -1,4 +1,5 @@
 package ControlPanel;
+
 import Server.SessionToken;
 
 import java.io.Serializable;
@@ -19,7 +20,7 @@ public class User implements Serializable {
     public User() {
     }
 
-    public User(String userName, boolean createBillboardsPermission, boolean editAllBillboardPermission, boolean scheduleBillboardsPermission, boolean editUsersPermission){
+    public User(String userName, boolean createBillboardsPermission, boolean editAllBillboardPermission, boolean scheduleBillboardsPermission, boolean editUsersPermission) {
         this.userName = userName;
         this.createBillboardsPermission = createBillboardsPermission;
         this.editAllBillboardPermission = editAllBillboardPermission;
@@ -28,28 +29,28 @@ public class User implements Serializable {
     }
 
     // Set method to store user information
-    public void setUserName(String userName){
+    public void setUserName(String userName) {
         this.userName = userName;
     }
 
-    public void setCreateBillboardsPermission(Boolean permission){
+    public void setCreateBillboardsPermission(Boolean permission) {
         this.createBillboardsPermission = permission;
     }
 
-    public void setEditAllBillboardsPermission(Boolean permission){
+    public void setEditAllBillboardsPermission(Boolean permission) {
         this.editAllBillboardPermission = permission;
     }
 
-    public void setScheduleBillboardsPermission(Boolean permission){
+    public void setScheduleBillboardsPermission(Boolean permission) {
         this.scheduleBillboardsPermission = permission;
     }
 
-    public void setEditUsersPermission(Boolean permission){
+    public void setEditUsersPermission(Boolean permission) {
         this.editUsersPermission = permission;
     }
 
     // Get Methods to be called to check user's information
-    public String getUserName(){
+    public String getUserName() {
         return userName;
     }
 
@@ -57,7 +58,9 @@ public class User implements Serializable {
         return createBillboardsPermission;
     }
 
-    public Boolean getEditAllBillboardPermission() { return editAllBillboardPermission; }
+    public Boolean getEditAllBillboardPermission() {
+        return editAllBillboardPermission;
+    }
 
     public Boolean getScheduleBillboardsPermission() {
         return scheduleBillboardsPermission;

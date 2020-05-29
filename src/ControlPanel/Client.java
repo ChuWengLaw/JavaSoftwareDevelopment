@@ -137,6 +137,7 @@ public class Client {
         else if (requestReply instanceof WeeklyScheduleReply){
             WeeklyScheduleReply ScheduleReply = (WeeklyScheduleReply) requestReply;
             ScheduleArray = ScheduleReply.getArray();
+            Main.loginUser.setSessionToken(ScheduleReply.getSessionToken());
         }
         // if the server replies to the client get current scheduled billboard request
         else if (requestReply instanceof GetCurrentScheduledReply){

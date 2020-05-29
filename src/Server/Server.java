@@ -221,7 +221,7 @@ public class Server {
         boolean tokenAvailableState;
 
         // This is used for testing, so the token will expire after one minute of hanging.
-        if (sessionToken.getUsedTime().plusMinutes(5).isAfter(LocalDateTime.now())) {
+        if (sessionToken.getUsedTime().plusMinutes(10).isAfter(LocalDateTime.now())) {
             tokenAvailableState = true;
         } else {
             tokenAvailableState = false;
@@ -354,6 +354,7 @@ public class Server {
 
                 // Reset the used time of the session token.
                 resetSessionTokenTime(sessionToken);
+                sessionToken.setUsedTime(LocalDateTime.now());
 
                 // Reply based on the existence of the user name that was searched.
                 if (searchState) {
@@ -383,6 +384,7 @@ public class Server {
             } else {
                 // Reset the used time of the session token.
                 resetSessionTokenTime(sessionToken);
+                sessionToken.setUsedTime(LocalDateTime.now());
 
                 // Edit SQL depends whether a new password is passed in, so when the password field is empty,
                 // the password won't change.
@@ -455,6 +457,7 @@ public class Server {
             else{
                 // Reset the used time of the session token.
                 resetSessionTokenTime(sessionToken);
+                sessionToken.setUsedTime(LocalDateTime.now());
 
                 if (checkDeleteUser){
                     deleteUserBillboardSQL(deleteUser.getUserName());
@@ -507,6 +510,7 @@ public class Server {
                 oos.writeObject(logoutReply);
             } else {
                 // Reset the used time of the session token.
+                resetSessionTokenTime(sessionToken);
                 sessionToken.setUsedTime(LocalDateTime.now());
                 GeneralReply generalReply;
 
@@ -551,6 +555,7 @@ public class Server {
             }
             else {
                 // Reset the used time of the session token.
+                resetSessionTokenTime(sessionToken);
                 sessionToken.setUsedTime(LocalDateTime.now());
                 GeneralReply generalReply;
                 // Execute edit query and return general reply indicating success
@@ -560,7 +565,7 @@ public class Server {
                         bb.EditBillboard(BillBoardName, temp.getEditTextColour(), temp.getEditBGColour(),
                                 temp.getEditMsg(), temp.getEditImg(), temp.getEditInfo(), temp.getEditInfoColour());
                         new MakeXMLFile(BillBoardName);
-                        generalReply = new GeneralReply(temp.getSessionToken(),true);
+                        generalReply = new GeneralReply(sessionToken,true);
                         oos.writeObject(generalReply);
                     }
                     // return the contents of the billboard
@@ -578,7 +583,7 @@ public class Server {
                                 oos.writeObject(editBBReply);
                             }
                             else {
-                                generalReply = new GeneralReply(temp.getSessionToken(),false);
+                                generalReply = new GeneralReply(sessionToken,false);
                                 oos.writeObject(generalReply);
                             }
                         }
@@ -598,7 +603,7 @@ public class Server {
                         }
                     }
                 } catch (Exception e) {
-                    generalReply = new GeneralReply(temp.getSessionToken(),false);
+                    generalReply = new GeneralReply(sessionToken,false);
                     oos.writeObject(generalReply);
                 }
             }
@@ -617,6 +622,7 @@ public class Server {
                 oos.writeObject(logoutReply);
             } else {
                 // Reset the used time of the session token.
+                resetSessionTokenTime(sessionToken);
                 sessionToken.setUsedTime(LocalDateTime.now());
                 GeneralReply generalReply;
 
@@ -634,7 +640,7 @@ public class Server {
                             generalReply = new GeneralReply(sessionToken,true);
                         }
                         else {
-                            generalReply = new GeneralReply(temp.getSessionToken(),false);
+                            generalReply = new GeneralReply(sessionToken,false);
                         }
                     }
                     // if the user is deleting billboard owned by other user
@@ -644,10 +650,10 @@ public class Server {
                             bb.DeleteBillboard(temp.getBillboardName());
                             File deleteFile = new File("src/xmlBillboards/" + temp.getBillboardName() + ".xml");
                             deleteFile.delete();
-                            generalReply = new GeneralReply(temp.getSessionToken(),true);
+                            generalReply = new GeneralReply(sessionToken,true);
                         }
                         else {
-                            generalReply = new GeneralReply(temp.getSessionToken(),false);
+                            generalReply = new GeneralReply(sessionToken,false);
                         }
                     }
                     oos.writeObject(generalReply);
@@ -670,6 +676,7 @@ public class Server {
                 oos.writeObject(logoutReply);
             } else {
                 // Reset the used time of the session token.
+                resetSessionTokenTime(sessionToken);
                 sessionToken.setUsedTime(LocalDateTime.now());
                 GeneralReply generalReply;
 
@@ -699,6 +706,7 @@ public class Server {
                 oos.writeObject(logoutReply);
             } else {
                 // Reset the used time of the session token.
+                resetSessionTokenTime(sessionToken);
                 sessionToken.setUsedTime(LocalDateTime.now());
                 GeneralReply generalReply;
 
@@ -716,12 +724,14 @@ public class Server {
         } else if (clientRequest instanceof ScheduleBillboardRequest) {
             ScheduleBillboardRequest scheduleBillboardRequest = (ScheduleBillboardRequest) clientRequest;
             SessionToken sessionToken = findSessionToken(scheduleBillboardRequest.getSessionToken());
+
             if (!tokenCheck(scheduleBillboardRequest.getSessionToken())) {
                 sessionTokens.remove(sessionToken);
                 LogoutReply logoutReply = new LogoutReply(true);
                 oos.writeObject(logoutReply);
             } else {
                 // Reset the used time of the session token.
+                resetSessionTokenTime(sessionToken);
                 sessionToken.setUsedTime(LocalDateTime.now());
                 GeneralReply generalReply;
                 try {
@@ -736,12 +746,14 @@ public class Server {
         } else if (clientRequest instanceof DeleteScheduleRequest) {
             DeleteScheduleRequest deleteScheduleRequest = (DeleteScheduleRequest) clientRequest;
             SessionToken sessionToken = findSessionToken(deleteScheduleRequest.getSessionToken());
+
             if (!tokenCheck(deleteScheduleRequest.getSessionToken())) {
                 sessionTokens.remove(sessionToken);
                 LogoutReply logoutReply = new LogoutReply(true);
                 oos.writeObject(logoutReply);
             } else {
                 // Reset the used time of the session token.
+                resetSessionTokenTime(sessionToken);
                 sessionToken.setUsedTime(LocalDateTime.now());
                 GeneralReply generalReply;
                 try {
@@ -755,9 +767,21 @@ public class Server {
             oos.flush();
         } else if (clientRequest instanceof WeeklyScheduleRequest) {
             WeeklyScheduleRequest weeklyscheduleRequest = (WeeklyScheduleRequest) clientRequest;
+            SessionToken sessionToken = findSessionToken(weeklyscheduleRequest.getSessionToken());
             ScheduleSQL Schedule = new ScheduleSQL();
-            WeeklyScheduleReply weeklyscheduleReply = new WeeklyScheduleReply(Schedule.ScheduledInformation());
-            oos.writeObject(weeklyscheduleReply);
+
+            if (!tokenCheck(weeklyscheduleRequest.getSessionToken())) {
+                sessionTokens.remove(sessionToken);
+                LogoutReply logoutReply = new LogoutReply(true);
+                oos.writeObject(logoutReply);
+            }
+            else {
+                // Reset the used time of the session token.
+                resetSessionTokenTime(sessionToken);
+                sessionToken.setUsedTime(LocalDateTime.now());
+                WeeklyScheduleReply weeklyscheduleReply = new WeeklyScheduleReply(sessionToken, Schedule.ScheduledInformation());
+                oos.writeObject(weeklyscheduleReply);
+            }
         }
         else if (clientRequest instanceof GetCurrentScheduledRequest) {
             GetCurrentScheduledRequest GetCurrentScheduledRequest = (GetCurrentScheduledRequest) clientRequest;
@@ -776,6 +800,7 @@ public class Server {
                 oos.writeObject(logoutReply);
             } else {
                 // Reset the used time of the session token.
+                resetSessionTokenTime(sessionToken);
                 sessionToken.setUsedTime(LocalDateTime.now());
                 GeneralReply generalReply;
 
@@ -804,6 +829,7 @@ public class Server {
                 oos.writeObject(logoutReply);
             } else {
                 // Reset the used time of the session token.
+                resetSessionTokenTime(sessionToken);
                 sessionToken.setUsedTime(LocalDateTime.now());
                 GeneralReply generalReply;
 

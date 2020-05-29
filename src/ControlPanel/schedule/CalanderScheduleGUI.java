@@ -96,7 +96,7 @@ public class CalanderScheduleGUI extends JFrame {
             btnDeleteSchedule.setEnabled(true);
         }
 
-        WeeklyScheduleRequest WeeklyScheduleRequest = new WeeklyScheduleRequest();
+        WeeklyScheduleRequest WeeklyScheduleRequest = new WeeklyScheduleRequest(Main.loginUser.getSessionToken());
         try{
             Client.connectServer(WeeklyScheduleRequest);
         }

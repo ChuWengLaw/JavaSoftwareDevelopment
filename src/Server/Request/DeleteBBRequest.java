@@ -7,15 +7,16 @@ import java.io.Serializable;
 public class DeleteBBRequest implements Serializable {
     private String BillboardName, LoginUser;
     private SessionToken sessionToken;
-    private Boolean EditAllBillboardsPermission, CreateBillboardPermission;
+    private Boolean EditAllBillboardsPermission, CreateBillboardPermission,IsScheduled;
 
     public DeleteBBRequest(SessionToken sessionToken, String BillboardName, String LoginUser,
-                           Boolean EditAllBillboardsPermission, Boolean CreateBillboardPermission) {
+                           Boolean EditAllBillboardsPermission, Boolean CreateBillboardPermission, Boolean IsScheduled) {
         this.BillboardName = BillboardName;
         this.sessionToken = sessionToken;
         this.LoginUser = LoginUser;
         this.CreateBillboardPermission = CreateBillboardPermission;
         this.EditAllBillboardsPermission = EditAllBillboardsPermission;
+        this.IsScheduled = IsScheduled;
     }
 
     public SessionToken getSessionToken() {
@@ -36,5 +37,9 @@ public class DeleteBBRequest implements Serializable {
 
     public String getLoginUser() {
         return LoginUser;
+    }
+
+    public Boolean getIsScheduled() {
+        return IsScheduled;
     }
 }

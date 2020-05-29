@@ -222,7 +222,7 @@ public class Server {
         boolean tokenAvailableState;
 
         // This is used for testing, so the token will expire after one minute of hanging.
-        if (sessionToken.getUsedTime().plusMinutes(1).isAfter(LocalDateTime.now())) {
+        if (sessionToken.getUsedTime().plusMinutes(10).isAfter(LocalDateTime.now())) {
             tokenAvailableState = true;
         } else {
             tokenAvailableState = false;
@@ -723,6 +723,7 @@ public class Server {
         } else if (clientRequest instanceof ScheduleBillboardRequest) {
             ScheduleBillboardRequest scheduleBillboardRequest = (ScheduleBillboardRequest) clientRequest;
             SessionToken sessionToken = findSessionToken(scheduleBillboardRequest.getSessionToken());
+
             if (!tokenCheck(scheduleBillboardRequest.getSessionToken())) {
                 sessionTokens.remove(sessionToken);
                 LogoutReply logoutReply = new LogoutReply(true);
@@ -744,6 +745,7 @@ public class Server {
         } else if (clientRequest instanceof DeleteScheduleRequest) {
             DeleteScheduleRequest deleteScheduleRequest = (DeleteScheduleRequest) clientRequest;
             SessionToken sessionToken = findSessionToken(deleteScheduleRequest.getSessionToken());
+
             if (!tokenCheck(deleteScheduleRequest.getSessionToken())) {
                 sessionTokens.remove(sessionToken);
                 LogoutReply logoutReply = new LogoutReply(true);
@@ -764,9 +766,21 @@ public class Server {
             oos.flush();
         } else if (clientRequest instanceof WeeklyScheduleRequest) {
             WeeklyScheduleRequest weeklyscheduleRequest = (WeeklyScheduleRequest) clientRequest;
+            SessionToken sessionToken = findSessionToken(weeklyscheduleRequest.getSessionToken());
             ScheduleSQL Schedule = new ScheduleSQL();
-            WeeklyScheduleReply weeklyscheduleReply = new WeeklyScheduleReply(Schedule.ScheduledInformation());
-            oos.writeObject(weeklyscheduleReply);
+
+            if (!tokenCheck(weeklyscheduleRequest.getSessionToken())) {
+                sessionTokens.remove(sessionToken);
+                LogoutReply logoutReply = new LogoutReply(true);
+                oos.writeObject(logoutReply);
+            }
+            else {
+                // Reset the used time of the session token.
+                resetSessionTokenTime(sessionToken);
+                sessionToken.setUsedTime(LocalDateTime.now());
+                WeeklyScheduleReply weeklyscheduleReply = new WeeklyScheduleReply(sessionToken, Schedule.ScheduledInformation());
+                oos.writeObject(weeklyscheduleReply);
+            }
         }
         else if (clientRequest instanceof GetCurrentScheduledRequest) {
             GetCurrentScheduledRequest GetCurrentScheduledRequest = (GetCurrentScheduledRequest) clientRequest;

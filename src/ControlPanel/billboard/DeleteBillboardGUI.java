@@ -2,6 +2,7 @@ package ControlPanel.billboard;
 
 import ControlPanel.Client;
 import ControlPanel.Main;
+import ControlPanel.schedule.CalanderScheduleGUI;
 import Server.Request.DeleteBBRequest;
 
 import javax.swing.*;
@@ -67,7 +68,7 @@ public class DeleteBillboardGUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 DeleteBBRequest temp = new DeleteBBRequest(Main.loginUser.getSessionToken(), txtBillboardName.getText(), Main.loginUser.getUserName(),
-                        Main.loginUser.getEditAllBillboardPermission(), Main.loginUser.getCreateBillboardsPermission());
+                        Main.loginUser.getEditAllBillboardPermission(), Main.loginUser.getCreateBillboardsPermission(), CalanderScheduleGUI.IsCurrentlyScheduled(txtBillboardName.getText()));
                 try {
                     Client.connectServer(temp);
                     if(Client.isRequestState()){
@@ -111,7 +112,10 @@ public class DeleteBillboardGUI extends JFrame {
 
         getContentPane().add(panel);
         //set the location of the GUI
-        setLocation(900, 350);
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        int width = (int)screenSize.getWidth();
+        int height = (int)screenSize.getHeight();
+        setLocation(width/4,height/4);
 
         //make changes and then send to GUI
         pack();

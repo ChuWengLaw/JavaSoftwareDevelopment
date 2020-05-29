@@ -91,7 +91,10 @@ public class DeleteUserWin extends JFrame{
 
         getContentPane().add(deletepanel);
 
-        setLocation(900,350);
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        int width = (int)screenSize.getWidth();
+        int height = (int)screenSize.getHeight();
+        setLocation(width/4,height/4);
         pack();
     }
 }

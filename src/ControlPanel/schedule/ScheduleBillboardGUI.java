@@ -127,7 +127,10 @@ public class ScheduleBillboardGUI extends JFrame {
 
         getContentPane().add(pnlScheduleNewBillboard);
         //set the location of the GUI
-        setLocation(900, 350);
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        int width = (int)screenSize.getWidth();
+        int height = (int)screenSize.getHeight();
+        setLocation(width/4,height/4);
 
         //make changes and then send to GUI
         pack();

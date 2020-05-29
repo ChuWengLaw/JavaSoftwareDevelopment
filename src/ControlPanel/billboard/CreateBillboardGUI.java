@@ -74,15 +74,11 @@ public class CreateBillboardGUI extends JFrame {
                     JOptionPane.showMessageDialog(null, "Please enter a billboard name.");
                 }
                 //if name is more than one word return appropriate message
-                if (txtBillboardName.getText().contains(" ")) {
+                else if (txtBillboardName.getText().contains(" ")) {
                     JOptionPane.showMessageDialog(null, "Please enter the name as one word.");
                 }
-                //if not all colours input are valid proceed
-                if (!isColourValid()) {
-                    JOptionPane.showMessageDialog(null, "Please enter valid colours.");
-                }
                 //if all colours input are valid proceed
-                else if (isColourValid()) {
+                 else if (isColourValid() && !txtBillboardName.getText().isBlank()) {
                     CreateBBRequest createBBRequest = new CreateBBRequest(Main.loginUser.getSessionToken(), txtBillboardName.getText(), Main.loginUser.getUserName(), txtTextColour.getText(), txtBackgroundColour.getText(),
                             txtMessage.getText(), txtImage.getText(), txtInformation.getText(), txtInformationColour.getText(), Main.loginUser.getCreateBillboardsPermission());
                     try {
@@ -198,7 +194,10 @@ public class CreateBillboardGUI extends JFrame {
 
         getContentPane().add(createBBPanel);
         //set the location of the GUI
-        setLocation(900, 350);
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        int width = (int)screenSize.getWidth();
+        int height = (int)screenSize.getHeight();
+        setLocation(width/4,height/4);
 
         //make changes and then send to GUI
         pack();
@@ -298,9 +297,9 @@ public class CreateBillboardGUI extends JFrame {
      * @author Lachlan
      */
     private boolean isColourValid() {
-        boolean text = false;
-        boolean back = false;
-        boolean info = false;
+        boolean text = true;
+        boolean back = true;
+        boolean info = true;
 
         //if the textColour isn't empty
         if (txtTextColour.getText().length() > 0) {
@@ -316,7 +315,7 @@ public class CreateBillboardGUI extends JFrame {
             //else if not valid colour name return appropriate error message
             else {
                 try {
-                    Class.forName("java.awt.Color").getField(txtTextColour.getText());
+                    Class.forName("java.awt.Color").getField(txtTextColour.getText().toLowerCase());
                     text = true;
                 } catch (NoSuchFieldException e) {
                     text = false;
@@ -341,7 +340,7 @@ public class CreateBillboardGUI extends JFrame {
             //else if not valid colour name return appropriate error message
             else {
                 try {
-                    Class.forName("java.awt.Color").getField(txtInformationColour.getText());
+                    Class.forName("java.awt.Color").getField(txtInformationColour.getText().toLowerCase());
                     info = true;
                 } catch (NoSuchFieldException e) {
                     info = false;
@@ -366,7 +365,7 @@ public class CreateBillboardGUI extends JFrame {
             //else if not valid colour name return appropriate error message
             else {
                 try {
-                    Class.forName("java.awt.Color").getField(txtBackgroundColour.getText());
+                    Class.forName("java.awt.Color").getField(txtBackgroundColour.getText().toLowerCase());
                     back = true;
                 } catch (NoSuchFieldException e) {
                     back = false;

@@ -74,11 +74,11 @@ public class CreateBillboardGUI extends JFrame {
                     JOptionPane.showMessageDialog(null, "Please enter a billboard name.");
                 }
                 //if name is more than one word return appropriate message
-                if (txtBillboardName.getText().contains(" ")) {
+                else if (txtBillboardName.getText().contains(" ")) {
                     JOptionPane.showMessageDialog(null, "Please enter the name as one word.");
                 }
                 //if all colours input are valid proceed
-                 else if (isColourValid()) {
+                 else if (isColourValid() && !txtBillboardName.getText().isBlank()) {
                     CreateBBRequest createBBRequest = new CreateBBRequest(Main.loginUser.getSessionToken(), txtBillboardName.getText(), Main.loginUser.getUserName(), txtTextColour.getText(), txtBackgroundColour.getText(),
                             txtMessage.getText(), txtImage.getText(), txtInformation.getText(), txtInformationColour.getText(), Main.loginUser.getCreateBillboardsPermission());
                     try {

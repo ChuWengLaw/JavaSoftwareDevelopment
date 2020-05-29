@@ -1,25 +1,15 @@
 package ControlPanel.schedule;
 
-import ControlPanel.Client;
 import Server.ExtractFromXML;
-import Server.Request.GetCurrentScheduledRequest;
-
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Base64;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 public class PreviewBillboardGUI  extends JFrame {
     private Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
@@ -27,11 +17,6 @@ public class PreviewBillboardGUI  extends JFrame {
     private final int screenHeight = (dim.height/4);
     private JPanel panel = new JPanel();
 
-    /**
-     * The constructor of the billboard viewer.
-     *
-     * @throws HeadlessException
-     */
     public PreviewBillboardGUI(String BillboardName) throws HeadlessException {
         super("Billboard Viewer");
 
@@ -46,54 +31,28 @@ public class PreviewBillboardGUI  extends JFrame {
         }
 
     }
-    /**
-     * Updates is called every 15 seconds and will display the currently scheduled billboard for its determined time
-     *
-     * @throws IOException exception is thrown if connection fails etc.
-     * @author Lachlan
-     */
+
     private void update(String BillboardName) throws IOException {
         //getContentPane().remove(panel);
         panel.removeAll();
 
         try {
             String currentBillboardString = BillboardName;
-            if (currentBillboardString == null) {
-                panel.setBackground(Color.black);
-                JLabel lblNoSchedule = new JLabel("No Billboard Scheduled");
-                int messageWidth = lblNoSchedule.getFontMetrics(lblNoSchedule.getFont()).stringWidth(lblNoSchedule.getText());
-                int componentWidth = screenWidth;
-                double widthRatio = (double) componentWidth / (double) messageWidth;
-                int newFontSize = (int) (lblNoSchedule.getFont().getSize() * widthRatio);
-                int componentHeight = screenHeight;
-                int fontSizeToUse = Math.min(newFontSize, componentHeight);
-                lblNoSchedule.setFont(new Font(lblNoSchedule.getFont().getName(), Font.PLAIN, fontSizeToUse));
-                lblNoSchedule.setForeground(Color.red);
-                lblNoSchedule.setHorizontalAlignment(SwingConstants.CENTER);
-                lblNoSchedule.setVerticalAlignment(SwingConstants.CENTER);
-
-
-                JLabel picNoSchedule = new JLabel();
-                URL url = new URL("https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRh_IKTuBKhex6jQsgVoMtSPnc0ZbR0RAdzv7UfBMbOMS45Wj_h&usqp=CAU");
-                BufferedImage image = ImageIO.read(url);
-                picNoSchedule.setIcon(new ImageIcon(image.getScaledInstance(-1, (screenHeight / 2), Image.SCALE_SMOOTH)));
-                picNoSchedule.setHorizontalAlignment(SwingConstants.CENTER);
-                picNoSchedule.setVerticalAlignment(SwingConstants.CENTER);
-
+            System.out.println(currentBillboardString);
+            ExtractFromXML currentScheduledBillboard = new ExtractFromXML(currentBillboardString + ".xml");
+            System.out.println(currentBillboardString);
+                //if only message is present the display only message
+            if (currentScheduledBillboard.message.isBlank() && currentScheduledBillboard.information.isBlank() && currentScheduledBillboard.image.isBlank())
+            {
+                panel.setBackground(currentScheduledBillboard.backgroundColour);
                 panel.setLayout(new BorderLayout());
-                panel.add(lblNoSchedule, BorderLayout.NORTH);
-                panel.add(picNoSchedule, BorderLayout.CENTER);
 
                 getContentPane().add(panel);
                 repaint();
                 setVisible(true);
                 toFront();
-
-            } else {
-                ExtractFromXML currentScheduledBillboard = new ExtractFromXML(currentBillboardString + ".xml");
-
-                //if only message is present the display only message
-                if (!currentScheduledBillboard.message.isBlank() && currentScheduledBillboard.information.isBlank() && currentScheduledBillboard.image.isBlank()) {
+            }
+                else if (!currentScheduledBillboard.message.isBlank() && currentScheduledBillboard.information.isBlank() && currentScheduledBillboard.image.isBlank()) {
 
                     panel.setBackground(currentScheduledBillboard.backgroundColour);
 
@@ -419,7 +378,7 @@ public class PreviewBillboardGUI  extends JFrame {
                     setVisible(true);
                     toFront();
                 }
-            }
+
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, "Billboard does not exist.");
         }

@@ -69,6 +69,8 @@ public class ListUserWin extends JFrame {
                 super.setLocationRelativeTo(null);
                 JPanel panel = new JPanel();
                 JScrollPane scrollpane = new JScrollPane(table);
+                table.setEnabled(false);
+                table.getTableHeader().setReorderingAllowed(false);
                 panel.setLayout(new BorderLayout());
                 panel.add(scrollpane, BorderLayout.CENTER);
                 super.setContentPane(panel);

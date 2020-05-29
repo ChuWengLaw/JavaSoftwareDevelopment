@@ -15,7 +15,7 @@ import java.net.ConnectException;
  */
 public class ViewAllScheduledGUI extends JFrame {
     private JPanel panel = new JPanel();
-    private JTable Table = new JTable();
+    private JTable table = new JTable();
 
     public ViewAllScheduledGUI() throws HeadlessException {
         super("All Scheduled");
@@ -44,10 +44,11 @@ public class ViewAllScheduledGUI extends JFrame {
         super.setLocationRelativeTo(null);
         super.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         JPanel panel = new JPanel();
-        Table = Client.getListScheduleBillboardTable();
+        table = Client.getListScheduleBillboardTable();
+        table.setEnabled(false);
+        table.getTableHeader().setReorderingAllowed(false);
 
-
-        JScrollPane scrollpane = new JScrollPane(Table);
+        JScrollPane scrollpane = new JScrollPane(table);
         panel.setLayout(new BorderLayout());
         panel.add(scrollpane, BorderLayout.CENTER);
         super.setContentPane(panel);

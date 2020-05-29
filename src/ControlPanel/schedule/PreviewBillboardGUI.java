@@ -38,9 +38,7 @@ public class PreviewBillboardGUI  extends JFrame {
 
         try {
             String currentBillboardString = BillboardName;
-            System.out.println(currentBillboardString);
             ExtractFromXML currentScheduledBillboard = new ExtractFromXML(currentBillboardString + ".xml");
-            System.out.println(currentBillboardString);
                 //if only message is present the display only message
             if (currentScheduledBillboard.message.isBlank() && currentScheduledBillboard.information.isBlank() && currentScheduledBillboard.image.isBlank())
             {

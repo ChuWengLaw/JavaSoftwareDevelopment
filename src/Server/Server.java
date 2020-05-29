@@ -767,6 +767,8 @@ public class Server {
                 try {
                     ScheduleSQL Schedule = new ScheduleSQL();
                     Schedule.DeleteSchedule(deleteScheduleRequest.getScheduledName(), deleteScheduleRequest.getScheduledTime());
+                    generalReply = new GeneralReply(sessionToken, true);
+                    oos.writeObject(generalReply);
                 } catch (Exception e) {
                     generalReply = new GeneralReply(sessionToken, false);
                     oos.writeObject(generalReply);

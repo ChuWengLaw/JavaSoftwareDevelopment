@@ -74,7 +74,7 @@ public class ScheduleBillboardGUI extends JFrame {
                         Client.connectServer(temp);
                         if (Client.isRequestState())
                         {
-                            JOptionPane.showMessageDialog(null,"It is done, my Lord.");
+                            JOptionPane.showMessageDialog(null,"Scheduled");
                         }
                         else
                         {

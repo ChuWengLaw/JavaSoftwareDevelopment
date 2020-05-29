@@ -29,7 +29,7 @@ public class ScheduleBillboardGUI extends JFrame {
 
     private JLabel lblBillboardName = new JLabel("Billboard Name:");
     private JLabel lblScheduledTime = new JLabel("<html>Schedule Time:<br/>yyyy-MM-dd HH:mm:ss</html>");
-    private JLabel lblDuration = new JLabel("Duration:");
+    private JLabel lblDuration = new JLabel("Duration (minutes):");
     private JLabel lblReoccurType = new JLabel("Reoccur Type:");
     private JLabel lblReoccurAmount = new JLabel("Reoccur Amount:");
 

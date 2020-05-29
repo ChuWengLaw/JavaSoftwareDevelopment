@@ -159,8 +159,17 @@ public class BillboardViewer extends JFrame {
             } else {
                 ExtractFromXML currentScheduledBillboard = new ExtractFromXML(currentBillboardString + ".xml");
 
+                //if nothing entered
+                if (currentScheduledBillboard.message.isBlank() && currentScheduledBillboard.information.isBlank() && currentScheduledBillboard.image.isBlank()) {
+                    panel.setBackground(currentScheduledBillboard.backgroundColour);
+
+                    getContentPane().add(panel);
+                    repaint();
+                    toFront();
+                }
+
                 //if only message is present the display only message
-                if (!currentScheduledBillboard.message.isBlank() && currentScheduledBillboard.information.isBlank() && currentScheduledBillboard.image.isBlank()) {
+                else if (!currentScheduledBillboard.message.isBlank() && currentScheduledBillboard.information.isBlank() && currentScheduledBillboard.image.isBlank()) {
 
                     panel.setBackground(currentScheduledBillboard.backgroundColour);
 

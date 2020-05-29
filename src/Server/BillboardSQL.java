@@ -101,31 +101,28 @@ public class BillboardSQL {
 
     /**
      * This function creates a public method to retrieve
-     * the selected billboard information from database
+     * the selected billboard contents from database
      *
      * @param BillBoardName name of the billboard
-     * @return Information of the billboard in string
      * @throws SQLException if sql query error occurs
      * @author Law
      */
-    public String GetBillboardInfo(String BillBoardName) throws SQLException {
-        String info = "";
-        try {
-            ResultSet getInfo = Server.statement.executeQuery("SELECT Information FROM Billboard WHERE BillboardName = '"
-                    + BillBoardName + "';");
-            getInfo.next();
-            info = getInfo.getString("Information");
-        } catch (SQLException e) {
-            System.out.println(e);
-        }
-        return info;
+    public void GetBillboardInfo(String BillBoardName) throws SQLException {
+        ResultSet getBillboard = Server.statement.executeQuery("SELECT * FROM Billboard WHERE BillboardName = '"
+                + BillBoardName + "';");
+        getBillboard.next();
+        backgroundColour = getBillboard.getString("BackGroundColour");
+        message = getBillboard.getString("Message");
+        textColour = getBillboard.getString("TextColour");
+        image = getBillboard.getString("Image");
+        information = getBillboard.getString("Information");
+        informationColour = getBillboard.getString("InfoColour");
     }
 
     /**
      * This function creates a public method to retrieve
      * all of the billboards' contents from database
      *
-     * @param Token session token
      * @throws SQLException if sql query error occurs
      * @author Law
      */

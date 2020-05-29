@@ -312,7 +312,7 @@ public class CreateBillboardGUI extends JFrame {
             //else if not valid colour name return appropriate error message
             else {
                 try {
-                    Class.forName("java.awt.Color").getField(txtTextColour.getText());
+                    Class.forName("java.awt.Color").getField(txtTextColour.getText().toLowerCase());
                     text = true;
                 } catch (NoSuchFieldException e) {
                     text = false;
@@ -337,7 +337,7 @@ public class CreateBillboardGUI extends JFrame {
             //else if not valid colour name return appropriate error message
             else {
                 try {
-                    Class.forName("java.awt.Color").getField(txtInformationColour.getText());
+                    Class.forName("java.awt.Color").getField(txtInformationColour.getText().toLowerCase());
                     info = true;
                 } catch (NoSuchFieldException e) {
                     info = false;
@@ -362,7 +362,7 @@ public class CreateBillboardGUI extends JFrame {
             //else if not valid colour name return appropriate error message
             else {
                 try {
-                    Class.forName("java.awt.Color").getField(txtBackgroundColour.getText());
+                    Class.forName("java.awt.Color").getField(txtBackgroundColour.getText().toLowerCase());
                     back = true;
                 } catch (NoSuchFieldException e) {
                     back = false;

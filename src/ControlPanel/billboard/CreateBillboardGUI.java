@@ -4,19 +4,33 @@ import ControlPanel.Client;
 import ControlPanel.Main;
 import Server.Request.CreateBBRequest;
 import Server.Request.XmlRequest;
-
+import org.w3c.dom.Attr;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import javax.swing.*;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.io.IOException;
 import java.net.ConnectException;
+
 
 /**
  * This class creates the GUI to be used to create a billboard
  */
 public class CreateBillboardGUI extends JFrame {
     //define element to be used
+    private JButton btnPreview;
     private JButton btnSubmit;
 
     //define the labels
@@ -38,7 +52,6 @@ public class CreateBillboardGUI extends JFrame {
     private JTextField txtInformationColour;
 
     //define the strings to be used in the SQL
-    private String strBillboardName;
     private JPanel createBBPanel = new JPanel(new GridBagLayout());
     private GridBagConstraints createBBConstraints = new GridBagConstraints();
 
@@ -61,7 +74,78 @@ public class CreateBillboardGUI extends JFrame {
 
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLayout(new BorderLayout());
+        //create the button and define what text it will contain
+        btnPreview = createButton("Preview");
+        //create and actionListener for the submit button
+        btnPreview.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //name is blank return appropriate message
+                if (txtBillboardName.getText().isBlank()) {
+                    JOptionPane.showMessageDialog(null, "Please enter a billboard name.");
+                }
+                //if name is more than one word return appropriate message
+                else if (txtBillboardName.getText().contains(" ")) {
+                    JOptionPane.showMessageDialog(null, "Please enter the name as one word.");
+                }
+                //if all colours input are valid proceed
+                else if (isColourValid() && !txtBillboardName.getText().isBlank()) {
+                    String path = "src/xmlBillboards/createpreview.xml";
+                    try {
+                        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newDefaultInstance();
+                        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+                        Document document = documentBuilder.newDocument();
+                        Element billboard = document.createElement("billboard");
+                        document.appendChild(billboard);
 
+                        Attr background = document.createAttribute("background");
+                        background.setValue(txtBackgroundColour.getText());
+                        billboard.setAttributeNode(background);
+
+                        //message element
+                        Element bbMessage = document.createElement("message");
+                        Attr textCol = document.createAttribute("colour");
+                        textCol.setValue(txtTextColour.getText());
+                        bbMessage.setAttributeNode(textCol);
+                        bbMessage.appendChild(document.createTextNode(txtMessage.getText()));
+                        billboard.appendChild(bbMessage);
+
+                        //picture element
+                        Element pic = document.createElement("picture");
+                        if (txtImage.getText().startsWith("http")) {
+                            Attr picURL = document.createAttribute("url");
+                            picURL.setValue(txtImage.getText());
+                            pic.setAttributeNode(picURL);
+                        } else {
+                            Attr picData = document.createAttribute("data");
+                            picData.setValue(txtImage.getText());
+                            pic.setAttributeNode(picData);
+                        }
+                        billboard.appendChild(pic);
+
+                        //information element
+                        Element info = document.createElement("information");
+                        Attr infoColour = document.createAttribute("colour");
+                        infoColour.setValue(txtInformationColour.getText());
+                        info.setAttributeNode(infoColour);
+                        info.appendChild(document.createTextNode(txtInformation.getText()));
+                        billboard.appendChild(info);
+
+                        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+                        Transformer transformer = transformerFactory.newTransformer();
+                        DOMSource domSource = new DOMSource(document);
+                        StreamResult streamResult = new StreamResult(new File(path));
+
+                        transformer.transform(domSource, streamResult);
+                    } catch (ParserConfigurationException | TransformerConfigurationException ex) {
+                        ex.printStackTrace();
+                    } catch (TransformerException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+                new PreviewBillboardGUI("createpreview");
+            }
+        });
         //create the button and define what text it will contain
         btnSubmit = createButton("Submit");
         //create and actionListener for the submit button
@@ -187,6 +271,10 @@ public class CreateBillboardGUI extends JFrame {
         //add button to panel
         createBBConstraints.gridwidth = 2;
         createBBConstraints.insets = new Insets(5, 10, 5, 10);
+        createBBConstraints.anchor = GridBagConstraints.WEST;
+        createBBConstraints.gridx = 0;
+        createBBConstraints.gridy = 8;
+        createBBPanel.add(btnPreview, createBBConstraints);
         createBBConstraints.anchor = GridBagConstraints.EAST;
         createBBConstraints.gridx = 0;
         createBBConstraints.gridy = 8;
@@ -225,20 +313,6 @@ public class CreateBillboardGUI extends JFrame {
      */
     private JTextField createText() {
         JTextField textBox = new JTextField(20);
-        return textBox;
-    }
-
-    /**
-     * This function create a JTextField with the input of the text
-     *
-     * @param text the text to be displayed
-     * @return a JTextField with the input of text
-     * @author Lachlan
-     */
-    private JTextField createText(String text) {
-        JTextField textBox = new JTextField();
-        textBox.setText(text);
-        strBillboardName = text;
         return textBox;
     }
 

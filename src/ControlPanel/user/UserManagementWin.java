@@ -109,7 +109,10 @@ public class UserManagementWin extends JFrame{
         getContentPane().add(panel);
 
         // Display the window
-        setLocation(900,350);
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        int width = (int)screenSize.getWidth();
+        int height = (int)screenSize.getHeight();
+        setLocation(width/2,height/2);
         pack();
     }
 }

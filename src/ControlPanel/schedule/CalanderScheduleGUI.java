@@ -141,7 +141,11 @@ public class CalanderScheduleGUI extends JFrame {
 
         getContentPane().add(pnlScheduleMenu);
         // Display the window
-        setLocation(300,350);
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        int width = (int)screenSize.getWidth();
+        int height = (int)screenSize.getHeight();
+        setLocation(width/2,height/2);
+
         pack();
         repaint();
         setVisible(true);

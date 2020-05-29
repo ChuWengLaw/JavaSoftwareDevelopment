@@ -55,7 +55,10 @@ public class ListUserWin extends JFrame {
         super.addWindowListener(windowListener);
 
         setSize(500, 120);
-        setLocation(900, 350);
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        int width = (int)screenSize.getWidth();
+        int height = (int)screenSize.getHeight();
+        setLocation(width/2,height/2);
     }
 
     public void createTableSQL() {
@@ -69,6 +72,8 @@ public class ListUserWin extends JFrame {
                 super.setLocationRelativeTo(null);
                 JPanel panel = new JPanel();
                 JScrollPane scrollpane = new JScrollPane(table);
+                table.setEnabled(false);
+                table.getTableHeader().setReorderingAllowed(false);
                 panel.setLayout(new BorderLayout());
                 panel.add(scrollpane, BorderLayout.CENTER);
                 super.setContentPane(panel);

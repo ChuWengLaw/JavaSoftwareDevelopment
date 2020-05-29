@@ -112,7 +112,10 @@ public class DeleteBillboardGUI extends JFrame {
 
         getContentPane().add(panel);
         //set the location of the GUI
-        setLocation(900, 350);
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        int width = (int)screenSize.getWidth();
+        int height = (int)screenSize.getHeight();
+        setLocation(width/2,height/2);
 
         //make changes and then send to GUI
         pack();

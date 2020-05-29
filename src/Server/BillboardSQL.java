@@ -131,6 +131,7 @@ public class BillboardSQL {
      */
     public JTable ListBillboards() throws SQLException {
         JTable table = new JTable();
+
         try {
             ResultSet list = Server.statement.executeQuery("SELECT * FROM Billboard"/*ORDER BY ScheduleValue (i.e. how ever we are going to schedule) ASC*/ + ";");
             ResultSetMetaData rsmd = list.getMetaData();

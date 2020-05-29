@@ -222,7 +222,7 @@ public class Server {
         boolean tokenAvailableState;
 
         // This is used for testing, so the token will expire after one minute of hanging.
-        if (sessionToken.getUsedTime().plusMinutes(5).isAfter(LocalDateTime.now())) {
+        if (sessionToken.getUsedTime().plusMinutes(1).isAfter(LocalDateTime.now())) {
             tokenAvailableState = true;
         } else {
             tokenAvailableState = false;
@@ -565,7 +565,7 @@ public class Server {
                         bb.EditBillboard(BillBoardName, temp.getEditTextColour(), temp.getEditBGColour(),
                                 temp.getEditMsg(), temp.getEditImg(), temp.getEditInfo(), temp.getEditInfoColour());
                         new MakeXMLFile(BillBoardName);
-                        generalReply = new GeneralReply(temp.getSessionToken(),true);
+                        generalReply = new GeneralReply(sessionToken,true);
                         oos.writeObject(generalReply);
                     }
                     // return the contents of the billboard
@@ -582,7 +582,7 @@ public class Server {
                                 oos.writeObject(editBBReply);
                             }
                             else {
-                                generalReply = new GeneralReply(temp.getSessionToken(),false);
+                                generalReply = new GeneralReply(sessionToken,false);
                                 oos.writeObject(generalReply);
                             }
                         }
@@ -602,7 +602,7 @@ public class Server {
                         }
                     }
                 } catch (Exception e) {
-                    generalReply = new GeneralReply(temp.getSessionToken(),false);
+                    generalReply = new GeneralReply(sessionToken,false);
                     oos.writeObject(generalReply);
                 }
             }
@@ -639,7 +639,7 @@ public class Server {
                             generalReply = new GeneralReply(sessionToken,true);
                         }
                         else {
-                            generalReply = new GeneralReply(temp.getSessionToken(),false);
+                            generalReply = new GeneralReply(sessionToken,false);
                         }
                     }
                     // if the user is deleting billboard owned by other user
@@ -649,10 +649,10 @@ public class Server {
                             bb.DeleteBillboard(temp.getBillboardName());
                             File deleteFile = new File("src/xmlBillboards/" + temp.getBillboardName() + ".xml");
                             deleteFile.delete();
-                            generalReply = new GeneralReply(temp.getSessionToken(),true);
+                            generalReply = new GeneralReply(sessionToken,true);
                         }
                         else {
-                            generalReply = new GeneralReply(temp.getSessionToken(),false);
+                            generalReply = new GeneralReply(sessionToken,false);
                         }
                     }
                     oos.writeObject(generalReply);

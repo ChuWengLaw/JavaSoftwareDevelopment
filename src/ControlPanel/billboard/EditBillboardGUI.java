@@ -84,7 +84,7 @@ public class EditBillboardGUI extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 EditBBRequest temp = new EditBBRequest(Main.loginUser.getSessionToken(), Main.loginUser.getUserName(),
                         txtBillboardName.getText().toLowerCase(), Main.loginUser.getEditAllBillboardPermission(),
-                        Main.loginUser.getCreateBillboardsPermission(), CalanderScheduleGUI.IsCurrentlyScheduled(txtBillboardName.getText()));
+                        Main.loginUser.getCreateBillboardsPermission(), CalanderScheduleGUI.IsCurrentlyScheduled(txtBillboardName.getText().toLowerCase()));
 
                 try {
                     Client.connectServer(temp);

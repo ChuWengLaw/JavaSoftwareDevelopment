@@ -68,7 +68,7 @@ public class ScheduleBillboardGUI extends JFrame {
                     else if (value.equals("(Below) Minutes")) value = "3";
                     //System.out.println("Correct Inputs");
                     //Create Schedule Requests
-                    ScheduleBillboardRequest temp = new ScheduleBillboardRequest(txtBillboardName.getText(), txtScheduledTime.getText(),
+                    ScheduleBillboardRequest temp = new ScheduleBillboardRequest(txtBillboardName.getText().toLowerCase(), txtScheduledTime.getText(),
                             txtDuration.getText(), value, txtReoccurAmount.getText(), Main.loginUser.getSessionToken(), Main.loginUser.getUserName());
                     try {
                         Client.connectServer(temp);

@@ -197,7 +197,7 @@ public class BillBoardManagementGUI extends JFrame {
         getContentPane().add(bBMenu);
 
         // Display the window
-        setLocation(900, 350);
+        setLocation(300, 350);
         pack();
         repaint();
         setVisible(true);

@@ -77,12 +77,8 @@ public class CreateBillboardGUI extends JFrame {
                 if (txtBillboardName.getText().contains(" ")) {
                     JOptionPane.showMessageDialog(null, "Please enter the name as one word.");
                 }
-                //if not all colours input are valid proceed
-                if (!isColourValid()) {
-                    JOptionPane.showMessageDialog(null, "Please enter valid colours.");
-                }
                 //if all colours input are valid proceed
-                else if (isColourValid()) {
+                 else if (isColourValid()) {
                     CreateBBRequest createBBRequest = new CreateBBRequest(Main.loginUser.getSessionToken(), txtBillboardName.getText(), Main.loginUser.getUserName(), txtTextColour.getText(), txtBackgroundColour.getText(),
                             txtMessage.getText(), txtImage.getText(), txtInformation.getText(), txtInformationColour.getText(), Main.loginUser.getCreateBillboardsPermission());
                     try {
@@ -298,9 +294,9 @@ public class CreateBillboardGUI extends JFrame {
      * @author Lachlan
      */
     private boolean isColourValid() {
-        boolean text = false;
-        boolean back = false;
-        boolean info = false;
+        boolean text = true;
+        boolean back = true;
+        boolean info = true;
 
         //if the textColour isn't empty
         if (txtTextColour.getText().length() > 0) {

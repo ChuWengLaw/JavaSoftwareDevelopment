@@ -52,7 +52,7 @@ public class DeleteScheduleGUI extends JFrame {
                 {
                     //System.out.println("Correct Inputs");
                     //Create Schedule Requests
-                    DeleteScheduleRequest temp = new DeleteScheduleRequest(txtBillboardName.getText(), txtScheduledTime.getText());
+                    DeleteScheduleRequest temp = new DeleteScheduleRequest(txtBillboardName.getText(), txtScheduledTime.getText(), Main.loginUser.getSessionToken());
                     try {
                         Client.connectServer(temp);
                     } catch (InterruptedException ex) {

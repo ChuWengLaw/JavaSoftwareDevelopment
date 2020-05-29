@@ -9,6 +9,7 @@ public class XmlRequest implements Serializable {
     private String xmlName, UserName;
     private File xmlFile;
     private SessionToken token;
+    private boolean exportState;
 
     public XmlRequest(SessionToken token, File getXmlFile, String UserName) {
         this.token = token;
@@ -16,9 +17,10 @@ public class XmlRequest implements Serializable {
         this.UserName = UserName;
     }
 
-    public XmlRequest(SessionToken token, String xmlName) {
+    public XmlRequest(SessionToken token, String xmlName, boolean exportState) {
         this.token = token;
         this.xmlName = xmlName;
+        this.exportState = exportState;
     }
 
     public File getXmlFile() {
@@ -37,4 +39,7 @@ public class XmlRequest implements Serializable {
         return token;
     }
 
+    public boolean isExportState() {
+        return exportState;
+    }
 }

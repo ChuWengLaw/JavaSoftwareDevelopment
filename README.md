@@ -16,11 +16,3 @@ and users will not interact with it directly. Instead, users will run a second c
 Billboard Control Panel. This will be a GUI application that will connect to the server and allow the
 user to carry out various management tasks, such as changing which billboards are shown at which
 times. The server will store its information in a MariaDB database. 
-
-Link below shows the basic structure of how the system works.  
-![Click Me](https://imgur.com/hmxviLP)
-
-#### Packages
-Packages
-
-#### How to run

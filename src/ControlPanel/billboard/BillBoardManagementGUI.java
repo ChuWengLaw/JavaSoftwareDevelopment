@@ -171,7 +171,7 @@ public class BillBoardManagementGUI extends JFrame {
 
         // Panel setting
         constraints.anchor = GridBagConstraints.WEST;
-        constraints.insets = new Insets(10, 10, 10, 10);
+        constraints.insets = new Insets(12, 12, 12, 12);
 
         constraints.gridx = 0;
         constraints.gridy = 0;

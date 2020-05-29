@@ -355,6 +355,7 @@ public class Server {
 
                 // Reset the used time of the session token.
                 resetSessionTokenTime(sessionToken);
+                sessionToken.setUsedTime(LocalDateTime.now());
 
                 // Reply based on the existence of the user name that was searched.
                 if (searchState) {
@@ -384,6 +385,7 @@ public class Server {
             } else {
                 // Reset the used time of the session token.
                 resetSessionTokenTime(sessionToken);
+                sessionToken.setUsedTime(LocalDateTime.now());
 
                 // Edit SQL depends whether a new password is passed in, so when the password field is empty,
                 // the password won't change.
@@ -456,6 +458,7 @@ public class Server {
             else{
                 // Reset the used time of the session token.
                 resetSessionTokenTime(sessionToken);
+                sessionToken.setUsedTime(LocalDateTime.now());
 
                 if (checkDeleteUser){
                     deleteUserBillboardSQL(deleteUser.getUserName());
@@ -508,6 +511,7 @@ public class Server {
                 oos.writeObject(logoutReply);
             } else {
                 // Reset the used time of the session token.
+                resetSessionTokenTime(sessionToken);
                 sessionToken.setUsedTime(LocalDateTime.now());
                 GeneralReply generalReply;
 
@@ -551,6 +555,7 @@ public class Server {
             }
             else {
                 // Reset the used time of the session token.
+                resetSessionTokenTime(sessionToken);
                 sessionToken.setUsedTime(LocalDateTime.now());
                 GeneralReply generalReply;
                 // Execute edit query and return general reply indicating success
@@ -616,6 +621,7 @@ public class Server {
                 oos.writeObject(logoutReply);
             } else {
                 // Reset the used time of the session token.
+                resetSessionTokenTime(sessionToken);
                 sessionToken.setUsedTime(LocalDateTime.now());
                 GeneralReply generalReply;
 
@@ -669,6 +675,7 @@ public class Server {
                 oos.writeObject(logoutReply);
             } else {
                 // Reset the used time of the session token.
+                resetSessionTokenTime(sessionToken);
                 sessionToken.setUsedTime(LocalDateTime.now());
                 GeneralReply generalReply;
 
@@ -698,6 +705,7 @@ public class Server {
                 oos.writeObject(logoutReply);
             } else {
                 // Reset the used time of the session token.
+                resetSessionTokenTime(sessionToken);
                 sessionToken.setUsedTime(LocalDateTime.now());
                 GeneralReply generalReply;
 
@@ -721,6 +729,7 @@ public class Server {
                 oos.writeObject(logoutReply);
             } else {
                 // Reset the used time of the session token.
+                resetSessionTokenTime(sessionToken);
                 sessionToken.setUsedTime(LocalDateTime.now());
                 GeneralReply generalReply;
                 try {
@@ -741,6 +750,7 @@ public class Server {
                 oos.writeObject(logoutReply);
             } else {
                 // Reset the used time of the session token.
+                resetSessionTokenTime(sessionToken);
                 sessionToken.setUsedTime(LocalDateTime.now());
                 GeneralReply generalReply;
                 try {
@@ -775,6 +785,7 @@ public class Server {
                 oos.writeObject(logoutReply);
             } else {
                 // Reset the used time of the session token.
+                resetSessionTokenTime(sessionToken);
                 sessionToken.setUsedTime(LocalDateTime.now());
                 GeneralReply generalReply;
 
@@ -803,6 +814,7 @@ public class Server {
                 oos.writeObject(logoutReply);
             } else {
                 // Reset the used time of the session token.
+                resetSessionTokenTime(sessionToken);
                 sessionToken.setUsedTime(LocalDateTime.now());
                 GeneralReply generalReply;
 

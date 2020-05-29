@@ -4,9 +4,7 @@ import javax.swing.*;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.Properties;
 
 /**
@@ -43,6 +41,10 @@ public class DBConnection {
             // get a connection
             connection = DriverManager.getConnection(url + "/" + schema, username,
                     password);
+        } catch (SQLSyntaxErrorException ex) {
+            JOptionPane.showMessageDialog(null, "Database Does not exist");
+        } catch (SQLNonTransientConnectionException ex) {
+            JOptionPane.showMessageDialog(null, "Database Connection Fail");
         } catch (SQLException sqle) {
             System.err.println(sqle);
         } catch (FileNotFoundException fnfe) {

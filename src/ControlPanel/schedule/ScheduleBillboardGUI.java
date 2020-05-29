@@ -12,6 +12,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.IOException;
+import java.net.ConnectException;
+import java.sql.Connection;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
@@ -67,15 +69,30 @@ public class ScheduleBillboardGUI extends JFrame {
                     //System.out.println("Correct Inputs");
                     //Create Schedule Requests
                     ScheduleBillboardRequest temp = new ScheduleBillboardRequest(txtBillboardName.getText(), txtScheduledTime.getText(),
-                            txtDuration.getText(), value, txtReoccurAmount.getText(), Main.loginUser.getSessionToken());
+                            txtDuration.getText(), value, txtReoccurAmount.getText(), Main.loginUser.getSessionToken(), Main.loginUser.getUserName());
                     try {
                         Client.connectServer(temp);
+                        if (Client.isRequestState())
+                        {
+                            JOptionPane.showMessageDialog(null,"It is done, my Lord.");
+                        }
+                        else
+                        {
+                            throw new Exception();
+                        }
+
+                    } catch (ConnectException ex) {
+                        JOptionPane.showMessageDialog(null, "Connection fail.");
+                        System.exit(0);
                     } catch (InterruptedException ex) {
                         ex.printStackTrace();
                     } catch (IOException ex) {
                         ex.printStackTrace();
                     } catch (ClassNotFoundException ex) {
                         ex.printStackTrace();
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                        JOptionPane.showMessageDialog(null,"Did not Schedule");
                     }
 
                     txtBillboardName.setText("");

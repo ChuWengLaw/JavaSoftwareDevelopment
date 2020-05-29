@@ -3,6 +3,7 @@ package ControlPanel.schedule;
 import ControlPanel.Client;
 import ControlPanel.Main;
 
+import Server.Request.ListBBRequest;
 import Server.Request.ListScheduleRequest;
 import Server.Request.WeeklyScheduleRequest;
 
@@ -25,8 +26,11 @@ public class CalanderScheduleGUI extends JFrame {
     private JButton btnBillboardScheduler = new JButton();
     private JButton btnDeleteSchedule = new JButton();
     private JButton btnViewAllScheduled = new JButton();
+    private JButton btnViewBillboard = new JButton();
+    private JTextField txtViewBillboard = new JTextField(20);
     private JPanel pnlScheduleMenu = new JPanel(new GridBagLayout());
     private GridBagConstraints constraints = new GridBagConstraints();
+    private JLabel lblPreview = new JLabel();
 
     private JLabel lbl1;
     private JLabel lbl2;
@@ -83,17 +87,56 @@ public class CalanderScheduleGUI extends JFrame {
             }
         });
 
+        btnViewBillboard.setText("Preview a Billboard");
+
+        btnViewBillboard.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ListBBRequest listBBRequest = new ListBBRequest(Main.loginUser.getSessionToken());
+                try {
+                    Client.connectServer(listBBRequest);
+                } catch (ConnectException ex) {
+                    JOptionPane.showMessageDialog(null, "Connection fail.");
+                    System.exit(0);
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+                JTable table = Client.getBBTable();
+                int rows = table.getRowCount();
+                boolean BillboardExists = false;
+                for (int i = 0; i < rows; i++)
+                {
+                    String tableString = table.getValueAt(i,0).toString().toLowerCase();
+                    String input = txtViewBillboard.getText().toLowerCase();
+                    if (tableString.equals(input))
+                    {
+                        new PreviewBillboardGUI(txtViewBillboard.getText());
+                        BillboardExists = true;
+                        break;
+                    }
+                }
+                if (!BillboardExists)
+                {
+                    JOptionPane.showMessageDialog(null, "Billboard does not exist.");
+                }
+            }
+        });
+
+
+
         if (!Main.loginUser.getScheduleBillboardsPermission())
         {
             btnBillboardScheduler.setEnabled(false);
             btnViewAllScheduled.setEnabled(false);
             btnDeleteSchedule.setEnabled(false);
+            btnViewBillboard.setEnabled(false);
         }
         else
         {
             btnBillboardScheduler.setEnabled(true);
             btnViewAllScheduled.setEnabled(true);
             btnDeleteSchedule.setEnabled(true);
+            btnViewBillboard.setEnabled(true);
         }
 
         WeeklyScheduleRequest WeeklyScheduleRequest = new WeeklyScheduleRequest(Main.loginUser.getSessionToken());
@@ -112,18 +155,28 @@ public class CalanderScheduleGUI extends JFrame {
         lbl6 = AddInfoToLabel(ScheduleArray, lbl6,CurrentTimeMillis + 5*Day_in_Millis);
         lbl7 = AddInfoToLabel(ScheduleArray, lbl7,CurrentTimeMillis + 6*Day_in_Millis);
 
+        lblPreview.setText("Enter A Billboard to Preview:");
+
         constraints.anchor = GridBagConstraints.NORTHWEST;
         constraints.insets = new Insets(10, 10, 10, 10);
 
         constraints.gridx = 1;
-        constraints.gridy = 0;
+        constraints.gridy = 1;
         pnlScheduleMenu.add(btnBillboardScheduler, constraints);
         constraints.gridx = 2;
         pnlScheduleMenu.add(btnDeleteSchedule, constraints);
         constraints.gridx = 3;
         pnlScheduleMenu.add(btnViewAllScheduled, constraints);
+        constraints.gridx = 4;
+        pnlScheduleMenu.add(btnViewBillboard, constraints);
+        constraints.gridx = 5;
+        pnlScheduleMenu.add(txtViewBillboard, constraints);
+        constraints.gridy = 0;
+        pnlScheduleMenu.add(lblPreview,constraints);
 
-        constraints.gridy = 1;
+
+
+        constraints.gridy = 2;
         constraints.gridx = 1;
         pnlScheduleMenu.add(lbl1, constraints);
         constraints.gridx = 2;
@@ -144,7 +197,7 @@ public class CalanderScheduleGUI extends JFrame {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         int width = (int)screenSize.getWidth();
         int height = (int)screenSize.getHeight();
-        setLocation(width/2,height/2);
+        setLocation(width/4,height/4);
 
         pack();
         repaint();

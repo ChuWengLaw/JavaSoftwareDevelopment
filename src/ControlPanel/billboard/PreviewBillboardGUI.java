@@ -63,7 +63,6 @@ public class PreviewBillboardGUI extends JFrame {
                 lblNoSchedule.setHorizontalAlignment(SwingConstants.CENTER);
                 lblNoSchedule.setVerticalAlignment(SwingConstants.CENTER);
 
-
                 JLabel picNoSchedule = new JLabel();
                 URL url = new URL("https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRh_IKTuBKhex6jQsgVoMtSPnc0ZbR0RAdzv7UfBMbOMS45Wj_h&usqp=CAU");
                 BufferedImage image = ImageIO.read(url);
@@ -82,9 +81,17 @@ public class PreviewBillboardGUI extends JFrame {
 
             } else {
                 ExtractFromXML currentScheduledBillboard = new ExtractFromXML(currentBillboardString + ".xml");
+                //if nothing entered
+                if (currentScheduledBillboard.message.isBlank() && currentScheduledBillboard.information.isBlank() && currentScheduledBillboard.image.isBlank()) {
+                    panel.setBackground(currentScheduledBillboard.backgroundColour);
 
+                    getContentPane().add(panel);
+                    repaint();
+                    setVisible(true);
+                    toFront();
+                }
                 //if only message is present the display only message
-                if (!currentScheduledBillboard.message.isBlank() && currentScheduledBillboard.information.isBlank() && currentScheduledBillboard.image.isBlank()) {
+                else if (!currentScheduledBillboard.message.isBlank() && currentScheduledBillboard.information.isBlank() && currentScheduledBillboard.image.isBlank()) {
 
                     panel.setBackground(currentScheduledBillboard.backgroundColour);
 
@@ -412,7 +419,7 @@ public class PreviewBillboardGUI extends JFrame {
                 }
             }
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, "Billboard does not exist.");
+            JOptionPane.showMessageDialog(null, "Invalid inputs.");
         }
     }
 }

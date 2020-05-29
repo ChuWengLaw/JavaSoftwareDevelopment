@@ -74,6 +74,9 @@ public class InformationGUI extends JFrame {
                         ex.printStackTrace();
                     }
                 }
+                if (txtInfo.getText().isBlank()){
+                    JOptionPane.showMessageDialog(null, "No information for Requested Billboard");
+                }
             }
         });
 
@@ -96,6 +99,7 @@ public class InformationGUI extends JFrame {
         //create textBox
         txtBillboardName = createText();
         txtInfo = createText();
+        txtInfo.setEditable(false);
 
         constraints.anchor = GridBagConstraints.WEST;
         constraints.insets = new Insets(10, 10, 10, 10);

@@ -203,14 +203,14 @@ public class EditBillboardGUI extends JFrame {
                     }
                 } else if (!(txtTextColour.getText().isBlank() && txtInformationColour.getText().isBlank())) {
                     try {
-                        Class.forName("java.awt.Color").getField(txtTextColour.getText());
+                        Class.forName("java.awt.Color").getField(txtTextColour.getText().toLowerCase());
                     } catch (NoSuchFieldException ex) {
                         JOptionPane.showMessageDialog(null, "Please enter a valid colour into the text colour field");
                     } catch (ClassNotFoundException ex) {
                         ex.printStackTrace();
                     }
                     try {
-                        Class.forName("java.awt.Color").getField(txtInformationColour.getText());
+                        Class.forName("java.awt.Color").getField(txtInformationColour.getText().toLowerCase());
                     } catch (NoSuchFieldException ex) {
                         JOptionPane.showMessageDialog(null, "Please enter a valid colour into the information colour field");
                     } catch (ClassNotFoundException ex) {
@@ -218,14 +218,14 @@ public class EditBillboardGUI extends JFrame {
                     }
                 } else if (!(txtInformationColour.getText().isBlank() && txtBackgroundColour.getText().isBlank())) {
                     try {
-                        Class.forName("java.awt.Color").getField(txtBackgroundColour.getText());
+                        Class.forName("java.awt.Color").getField(txtBackgroundColour.getText().toLowerCase());
                     } catch (NoSuchFieldException ex) {
                         JOptionPane.showMessageDialog(null, "Please enter a valid colour into the background colour field");
                     } catch (ClassNotFoundException ex) {
                         ex.printStackTrace();
                     }
                     try {
-                        Class.forName("java.awt.Color").getField(txtInformationColour.getText());
+                        Class.forName("java.awt.Color").getField(txtInformationColour.getText().toLowerCase());
                     } catch (NoSuchFieldException ex) {
                         JOptionPane.showMessageDialog(null, "Please enter a valid colour into the information colour field");
                     } catch (ClassNotFoundException ex) {
@@ -233,7 +233,7 @@ public class EditBillboardGUI extends JFrame {
                     }
                 } else if (!txtTextColour.getText().isBlank()) {
                     try {
-                        Class.forName("java.awt.Color").getField(txtTextColour.getText());
+                        Class.forName("java.awt.Color").getField(txtTextColour.getText().toLowerCase());
                     } catch (ClassNotFoundException ex) {
                         ex.printStackTrace();
                     } catch (NoSuchFieldException ex) {
@@ -241,7 +241,7 @@ public class EditBillboardGUI extends JFrame {
                     }
                 } else if (!txtBackgroundColour.getText().isBlank()) {
                     try {
-                        Class.forName("java.awt.Color").getField(txtBackgroundColour.getText());
+                        Class.forName("java.awt.Color").getField(txtBackgroundColour.getText().toLowerCase());
                     } catch (ClassNotFoundException ex) {
                         ex.printStackTrace();
                     } catch (NoSuchFieldException ex) {
@@ -249,7 +249,7 @@ public class EditBillboardGUI extends JFrame {
                     }
                 } else if (!txtInformationColour.getText().isBlank()) {
                     try {
-                        Class.forName("java.awt.Color").getField(txtInformationColour.getText());
+                        Class.forName("java.awt.Color").getField(txtInformationColour.getText().toLowerCase());
                     } catch (ClassNotFoundException ex) {
                         ex.printStackTrace();
                     } catch (NoSuchFieldException ex) {

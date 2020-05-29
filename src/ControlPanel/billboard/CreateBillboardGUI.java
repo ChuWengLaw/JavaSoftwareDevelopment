@@ -71,7 +71,6 @@ public class CreateBillboardGUI extends JFrame {
      * @author Lachlan
      */
     private void createGUI() {
-
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLayout(new BorderLayout());
         //create the button and define what text it will contain
@@ -98,44 +97,69 @@ public class CreateBillboardGUI extends JFrame {
                         Element billboard = document.createElement("billboard");
                         document.appendChild(billboard);
 
-                        Attr background = document.createAttribute("background");
-                        background.setValue(txtBackgroundColour.getText());
-                        billboard.setAttributeNode(background);
-
-                        //message element
-                        Element bbMessage = document.createElement("message");
-                        Attr textCol = document.createAttribute("colour");
-                        textCol.setValue(txtTextColour.getText());
-                        bbMessage.setAttributeNode(textCol);
-                        bbMessage.appendChild(document.createTextNode(txtMessage.getText()));
-                        billboard.appendChild(bbMessage);
-
-                        //picture element
-                        Element pic = document.createElement("picture");
-                        if (txtImage.getText().startsWith("http")) {
-                            Attr picURL = document.createAttribute("url");
-                            picURL.setValue(txtImage.getText());
-                            pic.setAttributeNode(picURL);
+                        if (txtBackgroundColour.getText().isBlank()) {
+                            Attr background = document.createAttribute("background");
+                            background.setValue("White");
+                            billboard.setAttributeNode(background);
                         } else {
-                            Attr picData = document.createAttribute("data");
-                            picData.setValue(txtImage.getText());
-                            pic.setAttributeNode(picData);
+                            Attr background = document.createAttribute("background");
+                            background.setValue(txtBackgroundColour.getText());
+                            billboard.setAttributeNode(background);
                         }
-                        billboard.appendChild(pic);
 
-                        //information element
-                        Element info = document.createElement("information");
-                        Attr infoColour = document.createAttribute("colour");
-                        infoColour.setValue(txtInformationColour.getText());
-                        info.setAttributeNode(infoColour);
-                        info.appendChild(document.createTextNode(txtInformation.getText()));
-                        billboard.appendChild(info);
+                        if (!txtMessage.getText().isBlank()) {
+                            //message element
+                            Element bbMessage = document.createElement("message");
+                            if (txtTextColour.getText().isBlank()) {
+                                Attr textCol = document.createAttribute("colour");
+                                textCol.setValue("Black");
+                                bbMessage.setAttributeNode(textCol);
+                            } else {
+                                Attr textCol = document.createAttribute("colour");
+                                textCol.setValue(txtTextColour.getText());
+                                bbMessage.setAttributeNode(textCol);
+                            }
+                            bbMessage.appendChild(document.createTextNode(txtMessage.getText()));
+                            billboard.appendChild(bbMessage);
+                        }
+
+                        if (!txtImage.getText().isBlank()) {
+                            //picture element
+                            Element pic = document.createElement("picture");
+                            if (txtImage.getText().startsWith("http")) {
+                                Attr picURL = document.createAttribute("url");
+                                picURL.setValue(txtImage.getText());
+                                pic.setAttributeNode(picURL);
+                            } else {
+                                Attr picData = document.createAttribute("data");
+                                picData.setValue(txtImage.getText());
+                                pic.setAttributeNode(picData);
+                            }
+                            billboard.appendChild(pic);
+                        }
+
+                        if (!txtInformation.getText().isBlank()) {
+                            //information element
+                            Element info = document.createElement("information");
+                            if (txtInformationColour.getText().isBlank()) {
+                                Attr infoColour = document.createAttribute("colour");
+                                infoColour.setValue(txtInformationColour.getText());
+                                info.setAttributeNode(infoColour);
+                                info.appendChild(document.createTextNode(txtInformation.getText()));
+                            } else {
+                                Attr infoColour = document.createAttribute("colour");
+                                infoColour.setValue(txtInformationColour.getText());
+                                info.setAttributeNode(infoColour);
+                                info.appendChild(document.createTextNode(txtInformation.getText()));
+                            }
+                            billboard.appendChild(info);
+                        }
+
 
                         TransformerFactory transformerFactory = TransformerFactory.newInstance();
                         Transformer transformer = transformerFactory.newTransformer();
                         DOMSource domSource = new DOMSource(document);
                         StreamResult streamResult = new StreamResult(new File(path));
-
                         transformer.transform(domSource, streamResult);
                     } catch (ParserConfigurationException | TransformerConfigurationException ex) {
                         ex.printStackTrace();
@@ -163,7 +187,7 @@ public class CreateBillboardGUI extends JFrame {
                 }
                 //if all colours input are valid proceed
                  else if (isColourValid() && !txtBillboardName.getText().isBlank()) {
-                    CreateBBRequest createBBRequest = new CreateBBRequest(Main.loginUser.getSessionToken(), txtBillboardName.getText(), Main.loginUser.getUserName(), txtTextColour.getText(), txtBackgroundColour.getText(),
+                    CreateBBRequest createBBRequest = new CreateBBRequest(Main.loginUser.getSessionToken(), txtBillboardName.getText().toLowerCase(), Main.loginUser.getUserName(), txtTextColour.getText(), txtBackgroundColour.getText(),
                             txtMessage.getText(), txtImage.getText(), txtInformation.getText(), txtInformationColour.getText(), Main.loginUser.getCreateBillboardsPermission());
                     try {
                         Client.connectServer(createBBRequest);

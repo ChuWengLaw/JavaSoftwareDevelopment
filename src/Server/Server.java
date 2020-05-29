@@ -684,8 +684,8 @@ public class Server {
                 try {
                     BillboardSQL bb = new BillboardSQL();
                     bb.GetBillboardInfo(temp.getBillboardName());
-                    String info = bb.GetBillboardInfo(temp.getBillboardName());
-                    BBInfoReply bbInfoReply = new BBInfoReply(sessionToken, info);
+                    BBInfoReply bbInfoReply = new BBInfoReply(temp.getSessionToken(), bb.textColour, bb.backgroundColour, bb.message,
+                            bb.image, bb.information, bb.informationColour);
                     oos.writeObject(bbInfoReply);
                 } catch (Exception e) {
                     generalReply = new GeneralReply(sessionToken,false);

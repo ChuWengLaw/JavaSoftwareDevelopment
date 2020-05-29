@@ -39,7 +39,7 @@ public class BillboardViewer extends JFrame {
     private Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
     private final int screenWidth = dim.width;
     private final int screenHeight = dim.height;
-
+    private JPanel panel = new JPanel();
 
     /**
      * The constructor of the billboard viewer.
@@ -55,7 +55,8 @@ public class BillboardViewer extends JFrame {
         setUndecorated(true);
         setLocationRelativeTo(null);
         setSize(screenWidth, screenHeight);
-        setVisible(true);
+
+
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         // Connect every 15 seconds
@@ -130,15 +131,18 @@ public class BillboardViewer extends JFrame {
      * @author Lachlan
      */
     private void update() throws IOException {
+        //getContentPane().remove(panel);
+        panel.removeAll();
+
         GetCurrentScheduledRequest GetCurrentScheduledRequest = new GetCurrentScheduledRequest();
         try {
             Client.connectServer(GetCurrentScheduledRequest);
             String currentBillboardString = Client.getScheduledBillboardTitle();
-
+            System.out.println(currentBillboardString);
             if (currentBillboardString == null) {
-                JPanel panel = new JPanel();
-                panel.setBackground(Color.black);
 
+
+                panel.setBackground(Color.black);
                 JLabel lblNoSchedule = new JLabel("No Billboard Scheduled");
                 int messageWidth = lblNoSchedule.getFontMetrics(lblNoSchedule.getFont()).stringWidth(lblNoSchedule.getText());
                 int componentWidth = screenWidth;
@@ -166,14 +170,15 @@ public class BillboardViewer extends JFrame {
                 getContentPane().add(panel);
                 repaint();
                 setVisible(true);
+                toFront();
 
             } else {
                 ExtractFromXML currentScheduledBillboard = new ExtractFromXML(currentBillboardString + ".xml");
 
                 //if only message is present the display only message
                 if (!currentScheduledBillboard.message.isBlank() && currentScheduledBillboard.information.isBlank() && currentScheduledBillboard.image.isBlank()) {
-                    JPanel messagePanel = new JPanel();
-                    messagePanel.setBackground(currentScheduledBillboard.backgroundColour);
+
+                    panel.setBackground(currentScheduledBillboard.backgroundColour);
 
                     JLabel messageLabel = new JLabel();
                     messageLabel.setText(currentScheduledBillboard.message);
@@ -190,12 +195,13 @@ public class BillboardViewer extends JFrame {
                     messageLabel.setFont(new Font(messageLabel.getFont().getName(), Font.PLAIN, fontSizeToUse));
 
 
-                    messagePanel.setLayout(new BorderLayout());
-                    messagePanel.add(messageLabel, BorderLayout.CENTER);
+                    panel.setLayout(new BorderLayout());
+                    panel.add(messageLabel, BorderLayout.CENTER);
 
-                    getContentPane().add(messagePanel);
+                    getContentPane().add(panel);
                     repaint();
                     setVisible(true);
+                    toFront();
 
                 }
                 //if only the image is present display only the image
@@ -225,21 +231,22 @@ public class BillboardViewer extends JFrame {
                     picture.setHorizontalAlignment(SwingConstants.CENTER);
                     picture.setVerticalAlignment(SwingConstants.CENTER);
 
-                    JPanel picPanel = new JPanel();
-                    picPanel.setBackground(currentScheduledBillboard.backgroundColour);
 
-                    picPanel.setLayout(new BorderLayout());
-                    picPanel.add(picture, BorderLayout.CENTER);
-                    getContentPane().add(picPanel);
+                    panel.setBackground(currentScheduledBillboard.backgroundColour);
+
+                    panel.setLayout(new BorderLayout());
+                    panel.add(picture, BorderLayout.CENTER);
+                    getContentPane().add(panel);
 
                     repaint();
                     setVisible(true);
+                    toFront();
 
                 }
                 //if only the info present the display the info only
                 else if (currentScheduledBillboard.message.isBlank() && !currentScheduledBillboard.information.isBlank() && currentScheduledBillboard.image.isBlank()) {
-                    JPanel infoPanel = new JPanel();
-                    infoPanel.setBackground(currentScheduledBillboard.backgroundColour);
+
+                    panel.setBackground(currentScheduledBillboard.backgroundColour);
 
                     JLabel infoLabel = new JLabel();
                     infoLabel.setText("<HTML>" + currentScheduledBillboard.information + "</HTML>");
@@ -250,19 +257,20 @@ public class BillboardViewer extends JFrame {
                     infoLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
 
-                    infoPanel.setLayout(new BorderLayout());
-                    infoPanel.setBorder(new EmptyBorder(screenHeight / 4, screenWidth / 8, screenHeight / 4, screenWidth / 8));
-                    infoPanel.add(infoLabel, BorderLayout.CENTER);
+                    panel.setLayout(new BorderLayout());
+                    panel.setBorder(new EmptyBorder(screenHeight / 4, screenWidth / 8, screenHeight / 4, screenWidth / 8));
+                    panel.add(infoLabel, BorderLayout.CENTER);
 
-                    getContentPane().add(infoPanel);
+                    getContentPane().add(panel);
                     repaint();
                     setVisible(true);
+                    toFront();
 
                 }
                 //if the message and image are present then display message and image
                 else if (!currentScheduledBillboard.message.isBlank() && currentScheduledBillboard.information.isBlank() && !currentScheduledBillboard.image.isBlank()) {
-                    JPanel layoutPanel = new JPanel();
-                    layoutPanel.setBackground(currentScheduledBillboard.backgroundColour);
+
+                    panel.setBackground(currentScheduledBillboard.backgroundColour);
 
                     JLabel messageLabel = new JLabel();
                     messageLabel.setText(currentScheduledBillboard.message);
@@ -304,18 +312,19 @@ public class BillboardViewer extends JFrame {
                     picture.setHorizontalAlignment(SwingConstants.CENTER);
                     picture.setVerticalAlignment(SwingConstants.CENTER);
 
-                    layoutPanel.setLayout(new BorderLayout());
-                    layoutPanel.add(messageLabel, BorderLayout.NORTH);
-                    layoutPanel.add(picture, BorderLayout.CENTER);
+                    panel.setLayout(new BorderLayout());
+                    panel.add(messageLabel, BorderLayout.NORTH);
+                    panel.add(picture, BorderLayout.CENTER);
 
-                    getContentPane().add(layoutPanel);
+                    getContentPane().add(panel);
                     repaint();
                     setVisible(true);
+                    toFront();
                 }
                 //if message and info are present display the message and info
                 else if (!currentScheduledBillboard.message.isBlank() && !currentScheduledBillboard.information.isBlank() && currentScheduledBillboard.image.isBlank()) {
-                    JPanel layoutPanel = new JPanel();
-                    layoutPanel.setBackground(currentScheduledBillboard.backgroundColour);
+
+                    panel.setBackground(currentScheduledBillboard.backgroundColour);
 
                     JLabel messageLabel = new JLabel();
                     messageLabel.setText(currentScheduledBillboard.message);
@@ -349,18 +358,19 @@ public class BillboardViewer extends JFrame {
                     infoLabel.setFont(new Font(infoLabel.getFont().getName(), Font.PLAIN, infoFontSizeToUse));
                     infoLabel.setPreferredSize(new Dimension(screenWidth, screenHeight / 2));
 
-                    layoutPanel.setLayout(new BorderLayout());
-                    layoutPanel.add(messageLabel, BorderLayout.NORTH);
-                    layoutPanel.add(infoLabel, BorderLayout.SOUTH);
+                    panel.setLayout(new BorderLayout());
+                    panel.add(messageLabel, BorderLayout.NORTH);
+                    panel.add(infoLabel, BorderLayout.SOUTH);
 
-                    getContentPane().add(layoutPanel);
+                    getContentPane().add(panel);
                     repaint();
                     setVisible(true);
+                    toFront();
                 }
                 //if the image and info are present display the image and info
                 else if (currentScheduledBillboard.message.isBlank() && !currentScheduledBillboard.information.isBlank() && !currentScheduledBillboard.image.isBlank()) {
-                    JPanel layoutPanel = new JPanel();
-                    layoutPanel.setBackground(currentScheduledBillboard.backgroundColour);
+
+                    panel.setBackground(currentScheduledBillboard.backgroundColour);
 
                     JLabel picture = new JLabel();
                     //if it is a url image
@@ -406,19 +416,20 @@ public class BillboardViewer extends JFrame {
                     }
                     infoLabel.setFont(new Font(infoLabel.getFont().getName(), Font.PLAIN, infoFontSizeToUse));
 
-                    layoutPanel.setLayout(new BorderLayout());
-                    layoutPanel.add(picture, BorderLayout.CENTER);
-                    layoutPanel.setBorder(new EmptyBorder(0, screenWidth / 8, 0, screenWidth / 8));
-                    layoutPanel.add(infoLabel, BorderLayout.SOUTH);
+                    panel.setLayout(new BorderLayout());
+                    panel.add(picture, BorderLayout.CENTER);
+                    panel.setBorder(new EmptyBorder(0, screenWidth / 8, 0, screenWidth / 8));
+                    panel.add(infoLabel, BorderLayout.SOUTH);
 
-                    getContentPane().add(layoutPanel);
+                    getContentPane().add(panel);
                     repaint();
                     setVisible(true);
+                    toFront();
                 }
                 //else display the image, message and info
                 else {
-                    JPanel layoutPanel = new JPanel();
-                    layoutPanel.setBackground(currentScheduledBillboard.backgroundColour);
+
+                    panel.setBackground(currentScheduledBillboard.backgroundColour);
 
                     JLabel picture = new JLabel();
                     //if it is a url image
@@ -481,18 +492,19 @@ public class BillboardViewer extends JFrame {
                     infoLabel.setVerticalAlignment(SwingConstants.CENTER);
 
 
-                    layoutPanel.setLayout(new BorderLayout());
-                    layoutPanel.add(picture, BorderLayout.CENTER);
-                    layoutPanel.add(messageLabel, BorderLayout.NORTH);
-                    layoutPanel.add(infoLabel, BorderLayout.SOUTH);
+                    panel.setLayout(new BorderLayout());
+                    panel.add(picture, BorderLayout.CENTER);
+                    panel.add(messageLabel, BorderLayout.NORTH);
+                    panel.add(infoLabel, BorderLayout.SOUTH);
 
-                    getContentPane().add(layoutPanel);
+                    getContentPane().add(panel);
                     repaint();
                     setVisible(true);
+                    toFront();
                 }
             }
         } catch (Exception ex) {
-            JPanel panel = new JPanel();
+
             panel.setBackground(Color.RED);
 
             JLabel lblNoServerConection = new JLabel("Not Connected To Server!!!");
@@ -523,6 +535,7 @@ public class BillboardViewer extends JFrame {
             getContentPane().add(panel);
             repaint();
             setVisible(true);
+            toFront();
         }
     }
 }

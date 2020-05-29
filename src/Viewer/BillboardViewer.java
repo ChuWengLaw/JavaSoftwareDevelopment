@@ -127,8 +127,6 @@ public class BillboardViewer extends JFrame {
             String currentBillboardString = Client.getScheduledBillboardTitle();
             System.out.println(currentBillboardString);
             if (currentBillboardString == null) {
-
-
                 panel.setBackground(Color.black);
                 JLabel lblNoSchedule = new JLabel("No Billboard Scheduled");
                 int messageWidth = lblNoSchedule.getFontMetrics(lblNoSchedule.getFont()).stringWidth(lblNoSchedule.getText());

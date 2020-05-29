@@ -58,7 +58,11 @@ public class ListBillboardsGUI extends JFrame {
         super.setLocationRelativeTo(null);
         super.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         JPanel panel = new JPanel();
-        JScrollPane scrollpane = new JScrollPane(Client.getBBTable());
+        JTable table = Client.getBBTable();
+        table.setEnabled(false);
+        table.getTableHeader().setReorderingAllowed(false);
+        JScrollPane scrollpane = new JScrollPane(table);
+
         panel.setLayout(new BorderLayout());
         panel.add(scrollpane, BorderLayout.CENTER);
         super.setContentPane(panel);

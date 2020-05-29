@@ -286,6 +286,7 @@ public class EditBillboardGUI extends JFrame {
                     txtImage.setText("");
                     txtInformation.setText("");
                     txtInformationColour.setText("");
+                    setVisible(false);
                 }
             }
         });

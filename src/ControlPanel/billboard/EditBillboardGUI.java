@@ -2,6 +2,7 @@ package ControlPanel.billboard;
 
 import ControlPanel.Client;
 import ControlPanel.Main;
+import ControlPanel.schedule.CalanderScheduleGUI;
 import Server.Request.EditBBRequest;
 
 import javax.swing.*;
@@ -82,7 +83,9 @@ public class EditBillboardGUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 EditBBRequest temp = new EditBBRequest(Main.loginUser.getSessionToken(), Main.loginUser.getUserName(),
-                        txtBillboardName.getText().toLowerCase(), Main.loginUser.getEditAllBillboardPermission(), Main.loginUser.getCreateBillboardsPermission());
+                        txtBillboardName.getText().toLowerCase(), Main.loginUser.getEditAllBillboardPermission(),
+                        Main.loginUser.getCreateBillboardsPermission(), CalanderScheduleGUI.IsCurrentlyScheduled(txtBillboardName.getText()));
+
                 try {
                     Client.connectServer(temp);
                     if(Client.isRequestState()){

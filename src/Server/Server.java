@@ -1,7 +1,6 @@
 package Server;
 
 import ControlPanel.User;
-import ControlPanel.schedule.CalanderScheduleGUI;
 import Server.Reply.*;
 import Server.Request.*;
 
@@ -536,6 +535,7 @@ public class Server {
         }
         // If the request is an instance of edit billboard request
         else if (clientRequest instanceof EditBBRequest) {
+
             EditBBRequest temp = (EditBBRequest) clientRequest;
             SessionToken sessionToken = findSessionToken(temp.getSessionToken());
             BillboardSQL bb = new BillboardSQL();
@@ -575,7 +575,8 @@ public class Server {
                         // if the user is the owner of the billboard
                         if (checkOriginOwner) {
                             // if the user has edit all billboards or create billboard permission
-                            if (temp.getEditAllBillboardsPermission() || (temp.getCreateBillboardPermission() && !CalanderScheduleGUI.IsCurrentlyScheduled(BillBoardName))) {
+                            System.out.println(temp.getIsScheduled());
+                            if (temp.getEditAllBillboardsPermission() || (temp.getCreateBillboardPermission() && !temp.getIsScheduled())) {
                                 bb.EditBillboard(BillBoardName);
                                 EditBBReply editBBReply = new EditBBReply(temp.getSessionToken(), bb.textColour, bb.backgroundColour, bb.message,
                                         bb.image, bb.information, bb.informationColour);
@@ -632,7 +633,7 @@ public class Server {
                     // if the user is the owner of the billboard
                     if (checkOriginOwner) {
                         // if the user has edit all billboards or create billboard permission
-                        if (temp.getEditAllBillboardsPermission() || (temp.getCreateBillboardPermission() && !CalanderScheduleGUI.IsCurrentlyScheduled(BillBoardName))) {
+                        if (temp.getEditAllBillboardsPermission() || (temp.getCreateBillboardPermission() && !temp.getIsScheduled())) {
                             bb.DeleteBillboard(temp.getBillboardName());
                             File deleteFile = new File("src/xmlBillboards/" + temp.getBillboardName() + ".xml");
                             deleteFile.delete();

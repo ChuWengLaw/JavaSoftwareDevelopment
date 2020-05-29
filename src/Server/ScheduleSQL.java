@@ -196,6 +196,7 @@ public class ScheduleSQL {
             Vector row = new Vector();
 
             while (resultSet.next()) {
+                //System.out.println("Loop");
                 row = new Vector(columnCount);
                 for (int i = 1; i <= columnCount; i++) {
                     row.add(resultSet.getString(i));

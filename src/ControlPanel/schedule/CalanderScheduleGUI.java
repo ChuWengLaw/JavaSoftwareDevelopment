@@ -191,7 +191,6 @@ public class CalanderScheduleGUI extends JFrame {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-
         Table = Client.getListScheduleBillboardTable();
 
         int rows = Table.getRowCount();

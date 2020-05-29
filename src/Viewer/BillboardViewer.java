@@ -118,6 +118,7 @@ public class BillboardViewer extends JFrame {
      */
     private void update() throws IOException {
         GetCurrentScheduledRequest GetCurrentScheduledRequest = new GetCurrentScheduledRequest();
+
         try {
             Client.connectServer(GetCurrentScheduledRequest);
             String currentBillboardString = Client.getScheduledBillboardTitle();

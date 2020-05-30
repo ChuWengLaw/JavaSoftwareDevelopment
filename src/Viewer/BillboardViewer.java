@@ -130,7 +130,7 @@ public class BillboardViewer extends JFrame {
                 panel.setBackground(Color.black);
                 JLabel lblNoSchedule = new JLabel("No Billboard Scheduled");
                 int messageWidth = lblNoSchedule.getFontMetrics(lblNoSchedule.getFont()).stringWidth(lblNoSchedule.getText());
-                int componentWidth = screenWidth;
+                int componentWidth = screenWidth-10;
                 double widthRatio = (double) componentWidth / (double) messageWidth;
                 int newFontSize = (int) (lblNoSchedule.getFont().getSize() * widthRatio);
                 int componentHeight = screenHeight;
@@ -285,7 +285,7 @@ public class BillboardViewer extends JFrame {
 
                     //set messages font size
                     int messageWidth = messageLabel.getFontMetrics(messageLabel.getFont()).stringWidth(messageLabel.getText());
-                    int componentWidth = screenWidth;
+                    int componentWidth = screenWidth-10;
                     double widthRatio = (double) componentWidth / (double) messageWidth;
                     int newFontSize = (int) (messageLabel.getFont().getSize() * widthRatio);
                     int componentHeight = screenHeight / 3;
@@ -349,7 +349,7 @@ public class BillboardViewer extends JFrame {
 
                     //set message size in relation to the screen
                     int messageWidth = messageLabel.getFontMetrics(messageLabel.getFont()).stringWidth(messageLabel.getText());
-                    int componentWidth = screenWidth;
+                    int componentWidth = screenWidth-10;
                     double widthRatio = (double) componentWidth / (double) messageWidth;
                     int newFontSize = (int) (messageLabel.getFont().getSize() * widthRatio);
                     int componentHeight = screenHeight / 2;
@@ -504,7 +504,7 @@ public class BillboardViewer extends JFrame {
 
                     //set message size in relation to the screen
                     int messageWidth = messageLabel.getFontMetrics(messageLabel.getFont()).stringWidth(messageLabel.getText());
-                    int componentWidth = screenWidth;
+                    int componentWidth = screenWidth -10;
                     double widthRatio = (double) componentWidth / (double) messageWidth;
                     int newFontSize = (int) (messageLabel.getFont().getSize() * widthRatio);
                     int componentHeight = screenHeight / 3;

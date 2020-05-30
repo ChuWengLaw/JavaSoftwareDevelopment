@@ -122,6 +122,7 @@ public class BillboardViewer extends JFrame {
         panel.removeAll();
 
         GetCurrentScheduledRequest GetCurrentScheduledRequest = new GetCurrentScheduledRequest();
+
         try {
             Client.connectServer(GetCurrentScheduledRequest);
             String currentBillboardString = Client.getScheduledBillboardTitle();

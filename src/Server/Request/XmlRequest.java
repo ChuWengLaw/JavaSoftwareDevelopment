@@ -11,6 +11,7 @@ public class XmlRequest implements Serializable {
     private SessionToken token;
     private boolean exportState;
 
+    //build constructor and Getter functions
     public XmlRequest(SessionToken token, File getXmlFile, String UserName) {
         this.token = token;
         this.xmlFile = getXmlFile;

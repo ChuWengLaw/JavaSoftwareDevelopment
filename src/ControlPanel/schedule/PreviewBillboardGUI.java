@@ -12,6 +12,7 @@ import java.net.URL;
 import java.util.Base64;
 
 public class PreviewBillboardGUI  extends JFrame {
+    //Set up a panel which will extract XML info about a billboard and display it the same way the viewer does
     private Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
     private final int screenWidth = (dim.width/4);
     private final int screenHeight = (dim.height/4);
@@ -33,9 +34,8 @@ public class PreviewBillboardGUI  extends JFrame {
     }
 
     private void update(String BillboardName) throws IOException {
-        //getContentPane().remove(panel);
         panel.removeAll();
-
+        //Search for the XML file and using the rules provided from viewer display the billboard preview
         try {
             String currentBillboardString = BillboardName;
             ExtractFromXML currentScheduledBillboard = new ExtractFromXML(currentBillboardString + ".xml");

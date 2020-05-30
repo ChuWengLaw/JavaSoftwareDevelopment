@@ -9,6 +9,7 @@ public class WeeklyScheduleReply implements Serializable {
     private SessionToken sessionToken;
     private ArrayList<String[]> Array;
 
+    //build constructor and Getter functions
     public WeeklyScheduleReply(SessionToken sessionToken, ArrayList<String[]> Array){
         this.sessionToken = sessionToken;
         this.Array = Array;

@@ -16,6 +16,7 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 
+import java.net.ConnectException;
 import java.net.URL;
 import java.util.Base64;
 import java.util.concurrent.*;
@@ -118,13 +119,14 @@ public class BillboardViewer extends JFrame {
      * @author Lachlan
      */
     private void update() throws IOException {
-        //getContentPane().remove(panel);
         panel.removeAll();
 
         GetCurrentScheduledRequest GetCurrentScheduledRequest = new GetCurrentScheduledRequest();
+
         try {
             Client.connectServer(GetCurrentScheduledRequest);
             String currentBillboardString = Client.getScheduledBillboardTitle();
+            //if no billboard scheduled then display the no billboard scheduled billboard
             if (currentBillboardString == null) {
                 panel.setBackground(Color.black);
                 JLabel lblNoSchedule = new JLabel("No Billboard Scheduled");
@@ -134,11 +136,12 @@ public class BillboardViewer extends JFrame {
                 int newFontSize = (int) (lblNoSchedule.getFont().getSize() * widthRatio);
                 int componentHeight = screenHeight;
                 int fontSizeToUse = Math.min(newFontSize, componentHeight);
+
                 lblNoSchedule.setFont(new Font(lblNoSchedule.getFont().getName(), Font.PLAIN, fontSizeToUse));
                 lblNoSchedule.setForeground(Color.red);
                 lblNoSchedule.setHorizontalAlignment(SwingConstants.CENTER);
                 lblNoSchedule.setVerticalAlignment(SwingConstants.CENTER);
-
+                
 
                 JLabel picNoSchedule = new JLabel();
                 URL url = new URL("https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRh_IKTuBKhex6jQsgVoMtSPnc0ZbR0RAdzv7UfBMbOMS45Wj_h&usqp=CAU");
@@ -178,6 +181,7 @@ public class BillboardViewer extends JFrame {
                     messageLabel.setForeground(currentScheduledBillboard.textColour);
                     messageLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
+                    //set message size in relation to the screen
                     int messageWidth = messageLabel.getFontMetrics(messageLabel.getFont()).stringWidth(messageLabel.getText());
                     int componentWidth = screenWidth;
                     double widthRatio = (double) componentWidth / (double) messageWidth;
@@ -325,6 +329,7 @@ public class BillboardViewer extends JFrame {
                     messageLabel.setHorizontalAlignment(SwingConstants.CENTER);
                     messageLabel.setPreferredSize(new Dimension(screenWidth, screenHeight / 2));
 
+                    //set message size in relation to the screen
                     int messageWidth = messageLabel.getFontMetrics(messageLabel.getFont()).stringWidth(messageLabel.getText());
                     int componentWidth = screenWidth;
                     double widthRatio = (double) componentWidth / (double) messageWidth;
@@ -339,12 +344,14 @@ public class BillboardViewer extends JFrame {
                     infoLabel.setVerticalAlignment(SwingConstants.CENTER);
                     infoLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
+                    //set info size in relation to the screen
                     int infoWidth = infoLabel.getFontMetrics(infoLabel.getFont()).stringWidth(infoLabel.getText());
                     int infoComponentWidth = screenWidth * 6;
                     double infoWidthRatio = (double) infoComponentWidth / (double) infoWidth;
                     int infoNewFontSize = (int) (infoLabel.getFont().getSize() * infoWidthRatio);
                     int infoComponentHeight = screenHeight / 2;
                     int infoFontSizeToUse = Math.min(infoNewFontSize, infoComponentHeight);
+                    //if it is the same size as the message reduce the size by 50
                     if (infoFontSizeToUse >= fontSizeToUse) {
                         infoFontSizeToUse = fontSizeToUse - 50;
                     }
@@ -398,12 +405,14 @@ public class BillboardViewer extends JFrame {
                     infoLabel.setHorizontalAlignment(SwingConstants.CENTER);
                     infoLabel.setVerticalAlignment(SwingConstants.CENTER);
 
+                    //set info size in relation to the screen
                     int infoWidth = infoLabel.getFontMetrics(infoLabel.getFont()).stringWidth(infoLabel.getText());
                     int infoComponentWidth = ((screenWidth / 4) * 3) * 6;
                     double infoWidthRatio = (double) infoComponentWidth / (double) infoWidth;
                     int infoNewFontSize = (int) (infoLabel.getFont().getSize() * infoWidthRatio);
                     int infoComponentHeight = screenHeight / 3;
                     int infoFontSizeToUse = Math.min(infoNewFontSize, infoComponentHeight);
+                    //if the info font size is bigger than 100 set the font size to 50
                     if (infoFontSizeToUse >= 100) {
                         infoFontSizeToUse = 50;
                     }
@@ -421,7 +430,6 @@ public class BillboardViewer extends JFrame {
                 }
                 //else display the image, message and info
                 else {
-
                     panel.setBackground(currentScheduledBillboard.backgroundColour);
 
                     JLabel picture = new JLabel();
@@ -456,6 +464,7 @@ public class BillboardViewer extends JFrame {
                     messageLabel.setVerticalAlignment(SwingConstants.CENTER);
                     messageLabel.setPreferredSize(new Dimension(screenWidth, screenHeight / 3));
 
+                    //set message size in relation to the screen
                     int messageWidth = messageLabel.getFontMetrics(messageLabel.getFont()).stringWidth(messageLabel.getText());
                     int componentWidth = screenWidth;
                     double widthRatio = (double) componentWidth / (double) messageWidth;
@@ -471,15 +480,18 @@ public class BillboardViewer extends JFrame {
                     infoLabel.setPreferredSize(new Dimension(screenWidth, screenHeight / 3));
                     infoLabel.setBorder(new EmptyBorder(0, screenWidth / 8, 0, screenWidth / 8));
 
+                    //set info size in relation to the screen
                     int infoWidth = infoLabel.getFontMetrics(infoLabel.getFont()).stringWidth(infoLabel.getText());
                     int infoComponentWidth = ((screenWidth / 4) * 3) * 6;
                     double infoWidthRatio = (double) infoComponentWidth / (double) infoWidth;
                     int infoNewFontSize = (int) (infoLabel.getFont().getSize() * infoWidthRatio);
                     int infoComponentHeight = screenHeight / 3;
                     int infoFontSizeToUse = Math.min(infoNewFontSize, infoComponentHeight);
+                    //if it is the same size as the message reduce the size by 50
                     if (infoFontSizeToUse >= fontSizeToUse) {
                         infoFontSizeToUse = fontSizeToUse - 50;
                     }
+
                     infoLabel.setFont(new Font(infoLabel.getFont().getName(), Font.PLAIN, infoFontSizeToUse));
                     infoLabel.setHorizontalAlignment(SwingConstants.CENTER);
                     infoLabel.setVerticalAlignment(SwingConstants.CENTER);
@@ -496,10 +508,29 @@ public class BillboardViewer extends JFrame {
                     toFront();
                 }
             }
-        } catch (Exception ex) {
+        }
+        //if the image is invalid a billboard with the message not a valid image will  be displayed
+        catch (NullPointerException ex) {
+            panel.setBackground(Color.BLACK);
 
+            JLabel lblImageDontExist = new JLabel("Image is not a valid image");
+            lblImageDontExist.setForeground(Color.WHITE);
+            lblImageDontExist.setVerticalAlignment(SwingConstants.CENTER);
+            lblImageDontExist.setHorizontalAlignment(SwingConstants.CENTER);
+            lblImageDontExist.setFont(lblImageDontExist.getFont().deriveFont(32.0f));
+
+            panel.setLayout(new BorderLayout());
+            panel.add(lblImageDontExist, BorderLayout.CENTER);
+
+            getContentPane().add(panel);
+            repaint();
+            setVisible(true);
+            toFront();
+
+        }
+        //if no connection to the server a billboard with an appropriate warning will be displayed
+        catch (Exception e) {
             panel.setBackground(Color.RED);
-
             JLabel lblNoServerConection = new JLabel("Not Connected To Server!!!");
             lblNoServerConection.setFont(lblNoServerConection.getFont().deriveFont(64.0f));
             lblNoServerConection.setVerticalAlignment(SwingConstants.CENTER);
@@ -514,9 +545,11 @@ public class BillboardViewer extends JFrame {
             picNoConnection.setVerticalAlignment(SwingConstants.CENTER);
 
             JLabel lblMessage = new JLabel();
-            lblMessage.setText("<HTML>Please close the viewer and ensure you are connected to the server. Once connected please run the viewer again.</HTML>");
+            lblMessage.setText("Waiting for connection ...");
             lblMessage.setFont(lblMessage.getFont().deriveFont(32.0f));
             lblMessage.setForeground(Color.black);
+            lblMessage.setHorizontalAlignment(SwingConstants.CENTER);
+            lblMessage.setVerticalAlignment(SwingConstants.CENTER);
 
             panel.setLayout(new BorderLayout());
             panel.setBorder(new EmptyBorder(30, 30, 30, 30));

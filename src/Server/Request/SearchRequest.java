@@ -4,13 +4,26 @@ import Server.SessionToken;
 
 import java.io.Serializable;
 
+/**
+ * @author Nicholas Tseng
+ * This is a request class that handle search request, to execute the request,
+ * it requires login user's session token and username.
+ */
 public class SearchRequest implements Serializable {
     private SessionToken sessionToken;
     private String userName;
+    private boolean EditSearch;
 
-    public SearchRequest(SessionToken sessionToken, String userName) {
+    /**
+     * This is constructor.
+     * @param sessionToken login user's session token
+     * @param userName login user's username
+     */
+    //build constructor and Getter functions
+    public SearchRequest(SessionToken sessionToken, String userName, boolean EditSearch) {
         this.sessionToken = sessionToken;
         this.userName = userName;
+        this.EditSearch = EditSearch;
     }
 
     public SessionToken getSessionToken() {
@@ -19,5 +32,9 @@ public class SearchRequest implements Serializable {
 
     public String getUserName() {
         return userName;
+    }
+
+    public boolean isEditSearch() {
+        return EditSearch;
     }
 }

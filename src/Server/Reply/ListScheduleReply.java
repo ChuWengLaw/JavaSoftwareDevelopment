@@ -9,6 +9,7 @@ public class ListScheduleReply implements Serializable {
     private SessionToken sessionToken;
     private JTable table;
 
+    //build constructor and Getter functions
     public ListScheduleReply(SessionToken sessionToken, JTable table){
         this.sessionToken = sessionToken;
         this.table = table;

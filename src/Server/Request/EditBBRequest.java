@@ -9,6 +9,7 @@ public class EditBBRequest implements Serializable {
     private Boolean EditAllBillboardsPermission, CreateBillboardPermission, IsScheduled;
     private SessionToken sessionToken;
 
+    //build constructor and Getter functions
     public EditBBRequest(SessionToken sessionToken, String LoginUser, String BillboardName,
                          Boolean EditAllBillboardsPermission, Boolean CreateBillboardPermission, Boolean IsScheduled) {
         this.sessionToken = sessionToken;

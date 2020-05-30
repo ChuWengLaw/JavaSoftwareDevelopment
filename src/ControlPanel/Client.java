@@ -18,7 +18,7 @@ import java.util.Properties;
  */
 public class Client {
     private static boolean requestState;
-    private static String info;
+    private static String textClr, bgClr, msg, img, info, infoClr;
     private static JTable listBBTable;
     private static String EditTextColour, EditBGColour, EditMsg, EditImg, EditInfo, EditInfoColour;
     private static ArrayList<String[]> ScheduleArray;
@@ -89,6 +89,7 @@ public class Client {
 
             if (requestState){
                 Main.editUserWin.editedUser = searchReply.getUser();
+                Main.searchUserWin.searchUser = searchReply.getUser();
             }
 
             Main.loginUser.setSessionToken(searchReply.getSessionToken());
@@ -122,7 +123,12 @@ public class Client {
         // if the server replies to the client get billboard information request
         else if (requestReply instanceof BBInfoReply){
             BBInfoReply bbInfoReply = (BBInfoReply) requestReply;
-            info = bbInfoReply.getInformation();
+            textClr = bbInfoReply.getEditTextColour();
+            bgClr = bbInfoReply.getEditBGColour();
+            msg = bbInfoReply.getEditMsg();
+            img = bbInfoReply.getEditImg();
+            info = bbInfoReply.getEditInfo();
+            infoClr = bbInfoReply.getEditInfoColour();
             requestState = true;
             Main.loginUser.setSessionToken(bbInfoReply.getSessionToken());
         }
@@ -200,6 +206,26 @@ public class Client {
         return exportFile;
     }
     public static JTable getListScheduleBillboardTable() {return ListScheduleBillboardTable;}
+
+    public static String getTextClr() {
+        return textClr;
+    }
+
+    public static String getBgClr() {
+        return bgClr;
+    }
+
+    public static String getMsg() {
+        return msg;
+    }
+
+    public static String getImg() {
+        return img;
+    }
+
+    public static String getInfoClr() {
+        return infoClr;
+    }
 }
 
 

@@ -12,6 +12,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.IOException;
+import java.net.ConnectException;
+import java.sql.Connection;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
@@ -27,7 +29,7 @@ public class ScheduleBillboardGUI extends JFrame {
 
     private JLabel lblBillboardName = new JLabel("Billboard Name:");
     private JLabel lblScheduledTime = new JLabel("<html>Schedule Time:<br/>yyyy-MM-dd HH:mm:ss</html>");
-    private JLabel lblDuration = new JLabel("Duration:");
+    private JLabel lblDuration = new JLabel("Duration (minutes):");
     private JLabel lblReoccurType = new JLabel("Reoccur Type:");
     private JLabel lblReoccurAmount = new JLabel("Reoccur Amount:");
 
@@ -66,16 +68,31 @@ public class ScheduleBillboardGUI extends JFrame {
                     else if (value.equals("(Below) Minutes")) value = "3";
                     //System.out.println("Correct Inputs");
                     //Create Schedule Requests
-                    ScheduleBillboardRequest temp = new ScheduleBillboardRequest(txtBillboardName.getText(), txtScheduledTime.getText(),
-                            txtDuration.getText(), value, txtReoccurAmount.getText(), Main.loginUser.getSessionToken());
+                    ScheduleBillboardRequest temp = new ScheduleBillboardRequest(txtBillboardName.getText().toLowerCase(), txtScheduledTime.getText(),
+                            txtDuration.getText(), value, txtReoccurAmount.getText(), Main.loginUser.getSessionToken(), Main.loginUser.getUserName());
                     try {
                         Client.connectServer(temp);
+                        if (Client.isRequestState())
+                        {
+                            JOptionPane.showMessageDialog(null,"Scheduled");
+                        }
+                        else
+                        {
+                            throw new Exception();
+                        }
+
+                    } catch (ConnectException ex) {
+                        JOptionPane.showMessageDialog(null, "Connection fail.");
+                        System.exit(0);
                     } catch (InterruptedException ex) {
                         ex.printStackTrace();
                     } catch (IOException ex) {
                         ex.printStackTrace();
                     } catch (ClassNotFoundException ex) {
                         ex.printStackTrace();
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                        JOptionPane.showMessageDialog(null,"Did not Schedule");
                     }
 
                     txtBillboardName.setText("");
@@ -127,7 +144,10 @@ public class ScheduleBillboardGUI extends JFrame {
 
         getContentPane().add(pnlScheduleNewBillboard);
         //set the location of the GUI
-        setLocation(900, 350);
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        int width = (int)screenSize.getWidth();
+        int height = (int)screenSize.getHeight();
+        setLocation(width/4,height/4);
 
         //make changes and then send to GUI
         pack();

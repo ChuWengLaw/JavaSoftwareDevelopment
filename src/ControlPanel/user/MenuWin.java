@@ -100,7 +100,10 @@ public class MenuWin extends JFrame {
         getContentPane().add(panel);
 
         // Display the window
-        setLocation(900, 350);
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        int width = (int)screenSize.getWidth();
+        int height = (int)screenSize.getHeight();
+        setLocation(width/4,height/4);
         pack();
     }
 

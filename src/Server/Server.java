@@ -811,7 +811,7 @@ public class Server {
             SessionToken sessionToken = findSessionToken(listScheduleRequest.getSessionToken());
 
             // Remove session token from the list and send a logout request if it expired.
-            if (!tokenCheck(listScheduleRequest.getSessionToken())) {
+            if (!tokenCheck(listScheduleRequest.getSessionToken())) { 
                 sessionTokens.remove(sessionToken);
                 LogoutReply logoutReply = new LogoutReply(true);
                 oos.writeObject(logoutReply);

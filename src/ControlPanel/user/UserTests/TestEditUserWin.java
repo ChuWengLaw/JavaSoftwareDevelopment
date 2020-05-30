@@ -24,18 +24,24 @@ public class TestEditUserWin {
     @Test
     //Test 2: Check if the session token was successfully encapsulated in SearchRequest object
     public void SessionTokenTestSearchRequest(){
-        SearchRequest searchRequest = new SearchRequest(sessionToken, "Lobster");
+        SearchRequest searchRequest = new SearchRequest(sessionToken, "Lobster", true);
         assertEquals(sessionToken, searchRequest.getSessionToken());
     }
     @Test
     //Test 3: Check if the Username was successfully encapsulated in SearchRequest object
     public void UsernameTestSearchRequest(){
-        SearchRequest searchRequest = new SearchRequest(sessionToken, "Lobster");
+        SearchRequest searchRequest = new SearchRequest(sessionToken, "Lobster", true);
         assertEquals("Lobster", searchRequest.getUserName());
+    }
+    @Test
+    //Test 4: Check if the EditSearch boolean was successfully encapsulated in SearchRequest object
+    public void EditSearchTestSearchRequest(){
+        SearchRequest searchRequest = new SearchRequest(sessionToken, "Lobster", true);
+        assertEquals(true, searchRequest.isEditSearch());
     }
     /* Tests for EditUserRequest Part 1 if a password is present*/
     @Test
-    //Test 4: Check if the session token was successfully encapsulated in EditUserRequest object
+    //Test 5: Check if the session token was successfully encapsulated in EditUserRequest object
     public void SessionTokenTestEditUserRequest(){
         EditUserRequest editUserRequest = new EditUserRequest(sessionToken, "Lobster", "Delicious",
                 true, true,
@@ -43,7 +49,7 @@ public class TestEditUserWin {
         assertEquals(sessionToken, editUserRequest.getSessionToken());
     }
     @Test
-    //Test 5: Check if the Username was successfully encapsulated in EditUserRequest object
+    //Test 6: Check if the Username was successfully encapsulated in EditUserRequest object
     public void UsernameTestEditUserRequest(){
         EditUserRequest editUserRequest = new EditUserRequest(sessionToken, "Lobster", "Delicious",
                 true, true,
@@ -51,7 +57,7 @@ public class TestEditUserWin {
         assertEquals("Lobster", editUserRequest.getUserName());
     }
     @Test
-    //Test 6: Check if the Password was successfully encapsulated in EditUserRequest object
+    //Test 7: Check if the Password was successfully encapsulated in EditUserRequest object
     public void PasswordTestEditUserRequest(){
         EditUserRequest editUserRequest = new EditUserRequest(sessionToken, "Lobster", "Delicious",
                 true, true,
@@ -59,7 +65,7 @@ public class TestEditUserWin {
         assertEquals("Delicious", editUserRequest.getUserPassword());
     }
     @Test
-    //Test 7: Check if the CreateBillboardsPermission was successfully encapsulated in EditUserRequest object
+    //Test 8: Check if the CreateBillboardsPermission was successfully encapsulated in EditUserRequest object
     public void CreateBillboardsPermissionTestEditUserRequest(){
         EditUserRequest editUserRequest = new EditUserRequest(sessionToken, "Lobster", "Delicious",
                 true, true,
@@ -67,7 +73,7 @@ public class TestEditUserWin {
         assertEquals(true, editUserRequest.isCreateBillboardsPermission());
     }
     @Test
-    //Test 8: Check if the EditAllBillboardPermission was successfully encapsulated in EditUserRequest object
+    //Test 9: Check if the EditAllBillboardPermission was successfully encapsulated in EditUserRequest object
     public void EditAllBillboardPermissionTestEditUserRequest(){
         EditUserRequest editUserRequest = new EditUserRequest(sessionToken, "Lobster", "Delicious",
                 true, true,
@@ -75,7 +81,7 @@ public class TestEditUserWin {
         assertEquals(true, editUserRequest.isEditAllBillboardPermission());
     }
     @Test
-    //Test 9: Check if the ScheduleBillboardsPermission was successfully encapsulated in EditUserRequest object
+    //Test 10: Check if the ScheduleBillboardsPermission was successfully encapsulated in EditUserRequest object
     public void ScheduleBillboardsPermissionTestEditUserRequest(){
         EditUserRequest editUserRequest = new EditUserRequest(sessionToken, "Lobster", "Delicious",
                 true, true,
@@ -83,7 +89,7 @@ public class TestEditUserWin {
         assertEquals(true, editUserRequest.isScheduleBillboardsPermission());
     }
     @Test
-    //Test 10: Check if the EditUsersPermission was successfully encapsulated in EditUserRequest object
+    //Test 11: Check if the EditUsersPermission was successfully encapsulated in EditUserRequest object
     public void EditUsersPermissionTestEditUserRequest(){
         EditUserRequest editUserRequest = new EditUserRequest(sessionToken, "Lobster", "Delicious",
                 true, true,
@@ -91,7 +97,7 @@ public class TestEditUserWin {
         assertEquals(false, editUserRequest.isEditUsersPermission());
     }
     @Test
-    //Test 11: Check if the HavePassword was successfully encapsulated in EditUserRequest object
+    //Test 12: Check if the HavePassword was successfully encapsulated in EditUserRequest object
     public void HavePasswordTestEditUserRequest(){
         EditUserRequest editUserRequest = new EditUserRequest(sessionToken, "Lobster", "Delicious",
                 true, true,
@@ -100,42 +106,42 @@ public class TestEditUserWin {
     }
     /* Tests for EditUserRequest Part 2 if a password is not present*/
     @Test
-    //Test 12: Check if the Username was successfully encapsulated in EditUserRequest object
+    //Test 13: Check if the Username was successfully encapsulated in EditUserRequest object
     public void UsernameTestEditUserRequest2(){
         EditUserRequest editUserRequest = new EditUserRequest(sessionToken,"Bobster", true,
                 true, false, false, false);
         assertEquals("Bobster", editUserRequest.getUserName());
     }
     @Test
-    //Test 13: Check if the CreateBillboardsPermission was successfully encapsulated in EditUserRequest object
+    //Test 14: Check if the CreateBillboardsPermission was successfully encapsulated in EditUserRequest object
     public void CreateBillboardsPermissionTestEditUserRequest2(){
         EditUserRequest editUserRequest = new EditUserRequest(sessionToken, "Bobster", true,
                 true, false, false, false);
         assertEquals(true, editUserRequest.isCreateBillboardsPermission());
     }
     @Test
-    //Test 14: Check if the EditAllBillboardPermission was successfully encapsulated in EditUserRequest object
+    //Test 15: Check if the EditAllBillboardPermission was successfully encapsulated in EditUserRequest object
     public void EditAllBillboardPermissionTestEditUserRequest2(){
         EditUserRequest editUserRequest = new EditUserRequest(sessionToken, "Bobster", true,
                 true, false, false, false);
         assertEquals(true, editUserRequest.isEditAllBillboardPermission());
     }
     @Test
-    //Test 15: Check if the ScheduleBillboardsPermission was successfully encapsulated in EditUserRequest object
+    //Test 16: Check if the ScheduleBillboardsPermission was successfully encapsulated in EditUserRequest object
     public void ScheduleBillboardsPermissionTestEditUserRequest2(){
         EditUserRequest editUserRequest = new EditUserRequest(sessionToken, "Bobster", true,
                 true, false, false, false);
         assertEquals(false, editUserRequest.isScheduleBillboardsPermission());
     }
     @Test
-    //Test 16: Check if the EditUsersPermission was successfully encapsulated in EditUserRequest object
+    //Test 17: Check if the EditUsersPermission was successfully encapsulated in EditUserRequest object
     public void EditUsersPermissionTestEditUserRequest2(){
         EditUserRequest editUserRequest = new EditUserRequest(sessionToken, "Bobster", true,
                 true, false, false, false);
         assertEquals(false, editUserRequest.isScheduleBillboardsPermission());
     }
     @Test
-    //Test 17: Check if the HavePassword was successfully encapsulated in EditUserRequest object
+    //Test 18: Check if the HavePassword was successfully encapsulated in EditUserRequest object
     public void HavePasswordPermissionTestEditUserRequest2(){
         EditUserRequest editUserRequest = new EditUserRequest(sessionToken, "Bobster", true,
                 true, false, false, false);

@@ -26,7 +26,7 @@ public class TestSearchReply {
         User testUser = new User("Bob", true, true,
                 false, false);
         SessionToken sessionToken = new SessionToken("abc", LocalDateTime.now());
-        SearchReply searchReply = new SearchReply(sessionToken, true, testUser);
+        SearchReply searchReply = new SearchReply(sessionToken, true, true, testUser);
         assertEquals(true, searchReply.isRequestState());
     }
     @Test
@@ -35,7 +35,7 @@ public class TestSearchReply {
         User testUser = new User("Bob", true, true,
                 false, false);
         SessionToken sessionToken = new SessionToken("abc", LocalDateTime.now());
-        SearchReply searchReply = new SearchReply(sessionToken, true, testUser);
+        SearchReply searchReply = new SearchReply(sessionToken, true, true, testUser);
         assertEquals(testUser, searchReply.getUser());
     }
 }

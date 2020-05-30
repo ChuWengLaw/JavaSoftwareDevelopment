@@ -8,12 +8,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.net.ConnectException;
 
-
-/**
- * This class creates the GUI to be used to display all the existing
- * billboards from the database
- */
 public class ViewAllScheduledGUI extends JFrame {
+    //Set up the swing elements
     private JPanel panel = new JPanel();
     private JTable table = new JTable();
 
@@ -46,10 +42,12 @@ public class ViewAllScheduledGUI extends JFrame {
         super.setLocationRelativeTo(null);
         super.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         JPanel panel = new JPanel();
+        //Server returns a JTable
+        //make table non editable
         table = Client.getListScheduleBillboardTable();
         table.setEnabled(false);
         table.getTableHeader().setReorderingAllowed(false);
-
+        //Display the Table
         JScrollPane scrollpane = new JScrollPane(table);
         panel.setLayout(new BorderLayout());
         panel.add(scrollpane, BorderLayout.CENTER);

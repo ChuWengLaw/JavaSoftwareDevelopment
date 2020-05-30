@@ -12,6 +12,13 @@ import java.io.IOException;
 import java.net.ConnectException;
 import javax.swing.*;
 
+/**
+ * This class creates the GUI which allows the user
+ * to retrieve the list of permissions of the entered user
+ *
+ * @author "Kenji" Foo Shiang Xun
+ */
+
 public class SearchUserInfoWin extends JFrame{
     private JLabel labelUserName = new JLabel("Username");
     private JLabel labelCreateBBPermission = new JLabel("Create billboards");
@@ -28,6 +35,10 @@ public class SearchUserInfoWin extends JFrame{
     private GridBagConstraints constraints = new GridBagConstraints();
     public User searchUser = new User();
 
+    /**
+     * Constructor initialises the GUI creation as well as set the
+     * window listener
+     */
     public SearchUserInfoWin() {
         super("Search User Info");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -45,6 +56,11 @@ public class SearchUserInfoWin extends JFrame{
             public void windowClosed(WindowEvent e) {
                 Main.userManagementWin.setEnabled(true);
                 Main.userManagementWin.setVisible(true);
+                userNameTextField.setText("");
+                checkBoxCreate.setSelected(false);
+                checkBoxEditBB.setSelected(false);
+                checkBoxScheduleBB.setSelected(false);
+                checkBoxEditUser.setSelected(false);
             }
 
             @Override
@@ -65,22 +81,25 @@ public class SearchUserInfoWin extends JFrame{
         };
         super.addWindowListener(windowListener);
 
+        //Disabling checkboxes
         checkBoxCreate.setEnabled(false);
         checkBoxEditBB.setEnabled(false);
         checkBoxScheduleBB.setEnabled(false);
         checkBoxEditUser.setEnabled(false);
 
-        // Button setting
+        //Adding actionlistener to the search button
         ActionListener searchListener = e -> {
             if (userNameTextField.getText().isEmpty()) {
                 JOptionPane.showMessageDialog(null, "User name field can't be empty.");
             } else {
-                SearchRequest searchRequest = new SearchRequest(Main.loginUser.getSessionToken(), userNameTextField.getText());
+                //Sending the search request to server to retreive the list of permissions of entered user from the database
+                SearchRequest searchRequest = new SearchRequest(Main.loginUser.getSessionToken(), userNameTextField.getText(), false);
 
                 try {
                     Client.connectServer(searchRequest);
 
                     if (Client.isRequestState()) {
+                        //Displaying the list of permission of the entered user with the checkboxes
                         checkBoxCreate.setSelected(searchUser.getCreateBillboardsPermission());
                         checkBoxEditBB.setSelected(searchUser.getEditAllBillboardPermission());
                         checkBoxScheduleBB.setSelected(searchUser.getScheduleBillboardsPermission());

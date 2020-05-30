@@ -59,6 +59,20 @@ public class EditUserWin extends JFrame{
             public void windowClosed(WindowEvent e) {
                 Main.userManagementWin.setEnabled(true);
                 Main.userManagementWin.setVisible(true);
+                userNameTextField.setEditable(true);
+                passwordTextField.setEditable(false);
+                checkBox1.setEnabled(false);
+                checkBox2.setEnabled(false);
+                checkBox3.setEnabled(false);
+                checkBox4.setEnabled(false);
+                editButton.setEnabled(false);
+                checkBox1.setSelected(false);
+                checkBox2.setSelected(false);
+                checkBox3.setSelected(false);
+                checkBox4.setSelected(false);
+                editButton.setEnabled(false);
+                userNameTextField.setText("");
+                passwordTextField.setText("");
             }
 
             @Override

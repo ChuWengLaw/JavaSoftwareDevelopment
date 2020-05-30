@@ -7,6 +7,13 @@ import java.security.NoSuchAlgorithmException;
 import java.sql.*;
 import java.util.Vector;
 
+/**
+ * This is the class that holds all of the SQL commands that interacts
+ * with the database. Depending on the request, one or more methods in this class
+ * will be called to handle SQL appropriate to the request.
+ *
+ * @author Nicholas Tseng, "Kenji" Foo Shiang Xun
+ */
 public class UserSQL {
     // Method for SQL execution.
     static void setUserSQL(User user, String userName) throws SQLException {
@@ -64,6 +71,16 @@ public class UserSQL {
         pstatement.close();
     }
 
+    /**
+     *This function executes SQL to delete the entered user
+     * from the database as well as all the billboards that the
+     * user has created.
+     *
+     * @param userName
+     * @throws SQLException
+     *
+     * @author "Kenji" Foo Shiang Xun
+     */
     static void deleteUserBillboardSQL(String userName) throws SQLException {
         PreparedStatement deleteUserStatement = Server.connection.prepareStatement("DELETE FROM user WHERE userName = ?");
         PreparedStatement deleteUserBillboardStatement = Server.connection.prepareStatement("DELETE from Billboard WHERE userName =?");
@@ -79,6 +96,16 @@ public class UserSQL {
         deleteUserScheduleStatement.close();
     }
 
+    /**
+     * This function executes SQL to retrieve all the
+     * user as well as their details from the database
+     * and returns it in a form of a JTable.
+     *
+     * @return the list of users in a JTable
+     * @throws SQLException
+     *
+     * @author "Kenji" Foo Shiang Xun
+     */
     static JTable listUserSQL() throws SQLException {
         JTable table = new JTable();
         Statement listUserStatement = Server.connection.createStatement();
@@ -105,6 +132,16 @@ public class UserSQL {
         return table;
     }
 
+    /**
+     * This function executes SQL to check
+     * if the entered user is in the database.
+     *
+     * @param userName
+     * @return true if the user exists in the database
+     * @throws SQLException
+     *
+     * @author "Kenji" Foo Shiang Xun
+     */
     static boolean checkUserSQL(String userName) throws SQLException {
         boolean existing = false;
 

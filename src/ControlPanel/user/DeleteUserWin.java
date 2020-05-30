@@ -8,7 +8,12 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.net.ConnectException;
 import javax.swing.*;
-
+/**
+ * This class creates the GUI which allows the user
+ * to delete the entered user from the database
+ *
+ * @author "Kenji" Foo Shiang Xun
+ */
 public class DeleteUserWin extends JFrame{
     private JLabel usernamelabel = new JLabel("Username:");
     private JTextField usernamefield = new JTextField(20);
@@ -16,6 +21,10 @@ public class DeleteUserWin extends JFrame{
     private JPanel deletepanel = new JPanel(new GridBagLayout());
     private GridBagConstraints constraints = new GridBagConstraints();
 
+    /**
+     * Constructor initialises the GUI creation as well as set the
+     * window listener.
+     */
     public DeleteUserWin(){
         super("Delete a User");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -30,6 +39,7 @@ public class DeleteUserWin extends JFrame{
             public void windowClosed(WindowEvent e) {
                 Main.userManagementWin.setEnabled(true);
                 Main.userManagementWin.setVisible(true);
+                usernamefield.setText("");
             }
 
             @Override
@@ -45,7 +55,7 @@ public class DeleteUserWin extends JFrame{
             public void windowDeactivated(WindowEvent e) {}
         };
         super.addWindowListener(windowListener);
-
+        //Create and adding actionlistener to the delete button
         ActionListener listener = e -> {
             if (usernamefield.getText().isEmpty()) {
                 JOptionPane.showMessageDialog(null, "Username cannot be empty");
@@ -55,6 +65,7 @@ public class DeleteUserWin extends JFrame{
                 JOptionPane.showMessageDialog(null, "Hey you, Stop that. You cannot delete your own account");
             }
             else{
+                //Sending the delete user request to the server to delete the entered user from the database
                 DeleteUserRequest deleteUser = new DeleteUserRequest(usernamefield.getText(), Main.loginUser.getSessionToken());
 
                 try{

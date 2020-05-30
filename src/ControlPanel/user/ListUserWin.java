@@ -12,12 +12,21 @@ import java.awt.event.WindowListener;
 import java.net.ConnectException;
 import java.sql.*;
 import java.util.Vector;
-
+/**
+ * This class creates the GUI to be used to display
+ * all the existing users from the database.
+ *
+ * @author "Kenji" Foo Shiang Xun
+ */
 public class ListUserWin extends JFrame {
     private JPanel panel = new JPanel();
     private JTable table = new JTable();
     private JScrollPane scrollpane;
 
+    /**
+     * Constructor initialises the GUI creation as well as set the
+     * window listener.
+     */
     public ListUserWin() {
         super("List of users");
         super.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -60,8 +69,14 @@ public class ListUserWin extends JFrame {
         int height = (int)screenSize.getHeight();
         setLocation(width/4,height/4);
     }
-
+    /**
+     * Creates GUI and creates the JTable from the
+     * table retrieved from function getTable()
+     *
+     * @author "Kenji" Foo Shiang Xun
+     */
     public void createTableSQL() {
+        //Sending the request to the server to retrieve list of users in the database
         ListUserRequest listUser = new ListUserRequest(Main.loginUser.getSessionToken());
 
         try {
@@ -89,35 +104,13 @@ public class ListUserWin extends JFrame {
             JOptionPane.showMessageDialog(null, "Failed to generate list");
         }
     }
-
+    /**
+     * Retrieves the table from the server
+     * and stores the table.
+     *
+     * @author "Kenji" Foo Shiang Xun
+     */
     public void getTable(JTable table) {
         this.table = table;
     }
 }
-
-//            Statement statement = Server.connection.createStatement();
-//            ResultSet rs = statement.executeQuery(
-//                    "select userName,CreateBillboardsPermission,EditAllBillboardPermission," +
-//                            "ScheduleBillboardsPermission, EditUsersPermission from user");
-//            ResultSetMetaData rsmd = rs.getMetaData();
-//            int columnCount = rsmd.getColumnCount();
-//            Vector columnheader  = new Vector(columnCount);
-//
-//            for (int i = 1; i<= columnCount; i++){
-//                columnheader.add(rsmd.getColumnName(i));
-//            }
-//
-//            Vector data = new Vector();
-//            Vector row = new Vector();
-//
-//            while(rs.next()) {
-//                row = new Vector(columnCount);
-//                for (int i = 1; i <= columnCount; i++) {
-//                    row.add(rs.getString(i));
-//                    data.add(row);
-//                    table = new JTable(data,columnheader);
-//                    scrollpane = new JScrollPane(table);
-//                    panel.add(scrollpane, BorderLayout.CENTER);
-//                    getContentPane().add(panel);
-//                }
-//            }

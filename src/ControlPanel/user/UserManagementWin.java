@@ -17,6 +17,7 @@ import javax.swing.*;
  * 2. List all user.
  * 3. Edit user.
  * 4. Delete user.
+ * 5. Search User
  */
 public class UserManagementWin extends JFrame{
     // Initialize the components in the window.

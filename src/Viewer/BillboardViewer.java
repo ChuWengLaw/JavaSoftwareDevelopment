@@ -122,7 +122,6 @@ public class BillboardViewer extends JFrame {
         panel.removeAll();
 
         GetCurrentScheduledRequest GetCurrentScheduledRequest = new GetCurrentScheduledRequest();
-
         try {
             Client.connectServer(GetCurrentScheduledRequest);
             String currentBillboardString = Client.getScheduledBillboardTitle();
@@ -131,17 +130,15 @@ public class BillboardViewer extends JFrame {
                 panel.setBackground(Color.black);
                 JLabel lblNoSchedule = new JLabel("No Billboard Scheduled");
                 int messageWidth = lblNoSchedule.getFontMetrics(lblNoSchedule.getFont()).stringWidth(lblNoSchedule.getText());
-                int componentWidth = screenWidth;
+                int componentWidth = screenWidth-10;
                 double widthRatio = (double) componentWidth / (double) messageWidth;
                 int newFontSize = (int) (lblNoSchedule.getFont().getSize() * widthRatio);
                 int componentHeight = screenHeight;
                 int fontSizeToUse = Math.min(newFontSize, componentHeight);
-
                 lblNoSchedule.setFont(new Font(lblNoSchedule.getFont().getName(), Font.PLAIN, fontSizeToUse));
                 lblNoSchedule.setForeground(Color.red);
                 lblNoSchedule.setHorizontalAlignment(SwingConstants.CENTER);
                 lblNoSchedule.setVerticalAlignment(SwingConstants.CENTER);
-                
 
                 JLabel picNoSchedule = new JLabel();
                 URL url = new URL("https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRh_IKTuBKhex6jQsgVoMtSPnc0ZbR0RAdzv7UfBMbOMS45Wj_h&usqp=CAU");
@@ -203,33 +200,44 @@ public class BillboardViewer extends JFrame {
                 }
                 //if only the image is present display only the image
                 else if (currentScheduledBillboard.message.isBlank() && currentScheduledBillboard.information.isBlank() && !currentScheduledBillboard.image.isBlank()) {
+                    panel.setBackground(currentScheduledBillboard.backgroundColour);
                     JLabel picture = new JLabel();
-                    //if it is a url image
-                    if (currentScheduledBillboard.image.startsWith("http")) {
-                        URL url = new URL(currentScheduledBillboard.image);
-                        BufferedImage image = ImageIO.read(url);
-                        if (image.getWidth() < image.getHeight() || image.getHeight() == image.getWidth()) {
-                            picture.setIcon(new ImageIcon(image.getScaledInstance(-1, screenHeight / 2, Image.SCALE_SMOOTH)));
+                    try {
+                        //if it is a url image
+                        if (currentScheduledBillboard.image.startsWith("http")) {
+                            URL url = new URL(currentScheduledBillboard.image);
+                            BufferedImage image = ImageIO.read(url);
+                            if (image.getWidth() < image.getHeight() || image.getHeight() == image.getWidth()) {
+                                picture.setIcon(new ImageIcon(image.getScaledInstance(-1, screenHeight / 2, Image.SCALE_SMOOTH)));
+                            } else {
+                                picture.setIcon(new ImageIcon(image.getScaledInstance(screenWidth / 2, -1, Image.SCALE_SMOOTH)));
+                            }
+                            //else if image is in data form
                         } else {
-                            picture.setIcon(new ImageIcon(image.getScaledInstance(screenWidth / 2, -1, Image.SCALE_SMOOTH)));
+                            byte[] encodedImage;
+                            encodedImage = currentScheduledBillboard.image.getBytes();
+                            byte[] decodedImage = Base64.getDecoder().decode(encodedImage);
+                            BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedImage));
+                            if (image.getWidth() < image.getHeight() || image.getHeight() == image.getWidth()) {
+                                picture.setIcon(new ImageIcon(image.getScaledInstance(-1, screenHeight / 2, Image.SCALE_SMOOTH)));
+                            } else {
+                                picture.setIcon(new ImageIcon(image.getScaledInstance(screenWidth / 2, -1, Image.SCALE_SMOOTH)));
+                            }
                         }
-                        //else if image is in data form
-                    } else {
-                        byte[] encodedImage;
-                        encodedImage = currentScheduledBillboard.image.getBytes();
-                        byte[] decodedImage = Base64.getDecoder().decode(encodedImage);
-                        BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedImage));
-                        if (image.getWidth() < image.getHeight() || image.getHeight() == image.getWidth()) {
-                            picture.setIcon(new ImageIcon(image.getScaledInstance(-1, screenHeight / 2, Image.SCALE_SMOOTH)));
-                        } else {
-                            picture.setIcon(new ImageIcon(image.getScaledInstance(screenWidth / 2, -1, Image.SCALE_SMOOTH)));
+                    }
+                    //if the image is invalid then display a message saying invalid image
+                    catch (NullPointerException np) {
+                        picture.setText("Image is not a valid image");
+                        picture.setFont(picture.getFont().deriveFont(32.0f));
+                        if(panel.getBackground()==Color.BLACK){
+                            picture.setForeground(Color.white);
                         }
                     }
                     picture.setHorizontalAlignment(SwingConstants.CENTER);
                     picture.setVerticalAlignment(SwingConstants.CENTER);
 
 
-                    panel.setBackground(currentScheduledBillboard.backgroundColour);
+
 
                     panel.setLayout(new BorderLayout());
                     panel.add(picture, BorderLayout.CENTER);
@@ -277,7 +285,7 @@ public class BillboardViewer extends JFrame {
 
                     //set messages font size
                     int messageWidth = messageLabel.getFontMetrics(messageLabel.getFont()).stringWidth(messageLabel.getText());
-                    int componentWidth = screenWidth;
+                    int componentWidth = screenWidth-10;
                     double widthRatio = (double) componentWidth / (double) messageWidth;
                     int newFontSize = (int) (messageLabel.getFont().getSize() * widthRatio);
                     int componentHeight = screenHeight / 3;
@@ -285,25 +293,35 @@ public class BillboardViewer extends JFrame {
                     messageLabel.setFont(new Font(messageLabel.getFont().getName(), Font.PLAIN, fontSizeToUse));
 
                     JLabel picture = new JLabel();
-                    //if it is a url image
-                    if (currentScheduledBillboard.image.startsWith("http")) {
-                        URL url = new URL(currentScheduledBillboard.image);
-                        BufferedImage image = ImageIO.read(url);
-                        if (image.getWidth() < image.getHeight()) {
-                            picture.setIcon(new ImageIcon(image.getScaledInstance(-1, screenHeight / 2, Image.SCALE_SMOOTH)));
+                    try {
+                        //if it is a url image
+                        if (currentScheduledBillboard.image.startsWith("http")) {
+                            URL url = new URL(currentScheduledBillboard.image);
+                            BufferedImage image = ImageIO.read(url);
+                            if (image.getWidth() < image.getHeight() || image.getHeight() == image.getWidth()) {
+                                picture.setIcon(new ImageIcon(image.getScaledInstance(-1, screenHeight / 2, Image.SCALE_SMOOTH)));
+                            } else {
+                                picture.setIcon(new ImageIcon(image.getScaledInstance(screenWidth / 2, -1, Image.SCALE_SMOOTH)));
+                            }
+                            //else if image is in data form
                         } else {
-                            picture.setIcon(new ImageIcon(image.getScaledInstance(screenWidth / 2, -1, Image.SCALE_SMOOTH)));
+                            byte[] encodedImage;
+                            encodedImage = currentScheduledBillboard.image.getBytes();
+                            byte[] decodedImage = Base64.getDecoder().decode(encodedImage);
+                            BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedImage));
+                            if (image.getWidth() < image.getHeight() || image.getHeight() == image.getWidth()) {
+                                picture.setIcon(new ImageIcon(image.getScaledInstance(-1, screenHeight / 2, Image.SCALE_SMOOTH)));
+                            } else {
+                                picture.setIcon(new ImageIcon(image.getScaledInstance(screenWidth / 2, -1, Image.SCALE_SMOOTH)));
+                            }
                         }
-                        //else if image is in data form
-                    } else {
-                        byte[] encodedImage;
-                        encodedImage = currentScheduledBillboard.image.getBytes();
-                        byte[] decodedImage = Base64.getDecoder().decode(encodedImage);
-                        BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedImage));
-                        if (image.getWidth() < image.getHeight() || image.getHeight() == image.getWidth()) {
-                            picture.setIcon(new ImageIcon(image.getScaledInstance(-1, screenHeight / 2, Image.SCALE_SMOOTH)));
-                        } else {
-                            picture.setIcon(new ImageIcon(image.getScaledInstance(screenWidth / 2, -1, Image.SCALE_SMOOTH)));
+                    }
+                    //if the image is invalid then display a message saying invalid image
+                    catch (NullPointerException np) {
+                        picture.setText("Image is not a valid image");
+                        picture.setFont(picture.getFont().deriveFont(32.0f));
+                        if(panel.getBackground()==Color.BLACK){
+                            picture.setForeground(Color.white);
                         }
                     }
                     picture.setHorizontalAlignment(SwingConstants.CENTER);
@@ -331,7 +349,7 @@ public class BillboardViewer extends JFrame {
 
                     //set message size in relation to the screen
                     int messageWidth = messageLabel.getFontMetrics(messageLabel.getFont()).stringWidth(messageLabel.getText());
-                    int componentWidth = screenWidth;
+                    int componentWidth = screenWidth-10;
                     double widthRatio = (double) componentWidth / (double) messageWidth;
                     int newFontSize = (int) (messageLabel.getFont().getSize() * widthRatio);
                     int componentHeight = screenHeight / 2;
@@ -373,25 +391,35 @@ public class BillboardViewer extends JFrame {
                     panel.setBackground(currentScheduledBillboard.backgroundColour);
 
                     JLabel picture = new JLabel();
-                    //if it is a url image
-                    if (currentScheduledBillboard.image.startsWith("http")) {
-                        URL url = new URL(currentScheduledBillboard.image);
-                        BufferedImage image = ImageIO.read(url);
-                        if (image.getWidth() < image.getHeight() || image.getHeight() == image.getWidth()) {
-                            picture.setIcon(new ImageIcon(image.getScaledInstance(-1, screenHeight / 2, Image.SCALE_SMOOTH)));
+                    try {
+                        //if it is a url image
+                        if (currentScheduledBillboard.image.startsWith("http")) {
+                            URL url = new URL(currentScheduledBillboard.image);
+                            BufferedImage image = ImageIO.read(url);
+                            if (image.getWidth() < image.getHeight() || image.getHeight() == image.getWidth()) {
+                                picture.setIcon(new ImageIcon(image.getScaledInstance(-1, screenHeight / 2, Image.SCALE_SMOOTH)));
+                            } else {
+                                picture.setIcon(new ImageIcon(image.getScaledInstance(screenWidth / 2, -1, Image.SCALE_SMOOTH)));
+                            }
+                            //else if image is in data form
                         } else {
-                            picture.setIcon(new ImageIcon(image.getScaledInstance(screenWidth / 2, -1, Image.SCALE_SMOOTH)));
+                            byte[] encodedImage;
+                            encodedImage = currentScheduledBillboard.image.getBytes();
+                            byte[] decodedImage = Base64.getDecoder().decode(encodedImage);
+                            BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedImage));
+                            if (image.getWidth() < image.getHeight() || image.getHeight() == image.getWidth()) {
+                                picture.setIcon(new ImageIcon(image.getScaledInstance(-1, screenHeight / 2, Image.SCALE_SMOOTH)));
+                            } else {
+                                picture.setIcon(new ImageIcon(image.getScaledInstance(screenWidth / 2, -1, Image.SCALE_SMOOTH)));
+                            }
                         }
-                        //else if image is in data form
-                    } else {
-                        byte[] encodedImage;
-                        encodedImage = currentScheduledBillboard.image.getBytes();
-                        byte[] decodedImage = Base64.getDecoder().decode(encodedImage);
-                        BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedImage));
-                        if (image.getWidth() < image.getHeight() || image.getHeight() == image.getWidth()) {
-                            picture.setIcon(new ImageIcon(image.getScaledInstance(-1, screenHeight / 2, Image.SCALE_SMOOTH)));
-                        } else {
-                            picture.setIcon(new ImageIcon(image.getScaledInstance(screenWidth / 2, -1, Image.SCALE_SMOOTH)));
+                    }
+                    //if the image is invalid then display a message saying invalid image
+                    catch (NullPointerException np) {
+                        picture.setText("Image is not a valid image");
+                        picture.setFont(picture.getFont().deriveFont(32.0f));
+                        if(panel.getBackground()==Color.BLACK){
+                            picture.setForeground(Color.white);
                         }
                     }
                     picture.setHorizontalAlignment(SwingConstants.CENTER);
@@ -433,25 +461,35 @@ public class BillboardViewer extends JFrame {
                     panel.setBackground(currentScheduledBillboard.backgroundColour);
 
                     JLabel picture = new JLabel();
-                    //if it is a url image
-                    if (currentScheduledBillboard.image.startsWith("http")) {
-                        URL url = new URL(currentScheduledBillboard.image);
-                        BufferedImage image = ImageIO.read(url);
-                        if (image.getWidth() < image.getHeight() || image.getHeight() == image.getWidth()) {
-                            picture.setIcon(new ImageIcon(image.getScaledInstance(-1, screenHeight / 3, Image.SCALE_SMOOTH)));
+                    try {
+                        //if it is a url image
+                        if (currentScheduledBillboard.image.startsWith("http")) {
+                            URL url = new URL(currentScheduledBillboard.image);
+                            BufferedImage image = ImageIO.read(url);
+                            if (image.getWidth() < image.getHeight() || image.getHeight() == image.getWidth()) {
+                                picture.setIcon(new ImageIcon(image.getScaledInstance(-1, screenHeight / 3, Image.SCALE_SMOOTH)));
+                            } else {
+                                picture.setIcon(new ImageIcon(image.getScaledInstance(screenWidth / 3, -1, Image.SCALE_SMOOTH)));
+                            }
+                            //else if image is in data form
                         } else {
-                            picture.setIcon(new ImageIcon(image.getScaledInstance(screenWidth / 3, -1, Image.SCALE_SMOOTH)));
+                            byte[] encodedImage;
+                            encodedImage = currentScheduledBillboard.image.getBytes();
+                            byte[] decodedImage = Base64.getDecoder().decode(encodedImage);
+                            BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedImage));
+                            if (image.getWidth() < image.getHeight() || image.getHeight() == image.getWidth()) {
+                                picture.setIcon(new ImageIcon(image.getScaledInstance(-1, screenHeight / 3, Image.SCALE_SMOOTH)));
+                            } else {
+                                picture.setIcon(new ImageIcon(image.getScaledInstance(screenWidth / 3, -1, Image.SCALE_SMOOTH)));
+                            }
                         }
-                        //else if image is in data form
-                    } else {
-                        byte[] encodedImage;
-                        encodedImage = currentScheduledBillboard.image.getBytes();
-                        byte[] decodedImage = Base64.getDecoder().decode(encodedImage);
-                        BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedImage));
-                        if (image.getWidth() < image.getHeight() || image.getHeight() == image.getWidth()) {
-                            picture.setIcon(new ImageIcon(image.getScaledInstance(-1, screenHeight / 3, Image.SCALE_SMOOTH)));
-                        } else {
-                            picture.setIcon(new ImageIcon(image.getScaledInstance(screenWidth / 3, -1, Image.SCALE_SMOOTH)));
+                    }
+                    //if the image is invalid then display a message saying invalid image
+                    catch (NullPointerException np) {
+                        picture.setText("Image is not a valid image");
+                        picture.setFont(picture.getFont().deriveFont(32.0f));
+                        if(panel.getBackground()==Color.BLACK){
+                            picture.setForeground(Color.white);
                         }
                     }
                     picture.setHorizontalAlignment(SwingConstants.CENTER);
@@ -466,7 +504,7 @@ public class BillboardViewer extends JFrame {
 
                     //set message size in relation to the screen
                     int messageWidth = messageLabel.getFontMetrics(messageLabel.getFont()).stringWidth(messageLabel.getText());
-                    int componentWidth = screenWidth;
+                    int componentWidth = screenWidth -10;
                     double widthRatio = (double) componentWidth / (double) messageWidth;
                     int newFontSize = (int) (messageLabel.getFont().getSize() * widthRatio);
                     int componentHeight = screenHeight / 3;
@@ -508,25 +546,6 @@ public class BillboardViewer extends JFrame {
                     toFront();
                 }
             }
-        }
-        //if the image is invalid a billboard with the message not a valid image will  be displayed
-        catch (NullPointerException ex) {
-            panel.setBackground(Color.BLACK);
-
-            JLabel lblImageDontExist = new JLabel("Image is not a valid image");
-            lblImageDontExist.setForeground(Color.WHITE);
-            lblImageDontExist.setVerticalAlignment(SwingConstants.CENTER);
-            lblImageDontExist.setHorizontalAlignment(SwingConstants.CENTER);
-            lblImageDontExist.setFont(lblImageDontExist.getFont().deriveFont(32.0f));
-
-            panel.setLayout(new BorderLayout());
-            panel.add(lblImageDontExist, BorderLayout.CENTER);
-
-            getContentPane().add(panel);
-            repaint();
-            setVisible(true);
-            toFront();
-
         }
         //if no connection to the server a billboard with an appropriate warning will be displayed
         catch (Exception e) {

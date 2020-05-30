@@ -199,6 +199,7 @@ public class CreateBillboardGUI extends JFrame {
                     //Set the text field to the converted value
                     txtImage.setText(encodstring);
                     txtImage.setForeground(Color.black);
+                    txtImage.setEditable(false);
                 }
             }
         });
@@ -263,6 +264,7 @@ public class CreateBillboardGUI extends JFrame {
                     txtBackgroundColour.setText("");
                     txtMessage.setText("");
                     txtImage.setText("");
+                    txtImage.setEditable(true);
                     txtInformation.setText("");
                     txtInformationColour.setText("");
                 }

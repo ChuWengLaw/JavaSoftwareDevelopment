@@ -11,6 +11,8 @@ import javax.swing.*;
 
 /**
  * @author Nicholas Tseng
+ * This is the change password window, in this window,
+ * users can change their own password.
  */
 public class ChangePasswordWin extends JFrame {
     private JLabel labelPassword = new JLabel("New password");
@@ -59,6 +61,7 @@ public class ChangePasswordWin extends JFrame {
 
         // Button setting
         ActionListener changeListener = e -> {
+            // Check if the password field is empty, if so, return an error message.
             if (passwordTextField.getText().isEmpty()) {
                 JOptionPane.showMessageDialog(null, "Password field cannot be empty.");
             } else {
@@ -75,6 +78,7 @@ public class ChangePasswordWin extends JFrame {
                     ex.printStackTrace();
                 }
 
+                // Check if the change password request is successfully executed, if so, send an acknowledgement.
                 if (Client.isRequestState()) {
                     JOptionPane.showMessageDialog(null, "Password change!");
                 }

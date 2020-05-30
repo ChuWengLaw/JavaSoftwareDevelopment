@@ -122,6 +122,7 @@ public class BillboardViewer extends JFrame {
         panel.removeAll();
 
         GetCurrentScheduledRequest GetCurrentScheduledRequest = new GetCurrentScheduledRequest();
+
         try {
             Client.connectServer(GetCurrentScheduledRequest);
             String currentBillboardString = Client.getScheduledBillboardTitle();
@@ -135,11 +136,13 @@ public class BillboardViewer extends JFrame {
                 int newFontSize = (int) (lblNoSchedule.getFont().getSize() * widthRatio);
                 int componentHeight = screenHeight;
                 int fontSizeToUse = Math.min(newFontSize, componentHeight);
+
                 lblNoSchedule.setFont(new Font(lblNoSchedule.getFont().getName(), Font.PLAIN, fontSizeToUse));
                 lblNoSchedule.setForeground(Color.red);
                 lblNoSchedule.setHorizontalAlignment(SwingConstants.CENTER);
                 lblNoSchedule.setVerticalAlignment(SwingConstants.CENTER);
                 
+
                 JLabel picNoSchedule = new JLabel();
                 URL url = new URL("https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRh_IKTuBKhex6jQsgVoMtSPnc0ZbR0RAdzv7UfBMbOMS45Wj_h&usqp=CAU");
                 BufferedImage image = ImageIO.read(url);

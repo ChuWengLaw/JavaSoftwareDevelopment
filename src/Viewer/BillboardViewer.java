@@ -164,30 +164,22 @@ public class BillboardViewer extends JFrame {
             if (currentScheduledBillboard.message.isBlank() && currentScheduledBillboard.information.isBlank() && currentScheduledBillboard.image.isBlank()) {
                 panel.setBackground(currentScheduledBillboard.backgroundColour);
 
-                getContentPane().add(panel);
-                repaint();
-                toFront();
-            }
 
-            //if only message is present the display only message
-            else if (!currentScheduledBillboard.message.isBlank() && currentScheduledBillboard.information.isBlank() && currentScheduledBillboard.image.isBlank()) {
-
-                panel.setBackground(currentScheduledBillboard.backgroundColour);
-
-                JLabel messageLabel = new JLabel();
-                messageLabel.setText(currentScheduledBillboard.message);
-                messageLabel.setForeground(currentScheduledBillboard.textColour);
-                messageLabel.setHorizontalAlignment(SwingConstants.CENTER);
-
-                int messageWidth = messageLabel.getFontMetrics(messageLabel.getFont()).stringWidth(messageLabel.getText());
+                panel.setBackground(Color.black);
+                JLabel lblNoSchedule = new JLabel("No Billboard Scheduled");
+                int messageWidth = lblNoSchedule.getFontMetrics(lblNoSchedule.getFont()).stringWidth(lblNoSchedule.getText());
                 int componentWidth = screenWidth;
                 double widthRatio = (double) componentWidth / (double) messageWidth;
                 int newFontSize = (int) (messageLabel.getFont().getSize() * widthRatio);
                 int componentHeight = screenHeight;
                 int fontSizeToUse = Math.min(newFontSize, componentHeight);
 
-                messageLabel.setFont(new Font(messageLabel.getFont().getName(), Font.PLAIN, fontSizeToUse));
-
+                JLabel picNoSchedule = new JLabel();
+                URL url = new URL("https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRh_IKTuBKhex6jQsgVoMtSPnc0ZbR0RAdzv7UfBMbOMS45Wj_h&usqp=CAU");
+                BufferedImage image = ImageIO.read(url);
+                picNoSchedule.setIcon(new ImageIcon(image.getScaledInstance(-1, (screenHeight / 2), Image.SCALE_SMOOTH)));
+                picNoSchedule.setHorizontalAlignment(SwingConstants.CENTER);
+                picNoSchedule.setVerticalAlignment(SwingConstants.CENTER);
 
                 panel.setLayout(new BorderLayout());
                 panel.add(messageLabel, BorderLayout.CENTER);

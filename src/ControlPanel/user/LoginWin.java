@@ -30,7 +30,7 @@ public class LoginWin extends JFrame implements Runnable{
      * This is the constructor which will create the login window.
      */
     public LoginWin(){
-        // Setting default value of the frame
+        // Setting default value of the frame.
         super("Login");
     }
 
@@ -48,6 +48,9 @@ public class LoginWin extends JFrame implements Runnable{
             try {
                 Client.connectServer(loginRequest);
 
+                // Check if the login request is successfully executed, if so, send an acknowledgement.
+                // The user management button will be set either enable or disable according to
+                // login user's edit permission.
                 if (Client.isRequestState()){
                     super.dispose();
                     Main.menuWin.setVisible(true);

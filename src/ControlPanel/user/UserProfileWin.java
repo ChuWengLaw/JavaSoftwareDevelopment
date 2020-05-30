@@ -8,6 +8,11 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import javax.swing.*;
 
+/**
+ * @author Nicholas Tseng
+ * This is the user profile window class extends JFrame. In this window,
+ * users can view their own permissions, as well as change their password.
+ */
 public class UserProfileWin extends JFrame {
     private JLabel labelpermission1 = new JLabel("Create billboards");
     private JLabel labelpermission2 = new JLabel("Edit billboards");
@@ -21,6 +26,9 @@ public class UserProfileWin extends JFrame {
     private JPanel panel = new JPanel(new GridBagLayout());
     private GridBagConstraints constraints = new GridBagConstraints();
 
+    /**
+     * This is the constructor which will create a user profile window.
+     */
     public UserProfileWin() {
         // Setting default value of the frame
         super("Edit User");
@@ -120,6 +128,13 @@ public class UserProfileWin extends JFrame {
         pack();
     }
 
+    /**
+     * This is a method that set up the check box in the window to show the users their permission.
+     * @param isCheck1 a boolean indicates if checkbox 1 is checked
+     * @param isCheck2 a boolean indicates if checkbox 2 is checked
+     * @param isCheck3 a boolean indicates if checkbox 3 is checked
+     * @param isCheck4 a boolean indicates if checkbox 4 is checked
+     */
     public void setCheckBox(boolean isCheck1, boolean isCheck2, boolean isCheck3, boolean isCheck4) {
         checkBox1.setSelected(isCheck1);
         checkBox2.setSelected(isCheck2);

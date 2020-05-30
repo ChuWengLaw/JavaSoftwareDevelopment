@@ -4,7 +4,9 @@ import ControlPanel.user.*;
 
 import javax.swing.*;
 
-
+/**
+ * This is the main class for control panel.
+ */
 public class Main {
     public static User loginUser = new User();
 
@@ -18,6 +20,10 @@ public class Main {
     public static DeleteUserWin deleteUserWin = new DeleteUserWin();
     public static ListUserWin listUserWin = new ListUserWin();
 
+    /**
+     * This method call a new login window once the program is run.
+     * @param args
+     */
     public static void main(String[] args) {SwingUtilities.invokeLater(new LoginWin());}
 }
 

@@ -10,6 +10,7 @@ public class ListUserReply implements Serializable {
     private JTable table;
     private boolean listUserState;
 
+    //build constructor and Getter functions
     public ListUserReply(SessionToken sessionToken, JTable table, boolean listUserState){
         this.sessionToken = sessionToken;
         this.table = table;

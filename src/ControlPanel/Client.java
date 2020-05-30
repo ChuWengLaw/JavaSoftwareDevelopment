@@ -86,9 +86,14 @@ public class Client {
         else if (requestReply instanceof SearchReply){
             SearchReply searchReply = (SearchReply) requestReply;
             requestState = searchReply.isRequestState();
-
+            boolean EditSearch = searchReply.isEditSearch();
             if (requestState){
-                Main.editUserWin.editedUser = searchReply.getUser();
+                if (EditSearch){
+                    Main.editUserWin.editedUser = searchReply.getUser();
+                }
+                else{
+                    Main.searchUserWin.searchUser = searchReply.getUser();
+                }
             }
 
             Main.loginUser.setSessionToken(searchReply.getSessionToken());
@@ -205,23 +210,18 @@ public class Client {
         return exportFile;
     }
     public static JTable getListScheduleBillboardTable() {return ListScheduleBillboardTable;}
-
     public static String getTextClr() {
         return textClr;
     }
-
     public static String getBgClr() {
         return bgClr;
     }
-
     public static String getMsg() {
         return msg;
     }
-
     public static String getImg() {
         return img;
     }
-
     public static String getInfoClr() {
         return infoClr;
     }

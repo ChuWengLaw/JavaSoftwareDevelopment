@@ -200,6 +200,7 @@ public class BillboardViewer extends JFrame {
                 }
                 //if only the image is present display only the image
                 else if (currentScheduledBillboard.message.isBlank() && currentScheduledBillboard.information.isBlank() && !currentScheduledBillboard.image.isBlank()) {
+                    panel.setBackground(currentScheduledBillboard.backgroundColour);
                     JLabel picture = new JLabel();
                     try {
                         //if it is a url image
@@ -228,12 +229,15 @@ public class BillboardViewer extends JFrame {
                     catch (NullPointerException np) {
                         picture.setText("Image is not a valid image");
                         picture.setFont(picture.getFont().deriveFont(32.0f));
+                        if(panel.getBackground()==Color.BLACK){
+                            picture.setForeground(Color.white);
+                        }
                     }
                     picture.setHorizontalAlignment(SwingConstants.CENTER);
                     picture.setVerticalAlignment(SwingConstants.CENTER);
 
 
-                    panel.setBackground(currentScheduledBillboard.backgroundColour);
+
 
                     panel.setLayout(new BorderLayout());
                     panel.add(picture, BorderLayout.CENTER);
@@ -316,6 +320,9 @@ public class BillboardViewer extends JFrame {
                     catch (NullPointerException np) {
                         picture.setText("Image is not a valid image");
                         picture.setFont(picture.getFont().deriveFont(32.0f));
+                        if(panel.getBackground()==Color.BLACK){
+                            picture.setForeground(Color.white);
+                        }
                     }
                     picture.setHorizontalAlignment(SwingConstants.CENTER);
                     picture.setVerticalAlignment(SwingConstants.CENTER);
@@ -411,6 +418,9 @@ public class BillboardViewer extends JFrame {
                     catch (NullPointerException np) {
                         picture.setText("Image is not a valid image");
                         picture.setFont(picture.getFont().deriveFont(32.0f));
+                        if(panel.getBackground()==Color.BLACK){
+                            picture.setForeground(Color.white);
+                        }
                     }
                     picture.setHorizontalAlignment(SwingConstants.CENTER);
                     picture.setVerticalAlignment(SwingConstants.CENTER);
@@ -478,6 +488,9 @@ public class BillboardViewer extends JFrame {
                     catch (NullPointerException np) {
                         picture.setText("Image is not a valid image");
                         picture.setFont(picture.getFont().deriveFont(32.0f));
+                        if(panel.getBackground()==Color.BLACK){
+                            picture.setForeground(Color.white);
+                        }
                     }
                     picture.setHorizontalAlignment(SwingConstants.CENTER);
                     picture.setVerticalAlignment(SwingConstants.CENTER);

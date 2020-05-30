@@ -14,12 +14,14 @@ public class ScheduleSQL {
     public void ScheduleBillboard(String BillboardName, String DateTime, int Duration,
                                   int RecurType, int RecurAmount, String UserName) throws SQLException {
         boolean ExistFlag = false;
-        System.out.println("Reaches sql");
+        String CreatedBy = "";
+        //System.out.println("Reaches sql");
         try {
-            ResultSet resultSet = Server.statement.executeQuery("SELECT BillboardName FROM Billboard");
+            ResultSet resultSet = Server.statement.executeQuery("SELECT BillboardName, UserName FROM Billboard");
             while (resultSet.next()) {
                 if ( BillboardName.equals(resultSet.getString("BillboardName")) ) {
                     ExistFlag = true;
+                    CreatedBy = resultSet.getString("UserName");
                     break;
                 }
                 else {
@@ -31,7 +33,7 @@ public class ScheduleSQL {
                 ResultSet Insert = Server.statement.executeQuery("INSERT INTO Schedule (BillboardName,ScheduleTime, Duration, RecurType, RecurDuration, UserName) VALUES ('" +
                         BillboardName + "','" + DateTime + "','" +
                         Duration + "','" + RecurType + "','" + RecurAmount +
-                                "','"+ UserName+
+                                "','"+ CreatedBy+
                         "');");
             }
             //if billboard does not exist dont schedule

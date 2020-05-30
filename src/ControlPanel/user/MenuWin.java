@@ -27,7 +27,7 @@ public class MenuWin extends JFrame {
     // Initialize the components in the window.
     private JButton billboardManageButton = new JButton("Billboard management");
     private JButton editUserButton = new JButton("User management");
-    private JButton scheduleBillboardButton = new JButton("Schedule Billboard");
+    private JButton scheduleBillboardButton = new JButton("Schedule management");
     private JButton userProfileButton = new JButton("User profile");
     private JButton logoutButton = new JButton("Log out");
     private JPanel panel = new JPanel(new GridBagLayout());

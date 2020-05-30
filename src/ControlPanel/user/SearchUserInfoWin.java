@@ -27,7 +27,6 @@ public class SearchUserInfoWin extends JFrame{
     private JPanel panel = new JPanel(new GridBagLayout());
     private GridBagConstraints constraints = new GridBagConstraints();
     public User searchUser = new User();
-
     public SearchUserInfoWin() {
         super("Search User Info");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -45,6 +44,11 @@ public class SearchUserInfoWin extends JFrame{
             public void windowClosed(WindowEvent e) {
                 Main.userManagementWin.setEnabled(true);
                 Main.userManagementWin.setVisible(true);
+                userNameTextField.setText("");
+                checkBoxCreate.setSelected(false);
+                checkBoxEditBB.setSelected(false);
+                checkBoxScheduleBB.setSelected(false);
+                checkBoxEditUser.setSelected(false);
             }
 
             @Override
@@ -75,7 +79,7 @@ public class SearchUserInfoWin extends JFrame{
             if (userNameTextField.getText().isEmpty()) {
                 JOptionPane.showMessageDialog(null, "User name field can't be empty.");
             } else {
-                SearchRequest searchRequest = new SearchRequest(Main.loginUser.getSessionToken(), userNameTextField.getText());
+                SearchRequest searchRequest = new SearchRequest(Main.loginUser.getSessionToken(), userNameTextField.getText(), false);
 
                 try {
                     Client.connectServer(searchRequest);

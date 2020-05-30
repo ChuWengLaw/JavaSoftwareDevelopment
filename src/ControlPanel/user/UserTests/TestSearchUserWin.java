@@ -20,13 +20,13 @@ public class TestSearchUserWin {
     @Test
     //Test 2: Check if the session token was successfully encapsulated in SearchRequest object
     public void SessionTokenTestSearchRequest(){
-        SearchRequest searchRequest = new SearchRequest(sessionToken, "Boblobthelob");
+        SearchRequest searchRequest = new SearchRequest(sessionToken, "Boblobthelob", true);
         assertEquals(sessionToken, searchRequest.getSessionToken());
     }
     @Test
     //Test 3: Check if the Username was successfully encapsulated in SearchRequest object
     public void UsernameTestSearchRequest(){
-        SearchRequest searchRequest = new SearchRequest(sessionToken, "Boblobthelob");
+        SearchRequest searchRequest = new SearchRequest(sessionToken, "Boblobthelob", true);
         assertEquals("Boblobthelob", searchRequest.getUserName());
     }
 }

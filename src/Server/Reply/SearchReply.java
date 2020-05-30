@@ -15,6 +15,7 @@ public class SearchReply implements Serializable {
     // Initialize all require variables.
     private SessionToken sessionToken;
     private boolean requestState;
+    private boolean EditSearch;
     private User user;
 
     /**
@@ -22,9 +23,10 @@ public class SearchReply implements Serializable {
      * @param sessionToken an updated session token
      * @param requestState a boolean indicates if the user exists
      */
-    public SearchReply(SessionToken sessionToken, boolean requestState){
+    public SearchReply(SessionToken sessionToken, boolean requestState, boolean EditSearch){
         this.sessionToken = sessionToken;
         this.requestState = requestState;
+        this.EditSearch = EditSearch;
     }
 
     /**
@@ -33,10 +35,11 @@ public class SearchReply implements Serializable {
      * @param requestState a boolean indicates if the user exists
      * @param user a user class
      */
-    public SearchReply(SessionToken sessionToken, boolean requestState, User user){
+    public SearchReply(SessionToken sessionToken, boolean requestState, boolean EditSearch, User user){
         this.sessionToken = sessionToken;
         this.requestState = requestState;
         this.user = user;
+        this.EditSearch = EditSearch;
     }
 
     public boolean isRequestState() {
@@ -49,5 +52,9 @@ public class SearchReply implements Serializable {
 
     public SessionToken getSessionToken() {
         return sessionToken;
+    }
+
+    public boolean isEditSearch() {
+        return EditSearch;
     }
 }

@@ -24,13 +24,13 @@ public class TestEditUserWin {
     @Test
     //Test 2: Check if the session token was successfully encapsulated in SearchRequest object
     public void SessionTokenTestSearchRequest(){
-        SearchRequest searchRequest = new SearchRequest(sessionToken, "Lobster");
+        SearchRequest searchRequest = new SearchRequest(sessionToken, "Lobster", true);
         assertEquals(sessionToken, searchRequest.getSessionToken());
     }
     @Test
     //Test 3: Check if the Username was successfully encapsulated in SearchRequest object
     public void UsernameTestSearchRequest(){
-        SearchRequest searchRequest = new SearchRequest(sessionToken, "Lobster");
+        SearchRequest searchRequest = new SearchRequest(sessionToken, "Lobster", true);
         assertEquals("Lobster", searchRequest.getUserName());
     }
     /* Tests for EditUserRequest Part 1 if a password is present*/

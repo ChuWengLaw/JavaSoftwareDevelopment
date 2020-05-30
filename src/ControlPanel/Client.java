@@ -86,10 +86,14 @@ public class Client {
         else if (requestReply instanceof SearchReply){
             SearchReply searchReply = (SearchReply) requestReply;
             requestState = searchReply.isRequestState();
-
+            boolean EditSearch = searchReply.isEditSearch();
             if (requestState){
-                Main.editUserWin.editedUser = searchReply.getUser();
-                Main.searchUserWin.searchUser = searchReply.getUser();
+                if (EditSearch){
+                    Main.editUserWin.editedUser = searchReply.getUser();
+                }
+                else{
+                    Main.searchUserWin.searchUser = searchReply.getUser();
+                }
             }
 
             Main.loginUser.setSessionToken(searchReply.getSessionToken());

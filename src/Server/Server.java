@@ -353,6 +353,7 @@ public class Server {
                 oos.writeObject(logoutReply);
             } else {
                 boolean searchState = checkUserSQL(searchRequest.getUserName());
+                boolean EditSearch = searchRequest.isEditSearch();
 
                 // Reset the used time of the session token.
                 resetSessionTokenTime(sessionToken);
@@ -362,10 +363,10 @@ public class Server {
                 if (searchState) {
                     User user = new User();
                     setUserSQL(user, searchRequest.getUserName());
-                    SearchReply searchReply = new SearchReply(sessionToken, true, user);
+                    SearchReply searchReply = new SearchReply(sessionToken, true, EditSearch, user);
                     oos.writeObject(searchReply);
                 } else {
-                    SearchReply searchReply = new SearchReply(sessionToken, false);
+                    SearchReply searchReply = new SearchReply(sessionToken, false, EditSearch);
                     oos.writeObject(searchReply);
                 }
             }

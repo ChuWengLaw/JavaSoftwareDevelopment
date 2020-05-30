@@ -97,7 +97,7 @@ public class EditUserWin extends JFrame{
                         "Administrators are not allow to change their own permission");
             }
             else{
-                SearchRequest searchRequest = new SearchRequest(Main.loginUser.getSessionToken(), userNameTextField.getText());
+                SearchRequest searchRequest = new SearchRequest(Main.loginUser.getSessionToken(), userNameTextField.getText(), true);
 
                 try {
                     Client.connectServer(searchRequest);

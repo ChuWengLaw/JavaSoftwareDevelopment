@@ -22,11 +22,21 @@ public class InformationGUI extends JFrame {
 
     //define text boxes
     private JTextField txtBillboardName;
+    private JTextField txtTextColour;
+    private JTextField txtBGColour;
+    private JTextField txtMsg;
+    private JTextField txtImg;
     private JTextField txtInfo;
+    private JTextField txtInfoColour;
 
     //define Labels
     private JLabel lblBillboardName;
+    private JLabel lblTextColour;
+    private JLabel lblBGColour;
+    private JLabel lblMsg;
+    private JLabel lblImg;
     private JLabel lblInfo;
+    private JLabel lblInfoColour;
 
     private JPanel panel = new JPanel(new GridBagLayout());
     private GridBagConstraints constraints = new GridBagConstraints();
@@ -57,13 +67,18 @@ public class InformationGUI extends JFrame {
         btnGetInfo.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                BBInfoRequest temp = new BBInfoRequest(Main.loginUser.getSessionToken(), txtBillboardName.getText());
                 if (txtBillboardName.getText().isBlank()) {
                     JOptionPane.showMessageDialog(null, "Please Enter a Billboard Name.");
                 } else {
                     try {
+                        BBInfoRequest temp = new BBInfoRequest(Main.loginUser.getSessionToken(), txtBillboardName.getText().toLowerCase());
                         Client.connectServer(temp);
+                        txtTextColour.setText(Client.getTextClr());
+                        txtBGColour.setText(Client.getBgClr());
+                        txtMsg.setText(Client.getMsg());
+                        txtImg.setText(Client.getImg());
                         txtInfo.setText(Client.getInfo());
+                        txtInfoColour.setText(Client.getInfoClr());
                         if(!Client.isRequestState()){
                             JOptionPane.showMessageDialog(null, "Billboard not found!");
                         }
@@ -85,20 +100,42 @@ public class InformationGUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 txtBillboardName.setText("");
+                txtTextColour.setText("");
+                txtBGColour.setText("");
+                txtMsg.setText("");
+                txtImg.setText("");
+                txtImg.setForeground(Color.black);
                 txtInfo.setText("");
+                txtInfoColour.setText("");
             }
         });
 
         //create labels
         lblBillboardName = createLabel("Billboard Name:");
+        lblTextColour = createLabel("Text Colour:");
+        lblBGColour = createLabel("Background Colour:");
+        lblMsg = createLabel("Message:");
+        lblImg = createLabel("Image:");
         lblInfo = createLabel("Information:");
+        lblInfoColour = createLabel("Information Colour:");
 
         //create textBox
         txtBillboardName = createText();
+        txtTextColour = createText();
+        txtBGColour = createText();
+        txtMsg = createText();
+        txtImg = createText();
         txtInfo = createText();
+        txtInfoColour = createText();
+        txtTextColour.setEditable(false);
+        txtBGColour.setEditable(false);
+        txtMsg.setEditable(false);
+        txtImg.setEditable(false);
+        txtInfo.setEditable(false);
+        txtInfoColour.setEditable(false);
 
         constraints.anchor = GridBagConstraints.WEST;
-        constraints.insets = new Insets(10, 10, 10, 10);
+        constraints.insets = new Insets(20, 20, 20, 20);
 
         constraints.gridx = 0;
         constraints.gridy = 0;
@@ -109,16 +146,51 @@ public class InformationGUI extends JFrame {
 
         constraints.gridx = 0;
         constraints.gridy = 1;
+        panel.add(lblTextColour, constraints);
+
+        constraints.gridx = 1;
+        panel.add(txtTextColour, constraints);
+
+        constraints.gridx = 0;
+        constraints.gridy = 2;
+        panel.add(lblBGColour, constraints);
+
+        constraints.gridx = 1;
+        panel.add(txtBGColour, constraints);
+
+        constraints.gridx = 0;
+        constraints.gridy = 3;
+        panel.add(lblMsg, constraints);
+
+        constraints.gridx = 1;
+        panel.add(txtMsg, constraints);
+
+        constraints.gridx = 0;
+        constraints.gridy = 4;
+        panel.add(lblImg, constraints);
+
+        constraints.gridx = 1;
+        panel.add(txtImg, constraints);
+
+        constraints.gridx = 0;
+        constraints.gridy = 5;
         panel.add(lblInfo, constraints);
 
         constraints.gridx = 1;
         panel.add(txtInfo, constraints);
 
+        constraints.gridx = 0;
+        constraints.gridy = 6;
+        panel.add(lblInfoColour, constraints);
+
+        constraints.gridx = 1;
+        panel.add(txtInfoColour, constraints);
+
         constraints.gridwidth = 2;
         constraints.insets = new Insets(5, 10, 5, 10);
         constraints.anchor = GridBagConstraints.EAST;
         constraints.gridx = 0;
-        constraints.gridy = 3;
+        constraints.gridy = 7;
         panel.add(btnGetInfo, constraints);
         constraints.anchor = GridBagConstraints.WEST;
         panel.add(btnClear, constraints);
@@ -126,7 +198,10 @@ public class InformationGUI extends JFrame {
         getContentPane().add(panel);
 
         // Display the window
-        setLocation(900, 350);
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        int width = (int)screenSize.getWidth();
+        int height = (int)screenSize.getHeight();
+        setLocation(width/4,height/4);
         pack();
         setVisible(true);
     }

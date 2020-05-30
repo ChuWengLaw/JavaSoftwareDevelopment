@@ -24,6 +24,7 @@ public class UserManagementWin extends JFrame{
     private JButton listUserButton = new JButton("List all users");
     private JButton editUserButton = new JButton("Edit user");
     private JButton deleteUserButton = new JButton("Delete user");
+    private JButton searchUserButton = new JButton("Search user");
     private JPanel panel = new JPanel(new GridBagLayout());
     private GridBagConstraints constraints = new GridBagConstraints();
 
@@ -89,6 +90,12 @@ public class UserManagementWin extends JFrame{
         };
         listUserButton.addActionListener(listActionListener);
 
+        ActionListener searchActionListener = e-> {
+            Main.searchUserWin.setVisible(true);
+            super.setEnabled(false);
+        };
+        searchUserButton.addActionListener(searchActionListener);
+
         // Panel setting
         constraints.anchor = GridBagConstraints.WEST;
         constraints.insets = new Insets(10, 10, 10, 10);
@@ -106,10 +113,16 @@ public class UserManagementWin extends JFrame{
         constraints.gridx =3;
         panel.add(deleteUserButton, constraints);
 
+        constraints.gridx = 4;
+        panel.add(searchUserButton, constraints);
+
         getContentPane().add(panel);
 
         // Display the window
-        setLocation(900,350);
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        int width = (int)screenSize.getWidth();
+        int height = (int)screenSize.getHeight();
+        setLocation(width/4,height/4);
         pack();
     }
 }

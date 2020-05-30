@@ -4,20 +4,41 @@ import ControlPanel.Client;
 import ControlPanel.Main;
 import Server.Request.CreateBBRequest;
 import Server.Request.XmlRequest;
+import org.w3c.dom.Attr;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.filechooser.FileSystemView;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.ConnectException;
+import java.util.Base64;
+
 
 /**
  * This class creates the GUI to be used to create a billboard
  */
 public class CreateBillboardGUI extends JFrame {
     //define element to be used
+    private JButton btnPreview;
     private JButton btnSubmit;
+    private JButton btnBrowse;
 
     //define the labels
     private JLabel lblBillboardName;
@@ -38,7 +59,6 @@ public class CreateBillboardGUI extends JFrame {
     private JTextField txtInformationColour;
 
     //define the strings to be used in the SQL
-    private String strBillboardName;
     private JPanel createBBPanel = new JPanel(new GridBagLayout());
     private GridBagConstraints createBBConstraints = new GridBagConstraints();
 
@@ -58,10 +78,131 @@ public class CreateBillboardGUI extends JFrame {
      * @author Lachlan
      */
     private void createGUI() {
-
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLayout(new BorderLayout());
+        //create the button and define what text it will contain
+        btnPreview = createButton("Preview");
+        //create and actionListener for the preview button
+        btnPreview.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //name is blank return appropriate message
+                if (txtBillboardName.getText().isBlank()) {
+                    JOptionPane.showMessageDialog(null, "Please enter a billboard name.");
+                }
+                //if name is more than one word return appropriate message
+                else if (txtBillboardName.getText().contains(" ")) {
+                    JOptionPane.showMessageDialog(null, "Please enter the name as one word.");
+                }
+                //if all colours input are valid proceed
+                else if (isColourValid() && !txtBillboardName.getText().isBlank()) {
+                    String path = "src/xmlBillboards/createpreview.xml";
+                    try {
+                        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newDefaultInstance();
+                        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+                        Document document = documentBuilder.newDocument();
+                        Element billboard = document.createElement("billboard");
+                        document.appendChild(billboard);
 
+                        if (txtBackgroundColour.getText().isBlank()) {
+                            Attr background = document.createAttribute("background");
+                            background.setValue("White");
+                            billboard.setAttributeNode(background);
+                        } else {
+                            Attr background = document.createAttribute("background");
+                            background.setValue(txtBackgroundColour.getText());
+                            billboard.setAttributeNode(background);
+                        }
+
+                        if (!txtMessage.getText().isBlank()) {
+                            //message element
+                            Element bbMessage = document.createElement("message");
+                            if (txtTextColour.getText().isBlank()) {
+                                Attr textCol = document.createAttribute("colour");
+                                textCol.setValue("Black");
+                                bbMessage.setAttributeNode(textCol);
+                            } else {
+                                Attr textCol = document.createAttribute("colour");
+                                textCol.setValue(txtTextColour.getText());
+                                bbMessage.setAttributeNode(textCol);
+                            }
+                            bbMessage.appendChild(document.createTextNode(txtMessage.getText()));
+                            billboard.appendChild(bbMessage);
+                        }
+
+                        if (!txtImage.getText().isBlank()) {
+                            //picture element
+                            Element pic = document.createElement("picture");
+                            if (txtImage.getText().startsWith("http")) {
+                                Attr picURL = document.createAttribute("url");
+                                picURL.setValue(txtImage.getText());
+                                pic.setAttributeNode(picURL);
+                            } else {
+                                Attr picData = document.createAttribute("data");
+                                picData.setValue(txtImage.getText());
+                                pic.setAttributeNode(picData);
+                            }
+                            billboard.appendChild(pic);
+                        }
+
+                        if (!txtInformation.getText().isBlank()) {
+                            //information element
+                            Element info = document.createElement("information");
+                            if (txtInformationColour.getText().isBlank()) {
+                                Attr infoColour = document.createAttribute("colour");
+                                infoColour.setValue(txtInformationColour.getText());
+                                info.setAttributeNode(infoColour);
+                                info.appendChild(document.createTextNode(txtInformation.getText()));
+                            } else {
+                                Attr infoColour = document.createAttribute("colour");
+                                infoColour.setValue(txtInformationColour.getText());
+                                info.setAttributeNode(infoColour);
+                                info.appendChild(document.createTextNode(txtInformation.getText()));
+                            }
+                            billboard.appendChild(info);
+                        }
+                        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+                        Transformer transformer = transformerFactory.newTransformer();
+                        DOMSource domSource = new DOMSource(document);
+                        StreamResult streamResult = new StreamResult(new File(path));
+                        transformer.transform(domSource, streamResult);
+                        new PreviewBillboardGUI("createpreview");
+                    } catch (ParserConfigurationException | TransformerConfigurationException ex) {
+                        ex.printStackTrace();
+                    } catch (TransformerException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+            }
+        });
+        //create the button and define what text it will contain
+        btnBrowse = createButton("Browse an image");
+        //create and actionListener for the browse button
+        btnBrowse.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //Create a file chooser
+                JFileChooser jfc = new JFileChooser(FileSystemView.getFileSystemView());
+                jfc.setDialogTitle("Select a billboard xml file");
+                jfc.setAcceptAllFileFilterUsed(false);
+                FileNameExtensionFilter bmp = new FileNameExtensionFilter("BMP", "bmp");
+                FileNameExtensionFilter jpeg = new FileNameExtensionFilter("JPEG", "jpeg");
+                FileNameExtensionFilter png = new FileNameExtensionFilter("PNG", "png");
+                jfc.addChoosableFileFilter(bmp);
+                jfc.addChoosableFileFilter(jpeg);
+                jfc.addChoosableFileFilter(png);
+                int returnValue = jfc.showOpenDialog(null);
+                if (returnValue == JFileChooser.APPROVE_OPTION) {
+                    File selectedFile = jfc.getSelectedFile();
+                    //Convert to base64 encoded
+                    String encodstring = encodeFileBase64(selectedFile);
+                    //Set the text field to the converted value
+                    txtImage.setText(encodstring);
+                    txtImage.setForeground(Color.black);
+                    txtImage.setEditable(false);
+                }
+            }
+        });
         //create the button and define what text it will contain
         btnSubmit = createButton("Submit");
         //create and actionListener for the submit button
@@ -78,8 +219,8 @@ public class CreateBillboardGUI extends JFrame {
                     JOptionPane.showMessageDialog(null, "Please enter the name as one word.");
                 }
                 //if all colours input are valid proceed
-                 else if (isColourValid() && !txtBillboardName.getText().isBlank()) {
-                    CreateBBRequest createBBRequest = new CreateBBRequest(Main.loginUser.getSessionToken(), txtBillboardName.getText(), Main.loginUser.getUserName(), txtTextColour.getText(), txtBackgroundColour.getText(),
+                else if (isColourValid() && !txtBillboardName.getText().isBlank()) {
+                    CreateBBRequest createBBRequest = new CreateBBRequest(Main.loginUser.getSessionToken(), txtBillboardName.getText().toLowerCase(), Main.loginUser.getUserName(), txtTextColour.getText(), txtBackgroundColour.getText(),
                             txtMessage.getText(), txtImage.getText(), txtInformation.getText(), txtInformationColour.getText(), Main.loginUser.getCreateBillboardsPermission());
                     try {
                         Client.connectServer(createBBRequest);
@@ -110,7 +251,7 @@ public class CreateBillboardGUI extends JFrame {
                     } catch (ConnectException ex) {
                         JOptionPane.showMessageDialog(null, "Connection fail.");
                         System.exit(0);
-                    }catch (IOException ex) {
+                    } catch (IOException ex) {
                         ex.printStackTrace();
                     } catch (InterruptedException ex) {
                         ex.printStackTrace();
@@ -123,6 +264,7 @@ public class CreateBillboardGUI extends JFrame {
                     txtBackgroundColour.setText("");
                     txtMessage.setText("");
                     txtImage.setText("");
+                    txtImage.setEditable(true);
                     txtInformation.setText("");
                     txtInformationColour.setText("");
                 }
@@ -187,6 +329,14 @@ public class CreateBillboardGUI extends JFrame {
         //add button to panel
         createBBConstraints.gridwidth = 2;
         createBBConstraints.insets = new Insets(5, 10, 5, 10);
+        createBBConstraints.anchor = GridBagConstraints.WEST;
+        createBBConstraints.gridx = 0;
+        createBBConstraints.gridy = 8;
+        createBBPanel.add(btnPreview, createBBConstraints);
+        createBBConstraints.anchor = GridBagConstraints.CENTER;
+        createBBConstraints.gridx = 0;
+        createBBConstraints.gridy = 8;
+        createBBPanel.add(btnBrowse, createBBConstraints);
         createBBConstraints.anchor = GridBagConstraints.EAST;
         createBBConstraints.gridx = 0;
         createBBConstraints.gridy = 8;
@@ -194,7 +344,10 @@ public class CreateBillboardGUI extends JFrame {
 
         getContentPane().add(createBBPanel);
         //set the location of the GUI
-        setLocation(900, 350);
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        int width = (int) screenSize.getWidth();
+        int height = (int) screenSize.getHeight();
+        setLocation(width / 4, height / 4);
 
         //make changes and then send to GUI
         pack();
@@ -222,20 +375,6 @@ public class CreateBillboardGUI extends JFrame {
      */
     private JTextField createText() {
         JTextField textBox = new JTextField(20);
-        return textBox;
-    }
-
-    /**
-     * This function create a JTextField with the input of the text
-     *
-     * @param text the text to be displayed
-     * @return a JTextField with the input of text
-     * @author Lachlan
-     */
-    private JTextField createText(String text) {
-        JTextField textBox = new JTextField();
-        textBox.setText(text);
-        strBillboardName = text;
         return textBox;
     }
 
@@ -374,5 +513,20 @@ public class CreateBillboardGUI extends JFrame {
         }
 
         return text && back && info;
+    }
+
+    private String encodeFileBase64(File file) {
+        String encodedstring = null;
+        try {
+            FileInputStream fileInputStreamReader = new FileInputStream(file);
+            byte[] bytes = new byte[(int) file.length()];
+            fileInputStreamReader.read(bytes);
+            encodedstring = Base64.getEncoder().encodeToString(bytes);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return encodedstring;
     }
 }

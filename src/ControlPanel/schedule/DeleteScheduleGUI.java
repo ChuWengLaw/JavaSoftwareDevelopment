@@ -13,6 +13,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.IOException;
+import java.net.ConnectException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
@@ -53,15 +54,31 @@ public class DeleteScheduleGUI extends JFrame {
                     //System.out.println("Correct Inputs");
                     //Create Schedule Requests
                     DeleteScheduleRequest temp = new DeleteScheduleRequest(txtBillboardName.getText(), txtScheduledTime.getText(), Main.loginUser.getSessionToken());
+
+
                     try {
                         Client.connectServer(temp);
+                        if (Client.isRequestState())
+                        {
+                            JOptionPane.showMessageDialog(null,"Deleted");
+                        }
+                        else
+                        {
+                            throw new Exception();
+                        }
+                    } catch (ConnectException ex) {
+                        JOptionPane.showMessageDialog(null, "Connection fail.");
+                        System.exit(0);
                     } catch (InterruptedException ex) {
                         ex.printStackTrace();
                     } catch (IOException ex) {
                         ex.printStackTrace();
                     } catch (ClassNotFoundException ex) {
                         ex.printStackTrace();
-                    }
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                        JOptionPane.showMessageDialog(null,"Did not Delete");
+                }
 
                     txtBillboardName.setText("");
                     txtScheduledTime.setText("");
@@ -98,7 +115,10 @@ public class DeleteScheduleGUI extends JFrame {
 
         getContentPane().add(pnlDeleteSchedule);
         //set the location of the GUI
-        setLocation(900, 350);
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        int width = (int)screenSize.getWidth();
+        int height = (int)screenSize.getHeight();
+        setLocation(width/4,height/4);
 
         //make changes and then send to GUI
         pack();

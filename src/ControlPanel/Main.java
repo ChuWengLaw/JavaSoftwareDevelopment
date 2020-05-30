@@ -19,6 +19,7 @@ public class Main {
     public static EditUserWin editUserWin = new EditUserWin();
     public static DeleteUserWin deleteUserWin = new DeleteUserWin();
     public static ListUserWin listUserWin = new ListUserWin();
+    public static SearchUserInfoWin searchUserWin = new SearchUserInfoWin();
 
     /**
      * This method call a new login window once the program is run.

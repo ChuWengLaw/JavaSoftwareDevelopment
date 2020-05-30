@@ -54,6 +54,12 @@ public class CreateUserWin extends JFrame{
                         public void windowClosed(WindowEvent e) {
                                 Main.userManagementWin.setEnabled(true);
                                 Main.userManagementWin.setVisible(true);
+                                userNameTextField.setText("");
+                                passwordTextField.setText("");
+                                checkBox1.setSelected(false);
+                                checkBox2.setSelected(false);
+                                checkBox3.setSelected(false);
+                                checkBox4.setSelected(false);
                         }
 
                         @Override

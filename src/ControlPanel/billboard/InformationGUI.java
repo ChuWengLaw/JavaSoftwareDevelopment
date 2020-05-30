@@ -89,9 +89,6 @@ public class InformationGUI extends JFrame {
                         ex.printStackTrace();
                     }
                 }
-                if (txtInfo.getText().isBlank()){
-                    JOptionPane.showMessageDialog(null, "No information for Requested Billboard");
-                }
             }
         });
 
@@ -107,6 +104,7 @@ public class InformationGUI extends JFrame {
                 txtBGColour.setText("");
                 txtMsg.setText("");
                 txtImg.setText("");
+                txtImg.setForeground(Color.black);
                 txtInfo.setText("");
                 txtInfoColour.setText("");
             }

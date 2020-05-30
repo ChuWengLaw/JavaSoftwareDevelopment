@@ -85,6 +85,12 @@ public class CreateUserWin extends JFrame{
 
                                         if (Client.isRequestState()){
                                                 JOptionPane.showMessageDialog(null,"User creation successful!");
+                                                checkBox1.setSelected(false);
+                                                checkBox2.setSelected(false);
+                                                checkBox3.setSelected(false);
+                                                checkBox4.setSelected(false);
+                                                userNameTextField.setText("");
+                                                passwordTextField.setText("");
                                         }
                                         else{
                                                 throw new Exception();

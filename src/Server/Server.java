@@ -297,7 +297,7 @@ public class Server {
 
             }
             else{
-                LoginReply loginReply = new LoginReply(false, null);
+                LoginReply loginReply = new LoginReply(false);
                 oos.writeObject(loginReply);
             }
             oos.flush();

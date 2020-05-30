@@ -85,9 +85,13 @@ public class EditUserWin extends JFrame{
 
         // Button setting
         ActionListener searchListener = e -> {
+            // Check if the username text field is empty, if so, return an error message.
             if(userNameTextField.getText().isEmpty()){
                 JOptionPane.showMessageDialog(null,"User name field can't be empty.");
             }
+            // Check if users are trying to edit themselves, if so return an error message.
+            // Note that users can edit their own password at "User Profile",
+            // but not their own permissions at all.
             else if (userNameTextField.getText().equals(Main.loginUser.getUserName())){
                 JOptionPane.showMessageDialog(null,
                         "Administrators are not allow to change their own permission");
@@ -97,6 +101,9 @@ public class EditUserWin extends JFrame{
 
                 try {
                     Client.connectServer(searchRequest);
+                } catch(ConnectException ex) {
+                    JOptionPane.showMessageDialog(null, "Connection fail.");
+                    System.exit(0);
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 } catch (InterruptedException ex) {
@@ -106,8 +113,6 @@ public class EditUserWin extends JFrame{
                 }
 
                 if(Client.isRequestState()){
-                    System.out.println(editedUser.getCreateBillboardsPermission());
-                    System.out.println(Main.loginUser.getCreateBillboardsPermission());
                     userNameTextField.setEditable(false);
                     passwordTextField.setEditable(true);
                     checkBox1.setEnabled(true);
@@ -129,11 +134,15 @@ public class EditUserWin extends JFrame{
 
         ActionListener editListener = e ->{
             if (passwordTextField.getText().isEmpty()){
-                EditUserRequest editUserRequest = new EditUserRequest(userNameTextField.getText(), checkBox1.isSelected(), checkBox2.isSelected(),
-                checkBox3.isSelected(), checkBox4.isSelected(), !passwordTextField.getText().isEmpty());
+                EditUserRequest editUserRequest = new EditUserRequest(Main.loginUser.getSessionToken(),
+                        userNameTextField.getText(), checkBox1.isSelected(), checkBox2.isSelected(),
+                        checkBox3.isSelected(), checkBox4.isSelected(), !passwordTextField.getText().isEmpty());
 
                 try {
                     Client.connectServer(editUserRequest);
+                } catch(ConnectException ex) {
+                    JOptionPane.showMessageDialog(null, "Connection fail.");
+                    System.exit(0);
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 } catch (InterruptedException ex) {

@@ -129,7 +129,6 @@ public class BillboardViewer extends JFrame {
             System.out.println(currentBillboardString);
             if (currentBillboardString == null) {
 
-
                 panel.setBackground(Color.black);
                 JLabel lblNoSchedule = new JLabel("No Billboard Scheduled");
                 int messageWidth = lblNoSchedule.getFontMetrics(lblNoSchedule.getFont()).stringWidth(lblNoSchedule.getText());
@@ -142,7 +141,6 @@ public class BillboardViewer extends JFrame {
                 lblNoSchedule.setForeground(Color.red);
                 lblNoSchedule.setHorizontalAlignment(SwingConstants.CENTER);
                 lblNoSchedule.setVerticalAlignment(SwingConstants.CENTER);
-
 
                 JLabel picNoSchedule = new JLabel();
                 URL url = new URL("https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRh_IKTuBKhex6jQsgVoMtSPnc0ZbR0RAdzv7UfBMbOMS45Wj_h&usqp=CAU");

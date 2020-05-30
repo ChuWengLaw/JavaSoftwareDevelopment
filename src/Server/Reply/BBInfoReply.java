@@ -8,6 +8,7 @@ public class BBInfoReply implements Serializable {
     private SessionToken token;
     private String EditTextColour, EditBGColour, EditMsg, EditImg, EditInfo, EditInfoColour;
 
+    //build constructor and Getter functions
     public BBInfoReply(SessionToken token, String EditTextColour, String EditBGColour, String EditMsg, String EditImg, String EditInfo, String EditInfoColour) {
         this.token = token;
         this.EditTextColour = EditTextColour;

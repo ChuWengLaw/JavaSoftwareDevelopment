@@ -25,6 +25,7 @@ public class GeneralReply implements Serializable{
         this.requestState = requestState;
     }
 
+    //build constructor and Getter functions
     public boolean isRequestState() {
         return requestState;
     }

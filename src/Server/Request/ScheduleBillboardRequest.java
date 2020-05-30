@@ -10,6 +10,7 @@ public class ScheduleBillboardRequest implements Serializable {
     private int Duration, ReoccurType, ReoccurAmount;
     private SessionToken sessionToken;
 
+    //build constructor and Getter functions
     public ScheduleBillboardRequest(String BillboardName, String ScheduledTime, String Duration,
                                     String ReoccurType, String ReoccurAmount, SessionToken sessionToken, String UserName) {
         this.BillboardName = BillboardName;

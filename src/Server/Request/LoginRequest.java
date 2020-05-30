@@ -21,6 +21,7 @@ public class LoginRequest implements Serializable {
         this.password = password;
     }
 
+    //build constructor and Getter functions
     public String getUserName() {
         return userName;
     }

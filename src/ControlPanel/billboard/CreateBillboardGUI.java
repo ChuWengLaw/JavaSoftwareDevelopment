@@ -429,7 +429,7 @@ public class CreateBillboardGUI extends JFrame {
     /**
      * This function determines whether colours named by works are valid of not
      *
-     * @return a boolean value to whether all the inputed colours are valid
+     * @return a boolean value to whether all the inputted colours are valid
      * @author Lachlan
      */
     private boolean isColourValid() {

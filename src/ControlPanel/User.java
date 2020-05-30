@@ -5,8 +5,14 @@ import Server.SessionToken;
 import java.io.Serializable;
 
 
-//Double check method prefixes  (public/private/static ect)
+/**
+ * @author Nicholas Tseng
+ * This is a user class that holds the information of a user in the program.
+ * A user with no information is possible to be created
+ * and the information can be set up with the setters later.
+ */
 public class User implements Serializable {
+    // Initialize all variables for necessary user information.
     private String userName;
     private boolean createBillboardsPermission;
     private boolean editAllBillboardPermission;
@@ -14,12 +20,20 @@ public class User implements Serializable {
     private boolean editUsersPermission;
     private SessionToken sessionToken;
 
-//Default constructor should throw an error because below info is required
-
-    //Constructor
+    /**
+     * This is an empty constructor for creating user with unknown information.
+     */
     public User() {
     }
 
+    /**
+     * This is constructor for creating user with known information.
+     * @param userName username
+     * @param createBillboardsPermission create billboard permission of the user
+     * @param editAllBillboardPermission edit all billboard permission of the user
+     * @param scheduleBillboardsPermission schedule billboard permission of the user
+     * @param editUsersPermission edit users permission of the user
+     */
     public User(String userName, boolean createBillboardsPermission, boolean editAllBillboardPermission, boolean scheduleBillboardsPermission, boolean editUsersPermission) {
         this.userName = userName;
         this.createBillboardsPermission = createBillboardsPermission;
@@ -28,7 +42,6 @@ public class User implements Serializable {
         this.editUsersPermission = editUsersPermission;
     }
 
-    // Set method to store user information
     public void setUserName(String userName) {
         this.userName = userName;
     }
@@ -49,7 +62,6 @@ public class User implements Serializable {
         this.editUsersPermission = permission;
     }
 
-    // Get Methods to be called to check user's information
     public String getUserName() {
         return userName;
     }

@@ -401,7 +401,7 @@ public class CreateBillboardGUI extends JFrame {
     private boolean isColourCodeValid(String textInput) {
         boolean valid = false;
         boolean startsWithHash = false;
-        String s2 = textInput.substring(1);
+        String codeString = textInput.substring(1);
 
         if (textInput.length() == 7) {
             if (textInput.charAt(0) == '#') {
@@ -410,10 +410,10 @@ public class CreateBillboardGUI extends JFrame {
         }
 
         if (startsWithHash == true) {
-            for (int i = 0; i < s2.length(); i++) {
-                char c = s2.charAt(i);
+            for (int i = 0; i < codeString.length(); i++) {
+                char c = codeString.charAt(i);
                 if (c != '#') {
-                    if (s2.matches("[A-F]{1,}") || s2.matches("[0-9]{1,}")) {
+                    if (codeString.matches("[A-F]{1,}") || codeString.matches("[0-9]{1,}")) {
                         valid = true;
                     } else {
                         valid = false;
@@ -515,18 +515,23 @@ public class CreateBillboardGUI extends JFrame {
         return text && back && info;
     }
 
+    /**This function takes a file and encodes it as base64 returning the string of the encoded value
+     * @author Lachlan
+     * @param file the image file which is being converted
+     * @return the base64 encoded string
+     */
     private String encodeFileBase64(File file) {
-        String encodedstring = null;
+        String encodedString = null;
         try {
             FileInputStream fileInputStreamReader = new FileInputStream(file);
             byte[] bytes = new byte[(int) file.length()];
             fileInputStreamReader.read(bytes);
-            encodedstring = Base64.getEncoder().encodeToString(bytes);
+            encodedString = Base64.getEncoder().encodeToString(bytes);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return encodedstring;
+        return encodedString;
     }
 }

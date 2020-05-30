@@ -23,7 +23,7 @@ public class MakeXMLFile {
     /**
      * This method writes the billboard contents into XML format
      *
-     * @param billboardName
+     * @param billboardName name of the billboard being converted to xml
      * @author Lachlan
      */
     public MakeXMLFile(String billboardName) throws SQLException {
@@ -31,6 +31,7 @@ public class MakeXMLFile {
         BillboardName = billboardName;
         ExecuteSQL();
         try {
+            //initiate a Document factory
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newDefaultInstance();
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
 
@@ -38,25 +39,31 @@ public class MakeXMLFile {
 
             Element billboard = document.createElement("billboard");
             document.appendChild(billboard);
-
+            //if no background entered then set the background to white
             if (backgroundColour.isBlank()) {
                 Attr background = document.createAttribute("background");
                 background.setValue("White");
                 billboard.setAttributeNode(background);
-            } else {
+            }
+            //else set the background to the entered background colour
+            else {
                 Attr background = document.createAttribute("background");
                 background.setValue(backgroundColour);
                 billboard.setAttributeNode(background);
             }
 
+            //if there exist a message was input
             if (!message.isBlank()) {
-                //message element
+                //at text to element
                 Element bbMessage = document.createElement("message");
+                //if there is no text colour entered set the colour to black
                 if (textColour.isBlank()) {
                     Attr textCol = document.createAttribute("colour");
                     textCol.setValue("Black");
                     bbMessage.setAttributeNode(textCol);
-                } else {
+                }
+                //else set the text colour colour to the input
+                else {
                     Attr textCol = document.createAttribute("colour");
                     textCol.setValue(textColour);
                     bbMessage.setAttributeNode(textCol);
@@ -65,14 +72,18 @@ public class MakeXMLFile {
                 billboard.appendChild(bbMessage);
             }
 
+            //if image was entered
             if (!image.isBlank()) {
-                //picture element
+                //create the picture tag
                 Element pic = document.createElement("picture");
+                //if the picture starts with http store as url
                 if (image.startsWith("http")) {
                     Attr picURL = document.createAttribute("url");
                     picURL.setValue(image);
                     pic.setAttributeNode(picURL);
-                } else {
+                }
+                //else store as data
+                else {
                     Attr picData = document.createAttribute("data");
                     picData.setValue(image);
                     pic.setAttributeNode(picData);
@@ -80,15 +91,19 @@ public class MakeXMLFile {
                 billboard.appendChild(pic);
             }
 
+            //if the information is entered
             if (!information.isBlank()) {
                 //information element
                 Element info = document.createElement("information");
+                //if the is no colour is entered set the colour to the message colour
                 if (informationColour.isBlank()) {
                     Attr infoColour = document.createAttribute("colour");
                     infoColour.setValue(textColour);
                     info.setAttributeNode(infoColour);
                     info.appendChild(document.createTextNode(information));
-                } else {
+                }
+                //else the colour is set to what was entered
+                else {
                     Attr infoColour = document.createAttribute("colour");
                     infoColour.setValue(informationColour);
                     info.setAttributeNode(infoColour);

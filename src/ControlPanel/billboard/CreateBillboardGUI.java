@@ -7,6 +7,7 @@ import Server.Request.XmlRequest;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.filechooser.FileSystemView;
@@ -23,8 +24,11 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.ConnectException;
+import java.util.Base64;
 
 
 /**
@@ -191,8 +195,10 @@ public class CreateBillboardGUI extends JFrame {
                 if (returnValue == JFileChooser.APPROVE_OPTION) {
                     File selectedFile = jfc.getSelectedFile();
                     //Convert to base64 encoded
+                    String encodstring = encodeFileBase64(selectedFile);
                     //Set the text field to the converted value
-                    txtImage.setText("base64");
+                    txtImage.setText(encodstring);
+                    txtImage.setForeground(Color.black);
                 }
             }
         });
@@ -212,7 +218,7 @@ public class CreateBillboardGUI extends JFrame {
                     JOptionPane.showMessageDialog(null, "Please enter the name as one word.");
                 }
                 //if all colours input are valid proceed
-                 else if (isColourValid() && !txtBillboardName.getText().isBlank()) {
+                else if (isColourValid() && !txtBillboardName.getText().isBlank()) {
                     CreateBBRequest createBBRequest = new CreateBBRequest(Main.loginUser.getSessionToken(), txtBillboardName.getText().toLowerCase(), Main.loginUser.getUserName(), txtTextColour.getText(), txtBackgroundColour.getText(),
                             txtMessage.getText(), txtImage.getText(), txtInformation.getText(), txtInformationColour.getText(), Main.loginUser.getCreateBillboardsPermission());
                     try {
@@ -244,7 +250,7 @@ public class CreateBillboardGUI extends JFrame {
                     } catch (ConnectException ex) {
                         JOptionPane.showMessageDialog(null, "Connection fail.");
                         System.exit(0);
-                    }catch (IOException ex) {
+                    } catch (IOException ex) {
                         ex.printStackTrace();
                     } catch (InterruptedException ex) {
                         ex.printStackTrace();
@@ -337,9 +343,9 @@ public class CreateBillboardGUI extends JFrame {
         getContentPane().add(createBBPanel);
         //set the location of the GUI
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        int width = (int)screenSize.getWidth();
-        int height = (int)screenSize.getHeight();
-        setLocation(width/4,height/4);
+        int width = (int) screenSize.getWidth();
+        int height = (int) screenSize.getHeight();
+        setLocation(width / 4, height / 4);
 
         //make changes and then send to GUI
         pack();
@@ -505,5 +511,20 @@ public class CreateBillboardGUI extends JFrame {
         }
 
         return text && back && info;
+    }
+
+    private String encodeFileBase64(File file) {
+        String encodedstring = null;
+        try {
+            FileInputStream fileInputStreamReader = new FileInputStream(file);
+            byte[] bytes = new byte[(int) file.length()];
+            fileInputStreamReader.read(bytes);
+            encodedstring = Base64.getEncoder().encodeToString(bytes);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return encodedstring;
     }
 }

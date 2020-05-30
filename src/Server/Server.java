@@ -1,7 +1,6 @@
 package Server;
 
 import ControlPanel.User;
-import ControlPanel.schedule.CalanderScheduleGUI;
 import Server.Reply.*;
 import Server.Request.*;
 
@@ -45,9 +44,9 @@ public class Server {
                     + "UserName VARCHAR(30),"
                     + "TextColour VARCHAR(30),"
                     + "BackGroundColour VARCHAR(30),"
-                    + "Message VARCHAR(30),"
-                    + "Image VARCHAR(30),"
-                    + "Information VARCHAR(30),"
+                    + "Message VARCHAR(300),"
+                    + "Image LONGTEXT,"
+                    + "Information VARCHAR(3000),"
                     + "InfoColour VARCHAR(30)" + ");";
 
     private static final String CREATE_USER_TABLE =
@@ -66,7 +65,9 @@ public class Server {
                     + "ScheduleTime DATETIME NOT NULL,"
                     + "Duration INT NOT NULL,"
                     + "RecurType INT NOT NULL,"
-                    + "RecurDuration INT NOT NULL" + ");"; //only required for minutes
+                    + "RecurDuration INT NOT NULL,"
+                    + "UserName VARCHAR(30)"
+                    /*+ "ID INT AUTO_INCREMENT PRIMARY KEY" */+ ");"; //only required for minutes
 
     /**
      * This method starts up the server socket connection and receives requests from client
@@ -222,7 +223,7 @@ public class Server {
         boolean tokenAvailableState;
 
         // This is used for testing, so the token will expire after one minute of hanging.
-        if (sessionToken.getUsedTime().plusMinutes(5).isAfter(LocalDateTime.now())) {
+        if (sessionToken.getUsedTime().plusMinutes(10).isAfter(LocalDateTime.now())) {
             tokenAvailableState = true;
         } else {
             tokenAvailableState = false;
@@ -536,6 +537,7 @@ public class Server {
         }
         // If the request is an instance of edit billboard request
         else if (clientRequest instanceof EditBBRequest) {
+
             EditBBRequest temp = (EditBBRequest) clientRequest;
             SessionToken sessionToken = findSessionToken(temp.getSessionToken());
             BillboardSQL bb = new BillboardSQL();
@@ -565,7 +567,7 @@ public class Server {
                         bb.EditBillboard(BillBoardName, temp.getEditTextColour(), temp.getEditBGColour(),
                                 temp.getEditMsg(), temp.getEditImg(), temp.getEditInfo(), temp.getEditInfoColour());
                         new MakeXMLFile(BillBoardName);
-                        generalReply = new GeneralReply(temp.getSessionToken(),true);
+                        generalReply = new GeneralReply(sessionToken,true);
                         oos.writeObject(generalReply);
                     }
                     // return the contents of the billboard
@@ -575,14 +577,15 @@ public class Server {
                         // if the user is the owner of the billboard
                         if (checkOriginOwner) {
                             // if the user has edit all billboards or create billboard permission
-                            if (temp.getEditAllBillboardsPermission() || (temp.getCreateBillboardPermission() && !CalanderScheduleGUI.IsCurrentlyScheduled(BillBoardName))) {
+                            System.out.println(temp.getIsScheduled());
+                            if (temp.getEditAllBillboardsPermission() || (temp.getCreateBillboardPermission() && !temp.getIsScheduled())) {
                                 bb.EditBillboard(BillBoardName);
                                 EditBBReply editBBReply = new EditBBReply(temp.getSessionToken(), bb.textColour, bb.backgroundColour, bb.message,
                                         bb.image, bb.information, bb.informationColour);
                                 oos.writeObject(editBBReply);
                             }
                             else {
-                                generalReply = new GeneralReply(temp.getSessionToken(),false);
+                                generalReply = new GeneralReply(sessionToken,false);
                                 oos.writeObject(generalReply);
                             }
                         }
@@ -602,7 +605,7 @@ public class Server {
                         }
                     }
                 } catch (Exception e) {
-                    generalReply = new GeneralReply(temp.getSessionToken(),false);
+                    generalReply = new GeneralReply(sessionToken,false);
                     oos.writeObject(generalReply);
                 }
             }
@@ -632,14 +635,14 @@ public class Server {
                     // if the user is the owner of the billboard
                     if (checkOriginOwner) {
                         // if the user has edit all billboards or create billboard permission
-                        if (temp.getEditAllBillboardsPermission() || (temp.getCreateBillboardPermission() && !CalanderScheduleGUI.IsCurrentlyScheduled(BillBoardName))) {
+                        if (temp.getEditAllBillboardsPermission() || (temp.getCreateBillboardPermission() && !temp.getIsScheduled())) {
                             bb.DeleteBillboard(temp.getBillboardName());
                             File deleteFile = new File("src/xmlBillboards/" + temp.getBillboardName() + ".xml");
                             deleteFile.delete();
                             generalReply = new GeneralReply(sessionToken,true);
                         }
                         else {
-                            generalReply = new GeneralReply(temp.getSessionToken(),false);
+                            generalReply = new GeneralReply(sessionToken,false);
                         }
                     }
                     // if the user is deleting billboard owned by other user
@@ -649,10 +652,10 @@ public class Server {
                             bb.DeleteBillboard(temp.getBillboardName());
                             File deleteFile = new File("src/xmlBillboards/" + temp.getBillboardName() + ".xml");
                             deleteFile.delete();
-                            generalReply = new GeneralReply(temp.getSessionToken(),true);
+                            generalReply = new GeneralReply(sessionToken,true);
                         }
                         else {
-                            generalReply = new GeneralReply(temp.getSessionToken(),false);
+                            generalReply = new GeneralReply(sessionToken,false);
                         }
                     }
                     oos.writeObject(generalReply);
@@ -683,8 +686,8 @@ public class Server {
                 try {
                     BillboardSQL bb = new BillboardSQL();
                     bb.GetBillboardInfo(temp.getBillboardName());
-                    String info = bb.GetBillboardInfo(temp.getBillboardName());
-                    BBInfoReply bbInfoReply = new BBInfoReply(sessionToken, info);
+                    BBInfoReply bbInfoReply = new BBInfoReply(temp.getSessionToken(), bb.textColour, bb.backgroundColour, bb.message,
+                            bb.image, bb.information, bb.informationColour);
                     oos.writeObject(bbInfoReply);
                 } catch (Exception e) {
                     generalReply = new GeneralReply(sessionToken,false);
@@ -723,6 +726,7 @@ public class Server {
         } else if (clientRequest instanceof ScheduleBillboardRequest) {
             ScheduleBillboardRequest scheduleBillboardRequest = (ScheduleBillboardRequest) clientRequest;
             SessionToken sessionToken = findSessionToken(scheduleBillboardRequest.getSessionToken());
+
             if (!tokenCheck(scheduleBillboardRequest.getSessionToken())) {
                 sessionTokens.remove(sessionToken);
                 LogoutReply logoutReply = new LogoutReply(true);
@@ -734,7 +738,13 @@ public class Server {
                 GeneralReply generalReply;
                 try {
                     ScheduleSQL Schedule = new ScheduleSQL();
-                    Schedule.ScheduleBillboard(scheduleBillboardRequest.getBillboardName(), scheduleBillboardRequest.getScheduledTime(), scheduleBillboardRequest.getDuration(), scheduleBillboardRequest.getReoccurType(), scheduleBillboardRequest.getReoccurAmount());
+
+                    Schedule.ScheduleBillboard(scheduleBillboardRequest.getBillboardName(),
+                            scheduleBillboardRequest.getScheduledTime(), scheduleBillboardRequest.getDuration(),
+                            scheduleBillboardRequest.getReoccurType(), scheduleBillboardRequest.getReoccurAmount(),
+                            scheduleBillboardRequest.getUserName());
+                    generalReply = new GeneralReply(sessionToken, true);
+                    oos.writeObject(generalReply);
                 } catch (Exception e) {
                     generalReply = new GeneralReply(sessionToken, false);
                     oos.writeObject(generalReply);
@@ -744,6 +754,7 @@ public class Server {
         } else if (clientRequest instanceof DeleteScheduleRequest) {
             DeleteScheduleRequest deleteScheduleRequest = (DeleteScheduleRequest) clientRequest;
             SessionToken sessionToken = findSessionToken(deleteScheduleRequest.getSessionToken());
+
             if (!tokenCheck(deleteScheduleRequest.getSessionToken())) {
                 sessionTokens.remove(sessionToken);
                 LogoutReply logoutReply = new LogoutReply(true);
@@ -756,6 +767,8 @@ public class Server {
                 try {
                     ScheduleSQL Schedule = new ScheduleSQL();
                     Schedule.DeleteSchedule(deleteScheduleRequest.getScheduledName(), deleteScheduleRequest.getScheduledTime());
+                    generalReply = new GeneralReply(sessionToken, true);
+                    oos.writeObject(generalReply);
                 } catch (Exception e) {
                     generalReply = new GeneralReply(sessionToken, false);
                     oos.writeObject(generalReply);
@@ -764,9 +777,21 @@ public class Server {
             oos.flush();
         } else if (clientRequest instanceof WeeklyScheduleRequest) {
             WeeklyScheduleRequest weeklyscheduleRequest = (WeeklyScheduleRequest) clientRequest;
+            SessionToken sessionToken = findSessionToken(weeklyscheduleRequest.getSessionToken());
             ScheduleSQL Schedule = new ScheduleSQL();
-            WeeklyScheduleReply weeklyscheduleReply = new WeeklyScheduleReply(Schedule.ScheduledInformation());
-            oos.writeObject(weeklyscheduleReply);
+
+            if (!tokenCheck(weeklyscheduleRequest.getSessionToken())) {
+                sessionTokens.remove(sessionToken);
+                LogoutReply logoutReply = new LogoutReply(true);
+                oos.writeObject(logoutReply);
+            }
+            else {
+                // Reset the used time of the session token.
+                resetSessionTokenTime(sessionToken);
+                sessionToken.setUsedTime(LocalDateTime.now());
+                WeeklyScheduleReply weeklyscheduleReply = new WeeklyScheduleReply(sessionToken, Schedule.ScheduledInformation());
+                oos.writeObject(weeklyscheduleReply);
+            }
         }
         else if (clientRequest instanceof GetCurrentScheduledRequest) {
             GetCurrentScheduledRequest GetCurrentScheduledRequest = (GetCurrentScheduledRequest) clientRequest;

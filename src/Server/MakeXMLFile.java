@@ -109,7 +109,6 @@ public class MakeXMLFile {
         } catch (TransformerException e) {
             e.printStackTrace();
         }
-        System.out.println("XML file Created");
     }
 
     /**

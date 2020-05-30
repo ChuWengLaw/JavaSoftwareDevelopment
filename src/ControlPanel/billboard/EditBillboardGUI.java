@@ -2,6 +2,7 @@ package ControlPanel.billboard;
 
 import ControlPanel.Client;
 import ControlPanel.Main;
+import ControlPanel.schedule.CalanderScheduleGUI;
 import Server.Request.EditBBRequest;
 
 import javax.swing.*;
@@ -82,7 +83,9 @@ public class EditBillboardGUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 EditBBRequest temp = new EditBBRequest(Main.loginUser.getSessionToken(), Main.loginUser.getUserName(),
-                        txtBillboardName.getText().toLowerCase(), Main.loginUser.getEditAllBillboardPermission(), Main.loginUser.getCreateBillboardsPermission());
+                        txtBillboardName.getText().toLowerCase(), Main.loginUser.getEditAllBillboardPermission(),
+                        Main.loginUser.getCreateBillboardsPermission(), CalanderScheduleGUI.IsCurrentlyScheduled(txtBillboardName.getText().toLowerCase()));
+
                 try {
                     Client.connectServer(temp);
                     if(Client.isRequestState()){
@@ -200,14 +203,14 @@ public class EditBillboardGUI extends JFrame {
                     }
                 } else if (!(txtTextColour.getText().isBlank() && txtInformationColour.getText().isBlank())) {
                     try {
-                        Class.forName("java.awt.Color").getField(txtTextColour.getText());
+                        Class.forName("java.awt.Color").getField(txtTextColour.getText().toLowerCase());
                     } catch (NoSuchFieldException ex) {
                         JOptionPane.showMessageDialog(null, "Please enter a valid colour into the text colour field");
                     } catch (ClassNotFoundException ex) {
                         ex.printStackTrace();
                     }
                     try {
-                        Class.forName("java.awt.Color").getField(txtInformationColour.getText());
+                        Class.forName("java.awt.Color").getField(txtInformationColour.getText().toLowerCase());
                     } catch (NoSuchFieldException ex) {
                         JOptionPane.showMessageDialog(null, "Please enter a valid colour into the information colour field");
                     } catch (ClassNotFoundException ex) {
@@ -215,14 +218,14 @@ public class EditBillboardGUI extends JFrame {
                     }
                 } else if (!(txtInformationColour.getText().isBlank() && txtBackgroundColour.getText().isBlank())) {
                     try {
-                        Class.forName("java.awt.Color").getField(txtBackgroundColour.getText());
+                        Class.forName("java.awt.Color").getField(txtBackgroundColour.getText().toLowerCase());
                     } catch (NoSuchFieldException ex) {
                         JOptionPane.showMessageDialog(null, "Please enter a valid colour into the background colour field");
                     } catch (ClassNotFoundException ex) {
                         ex.printStackTrace();
                     }
                     try {
-                        Class.forName("java.awt.Color").getField(txtInformationColour.getText());
+                        Class.forName("java.awt.Color").getField(txtInformationColour.getText().toLowerCase());
                     } catch (NoSuchFieldException ex) {
                         JOptionPane.showMessageDialog(null, "Please enter a valid colour into the information colour field");
                     } catch (ClassNotFoundException ex) {
@@ -230,7 +233,7 @@ public class EditBillboardGUI extends JFrame {
                     }
                 } else if (!txtTextColour.getText().isBlank()) {
                     try {
-                        Class.forName("java.awt.Color").getField(txtTextColour.getText());
+                        Class.forName("java.awt.Color").getField(txtTextColour.getText().toLowerCase());
                     } catch (ClassNotFoundException ex) {
                         ex.printStackTrace();
                     } catch (NoSuchFieldException ex) {
@@ -238,7 +241,7 @@ public class EditBillboardGUI extends JFrame {
                     }
                 } else if (!txtBackgroundColour.getText().isBlank()) {
                     try {
-                        Class.forName("java.awt.Color").getField(txtBackgroundColour.getText());
+                        Class.forName("java.awt.Color").getField(txtBackgroundColour.getText().toLowerCase());
                     } catch (ClassNotFoundException ex) {
                         ex.printStackTrace();
                     } catch (NoSuchFieldException ex) {
@@ -246,7 +249,7 @@ public class EditBillboardGUI extends JFrame {
                     }
                 } else if (!txtInformationColour.getText().isBlank()) {
                     try {
-                        Class.forName("java.awt.Color").getField(txtInformationColour.getText());
+                        Class.forName("java.awt.Color").getField(txtInformationColour.getText().toLowerCase());
                     } catch (ClassNotFoundException ex) {
                         ex.printStackTrace();
                     } catch (NoSuchFieldException ex) {
@@ -283,6 +286,7 @@ public class EditBillboardGUI extends JFrame {
                     txtImage.setText("");
                     txtInformation.setText("");
                     txtInformationColour.setText("");
+                    setVisible(false);
                 }
             }
         });
@@ -354,7 +358,10 @@ public class EditBillboardGUI extends JFrame {
 
         getContentPane().add(editBBPanel);
         //set the location of the GUI
-        setLocation(900, 350);
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        int width = (int)screenSize.getWidth();
+        int height = (int)screenSize.getHeight();
+        setLocation(width/4,height/4);
 
         //make changes and then send to GUI
         pack();

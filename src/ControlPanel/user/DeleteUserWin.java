@@ -50,6 +50,10 @@ public class DeleteUserWin extends JFrame{
             if (usernamefield.getText().isEmpty()) {
                 JOptionPane.showMessageDialog(null, "Username cannot be empty");
             }
+            else if (usernamefield.getText().equals(Main.loginUser.getUserName()))
+            {
+                JOptionPane.showMessageDialog(null, "Hey you, Stop that. You cannot delete your own account");
+            }
             else{
                 DeleteUserRequest deleteUser = new DeleteUserRequest(usernamefield.getText(), Main.loginUser.getSessionToken());
 
@@ -91,7 +95,10 @@ public class DeleteUserWin extends JFrame{
 
         getContentPane().add(deletepanel);
 
-        setLocation(900,350);
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        int width = (int)screenSize.getWidth();
+        int height = (int)screenSize.getHeight();
+        setLocation(width/4,height/4);
         pack();
     }
 }

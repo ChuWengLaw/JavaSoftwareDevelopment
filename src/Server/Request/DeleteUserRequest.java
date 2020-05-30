@@ -13,9 +13,10 @@ import java.io.Serializable;
 public class DeleteUserRequest implements Serializable {
     private String userName;
     private SessionToken sessionToken;
-
+  
     /**
      *This is the constructor that stores the data sent from client
+     * build constructor and Getter functions
      * @param userName inputted username
      * @param sessionToken login user's session token
      */

@@ -33,6 +33,7 @@ public class EditUserRequest implements Serializable {
      * @param editUsersPermission edited user's edit user permission
      * @param havePassword a boolean tell the server if there is password
      */
+    //build constructor and Getter functions
     public EditUserRequest(SessionToken sessionToken, String userName, String userPassword, boolean createBillboardsPermission,
                            boolean editAllBillboardPermission, boolean scheduleBillboardsPermission, boolean editUsersPermission, boolean havePassword) {
         this.sessionToken = sessionToken;

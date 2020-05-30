@@ -7,6 +7,7 @@ public class DeleteScheduleRequest implements Serializable {
     private String ScheduledName;
     private String ScheduledTime;
     private SessionToken sessionToken;
+    //build constructor and Getter functions
     public DeleteScheduleRequest(String ScheduledName, String ScheduledTime, SessionToken sessionToken) {
         this.ScheduledName = ScheduledName;
         this.ScheduledTime = ScheduledTime;

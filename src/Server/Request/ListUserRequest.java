@@ -15,6 +15,7 @@ public class ListUserRequest implements Serializable {
 
     /**
      * This is the constructor that stores the data sent from the client
+     * build constructor and Getter functions
      * @param sessionToken
      */
     public ListUserRequest(SessionToken sessionToken){

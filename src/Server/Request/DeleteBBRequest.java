@@ -9,6 +9,7 @@ public class DeleteBBRequest implements Serializable {
     private SessionToken sessionToken;
     private Boolean EditAllBillboardsPermission, CreateBillboardPermission,IsScheduled;
 
+    //build constructor and Getter functions
     public DeleteBBRequest(SessionToken sessionToken, String BillboardName, String LoginUser,
                            Boolean EditAllBillboardsPermission, Boolean CreateBillboardPermission, Boolean IsScheduled) {
         this.BillboardName = BillboardName;

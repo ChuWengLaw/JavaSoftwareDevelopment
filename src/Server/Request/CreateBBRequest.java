@@ -9,6 +9,8 @@ public class CreateBBRequest implements Serializable {
     private Boolean CreateBillboardPermission;
     private String BillboardName, UserName, TextColour, BackgroundColour, Message, Image, Information, InformationColour;
 
+
+    //build constructor and Getter functions
     public CreateBBRequest(SessionToken sessionToken, String BillboardName, String UserName, String TextColour, String BackgroundColour,
                            String Message, String Image, String Information, String InformationColour, boolean CreateBillboardPermission) {
         this.sessionToken = sessionToken;

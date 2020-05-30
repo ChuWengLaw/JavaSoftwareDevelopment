@@ -9,6 +9,7 @@ public class XmlReply implements Serializable {
     private SessionToken sessionToken;
     private File billboardXml;
 
+    //build constructor and Getter functions
     public XmlReply(SessionToken sessionToken, File billboardXml) {
         this.sessionToken = sessionToken;
         this.billboardXml = billboardXml;

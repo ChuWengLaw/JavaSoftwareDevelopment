@@ -723,10 +723,11 @@ public class Server {
                 }
             }
             oos.flush();
+            // If the request is an instance of Schedule Billboard Request
         } else if (clientRequest instanceof ScheduleBillboardRequest) {
             ScheduleBillboardRequest scheduleBillboardRequest = (ScheduleBillboardRequest) clientRequest;
             SessionToken sessionToken = findSessionToken(scheduleBillboardRequest.getSessionToken());
-
+            //log out if not valid session token
             if (!tokenCheck(scheduleBillboardRequest.getSessionToken())) {
                 sessionTokens.remove(sessionToken);
                 LogoutReply logoutReply = new LogoutReply(true);
@@ -738,7 +739,7 @@ public class Server {
                 GeneralReply generalReply;
                 try {
                     ScheduleSQL Schedule = new ScheduleSQL();
-
+                    //general reply because all the sql code is independent and does not return anything
                     Schedule.ScheduleBillboard(scheduleBillboardRequest.getBillboardName(),
                             scheduleBillboardRequest.getScheduledTime(), scheduleBillboardRequest.getDuration(),
                             scheduleBillboardRequest.getReoccurType(), scheduleBillboardRequest.getReoccurAmount(),
@@ -751,10 +752,11 @@ public class Server {
                 }
             }
             oos.flush();
+            // If the request is an instance of Delete Schedule Request
         } else if (clientRequest instanceof DeleteScheduleRequest) {
             DeleteScheduleRequest deleteScheduleRequest = (DeleteScheduleRequest) clientRequest;
             SessionToken sessionToken = findSessionToken(deleteScheduleRequest.getSessionToken());
-
+            //log out if not valid session token
             if (!tokenCheck(deleteScheduleRequest.getSessionToken())) {
                 sessionTokens.remove(sessionToken);
                 LogoutReply logoutReply = new LogoutReply(true);
@@ -765,6 +767,7 @@ public class Server {
                 sessionToken.setUsedTime(LocalDateTime.now());
                 GeneralReply generalReply;
                 try {
+                    //general reply because all the sql code is independent and does not return anything
                     ScheduleSQL Schedule = new ScheduleSQL();
                     Schedule.DeleteSchedule(deleteScheduleRequest.getScheduledName(), deleteScheduleRequest.getScheduledTime());
                     generalReply = new GeneralReply(sessionToken, true);
@@ -775,11 +778,12 @@ public class Server {
                 }
             }
             oos.flush();
+            // If the request is an instance of Weekly Schedule Request
         } else if (clientRequest instanceof WeeklyScheduleRequest) {
             WeeklyScheduleRequest weeklyscheduleRequest = (WeeklyScheduleRequest) clientRequest;
             SessionToken sessionToken = findSessionToken(weeklyscheduleRequest.getSessionToken());
             ScheduleSQL Schedule = new ScheduleSQL();
-
+            //log out if not valid session token
             if (!tokenCheck(weeklyscheduleRequest.getSessionToken())) {
                 sessionTokens.remove(sessionToken);
                 LogoutReply logoutReply = new LogoutReply(true);
@@ -789,13 +793,16 @@ public class Server {
                 // Reset the used time of the session token.
                 resetSessionTokenTime(sessionToken);
                 sessionToken.setUsedTime(LocalDateTime.now());
+                //Send the reply that contains a JTable with all the scheduled billboards
                 WeeklyScheduleReply weeklyscheduleReply = new WeeklyScheduleReply(sessionToken, Schedule.ScheduledInformation());
                 oos.writeObject(weeklyscheduleReply);
             }
         }
+        // If the request is an instance of Get Current Schedule Request
         else if (clientRequest instanceof GetCurrentScheduledRequest) {
             GetCurrentScheduledRequest GetCurrentScheduledRequest = (GetCurrentScheduledRequest) clientRequest;
             ScheduleSQL Schedule = new ScheduleSQL();
+            //Returns the reply with the current scheduled billboard
             GetCurrentScheduledReply getcurrentscheduledReply = new GetCurrentScheduledReply(Schedule.GetTitleCurrentScheduled(), true);
             oos.writeObject(getcurrentscheduledReply);
         }

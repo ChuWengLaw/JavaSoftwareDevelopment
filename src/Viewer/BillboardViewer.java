@@ -139,7 +139,7 @@ public class BillboardViewer extends JFrame {
                 lblNoSchedule.setForeground(Color.red);
                 lblNoSchedule.setHorizontalAlignment(SwingConstants.CENTER);
                 lblNoSchedule.setVerticalAlignment(SwingConstants.CENTER);
-                
+
                 JLabel picNoSchedule = new JLabel();
                 URL url = new URL("https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRh_IKTuBKhex6jQsgVoMtSPnc0ZbR0RAdzv7UfBMbOMS45Wj_h&usqp=CAU");
                 BufferedImage image = ImageIO.read(url);

@@ -527,6 +527,7 @@ public class CreateBillboardGUI extends JFrame {
             byte[] bytes = new byte[(int) file.length()];
             fileInputStreamReader.read(bytes);
             encodedString = Base64.getEncoder().encodeToString(bytes);
+            fileInputStreamReader.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {

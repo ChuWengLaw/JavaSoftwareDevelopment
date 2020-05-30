@@ -68,7 +68,7 @@ public class DeleteBillboardGUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 DeleteBBRequest temp = new DeleteBBRequest(Main.loginUser.getSessionToken(), txtBillboardName.getText().toLowerCase(), Main.loginUser.getUserName(),
-                        Main.loginUser.getEditAllBillboardPermission(), Main.loginUser.getCreateBillboardsPermission(), CalanderScheduleGUI.IsCurrentlyScheduled(txtBillboardName.getText()));
+                        Main.loginUser.getEditAllBillboardPermission(), Main.loginUser.getCreateBillboardsPermission(), CalanderScheduleGUI.IsCurrentlyScheduled(txtBillboardName.getText().toLowerCase()));
                 try {
                     Client.connectServer(temp);
                     if(Client.isRequestState()){

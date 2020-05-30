@@ -154,20 +154,18 @@ public class CreateBillboardGUI extends JFrame {
                             }
                             billboard.appendChild(info);
                         }
-
-
                         TransformerFactory transformerFactory = TransformerFactory.newInstance();
                         Transformer transformer = transformerFactory.newTransformer();
                         DOMSource domSource = new DOMSource(document);
                         StreamResult streamResult = new StreamResult(new File(path));
                         transformer.transform(domSource, streamResult);
+                        new PreviewBillboardGUI("createpreview");
                     } catch (ParserConfigurationException | TransformerConfigurationException ex) {
                         ex.printStackTrace();
                     } catch (TransformerException ex) {
                         ex.printStackTrace();
                     }
                 }
-                new PreviewBillboardGUI("createpreview");
             }
         });
         //create the button and define what text it will contain

@@ -8,6 +8,8 @@ import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.filechooser.FileSystemView;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -32,6 +34,7 @@ public class CreateBillboardGUI extends JFrame {
     //define element to be used
     private JButton btnPreview;
     private JButton btnSubmit;
+    private JButton btnBrowse;
 
     //define the labels
     private JLabel lblBillboardName;
@@ -75,7 +78,7 @@ public class CreateBillboardGUI extends JFrame {
         setLayout(new BorderLayout());
         //create the button and define what text it will contain
         btnPreview = createButton("Preview");
-        //create and actionListener for the submit button
+        //create and actionListener for the preview button
         btnPreview.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -165,6 +168,31 @@ public class CreateBillboardGUI extends JFrame {
                     } catch (TransformerException ex) {
                         ex.printStackTrace();
                     }
+                }
+            }
+        });
+        //create the button and define what text it will contain
+        btnBrowse = createButton("Browse an image");
+        //create and actionListener for the browse button
+        btnBrowse.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //Create a file chooser
+                JFileChooser jfc = new JFileChooser(FileSystemView.getFileSystemView());
+                jfc.setDialogTitle("Select a billboard xml file");
+                jfc.setAcceptAllFileFilterUsed(false);
+                FileNameExtensionFilter bmp = new FileNameExtensionFilter("BMP", "bmp");
+                FileNameExtensionFilter jpeg = new FileNameExtensionFilter("JPEG", "jpeg");
+                FileNameExtensionFilter png = new FileNameExtensionFilter("PNG", "png");
+                jfc.addChoosableFileFilter(bmp);
+                jfc.addChoosableFileFilter(jpeg);
+                jfc.addChoosableFileFilter(png);
+                int returnValue = jfc.showOpenDialog(null);
+                if (returnValue == JFileChooser.APPROVE_OPTION) {
+                    File selectedFile = jfc.getSelectedFile();
+                    //Convert to base64 encoded
+                    //Set the text field to the converted value
+                    txtImage.setText("base64");
                 }
             }
         });
@@ -297,6 +325,10 @@ public class CreateBillboardGUI extends JFrame {
         createBBConstraints.gridx = 0;
         createBBConstraints.gridy = 8;
         createBBPanel.add(btnPreview, createBBConstraints);
+        createBBConstraints.anchor = GridBagConstraints.CENTER;
+        createBBConstraints.gridx = 0;
+        createBBConstraints.gridy = 8;
+        createBBPanel.add(btnBrowse, createBBConstraints);
         createBBConstraints.anchor = GridBagConstraints.EAST;
         createBBConstraints.gridx = 0;
         createBBConstraints.gridy = 8;

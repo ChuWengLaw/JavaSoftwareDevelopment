@@ -65,7 +65,9 @@ public class Server {
                     + "ScheduleTime DATETIME NOT NULL,"
                     + "Duration INT NOT NULL,"
                     + "RecurType INT NOT NULL,"
-                    + "RecurDuration INT NOT NULL" + ");"; //only required for minutes
+                    + "RecurDuration INT NOT NULL,"
+                    + "UserName VARCHAR(30)"
+                    /*+ "ID INT AUTO_INCREMENT PRIMARY KEY" */+ ");"; //only required for minutes
 
     /**
      * This method starts up the server socket connection and receives requests from client
@@ -684,8 +686,8 @@ public class Server {
                 try {
                     BillboardSQL bb = new BillboardSQL();
                     bb.GetBillboardInfo(temp.getBillboardName());
-                    String info = bb.GetBillboardInfo(temp.getBillboardName());
-                    BBInfoReply bbInfoReply = new BBInfoReply(sessionToken, info);
+                    BBInfoReply bbInfoReply = new BBInfoReply(temp.getSessionToken(), bb.textColour, bb.backgroundColour, bb.message,
+                            bb.image, bb.information, bb.informationColour);
                     oos.writeObject(bbInfoReply);
                 } catch (Exception e) {
                     generalReply = new GeneralReply(sessionToken,false);
@@ -736,7 +738,13 @@ public class Server {
                 GeneralReply generalReply;
                 try {
                     ScheduleSQL Schedule = new ScheduleSQL();
-                    Schedule.ScheduleBillboard(scheduleBillboardRequest.getBillboardName(), scheduleBillboardRequest.getScheduledTime(), scheduleBillboardRequest.getDuration(), scheduleBillboardRequest.getReoccurType(), scheduleBillboardRequest.getReoccurAmount());
+
+                    Schedule.ScheduleBillboard(scheduleBillboardRequest.getBillboardName(),
+                            scheduleBillboardRequest.getScheduledTime(), scheduleBillboardRequest.getDuration(),
+                            scheduleBillboardRequest.getReoccurType(), scheduleBillboardRequest.getReoccurAmount(),
+                            scheduleBillboardRequest.getUserName());
+                    generalReply = new GeneralReply(sessionToken, true);
+                    oos.writeObject(generalReply);
                 } catch (Exception e) {
                     generalReply = new GeneralReply(sessionToken, false);
                     oos.writeObject(generalReply);
@@ -759,6 +767,8 @@ public class Server {
                 try {
                     ScheduleSQL Schedule = new ScheduleSQL();
                     Schedule.DeleteSchedule(deleteScheduleRequest.getScheduledName(), deleteScheduleRequest.getScheduledTime());
+                    generalReply = new GeneralReply(sessionToken, true);
+                    oos.writeObject(generalReply);
                 } catch (Exception e) {
                     generalReply = new GeneralReply(sessionToken, false);
                     oos.writeObject(generalReply);

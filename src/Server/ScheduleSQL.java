@@ -12,9 +12,9 @@ public class ScheduleSQL {
     public ScheduleSQL() {}
 
     public void ScheduleBillboard(String BillboardName, String DateTime, int Duration,
-                                  int RecurType, int RecurAmount) throws SQLException {
+                                  int RecurType, int RecurAmount, String UserName) throws SQLException {
         boolean ExistFlag = false;
-
+        System.out.println("Reaches sql");
         try {
             ResultSet resultSet = Server.statement.executeQuery("SELECT BillboardName FROM Billboard");
             while (resultSet.next()) {
@@ -27,12 +27,14 @@ public class ScheduleSQL {
                 }
             }
             if (ExistFlag == true) {
-                ResultSet Insert = Server.statement.executeQuery("INSERT INTO Schedule VALUES ('" +
+                System.out.println("Reaches sql");
+                ResultSet Insert = Server.statement.executeQuery("INSERT INTO Schedule (BillboardName,ScheduleTime, Duration, RecurType, RecurDuration, UserName) VALUES ('" +
                         BillboardName + "','" + DateTime + "','" +
                         Duration + "','" + RecurType + "','" + RecurAmount +
+                                "','"+ UserName+
                         "');");
             }
-            //if billboard does not exist it will create a new billboard
+            //if billboard does not exist dont schedule
             else {
 
             }
@@ -177,15 +179,9 @@ public class ScheduleSQL {
     }
 
     public JTable GetScheduledInfo(SessionToken Token) throws SQLException {
-        //, including each
-        //billboard’s name, creator, time scheduled and how long it has been scheduled to run
-        //for.
         JTable table = new JTable();
         try {
-            ResultSet resultSet = Server.statement.executeQuery("SELECT s.BillboardName, billboard.UserName, s.ScheduleTime, s.Duration " +
-                    "FROM Schedule AS s " +
-                    "INNER JOIN billboard ON s.BillboardName=billboard.BillboardName" +
-                    ";");
+            ResultSet resultSet = Server.statement.executeQuery("SELECT BillboardName, UserName, ScheduleTime, Duration FROM Schedule;");
             ResultSetMetaData rsmd = resultSet.getMetaData();
             int columnCount = rsmd.getColumnCount();
             Vector columnHeader = new Vector(columnCount);

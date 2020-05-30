@@ -23,6 +23,7 @@ import javax.swing.border.EmptyBorder;
 
 public class CalanderScheduleGUI extends JFrame {
 
+
     private JButton btnBillboardScheduler = new JButton();
     private JButton btnDeleteSchedule = new JButton();
     private JButton btnViewAllScheduled = new JButton();
@@ -104,15 +105,18 @@ public class CalanderScheduleGUI extends JFrame {
                 JTable table = Client.getBBTable();
                 int rows = table.getRowCount();
                 boolean BillboardExists = false;
-                for (int i = 0; i < rows; i++)
+                if (!txtViewBillboard.getText().isEmpty())
                 {
-                    String tableString = table.getValueAt(i,0).toString().toLowerCase();
-                    String input = txtViewBillboard.getText().toLowerCase();
-                    if (tableString.equals(input))
+                    for (int i = 0; i < rows; i++)
                     {
-                        new PreviewBillboardGUI(txtViewBillboard.getText());
-                        BillboardExists = true;
-                        break;
+                        String tableString = table.getValueAt(i,0).toString().toLowerCase();
+                        String input = txtViewBillboard.getText().toLowerCase();
+                        if (tableString.equals(input))
+                        {
+                            new PreviewBillboardGUI(txtViewBillboard.getText());
+                            BillboardExists = true;
+                            break;
+                        }
                     }
                 }
                 if (!BillboardExists)

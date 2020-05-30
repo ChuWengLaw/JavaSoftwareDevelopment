@@ -5,19 +5,36 @@ import Server.SessionToken;
 import java.io.Serializable;
 
 public class BBInfoReply implements Serializable {
-    private SessionToken sessionToken;
-    private String information;
+    private SessionToken token;
+    private String EditTextColour, EditBGColour, EditMsg, EditImg, EditInfo, EditInfoColour;
 
-    public BBInfoReply(SessionToken sessionToken, String info) {
-        this.sessionToken = sessionToken;
-        this.information = info;
+    public BBInfoReply(SessionToken token, String EditTextColour, String EditBGColour, String EditMsg, String EditImg, String EditInfo, String EditInfoColour) {
+        this.token = token;
+        this.EditTextColour = EditTextColour;
+        this.EditBGColour = EditBGColour;
+        this.EditMsg = EditMsg;
+        this.EditImg = EditImg;
+        this.EditInfo = EditInfo;
+        this.EditInfoColour = EditInfoColour;
     }
 
-    public String getInformation() {
-        return information;
+    public String getEditBGColour() {
+        return EditBGColour;
     }
-
-    public SessionToken getSessionToken() {
-        return sessionToken;
+    public String getEditTextColour() {
+        return EditTextColour;
     }
+    public String getEditMsg() {
+        return EditMsg;
+    }
+    public String getEditImg() {
+        return EditImg;
+    }
+    public String getEditInfo() {
+        return EditInfo;
+    }
+    public String getEditInfoColour() {
+        return EditInfoColour;
+    }
+    public SessionToken getSessionToken() { return token; }
 }

@@ -67,12 +67,16 @@ public class UserSQL {
     static void deleteUserBillboardSQL(String userName) throws SQLException {
         PreparedStatement deleteUserStatement = Server.connection.prepareStatement("DELETE FROM user WHERE userName = ?");
         PreparedStatement deleteUserBillboardStatement = Server.connection.prepareStatement("DELETE from Billboard WHERE userName =?");
+        PreparedStatement deleteUserScheduleStatement = Server.connection.prepareStatement("DELETE from Schedule WHERE UserName =?");
         deleteUserStatement.setString(1, userName);
         deleteUserBillboardStatement.setString(1, userName);
+        deleteUserScheduleStatement.setString(1, userName);
         deleteUserStatement.executeQuery();
         deleteUserBillboardStatement.executeQuery();
+        deleteUserScheduleStatement.executeQuery();
         deleteUserBillboardStatement.close();
         deleteUserStatement.close();
+        deleteUserScheduleStatement.close();
     }
 
     static JTable listUserSQL() throws SQLException {

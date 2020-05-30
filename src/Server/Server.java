@@ -45,7 +45,7 @@ public class Server {
                     + "TextColour VARCHAR(30),"
                     + "BackGroundColour VARCHAR(30),"
                     + "Message VARCHAR(30),"
-                    + "Image VARCHAR(30),"
+                    + "Image LONGTEXT,"
                     + "Information VARCHAR(30),"
                     + "InfoColour VARCHAR(30)" + ");";
 
@@ -221,20 +221,13 @@ public class Server {
      */
     private static boolean tokenCheck(SessionToken sessionToken) {
         boolean tokenAvailableState;
-
-        // This is used for testing, so the token will expire after one minute of hanging.
-        if (sessionToken.getUsedTime().plusMinutes(10).isAfter(LocalDateTime.now())) {
+        
+        if(sessionToken.getUsedTime().plusHours(expiryHour).isAfter(LocalDateTime.now())){
             tokenAvailableState = true;
-        } else {
+        }
+        else{
             tokenAvailableState = false;
         }
-
-//        if(sessionToken.getUsedTime().plusHours(expiryHour).isAfter(LocalDateTime.now())){
-//            tokenAvailableState = true;
-//        }
-//        else{
-//            tokenAvailableState = false;
-//        }
 
         return tokenAvailableState;
     }

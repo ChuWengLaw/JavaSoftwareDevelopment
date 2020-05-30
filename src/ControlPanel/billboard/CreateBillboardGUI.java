@@ -401,7 +401,7 @@ public class CreateBillboardGUI extends JFrame {
     private boolean isColourCodeValid(String textInput) {
         boolean valid = false;
         boolean startsWithHash = false;
-        String s2 = textInput.substring(1);
+        String codeString = textInput.substring(1);
 
         if (textInput.length() == 7) {
             if (textInput.charAt(0) == '#') {
@@ -410,10 +410,10 @@ public class CreateBillboardGUI extends JFrame {
         }
 
         if (startsWithHash == true) {
-            for (int i = 0; i < s2.length(); i++) {
-                char c = s2.charAt(i);
+            for (int i = 0; i < codeString.length(); i++) {
+                char c = codeString.charAt(i);
                 if (c != '#') {
-                    if (s2.matches("[A-F]{1,}") || s2.matches("[0-9]{1,}")) {
+                    if (codeString.matches("[A-F]{1,}") || codeString.matches("[0-9]{1,}")) {
                         valid = true;
                     } else {
                         valid = false;

@@ -201,29 +201,31 @@ public class BillboardViewer extends JFrame {
                 //if only the image is present display only the image
                 else if (currentScheduledBillboard.message.isBlank() && currentScheduledBillboard.information.isBlank() && !currentScheduledBillboard.image.isBlank()) {
                     JLabel picture = new JLabel();
-                    try{
-                    //if it is a url image
-                    if (currentScheduledBillboard.image.startsWith("http")) {
-                        URL url = new URL(currentScheduledBillboard.image);
-                        BufferedImage image = ImageIO.read(url);
-                        if (image.getWidth() < image.getHeight() || image.getHeight() == image.getWidth()) {
-                            picture.setIcon(new ImageIcon(image.getScaledInstance(-1, screenHeight / 2, Image.SCALE_SMOOTH)));
+                    try {
+                        //if it is a url image
+                        if (currentScheduledBillboard.image.startsWith("http")) {
+                            URL url = new URL(currentScheduledBillboard.image);
+                            BufferedImage image = ImageIO.read(url);
+                            if (image.getWidth() < image.getHeight() || image.getHeight() == image.getWidth()) {
+                                picture.setIcon(new ImageIcon(image.getScaledInstance(-1, screenHeight / 2, Image.SCALE_SMOOTH)));
+                            } else {
+                                picture.setIcon(new ImageIcon(image.getScaledInstance(screenWidth / 2, -1, Image.SCALE_SMOOTH)));
+                            }
+                            //else if image is in data form
                         } else {
-                            picture.setIcon(new ImageIcon(image.getScaledInstance(screenWidth / 2, -1, Image.SCALE_SMOOTH)));
+                            byte[] encodedImage;
+                            encodedImage = currentScheduledBillboard.image.getBytes();
+                            byte[] decodedImage = Base64.getDecoder().decode(encodedImage);
+                            BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedImage));
+                            if (image.getWidth() < image.getHeight() || image.getHeight() == image.getWidth()) {
+                                picture.setIcon(new ImageIcon(image.getScaledInstance(-1, screenHeight / 2, Image.SCALE_SMOOTH)));
+                            } else {
+                                picture.setIcon(new ImageIcon(image.getScaledInstance(screenWidth / 2, -1, Image.SCALE_SMOOTH)));
+                            }
                         }
-                        //else if image is in data form
-                    } else {
-                        byte[] encodedImage;
-                        encodedImage = currentScheduledBillboard.image.getBytes();
-                        byte[] decodedImage = Base64.getDecoder().decode(encodedImage);
-                        BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedImage));
-                        if (image.getWidth() < image.getHeight() || image.getHeight() == image.getWidth()) {
-                            picture.setIcon(new ImageIcon(image.getScaledInstance(-1, screenHeight / 2, Image.SCALE_SMOOTH)));
-                        } else {
-                            picture.setIcon(new ImageIcon(image.getScaledInstance(screenWidth / 2, -1, Image.SCALE_SMOOTH)));
-                        }
-                    }}
-                    catch (NullPointerException np){
+                    }
+                    //if the image is invalid then display a message saying invalid image
+                    catch (NullPointerException np) {
                         picture.setText("Image is not a valid image");
                         picture.setFont(picture.getFont().deriveFont(32.0f));
                     }
@@ -287,7 +289,7 @@ public class BillboardViewer extends JFrame {
                     messageLabel.setFont(new Font(messageLabel.getFont().getName(), Font.PLAIN, fontSizeToUse));
 
                     JLabel picture = new JLabel();
-                    try{
+                    try {
                         //if it is a url image
                         if (currentScheduledBillboard.image.startsWith("http")) {
                             URL url = new URL(currentScheduledBillboard.image);
@@ -308,8 +310,10 @@ public class BillboardViewer extends JFrame {
                             } else {
                                 picture.setIcon(new ImageIcon(image.getScaledInstance(screenWidth / 2, -1, Image.SCALE_SMOOTH)));
                             }
-                        }}
-                    catch (NullPointerException np){
+                        }
+                    }
+                    //if the image is invalid then display a message saying invalid image
+                    catch (NullPointerException np) {
                         picture.setText("Image is not a valid image");
                         picture.setFont(picture.getFont().deriveFont(32.0f));
                     }
@@ -380,7 +384,7 @@ public class BillboardViewer extends JFrame {
                     panel.setBackground(currentScheduledBillboard.backgroundColour);
 
                     JLabel picture = new JLabel();
-                    try{
+                    try {
                         //if it is a url image
                         if (currentScheduledBillboard.image.startsWith("http")) {
                             URL url = new URL(currentScheduledBillboard.image);
@@ -401,8 +405,10 @@ public class BillboardViewer extends JFrame {
                             } else {
                                 picture.setIcon(new ImageIcon(image.getScaledInstance(screenWidth / 2, -1, Image.SCALE_SMOOTH)));
                             }
-                        }}
-                    catch (NullPointerException np){
+                        }
+                    }
+                    //if the image is invalid then display a message saying invalid image
+                    catch (NullPointerException np) {
                         picture.setText("Image is not a valid image");
                         picture.setFont(picture.getFont().deriveFont(32.0f));
                     }
@@ -445,7 +451,7 @@ public class BillboardViewer extends JFrame {
                     panel.setBackground(currentScheduledBillboard.backgroundColour);
 
                     JLabel picture = new JLabel();
-                    try{
+                    try {
                         //if it is a url image
                         if (currentScheduledBillboard.image.startsWith("http")) {
                             URL url = new URL(currentScheduledBillboard.image);
@@ -466,8 +472,10 @@ public class BillboardViewer extends JFrame {
                             } else {
                                 picture.setIcon(new ImageIcon(image.getScaledInstance(screenWidth / 3, -1, Image.SCALE_SMOOTH)));
                             }
-                        }}
-                    catch (NullPointerException np){
+                        }
+                    }
+                    //if the image is invalid then display a message saying invalid image
+                    catch (NullPointerException np) {
                         picture.setText("Image is not a valid image");
                         picture.setFont(picture.getFont().deriveFont(32.0f));
                     }

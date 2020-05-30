@@ -203,7 +203,7 @@ public class EditBillboardGUI extends JFrame {
         });
 
         //create the button and define what tex it will contain
-        btnBrowse = createButton("Browse and image");
+        btnBrowse = createButton("Browse an image");
 
         //create an actionListerner for the browse button
         btnBrowse.addActionListener(new ActionListener() {

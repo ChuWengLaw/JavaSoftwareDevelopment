@@ -8,6 +8,7 @@ public class EditBBReply implements Serializable {
     private String EditTextColour, EditBGColour, EditMsg, EditImg, EditInfo, EditInfoColour;
     private SessionToken token;
 
+    //build constructor and Getter functions
     public EditBBReply(SessionToken token, String EditTextColour, String EditBGColour, String EditMsg, String EditImg, String EditInfo, String EditInfoColour) {
         this.token = token;
         this.EditTextColour = EditTextColour;

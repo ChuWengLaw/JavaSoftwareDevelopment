@@ -21,6 +21,7 @@ public class ChangePasswordRequest implements Serializable {
      * @param userName login user's username.
      * @param newPassword login user's new password.
      */
+    //build constructor and Getter functions
     public ChangePasswordRequest(SessionToken sessionToken, String userName, String newPassword) {
         this.sessionToken = sessionToken;
         this.userName = userName;

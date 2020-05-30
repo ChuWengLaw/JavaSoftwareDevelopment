@@ -30,6 +30,8 @@ public class CreateUserRequest implements Serializable {
      * @param scheduleBillboardsPermission new user's schedule billboards permission
      * @param editUsersPermission new user's edit users permission
      */
+
+    //build constructor and Getter functions
     public CreateUserRequest(SessionToken sessionToken, String userName, String userPassword, boolean createBillboardsPermission,
                              boolean editAllBillboardPermission, boolean scheduleBillboardsPermission, boolean editUsersPermission) {
         this.sessionToken = sessionToken;

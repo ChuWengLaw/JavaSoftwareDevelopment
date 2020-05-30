@@ -515,18 +515,23 @@ public class CreateBillboardGUI extends JFrame {
         return text && back && info;
     }
 
+    /**This function takes a file and encodes it as base64 returning the string of the encoded value
+     * @author Lachlan
+     * @param file the image file which is being converted
+     * @return the base64 encoded string
+     */
     private String encodeFileBase64(File file) {
-        String encodedstring = null;
+        String encodedString = null;
         try {
             FileInputStream fileInputStreamReader = new FileInputStream(file);
             byte[] bytes = new byte[(int) file.length()];
             fileInputStreamReader.read(bytes);
-            encodedstring = Base64.getEncoder().encodeToString(bytes);
+            encodedString = Base64.getEncoder().encodeToString(bytes);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return encodedstring;
+        return encodedString;
     }
 }

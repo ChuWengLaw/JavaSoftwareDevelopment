@@ -6,11 +6,17 @@ import ControlPanel.schedule.CalanderScheduleGUI;
 import Server.Request.EditBBRequest;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.filechooser.FileSystemView;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.ConnectException;
+import java.util.Base64;
 
 /**
  * This class creates the GUI to be used to edit a billboard
@@ -22,6 +28,7 @@ public class EditBillboardGUI extends JFrame {
 
     //define element to be used
     private JButton btnSubmit;
+    private JButton btnBrowse;
 
     //define the labels
     private JLabel lblBillboardName;
@@ -291,6 +298,36 @@ public class EditBillboardGUI extends JFrame {
             }
         });
 
+        //create the button and define what tex it will contain
+        btnBrowse = createButton("Browse and image");
+
+        //create an actionListerner for the browse button
+        btnBrowse.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //create a file chooser
+                JFileChooser jfc = new JFileChooser(FileSystemView.getFileSystemView());
+                jfc.setDialogTitle("Select a billboard xml file");
+                jfc.setAcceptAllFileFilterUsed(false);
+                FileNameExtensionFilter bmp = new FileNameExtensionFilter("BMP", "bmp");
+                FileNameExtensionFilter jpeg = new FileNameExtensionFilter("JPEG", "jpeg");
+                FileNameExtensionFilter png = new FileNameExtensionFilter("PNG", "png");
+                jfc.addChoosableFileFilter(bmp);
+                jfc.addChoosableFileFilter(jpeg);
+                jfc.addChoosableFileFilter(png);
+                int returnValue = jfc.showOpenDialog(null);
+                if (returnValue == JFileChooser.APPROVE_OPTION) {
+                    File selectedFile = jfc.getSelectedFile();
+                    //Convert to base64 encoded
+                    String encodstring = encodeFileBase64(selectedFile);
+                    //Set the text field to the converted value
+                    txtImage.setText(encodstring);
+                    txtImage.setForeground(Color.black);
+                    txtImage.setEditable(false);
+                }
+            }
+        });
+
 
         //create the labels
         lblTextColour = createLabel("Text Colour:");
@@ -403,5 +440,25 @@ public class EditBillboardGUI extends JFrame {
         JLabel label = new JLabel();
         label.setText(text);
         return label;
+    }
+
+    /**This function takes a file and encodes it as base64 returning the string of the encoded value
+     * @author Lachlan
+     * @param file the image file which is being converted
+     * @return the base64 encoded string
+     */
+    private String encodeFileBase64 (File file){
+        String encodedString = null;
+        try {
+            FileInputStream fileInputStreamReader = new FileInputStream(file);
+            byte[] bytes = new byte[(int) file.length()];
+            fileInputStreamReader.read(bytes);
+            encodedString = Base64.getEncoder().encodeToString(bytes);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return encodedString;
     }
 }

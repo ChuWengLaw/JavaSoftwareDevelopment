@@ -89,6 +89,7 @@ public class Client {
 
             if (requestState){
                 Main.editUserWin.editedUser = searchReply.getUser();
+                Main.searchUserWin.searchUser = searchReply.getUser();
             }
 
             Main.loginUser.setSessionToken(searchReply.getSessionToken());

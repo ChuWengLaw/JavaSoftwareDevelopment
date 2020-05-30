@@ -17,6 +17,7 @@ public class Main {
     public static EditUserWin editUserWin = new EditUserWin();
     public static DeleteUserWin deleteUserWin = new DeleteUserWin();
     public static ListUserWin listUserWin = new ListUserWin();
+    public static SearchUserInfoWin searchUserWin = new SearchUserInfoWin();
 
     public static void main(String[] args) {SwingUtilities.invokeLater(new LoginWin());}
 }

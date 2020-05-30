@@ -106,8 +106,6 @@ public class EditUserWin extends JFrame{
                 }
 
                 if(Client.isRequestState()){
-                    System.out.println(editedUser.getCreateBillboardsPermission());
-                    System.out.println(Main.loginUser.getCreateBillboardsPermission());
                     userNameTextField.setEditable(false);
                     passwordTextField.setEditable(true);
                     checkBox1.setEnabled(true);

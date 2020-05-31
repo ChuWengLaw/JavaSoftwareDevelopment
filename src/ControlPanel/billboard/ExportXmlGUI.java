@@ -5,6 +5,7 @@ import ControlPanel.Main;
 import Server.Request.XmlRequest;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.filechooser.FileSystemView;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -78,9 +79,17 @@ public class ExportXmlGUI extends JFrame {
                             //Create a file chooser
                             JFileChooser jfc = new JFileChooser(FileSystemView.getFileSystemView());
                             jfc.setDialogTitle("Specify a location to save the file");
+                            jfc.setAcceptAllFileFilterUsed(false);
+                            FileNameExtensionFilter filter = new FileNameExtensionFilter("Xml", "xml");
+                            jfc.addChoosableFileFilter(filter);
                             int returnValue = jfc.showSaveDialog(null);
                             if (returnValue == JFileChooser.APPROVE_OPTION) {
                                 File selectedFile = jfc.getSelectedFile();
+                                // rename the export file if it doesn't contain xml extension
+                                String renamedFilePath = selectedFile.getAbsolutePath();
+                                if (!renamedFilePath.endsWith(".xml")) {
+                                    selectedFile = new File(renamedFilePath + ".xml");
+                                }
                                 Files.copy(Client.getExportFile().toPath(), selectedFile.toPath(),
                                         StandardCopyOption.REPLACE_EXISTING);
                             }

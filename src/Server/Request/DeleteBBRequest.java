@@ -7,7 +7,7 @@ import java.io.Serializable;
 public class DeleteBBRequest implements Serializable {
     private String BillboardName, LoginUser;
     private SessionToken sessionToken;
-    private Boolean EditAllBillboardsPermission, CreateBillboardPermission, IsScheduled;
+    private Boolean EditAllBillboardsPermission, CreateBillboardPermission,IsScheduled;
 
     //build constructor and Getter functions
     public DeleteBBRequest(SessionToken sessionToken, String BillboardName, String LoginUser,

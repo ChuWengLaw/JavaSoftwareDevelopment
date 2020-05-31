@@ -19,7 +19,6 @@ public class EditBBRequest implements Serializable {
         this.CreateBillboardPermission = CreateBillboardPermission;
         this.IsScheduled = IsScheduled;
     }
-
     public EditBBRequest(SessionToken sessionToken, String EditTextColour, String EditBGColour, String EditMsg,
                          String EditImg, String EditInfo, String EditInfoColour) {
         this.sessionToken = sessionToken;
@@ -34,35 +33,27 @@ public class EditBBRequest implements Serializable {
     public SessionToken getSessionToken() {
         return sessionToken;
     }
-
     public String getEditTextColour() {
         return EditTextColour;
     }
-
     public String getEditBGColour() {
         return EditBGColour;
     }
-
     public String getEditMsg() {
         return EditMsg;
     }
-
     public String getEditImg() {
         return EditImg;
     }
-
     public String getEditInfo() {
         return EditInfo;
     }
-
     public String getEditInfoColour() {
         return EditInfoColour;
     }
-
     public String getBillboardName() {
         return BillboardName;
     }
-
     public String getLoginUser() {
         return LoginUser;
     }

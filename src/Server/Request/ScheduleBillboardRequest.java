@@ -4,7 +4,6 @@ import Server.SessionToken;
 
 import javax.swing.*;
 import java.io.Serializable;
-
 /**
  * @author Callum Longman
  * This is a request class that handle the Schedule Billboard Request, to execute the request,
@@ -14,17 +13,15 @@ public class ScheduleBillboardRequest implements Serializable {
     private String BillboardName, ScheduledTime, UserName;
     private int Duration, ReoccurType, ReoccurAmount;
     private SessionToken sessionToken;
-
     /**
      * This is the constructor.
-     *
      * @param BillboardName new schedules name
      * @param ScheduledTime new schedules date/time
-     * @param Duration      new schedules duration
-     * @param ReoccurType   new schedules reoccur type
+     * @param Duration new schedules duration
+     * @param ReoccurType new schedules reoccur type
      * @param ReoccurAmount new schedules reoccur amount
-     * @param sessionToken  session token
-     * @param UserName      users username
+     * @param sessionToken session token
+     * @param UserName users username
      */
     //build constructor and Getter functions
     public ScheduleBillboardRequest(String BillboardName, String ScheduledTime, String Duration,

@@ -16,9 +16,8 @@ public class SearchRequest implements Serializable {
 
     /**
      * This is constructor.
-     *
      * @param sessionToken login user's session token
-     * @param userName     login user's username
+     * @param userName login user's username
      */
     //build constructor and Getter functions
     public SearchRequest(SessionToken sessionToken, String userName, boolean EditSearch) {

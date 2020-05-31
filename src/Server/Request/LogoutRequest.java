@@ -14,7 +14,6 @@ public class LogoutRequest implements Serializable {
 
     /**
      * This is constructor.
-     *
      * @param sessionToken login user's session token
      */
     //build constructor and Getter functions

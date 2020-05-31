@@ -18,14 +18,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TestXmlReply {
     SessionToken sessionToken = new SessionToken("abc", LocalDateTime.now());
-
     /* Test 1: Construct a empty reply */
     @BeforeEach
     @Test
     public void TestEmptyXmlReply() {
         XmlReply xmlReply;
     }
-
     /* Test 2: Check if the session token has been successfully encapsulated in the reply object  */
     @Test
     public void TestXmlReplySessionToken() {
@@ -33,7 +31,6 @@ public class TestXmlReply {
         XmlReply xmlReply = new XmlReply(sessionToken, testFile);
         assertEquals(sessionToken, xmlReply.getSessionToken());
     }
-
     /* Test 3: Check if the file has been successfully encapsulated in the reply object  */
     @Test
     public void TestXmlReplyFile() {

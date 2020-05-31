@@ -8,7 +8,6 @@ public class BBInfoRequest implements Serializable {
 
     private String BillboardName;
     private SessionToken sessionToken;
-
     //build constructor and Getter functions
     public BBInfoRequest(SessionToken sessionToken, String BillboardName) {
         this.BillboardName = BillboardName;

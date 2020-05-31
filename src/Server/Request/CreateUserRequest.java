@@ -22,14 +22,13 @@ public class CreateUserRequest implements Serializable {
 
     /**
      * This is the constructor.
-     *
-     * @param sessionToken                 login user's session token
-     * @param userName                     new user's username
-     * @param userPassword                 new user's password
-     * @param createBillboardsPermission   new user's create billboards permission
-     * @param editAllBillboardPermission   new user's edit billboard permission
+     * @param sessionToken login user's session token
+     * @param userName new user's username
+     * @param userPassword new user's password
+     * @param createBillboardsPermission new user's create billboards permission
+     * @param editAllBillboardPermission new user's edit billboard permission
      * @param scheduleBillboardsPermission new user's schedule billboards permission
-     * @param editUsersPermission          new user's edit users permission
+     * @param editUsersPermission new user's edit users permission
      */
 
     //build constructor and Getter functions

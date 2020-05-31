@@ -57,9 +57,7 @@ public class CreateBBRequest implements Serializable {
         return Information;
     }
 
-    public String getInformationColour() {
-        return InformationColour;
-    }
+    public String getInformationColour() { return InformationColour; }
 
     public Boolean getCreateBillboardPermission() {
         return CreateBillboardPermission;

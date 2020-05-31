@@ -24,15 +24,14 @@ public class EditUserRequest implements Serializable {
 
     /**
      * This is constructor with new password.
-     *
-     * @param sessionToken                 login user's session token
-     * @param userName                     edited user's username
-     * @param userPassword                 edited user's new password
-     * @param createBillboardsPermission   edited user's create billboard permission
-     * @param editAllBillboardPermission   edited user's edit all billboard permission
+     * @param sessionToken login user's session token
+     * @param userName edited user's username
+     * @param userPassword edited user's new password
+     * @param createBillboardsPermission edited user's create billboard permission
+     * @param editAllBillboardPermission edited user's edit all billboard permission
      * @param scheduleBillboardsPermission edited user's schedule billboard permission
-     * @param editUsersPermission          edited user's edit user permission
-     * @param havePassword                 a boolean tell the server if there is password
+     * @param editUsersPermission edited user's edit user permission
+     * @param havePassword a boolean tell the server if there is password
      */
     //build constructor and Getter functions
     public EditUserRequest(SessionToken sessionToken, String userName, String userPassword, boolean createBillboardsPermission,
@@ -49,14 +48,13 @@ public class EditUserRequest implements Serializable {
 
     /**
      * This is constructor without new password.
-     *
-     * @param sessionToken                 login user's session token
-     * @param userName                     edited user's username
-     * @param createBillboardsPermission   edited user's new password
-     * @param editAllBillboardPermission   edited user's create billboard permission
+     * @param sessionToken login user's session token
+     * @param userName edited user's username
+     * @param createBillboardsPermission edited user's new password
+     * @param editAllBillboardPermission edited user's create billboard permission
      * @param scheduleBillboardsPermission edited user's schedule billboard permission
-     * @param editUsersPermission          edited user's edit user permission
-     * @param havePassword                 a boolean tell the server if there is password
+     * @param editUsersPermission edited user's edit user permission
+     * @param havePassword a boolean tell the server if there is password
      */
     public EditUserRequest(SessionToken sessionToken, String userName, boolean createBillboardsPermission,
                            boolean editAllBillboardPermission, boolean scheduleBillboardsPermission, boolean editUsersPermission, boolean havePassword) {

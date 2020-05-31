@@ -12,7 +12,6 @@ import java.awt.event.WindowListener;
 import java.net.ConnectException;
 import java.sql.*;
 import java.util.Vector;
-
 /**
  * This class creates the GUI to be used to display
  * all the existing users from the database.
@@ -66,11 +65,10 @@ public class ListUserWin extends JFrame {
 
         setSize(500, 120);
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        int width = (int) screenSize.getWidth();
-        int height = (int) screenSize.getHeight();
-        setLocation(width / 4, height / 4);
+        int width = (int)screenSize.getWidth();
+        int height = (int)screenSize.getHeight();
+        setLocation(width/4,height/4);
     }
-
     /**
      * Creates GUI and creates the JTable from the
      * table retrieved from function getTable()
@@ -84,7 +82,7 @@ public class ListUserWin extends JFrame {
         try {
             Client.connectServer(listUser);
 
-            if (Client.isRequestState()) {
+            if(Client.isRequestState()){
                 super.setSize(500, 120);
                 super.setLocationRelativeTo(null);
                 JPanel panel = new JPanel();
@@ -95,17 +93,17 @@ public class ListUserWin extends JFrame {
                 panel.add(scrollpane, BorderLayout.CENTER);
                 super.setContentPane(panel);
                 super.setVisible(true);
-            } else {
+            }
+            else{
                 throw new Exception();
             }
-        } catch (ConnectException ex) {
+        } catch(ConnectException ex){
             JOptionPane.showMessageDialog(null, "Connection failed.");
             System.exit(0);
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, "Failed to generate list");
         }
     }
-
     /**
      * Retrieves the table from the server
      * and stores the table.

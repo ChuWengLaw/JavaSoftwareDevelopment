@@ -22,28 +22,20 @@ public class BBInfoReply implements Serializable {
     public String getEditBGColour() {
         return EditBGColour;
     }
-
     public String getEditTextColour() {
         return EditTextColour;
     }
-
     public String getEditMsg() {
         return EditMsg;
     }
-
     public String getEditImg() {
         return EditImg;
     }
-
     public String getEditInfo() {
         return EditInfo;
     }
-
     public String getEditInfoColour() {
         return EditInfoColour;
     }
-
-    public SessionToken getSessionToken() {
-        return token;
-    }
+    public SessionToken getSessionToken() { return token; }
 }

@@ -1,5 +1,4 @@
 package Server.TestServer;
-
 import ControlPanel.User;
 import Server.Reply.SearchReply;
 import Server.SessionToken;
@@ -17,25 +16,22 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TestSearchReply {
     //Test 1: Create an empty SearchReply
-    @BeforeEach
-    @Test
-    public void TestEmptySearchReply() {
+    @BeforeEach @Test
+    public void TestEmptySearchReply(){
         SearchReply searchReply;
     }
-
     @Test
     //Test 2: Check if RequestState was successfully encapsulated in SearchReply object
-    public void RequestStateTestSearchReply() {
+    public void RequestStateTestSearchReply(){
         User testUser = new User("Bob", true, true,
                 false, false);
         SessionToken sessionToken = new SessionToken("abc", LocalDateTime.now());
         SearchReply searchReply = new SearchReply(sessionToken, true, true, testUser);
         assertEquals(true, searchReply.isRequestState());
     }
-
     @Test
     //Test 3: Check if the testUser object was successfully encapsulated in SearchReply object
-    public void UserTestSearchReply() {
+    public void UserTestSearchReply(){
         User testUser = new User("Bob", true, true,
                 false, false);
         SessionToken sessionToken = new SessionToken("abc", LocalDateTime.now());

@@ -20,7 +20,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class TestXmlRequest {
     // Session token for testing
     SessionToken token = new SessionToken("token", LocalDateTime.now());
-
     /* Test 1: Construct a empty reply */
     @BeforeEach
     @Test
@@ -50,7 +49,6 @@ public class TestXmlRequest {
         XmlRequest xmlRequest = new XmlRequest(token, "test1.xml", true);
         assertEquals("test1.xml", xmlRequest.getXmlName());
     }
-
     /* Test 5: Check if token has been successfully encapsulated in the Request object for exporting */
     @Test
     public void TestExportBillboardToken() {

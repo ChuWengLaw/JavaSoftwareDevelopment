@@ -22,12 +22,11 @@ public class ListUserReply implements Serializable {
     /**
      * This is the constructor for listing the users in a table.
      * Build constructor and Getter functions
-     *
      * @param sessionToken
      * @param table
      * @param listUserState
-     */
-    public ListUserReply(SessionToken sessionToken, JTable table, boolean listUserState) {
+    */
+    public ListUserReply(SessionToken sessionToken, JTable table, boolean listUserState){
         this.sessionToken = sessionToken;
         this.table = table;
         this.listUserState = listUserState;
@@ -44,4 +43,4 @@ public class ListUserReply implements Serializable {
     public SessionToken getSessionToken() {
         return sessionToken;
     }
-}
+    }

@@ -6,7 +6,6 @@ import java.util.Vector;
 
 public class BillboardSQL {
     public String backgroundColour, message, textColour, image, information, informationColour;
-
     /**
      * BillboardSQL constructor.
      */
@@ -65,7 +64,6 @@ public class BillboardSQL {
 
     /**
      * This function executes SQL to extract the billboard contents
-     *
      * @param BillboardName
      * @throws SQLException
      * @author Law
@@ -84,7 +82,6 @@ public class BillboardSQL {
 
     /**
      * This function executes SQL to edit the billboard contents
-     *
      * @param BillboardName
      * @param BillboardTextColour
      * @param BillboardBackgroundColour
@@ -176,7 +173,6 @@ public class BillboardSQL {
 
     /**
      * This function checks if the request user is the owner of the billboard
-     *
      * @param BillboardName
      * @param userName
      * @return True if user is the owner
@@ -187,7 +183,7 @@ public class BillboardSQL {
 
         ResultSet resultSet = Server.statement.executeQuery("SELECT UserName FROM Billboard WHERE BillboardName = '" + BillboardName + "';");
         resultSet.next();
-        if (userName.equals(resultSet.getString("UserName"))) {
+        if (userName.equals(resultSet.getString("UserName"))){
             existing = true;
         }
         return existing;

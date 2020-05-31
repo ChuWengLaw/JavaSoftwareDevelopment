@@ -140,12 +140,13 @@ public class BillBoardManagementGUI extends JFrame {
                     XmlRequest xmlRequest = new XmlRequest(Main.loginUser.getSessionToken(), selectedFile, Main.loginUser.getUserName());
                     try {
                         Client.connectServer(xmlRequest);
-                        if (Client.isRequestState()) {
+                        if(Client.isRequestState()){
                             JOptionPane.showMessageDialog(null, "Billboard Imported!");
-                        } else {
+                        }
+                        else{
                             throw new Exception();
                         }
-                    } catch (ConnectException ex) {
+                    } catch(ConnectException ex) {
                         JOptionPane.showMessageDialog(null, "Connection fail.");
                         System.exit(0);
                     } catch (IOException ex) {
@@ -197,9 +198,9 @@ public class BillBoardManagementGUI extends JFrame {
 
         // Display the window
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        int width = (int) screenSize.getWidth();
-        int height = (int) screenSize.getHeight();
-        setLocation(width / 4, height / 4);
+        int width = (int)screenSize.getWidth();
+        int height = (int)screenSize.getHeight();
+        setLocation(width/4,height/4);
         pack();
         repaint();
         setVisible(true);
@@ -217,7 +218,6 @@ public class BillBoardManagementGUI extends JFrame {
         button.setText(text);
         return button;
     }
-
     /**
      * This is a method that setup the availability of the create billboard button
      * depends on the create billboards permission

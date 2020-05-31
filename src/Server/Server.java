@@ -222,19 +222,12 @@ public class Server {
     private static boolean tokenCheck(SessionToken sessionToken) {
         boolean tokenAvailableState;
 
-        // This is used for testing, so the token will expire after one minute of hanging.
-        if (sessionToken.getUsedTime().plusMinutes(10).isAfter(LocalDateTime.now())) {
+        if(sessionToken.getUsedTime().plusHours(expiryHour).isAfter(LocalDateTime.now())){
             tokenAvailableState = true;
-        } else {
+        }
+        else{
             tokenAvailableState = false;
         }
-
-//        if(sessionToken.getUsedTime().plusHours(expiryHour).isAfter(LocalDateTime.now())){
-//            tokenAvailableState = true;
-//        }
-//        else{
-//            tokenAvailableState = false;
-//        }
 
         return tokenAvailableState;
     }

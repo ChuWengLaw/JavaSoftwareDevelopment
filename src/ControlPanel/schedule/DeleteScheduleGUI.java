@@ -53,7 +53,7 @@ public class DeleteScheduleGUI extends JFrame {
                         Client.connectServer(temp);
                         if (Client.isRequestState())
                         {
-                            JOptionPane.showMessageDialog(null,"Deleted");
+                            JOptionPane.showMessageDialog(null,"Deleted If combination exists.");
                         }
                         else
                         {

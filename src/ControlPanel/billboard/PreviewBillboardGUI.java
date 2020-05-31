@@ -14,8 +14,8 @@ import java.util.Base64;
 
 public class PreviewBillboardGUI extends JFrame {
     private Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-    private final int screenWidth = (dim.width/4);
-    private final int screenHeight = (dim.height/4);
+    private final int screenWidth = (dim.width / 4);
+    private final int screenHeight = (dim.height / 4);
     private JPanel panel = new JPanel();
 
     /**
@@ -37,6 +37,7 @@ public class PreviewBillboardGUI extends JFrame {
         }
 
     }
+
     /**
      * Updates is called every 15 seconds and will display the currently scheduled billboard for its determined time
      *
@@ -80,6 +81,7 @@ public class PreviewBillboardGUI extends JFrame {
                 toFront();
 
             } else {
+
                 ExtractFromXML currentScheduledBillboard = new ExtractFromXML(currentBillboardString + ".xml");
                 //if nothing entered
                 if (currentScheduledBillboard.message.isBlank() && currentScheduledBillboard.information.isBlank() && currentScheduledBillboard.image.isBlank()) {

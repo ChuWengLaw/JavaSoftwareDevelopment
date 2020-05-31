@@ -168,6 +168,15 @@ public class EditBillboardGUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // if the colour texts are all valid, send request to server
+                if (txtTextColour.getText().isBlank()) {
+                    txtTextColour.setText("black");
+                }
+                if (txtBackgroundColour.getText().isBlank()) {
+                    txtBackgroundColour.setText("white");
+                }
+                if (txtInformationColour.getText().isBlank()) {
+                    txtInformationColour.setText(txtTextColour.getText());
+                }
                 if (isColourValid()) {
                     EditBBRequest temp = new EditBBRequest(Main.loginUser.getSessionToken(), txtTextColour.getText(), txtBackgroundColour.getText(),
                             txtMessage.getText(), txtImage.getText(), txtInformation.getText(), txtInformationColour.getText());

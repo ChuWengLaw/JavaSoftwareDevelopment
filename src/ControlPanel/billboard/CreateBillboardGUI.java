@@ -106,7 +106,7 @@ public class CreateBillboardGUI extends JFrame {
 
                         if (txtBackgroundColour.getText().isBlank()) {
                             Attr background = document.createAttribute("background");
-                            background.setValue("White");
+                            background.setValue("white");
                             billboard.setAttributeNode(background);
                         } else {
                             Attr background = document.createAttribute("background");
@@ -119,7 +119,7 @@ public class CreateBillboardGUI extends JFrame {
                             Element bbMessage = document.createElement("message");
                             if (txtTextColour.getText().isBlank()) {
                                 Attr textCol = document.createAttribute("colour");
-                                textCol.setValue("Black");
+                                textCol.setValue("black");
                                 bbMessage.setAttributeNode(textCol);
                             } else {
                                 Attr textCol = document.createAttribute("colour");
@@ -150,7 +150,11 @@ public class CreateBillboardGUI extends JFrame {
                             Element info = document.createElement("information");
                             if (txtInformationColour.getText().isBlank()) {
                                 Attr infoColour = document.createAttribute("colour");
-                                infoColour.setValue(txtInformationColour.getText());
+                                if (txtTextColour.getText().isBlank()) {
+                                    infoColour.setValue("black");
+                                } else {
+                                    infoColour.setValue(txtInformationColour.getText());
+                                }
                                 info.setAttributeNode(infoColour);
                                 info.appendChild(document.createTextNode(txtInformation.getText()));
                             } else {
@@ -220,6 +224,15 @@ public class CreateBillboardGUI extends JFrame {
                 }
                 //if all colours input are valid proceed
                 else if (isColourValid() && !txtBillboardName.getText().isBlank()) {
+                    if (txtTextColour.getText().isBlank()) {
+                        txtTextColour.setText("black");
+                    }
+                    if (txtBackgroundColour.getText().isBlank()) {
+                        txtBackgroundColour.setText("white");
+                    }
+                    if (txtInformationColour.getText().isBlank()) {
+                        txtInformationColour.setText(txtTextColour.getText());
+                    }
                     CreateBBRequest createBBRequest = new CreateBBRequest(Main.loginUser.getSessionToken(), txtBillboardName.getText().toLowerCase(), Main.loginUser.getUserName(), txtTextColour.getText(), txtBackgroundColour.getText(),
                             txtMessage.getText(), txtImage.getText(), txtInformation.getText(), txtInformationColour.getText(), Main.loginUser.getCreateBillboardsPermission());
                     try {
@@ -515,10 +528,12 @@ public class CreateBillboardGUI extends JFrame {
         return text && back && info;
     }
 
-    /**This function takes a file and encodes it as base64 returning the string of the encoded value
-     * @author Lachlan
+    /**
+     * This function takes a file and encodes it as base64 returning the string of the encoded value
+     *
      * @param file the image file which is being converted
      * @return the base64 encoded string
+     * @author Lachlan
      */
     private String encodeFileBase64(File file) {
         String encodedString = null;

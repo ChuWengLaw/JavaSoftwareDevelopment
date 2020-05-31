@@ -140,6 +140,7 @@ public class BillboardViewer extends JFrame {
                 lblNoSchedule.setHorizontalAlignment(SwingConstants.CENTER);
                 lblNoSchedule.setVerticalAlignment(SwingConstants.CENTER);
 
+                //define the image
                 JLabel picNoSchedule = new JLabel();
                 URL url = new URL("https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRh_IKTuBKhex6jQsgVoMtSPnc0ZbR0RAdzv7UfBMbOMS45Wj_h&usqp=CAU");
                 BufferedImage image = ImageIO.read(url);
@@ -173,6 +174,7 @@ public class BillboardViewer extends JFrame {
 
                     panel.setBackground(currentScheduledBillboard.backgroundColour);
 
+                    //define message
                     JLabel messageLabel = new JLabel();
                     messageLabel.setText(currentScheduledBillboard.message);
                     messageLabel.setForeground(currentScheduledBillboard.textColour);
@@ -201,6 +203,7 @@ public class BillboardViewer extends JFrame {
                 //if only the image is present display only the image
                 else if (currentScheduledBillboard.message.isBlank() && currentScheduledBillboard.information.isBlank() && !currentScheduledBillboard.image.isBlank()) {
                     panel.setBackground(currentScheduledBillboard.backgroundColour);
+                    //define the image
                     JLabel picture = new JLabel();
                     try {
                         //if it is a url image
@@ -236,9 +239,6 @@ public class BillboardViewer extends JFrame {
                     picture.setHorizontalAlignment(SwingConstants.CENTER);
                     picture.setVerticalAlignment(SwingConstants.CENTER);
 
-
-
-
                     panel.setLayout(new BorderLayout());
                     panel.add(picture, BorderLayout.CENTER);
                     getContentPane().add(panel);
@@ -253,6 +253,7 @@ public class BillboardViewer extends JFrame {
 
                     panel.setBackground(currentScheduledBillboard.backgroundColour);
 
+                    //define the info
                     JLabel infoLabel = new JLabel();
                     infoLabel.setText("<HTML>" + currentScheduledBillboard.information + "</HTML>");
                     infoLabel.setForeground(currentScheduledBillboard.informationColour);
@@ -277,6 +278,7 @@ public class BillboardViewer extends JFrame {
 
                     panel.setBackground(currentScheduledBillboard.backgroundColour);
 
+                    //define the message
                     JLabel messageLabel = new JLabel();
                     messageLabel.setText(currentScheduledBillboard.message);
                     messageLabel.setForeground(currentScheduledBillboard.textColour);
@@ -292,6 +294,7 @@ public class BillboardViewer extends JFrame {
                     int fontSizeToUse = Math.min(newFontSize, componentHeight);
                     messageLabel.setFont(new Font(messageLabel.getFont().getName(), Font.PLAIN, fontSizeToUse));
 
+                    //define the image
                     JLabel picture = new JLabel();
                     try {
                         //if it is a url image
@@ -341,6 +344,7 @@ public class BillboardViewer extends JFrame {
 
                     panel.setBackground(currentScheduledBillboard.backgroundColour);
 
+                    //define the message
                     JLabel messageLabel = new JLabel();
                     messageLabel.setText(currentScheduledBillboard.message);
                     messageLabel.setForeground(currentScheduledBillboard.textColour);
@@ -356,6 +360,7 @@ public class BillboardViewer extends JFrame {
                     int fontSizeToUse = Math.min(newFontSize, componentHeight);
                     messageLabel.setFont(new Font(messageLabel.getFont().getName(), Font.PLAIN, fontSizeToUse));
 
+                    //define the info
                     JLabel infoLabel = new JLabel();
                     infoLabel.setText("<HTML>" + currentScheduledBillboard.information + "</HTML>");
                     infoLabel.setForeground(currentScheduledBillboard.informationColour);
@@ -390,6 +395,7 @@ public class BillboardViewer extends JFrame {
 
                     panel.setBackground(currentScheduledBillboard.backgroundColour);
 
+                    //define the image
                     JLabel picture = new JLabel();
                     try {
                         //if it is a url image
@@ -425,6 +431,7 @@ public class BillboardViewer extends JFrame {
                     picture.setHorizontalAlignment(SwingConstants.CENTER);
                     picture.setVerticalAlignment(SwingConstants.CENTER);
 
+                    //define the info
                     JLabel infoLabel = new JLabel();
                     infoLabel.setText("<HTML>" + currentScheduledBillboard.information + "</HTML>");
                     infoLabel.setForeground(currentScheduledBillboard.informationColour);
@@ -460,6 +467,7 @@ public class BillboardViewer extends JFrame {
                 else {
                     panel.setBackground(currentScheduledBillboard.backgroundColour);
 
+                    //define the image
                     JLabel picture = new JLabel();
                     try {
                         //if it is a url image
@@ -495,6 +503,7 @@ public class BillboardViewer extends JFrame {
                     picture.setHorizontalAlignment(SwingConstants.CENTER);
                     picture.setVerticalAlignment(SwingConstants.CENTER);
 
+                    //define the message
                     JLabel messageLabel = new JLabel();
                     messageLabel.setText(currentScheduledBillboard.message);
                     messageLabel.setForeground(currentScheduledBillboard.textColour);
@@ -511,6 +520,7 @@ public class BillboardViewer extends JFrame {
                     int fontSizeToUse = Math.min(newFontSize, componentHeight);
                     messageLabel.setFont(new Font(messageLabel.getFont().getName(), Font.PLAIN, fontSizeToUse));
 
+                    //define info
                     JLabel infoLabel = new JLabel();
                     infoLabel.setText("<HTML>" + currentScheduledBillboard.information + "</HTML>");
                     infoLabel.setForeground(currentScheduledBillboard.informationColour);
@@ -534,7 +544,6 @@ public class BillboardViewer extends JFrame {
                     infoLabel.setHorizontalAlignment(SwingConstants.CENTER);
                     infoLabel.setVerticalAlignment(SwingConstants.CENTER);
 
-
                     panel.setLayout(new BorderLayout());
                     panel.add(picture, BorderLayout.CENTER);
                     panel.add(messageLabel, BorderLayout.NORTH);
@@ -556,6 +565,7 @@ public class BillboardViewer extends JFrame {
             lblNoServerConection.setHorizontalAlignment(SwingConstants.CENTER);
             lblNoServerConection.setForeground(Color.black);
 
+            //define the picture
             JLabel picNoConnection = new JLabel();
             URL url = new URL("https://cdn.dribbble.com/users/385451/screenshots/5087974/fox-expenses-500.png");
             BufferedImage image = ImageIO.read(url);
@@ -563,6 +573,7 @@ public class BillboardViewer extends JFrame {
             picNoConnection.setHorizontalAlignment(SwingConstants.CENTER);
             picNoConnection.setVerticalAlignment(SwingConstants.CENTER);
 
+            //define the message
             JLabel lblMessage = new JLabel();
             lblMessage.setText("Waiting for connection ...");
             lblMessage.setFont(lblMessage.getFont().deriveFont(32.0f));

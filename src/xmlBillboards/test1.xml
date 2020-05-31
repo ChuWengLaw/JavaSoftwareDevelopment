@@ -1,1 +1,1 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?><billboard background="#FFFFFF"><message colour="red">hi</message></billboard>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><billboard background="blue"><message colour="red">Hello there</message><information colour="white">blah blah blah</information></billboard>

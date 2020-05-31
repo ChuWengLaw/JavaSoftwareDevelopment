@@ -862,7 +862,7 @@ public class Server {
                     // if the user imports a billboard
                     else {
                         // copy uploaded new xml file to path then extract its contents and save it in db
-                        String newFileName = xmlRequest.getXmlFile().getName();
+                        String newFileName = xmlRequest.getXmlFile().getName().toLowerCase();
                         String billboardName = newFileName.replaceFirst("[.][^.]+$", "");
                         var newPath = new File("src/xmlBillboards/" + newFileName);
                         Files.copy(xmlRequest.getXmlFile().toPath(), newPath.toPath(),

@@ -23,8 +23,11 @@ public class Main {
 
     /**
      * This method call a new login window once the program is run.
+     *
      * @param args
      */
-    public static void main(String[] args) {SwingUtilities.invokeLater(new LoginWin());}
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(new LoginWin());
+    }
 }
 

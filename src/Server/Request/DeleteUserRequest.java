@@ -3,6 +3,7 @@ package Server.Request;
 import Server.SessionToken;
 
 import java.io.Serializable;
+
 /**
  * This is the request class that handles the delete user request
  * sent from the delete user GUI. It takes the entered user and
@@ -13,14 +14,15 @@ import java.io.Serializable;
 public class DeleteUserRequest implements Serializable {
     private String userName;
     private SessionToken sessionToken;
-  
+
     /**
-     *This is the constructor that stores the data sent from client
+     * This is the constructor that stores the data sent from client
      * build constructor and Getter functions
-     * @param userName inputted username
+     *
+     * @param userName     inputted username
      * @param sessionToken login user's session token
      */
-    public DeleteUserRequest(String userName, SessionToken sessionToken){
+    public DeleteUserRequest(String userName, SessionToken sessionToken) {
         this.userName = userName;
         this.sessionToken = sessionToken;
     }

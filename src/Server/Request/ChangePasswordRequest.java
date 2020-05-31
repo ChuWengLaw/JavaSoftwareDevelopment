@@ -17,9 +17,10 @@ public class ChangePasswordRequest implements Serializable {
 
     /**
      * This is the constructor.
+     *
      * @param sessionToken login user's session token.
-     * @param userName login user's username.
-     * @param newPassword login user's new password.
+     * @param userName     login user's username.
+     * @param newPassword  login user's new password.
      */
     //build constructor and Getter functions
     public ChangePasswordRequest(SessionToken sessionToken, String userName, String newPassword) {

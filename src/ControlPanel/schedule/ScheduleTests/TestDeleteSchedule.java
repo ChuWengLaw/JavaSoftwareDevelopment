@@ -23,6 +23,7 @@ public class TestDeleteSchedule {
         DeleteScheduleRequest deleteScheduleRequest = new DeleteScheduleRequest("BillboardName", "2020-05-31 12:00:00", token);
         assertEquals("BillboardName", deleteScheduleRequest.getScheduledName());
     }
+
     @Test
     public void TestDeleteScheduleDateTime() {
         DeleteScheduleRequest deleteScheduleRequest = new DeleteScheduleRequest("BillboardName", "2020-05-31 12:00:00", token);

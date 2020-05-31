@@ -24,6 +24,7 @@ public class ViewerClient {
 
     /**
      * Connects to server (connection read from network.props)
+     *
      * @param args The object encapsulating the data inputs to be sent to server
      */
     public static void connectServer(Object args) throws IOException, InterruptedException, ClassNotFoundException {
@@ -58,13 +59,20 @@ public class ViewerClient {
     }
 
     private static void executeReply(Object requestReply) {
-        if (requestReply instanceof GetCurrentScheduledReply){
+        if (requestReply instanceof GetCurrentScheduledReply) {
             GetCurrentScheduledReply ScheduleReply = (GetCurrentScheduledReply) requestReply;
             ScheduledBillboardTitle = ScheduleReply.getBillboardTitle();
         }
     }
-    public static String getInfo() { return info; }
-    public static String getScheduledBillboardTitle() {return ScheduledBillboardTitle;};
+
+    public static String getInfo() {
+        return info;
+    }
+
+    public static String getScheduledBillboardTitle() {
+        return ScheduledBillboardTitle;
+    }
+
 }
 
 

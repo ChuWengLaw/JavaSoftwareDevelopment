@@ -50,9 +50,9 @@ public class ListBillboardsGUI extends JFrame {
 
         setSize(500, 120);
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        int width = (int)screenSize.getWidth();
-        int height = (int)screenSize.getHeight();
-        setLocation(width/4,height/4);
+        int width = (int) screenSize.getWidth();
+        int height = (int) screenSize.getHeight();
+        setLocation(width / 4, height / 4);
 
         panel.setLayout(new BorderLayout());
         getContentPane().add(panel);

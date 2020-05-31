@@ -5,7 +5,7 @@ import Server.SessionToken;
 import java.io.Serializable;
 
 /**
- * @author Nicholas Tseng
+ * @author Nicholas Tseng, "Kenji" Foo Shiang Xun
  * This is a request class that handle search request, to execute the request,
  * it requires login user's session token and username.
  */

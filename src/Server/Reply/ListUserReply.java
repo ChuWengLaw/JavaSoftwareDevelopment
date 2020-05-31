@@ -25,6 +25,7 @@ public class ListUserReply implements Serializable {
      * @param sessionToken
      * @param table
      * @param listUserState
+     */
 
     public ListUserReply(SessionToken sessionToken, JTable table, boolean listUserState){
         this.sessionToken = sessionToken;

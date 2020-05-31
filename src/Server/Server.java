@@ -221,7 +221,7 @@ public class Server {
      */
     private static boolean tokenCheck(SessionToken sessionToken) {
         boolean tokenAvailableState;
-        
+
         if(sessionToken.getUsedTime().plusHours(expiryHour).isAfter(LocalDateTime.now())){
             tokenAvailableState = true;
         }

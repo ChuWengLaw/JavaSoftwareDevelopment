@@ -1,4 +1,5 @@
 package Server.TestServer;
+
 import Server.Reply.GeneralReply;
 import Server.SessionToken;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,15 +16,17 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TestGeneralReply {
     //Test 1: Construct an empty GeneralReply
-    @BeforeEach @Test
-    public void TestEmptyGeneralReply(){
+    @BeforeEach
+    @Test
+    public void TestEmptyGeneralReply() {
         GeneralReply generalReply;
     }
+
     @Test
     //Test 2: Check if the request state was successfully encapsulated in GeneralReply object
-    public void RequestStateTestGeneralReply(){
+    public void RequestStateTestGeneralReply() {
         SessionToken sessionToken = new SessionToken("abc", LocalDateTime.now());
-        GeneralReply generalReply = new GeneralReply(sessionToken,true);
+        GeneralReply generalReply = new GeneralReply(sessionToken, true);
         assertEquals(true, generalReply.isRequestState());
     }
 }

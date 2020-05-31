@@ -71,13 +71,12 @@ public class DeleteBillboardGUI extends JFrame {
                         Main.loginUser.getEditAllBillboardPermission(), Main.loginUser.getCreateBillboardsPermission(), CalanderScheduleGUI.IsCurrentlyScheduled(txtBillboardName.getText().toLowerCase()));
                 try {
                     Client.connectServer(temp);
-                    if(Client.isRequestState()){
+                    if (Client.isRequestState()) {
                         JOptionPane.showMessageDialog(null, "Billboard deleted!");
-                    }
-                    else{
+                    } else {
                         JOptionPane.showMessageDialog(null, "No permission/invalid billboard name/Currently Scheduled");
-                    } 
-                } catch(ConnectException ex) {
+                    }
+                } catch (ConnectException ex) {
                     JOptionPane.showMessageDialog(null, "Connection fail.");
                     System.exit(0);
                 } catch (Exception ex) {
@@ -113,9 +112,9 @@ public class DeleteBillboardGUI extends JFrame {
         getContentPane().add(panel);
         //set the location of the GUI
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        int width = (int)screenSize.getWidth();
-        int height = (int)screenSize.getHeight();
-        setLocation(width/4,height/4);
+        int width = (int) screenSize.getWidth();
+        int height = (int) screenSize.getHeight();
+        setLocation(width / 4, height / 4);
 
         //make changes and then send to GUI
         pack();

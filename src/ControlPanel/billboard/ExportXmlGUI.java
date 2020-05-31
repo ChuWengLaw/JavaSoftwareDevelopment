@@ -74,7 +74,7 @@ public class ExportXmlGUI extends JFrame {
                 XmlRequest xmlRequest = new XmlRequest(Main.loginUser.getSessionToken(), txtBillboardName.getText().toLowerCase(), true);
                 try {
                     Client.connectServer(xmlRequest);
-                    if(Client.isRequestState()){
+                    if (Client.isRequestState()) {
                         try {
                             //Create a file chooser
                             JFileChooser jfc = new JFileChooser(FileSystemView.getFileSystemView());
@@ -96,11 +96,10 @@ public class ExportXmlGUI extends JFrame {
                         } catch (Exception ex) {
                             JOptionPane.showMessageDialog(null, "Xml not found!");
                         }
-                    }
-                    else{
+                    } else {
                         JOptionPane.showMessageDialog(null, "Billboard not found!");
                     }
-                } catch(ConnectException ex) {
+                } catch (ConnectException ex) {
                     JOptionPane.showMessageDialog(null, "Connection fail.");
                     System.exit(0);
                 } catch (Exception ex) {
@@ -136,9 +135,9 @@ public class ExportXmlGUI extends JFrame {
         getContentPane().add(panel);
         //set the location of the GUI
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        int width = (int)screenSize.getWidth();
-        int height = (int)screenSize.getHeight();
-        setLocation(width/4,height/4);
+        int width = (int) screenSize.getWidth();
+        int height = (int) screenSize.getHeight();
+        setLocation(width / 4, height / 4);
 
         //make changes and then send to GUI
         pack();

@@ -45,10 +45,11 @@ public class ScheduleBillboardGUI extends JFrame {
      * Constructor initialises the GUI creation
      * Sets up Action listeners
      */
-    public ScheduleBillboardGUI(){
+    public ScheduleBillboardGUI() {
         super("Schedule Billboard");
         createGUI();
     }
+
     private void createGUI() {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         //Set the combo box options
@@ -60,8 +61,7 @@ public class ScheduleBillboardGUI extends JFrame {
         btnSubmit.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (Check_Valid_Inputs())
-                {
+                if (Check_Valid_Inputs()) {
                     //Set the value of reoccur depending on what option is chosen in the combo box
                     String value = ReoccurType.getSelectedItem().toString();
                     if (value.equals("None")) value = "0";
@@ -73,12 +73,9 @@ public class ScheduleBillboardGUI extends JFrame {
                             txtDuration.getText(), value, txtReoccurAmount.getText(), Main.loginUser.getSessionToken(), Main.loginUser.getUserName());
                     try {
                         Client.connectServer(temp);
-                        if (Client.isRequestState())
-                        {
-                            JOptionPane.showMessageDialog(null,"Scheduled");
-                        }
-                        else
-                        {
+                        if (Client.isRequestState()) {
+                            JOptionPane.showMessageDialog(null, "Scheduled");
+                        } else {
                             throw new Exception();
                         }
 
@@ -93,77 +90,74 @@ public class ScheduleBillboardGUI extends JFrame {
                         ex.printStackTrace();
                     } catch (Exception ex) {
                         ex.printStackTrace();
-                        JOptionPane.showMessageDialog(null,"Did not Schedule");
+                        JOptionPane.showMessageDialog(null, "Did not Schedule");
                     }
                     //reset the text boxes
                     txtBillboardName.setText("");
                     txtScheduledTime.setText("");
                     txtDuration.setText("");
                     txtReoccurAmount.setText("");
-                }
-                else
-                {
-                    JOptionPane.showMessageDialog(null,"Incorrect Inputs");
+                } else {
+                    JOptionPane.showMessageDialog(null, "Incorrect Inputs");
                 }
             }
         });
 
-        constraints.insets = new Insets(10,10,10,10);
+        constraints.insets = new Insets(10, 10, 10, 10);
 
         //add labels to panel
-        constraints.gridx=0;
-        constraints.gridy=0;
-        pnlScheduleNewBillboard.add(lblBillboardName,constraints);
-        constraints.gridy=1;
-        pnlScheduleNewBillboard.add(lblScheduledTime,constraints);
-        constraints.gridy=3;
-        pnlScheduleNewBillboard.add(lblDuration,constraints);
-        constraints.gridy=4;
-        pnlScheduleNewBillboard.add(lblReoccurType,constraints);
-        constraints.gridy=5;
-        pnlScheduleNewBillboard.add(lblReoccurAmount,constraints);
+        constraints.gridx = 0;
+        constraints.gridy = 0;
+        pnlScheduleNewBillboard.add(lblBillboardName, constraints);
+        constraints.gridy = 1;
+        pnlScheduleNewBillboard.add(lblScheduledTime, constraints);
+        constraints.gridy = 3;
+        pnlScheduleNewBillboard.add(lblDuration, constraints);
+        constraints.gridy = 4;
+        pnlScheduleNewBillboard.add(lblReoccurType, constraints);
+        constraints.gridy = 5;
+        pnlScheduleNewBillboard.add(lblReoccurAmount, constraints);
         //add Text box to panel
-        constraints.gridx=1;
-        constraints.gridy=0;
-        pnlScheduleNewBillboard.add(txtBillboardName,constraints);
-        constraints.gridy=1;
-        pnlScheduleNewBillboard.add(txtScheduledTime,constraints);
-        constraints.gridy=3;
-        pnlScheduleNewBillboard.add(txtDuration,constraints);
-        constraints.gridy=4;
-        pnlScheduleNewBillboard.add(ReoccurType,constraints);
-        constraints.gridy=5;
-        pnlScheduleNewBillboard.add(txtReoccurAmount,constraints);
+        constraints.gridx = 1;
+        constraints.gridy = 0;
+        pnlScheduleNewBillboard.add(txtBillboardName, constraints);
+        constraints.gridy = 1;
+        pnlScheduleNewBillboard.add(txtScheduledTime, constraints);
+        constraints.gridy = 3;
+        pnlScheduleNewBillboard.add(txtDuration, constraints);
+        constraints.gridy = 4;
+        pnlScheduleNewBillboard.add(ReoccurType, constraints);
+        constraints.gridy = 5;
+        pnlScheduleNewBillboard.add(txtReoccurAmount, constraints);
         //add button to panel
-        constraints.gridx=0;
-        constraints.gridy=6;
-        pnlScheduleNewBillboard.add(btnSubmit,constraints);
+        constraints.gridx = 0;
+        constraints.gridy = 6;
+        pnlScheduleNewBillboard.add(btnSubmit, constraints);
 
         getContentPane().add(pnlScheduleNewBillboard);
         //set the location of the GUI
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        int width = (int)screenSize.getWidth();
-        int height = (int)screenSize.getHeight();
-        setLocation(width/4,height/4);
+        int width = (int) screenSize.getWidth();
+        int height = (int) screenSize.getHeight();
+        setLocation(width / 4, height / 4);
         //make changes and then send to GUI
         pack();
         setVisible(true);
 
     }
+
     /**
      * This function adds info to a JLabel
+     *
      * @return a Boolean if the inputs to send are valid
      * @author Callum
      */
-    private boolean Check_Valid_Inputs()
-    {
+    private boolean Check_Valid_Inputs() {
         //Check all the inputs are valid
         DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String BillboardTitle = txtBillboardName.getText();
-        try
-        {
-            if (txtReoccurAmount.getText().equals(""))
-            {
+        try {
+            if (txtReoccurAmount.getText().equals("")) {
                 txtReoccurAmount.setText("0");
             }
             //check that the inputs are ints and or date times
@@ -173,13 +167,10 @@ public class ScheduleBillboardGUI extends JFrame {
             if (Duration <= 0)// || ReoccurType < 0 || ReoccurType > 3)
             {
                 return false;
-            }
-            else if (ReoccurType.getSelectedItem().toString().equals("(Below) Minutes") && ReoccurAmount < Duration)
-            {
+            } else if (ReoccurType.getSelectedItem().toString().equals("(Below) Minutes") && ReoccurAmount < Duration) {
                 return false;
             }
-        }
-        catch (Exception e)//NumberFormatException nfe)
+        } catch (Exception e)//NumberFormatException nfe)
         {
             return false;
         }

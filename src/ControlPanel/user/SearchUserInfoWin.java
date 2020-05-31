@@ -105,7 +105,6 @@ public class SearchUserInfoWin extends JFrame {
                         checkBoxEditBB.setSelected(searchUser.getEditAllBillboardPermission());
                         checkBoxScheduleBB.setSelected(searchUser.getScheduleBillboardsPermission());
                         checkBoxEditUser.setSelected(searchUser.getEditUsersPermission());
-                        System.out.println(searchUser.getScheduleBillboardsPermission());
                     } else {
                         throw new Exception();
                     }

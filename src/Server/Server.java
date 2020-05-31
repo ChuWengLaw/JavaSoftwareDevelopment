@@ -561,7 +561,6 @@ public class Server {
                         // if the user is the owner of the billboard
                         if (checkOriginOwner) {
                             // if the user has edit all billboards or create billboard permission
-                            System.out.println(temp.getIsScheduled());
                             if (temp.getEditAllBillboardsPermission() || (temp.getCreateBillboardPermission() && !temp.getIsScheduled())) {
                                 bb.EditBillboard(BillBoardName);
                                 EditBBReply editBBReply = new EditBBReply(temp.getSessionToken(), bb.textColour, bb.backgroundColour, bb.message,

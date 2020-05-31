@@ -98,7 +98,11 @@ public class MakeXMLFile {
                 //if the is no colour is entered set the colour to the message colour
                 if (informationColour.isBlank()) {
                     Attr infoColour = document.createAttribute("colour");
-                    infoColour.setValue(textColour);
+                    if(textColour.isBlank()){
+                        infoColour.setValue("black");
+                    }
+                    else {
+                    infoColour.setValue(textColour);}
                     info.setAttributeNode(infoColour);
                     info.appendChild(document.createTextNode(information));
                 }

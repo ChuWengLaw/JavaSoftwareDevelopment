@@ -8,7 +8,7 @@ public class GetCurrentScheduledReply implements Serializable {
     private boolean works;
 
     //build constructor and Getter functions
-    public GetCurrentScheduledReply(String BillboardTitle, boolean works) {
+    public GetCurrentScheduledReply(String BillboardTitle, boolean works){
         this.BillboardTitle = BillboardTitle;
         this.works = works;
     }
@@ -16,7 +16,6 @@ public class GetCurrentScheduledReply implements Serializable {
     public String getBillboardTitle() {
         return BillboardTitle;
     }
-
     public boolean getboolworks() {
         return works;
     }

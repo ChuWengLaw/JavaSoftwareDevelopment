@@ -13,7 +13,6 @@ public class LoginRequest implements Serializable {
 
     /**
      * This is constructor.
-     *
      * @param userName login user's username
      * @param password login user's password
      */

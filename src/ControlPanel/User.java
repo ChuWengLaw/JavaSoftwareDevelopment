@@ -28,12 +28,11 @@ public class User implements Serializable {
 
     /**
      * This is constructor for creating user with known information.
-     *
-     * @param userName                     username
-     * @param createBillboardsPermission   create billboard permission of the user
-     * @param editAllBillboardPermission   edit all billboard permission of the user
+     * @param userName username
+     * @param createBillboardsPermission create billboard permission of the user
+     * @param editAllBillboardPermission edit all billboard permission of the user
      * @param scheduleBillboardsPermission schedule billboard permission of the user
-     * @param editUsersPermission          edit users permission of the user
+     * @param editUsersPermission edit users permission of the user
      */
     public User(String userName, boolean createBillboardsPermission, boolean editAllBillboardPermission, boolean scheduleBillboardsPermission, boolean editUsersPermission) {
         this.userName = userName;

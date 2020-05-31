@@ -79,10 +79,10 @@ public class InformationGUI extends JFrame {
                         txtImg.setText(Client.getImg());
                         txtInfo.setText(Client.getInfo());
                         txtInfoColour.setText(Client.getInfoClr());
-                        if (!Client.isRequestState()) {
+                        if(!Client.isRequestState()){
                             JOptionPane.showMessageDialog(null, "Billboard not found!");
                         }
-                    } catch (ConnectException ex) {
+                    } catch(ConnectException ex) {
                         JOptionPane.showMessageDialog(null, "Connection fail.");
                         System.exit(0);
                     } catch (Exception ex) {
@@ -199,9 +199,9 @@ public class InformationGUI extends JFrame {
 
         // Display the window
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        int width = (int) screenSize.getWidth();
-        int height = (int) screenSize.getHeight();
-        setLocation(width / 4, height / 4);
+        int width = (int)screenSize.getWidth();
+        int height = (int)screenSize.getHeight();
+        setLocation(width/4,height/4);
         pack();
         setVisible(true);
     }

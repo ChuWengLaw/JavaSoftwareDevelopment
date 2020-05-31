@@ -2,7 +2,6 @@ package ControlPanel.user;
 
 import ControlPanel.*;
 import Server.Request.ChangePasswordRequest;
-
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
@@ -109,9 +108,9 @@ public class ChangePasswordWin extends JFrame {
 
         // Display the window
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        int width = (int) screenSize.getWidth();
-        int height = (int) screenSize.getHeight();
-        setLocation(width / 4, height / 4);
+        int width = (int)screenSize.getWidth();
+        int height = (int)screenSize.getHeight();
+        setLocation(width/4,height/4);
         pack();
     }
 }

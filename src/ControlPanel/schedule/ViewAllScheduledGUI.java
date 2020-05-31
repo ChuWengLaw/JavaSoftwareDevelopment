@@ -7,12 +7,18 @@ import Server.Request.ListScheduleRequest;
 import javax.swing.*;
 import java.awt.*;
 import java.net.ConnectException;
-
+/**
+ * @author Callum Longman
+ * WIndow that recieves a JTable with all the scheduled billbaords information
+ */
 public class ViewAllScheduledGUI extends JFrame {
     //Set up the swing elements
     private JPanel panel = new JPanel();
     private JTable table = new JTable();
-
+    /**
+     * Constructor initialises the GUI creation
+     * Sets up Action listeners
+     */
     public ViewAllScheduledGUI() throws HeadlessException {
         super("All Scheduled");
         createGUI();

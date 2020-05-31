@@ -19,7 +19,7 @@ public class TestCreateBillboardGUI {
     // Session token for testing
     SessionToken token = new SessionToken("token", LocalDateTime.now());
     /* Test 1: Construct a empty request */
-    @BeforeEach @DynamicTest
+    @BeforeEach
     public void TestEmptyCreateBBRequest() {
         CreateBBRequest createBBRequest;
     }

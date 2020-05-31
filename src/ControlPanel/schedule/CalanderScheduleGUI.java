@@ -19,7 +19,12 @@ import java.util.Date;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
-
+/**
+ * @author Callum Longman
+ * This is the Schedule Management window
+ * users from here can schedule, delete schedules, preview billboards
+ * list all schedules and view a weekly calendar for the following 7 days
+ */
 
 public class CalanderScheduleGUI extends JFrame {
 
@@ -39,7 +44,10 @@ public class CalanderScheduleGUI extends JFrame {
     private JLabel lbl5;
     private JLabel lbl6;
     private JLabel lbl7;
-
+    /**
+     * Constructor initialises the GUI creation
+     * Sets up Action listeners
+     */
     public CalanderScheduleGUI(){
         super("Scheduled Billboards");
         createGUI();
@@ -212,7 +220,16 @@ public class CalanderScheduleGUI extends JFrame {
         repaint();
         setVisible(true);
     }
-
+    /**
+     * This function adds info to a JLabel
+     *
+     * @param scheduleArray title of label
+     * @param lblIn label that needs to be edited
+     * @param Day_Start_Millis the time that needs to be displayed
+     *
+     * @return a JLabel with the title of text
+     * @author Callum
+     */
     private JLabel AddInfoToLabel(ArrayList<String[]> scheduleArray, JLabel lblIn, long Day_Start_Millis) {
         //Get the date format for the begining and end of the day
         SimpleDateFormat start_formatter= new SimpleDateFormat("yyyy-MM-dd 00:00:00");
@@ -236,6 +253,13 @@ public class CalanderScheduleGUI extends JFrame {
         return lblIn;
     }
 
+    /**
+     * This function adds info to a JLabel
+     *
+     * @param millis time to display on label
+     * @return a JLabel with the title of text
+     * @author Callum
+     */
     private JLabel createLabel(long millis) {
         //Code to create labels that will display the day month and date for the following 7 days
         Date datePrint = new Date(millis);
@@ -246,6 +270,13 @@ public class CalanderScheduleGUI extends JFrame {
     }
     //Input a billboard name and it will return true false depending
     //on if the billboards is currently scheduled
+    /**
+     * This function adds info to a JLabel
+     *
+     * @param BillboardName billboard name to check
+     * @return a Boolean if the billboards is scheduled or not
+     * @author Callum
+     */
     public static boolean IsCurrentlyScheduled(String BillboardName)
     {
         JTable Table;

@@ -10,6 +10,11 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Base64;
+/**
+ * @author Callum Longman
+ * Preview Billbaord gui, Creates a smaller version
+ * of the billboard viewer to preview any billboards before scheduling
+ */
 
 public class PreviewBillboardGUI  extends JFrame {
     //Set up a panel which will extract XML info about a billboard and display it the same way the viewer does
@@ -17,7 +22,10 @@ public class PreviewBillboardGUI  extends JFrame {
     private final int screenWidth = (dim.width/4);
     private final int screenHeight = (dim.height/4);
     private JPanel panel = new JPanel();
-
+    /**
+     * Constructor initialises the GUI creation
+     * Sets up Action listeners
+     */
     public PreviewBillboardGUI(String BillboardName) throws HeadlessException {
         super("Billboard Viewer");
 
@@ -32,7 +40,10 @@ public class PreviewBillboardGUI  extends JFrame {
         }
 
     }
-
+    /**
+     * Displays the billboards as a mini viewer
+     * @author Callum
+     */
     private void update(String BillboardName) throws IOException {
         panel.removeAll();
         //Search for the XML file and using the rules provided from viewer display the billboard preview

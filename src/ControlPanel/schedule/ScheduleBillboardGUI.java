@@ -14,7 +14,12 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.swing.*;
 
-
+/**
+ * @author Callum Longman
+ * Users from this window can schedule billbaords
+ * They must enter a valid billboard name, date time in correct format.  A duration
+ * and have the option to set a re occurance type and duration
+ */
 public class ScheduleBillboardGUI extends JFrame {
     //Set up swing elements
     private JPanel pnlScheduleNewBillboard = new JPanel(new GridBagLayout());
@@ -36,7 +41,10 @@ public class ScheduleBillboardGUI extends JFrame {
     JComboBox ReoccurType = new JComboBox();
 
 
-
+    /**
+     * Constructor initialises the GUI creation
+     * Sets up Action listeners
+     */
     public ScheduleBillboardGUI(){
         super("Schedule Billboard");
         createGUI();
@@ -142,7 +150,11 @@ public class ScheduleBillboardGUI extends JFrame {
         setVisible(true);
 
     }
-
+    /**
+     * This function adds info to a JLabel
+     * @return a Boolean if the inputs to send are valid
+     * @author Callum
+     */
     private boolean Check_Valid_Inputs()
     {
         //Check all the inputs are valid

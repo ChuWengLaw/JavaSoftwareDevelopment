@@ -20,7 +20,11 @@ import java.time.Duration;
 import java.util.Date;
 import javax.swing.*;
 
-
+/**
+ * @author Callum Longman
+ * This is the Delete Schedule window
+ * users can delete schedules by inputting the billbaord name and a date/time
+ */
 public class DeleteScheduleGUI extends JFrame {
     //Create Swing items (Buttons, labels, text fields)
     private JPanel pnlDeleteSchedule = new JPanel(new GridBagLayout());
@@ -30,7 +34,10 @@ public class DeleteScheduleGUI extends JFrame {
     private JLabel lblScheduledTime = new JLabel("<html>Schedule Time (24h Time):<br/>yyyy-MM-dd HH:mm:ss</html>");
     private JTextField txtBillboardName = new JTextField(20);
     private JTextField txtScheduledTime = new JTextField(20);
-
+    /**
+     * Constructor initialises the GUI creation
+     * Sets up Action listeners
+     */
     public DeleteScheduleGUI(){
         super("Delete Schedule");
         createGUI();
@@ -109,6 +116,11 @@ public class DeleteScheduleGUI extends JFrame {
         pack();
         setVisible(true);
     }
+    /**
+     * This function adds info to a JLabel
+     * @return a Boolean if the inputs to send are valid
+     * @author Callum
+     */
     private boolean Check_Valid_Inputs()
     {
         //Check the inputs fit the date time format provided

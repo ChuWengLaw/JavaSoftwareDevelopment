@@ -233,9 +233,10 @@ public class Server {
     }
 
     /**
-     *
-     * @param sessionToken
-     * @return
+     * @author Nicholas Tseng
+     *  This is the method that find the corresponding session token in the server list.
+     * @param sessionToken target session token
+     * @return the corresponding session token in the list
      */
     private static SessionToken findSessionToken(SessionToken sessionToken){
         for(int i  = 0; i <= sessionTokens.size(); i++){
@@ -249,8 +250,9 @@ public class Server {
     }
 
     /**
-     *
-     * @param sessionToken
+     * @author Nicholas Tseng
+     *  This is the method that reset the used time of the target session token in the server list.
+     * @param sessionToken target session token
      */
     private static void resetSessionTokenTime(SessionToken sessionToken){
         for (int i = 0; i <= sessionTokens.size(); i++) {

@@ -227,6 +227,7 @@ public class EditUserWin extends JFrame{
         editButton.addActionListener(editListener);
 
         ActionListener cancelListener = e -> {
+            userNameTextField.setText(null);
             passwordTextField.setText(null);
             checkBox1.setSelected(false);
             checkBox2.setSelected(false);

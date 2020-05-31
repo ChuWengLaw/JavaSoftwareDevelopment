@@ -19,10 +19,9 @@ public class LoginReply implements Serializable {
 
     /**
      * This is constructor for successful login.
-     *
-     * @param loginState   a boolean indicates login state
+     * @param loginState a boolean indicates login state
      * @param sessionToken a session token that will be assigned to the login user
-     * @param user         login user's information
+     * @param user login user's information
      */
     public LoginReply(boolean loginState, SessionToken sessionToken, User user) {
         this.loginState = loginState;
@@ -32,7 +31,6 @@ public class LoginReply implements Serializable {
 
     /**
      * This is constructor for unsuccessful login.
-     *
      * @param loginState a boolean indicates login state
      */
     public LoginReply(boolean loginState) {

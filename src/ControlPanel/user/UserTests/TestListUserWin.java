@@ -1,5 +1,4 @@
 package ControlPanel.user.UserTests;
-
 import Server.Request.ListUserRequest;
 import Server.SessionToken;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,17 +15,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TestListUserWin {
     SessionToken sessionToken = new SessionToken("testToken", LocalDateTime.now());
-
     //Test 1: Create an empty ListUserRequest
-    @BeforeEach
-    @Test
-    public void TestEmptyListUserRequest() {
+    @BeforeEach @Test
+    public void TestEmptyListUserRequest(){
         ListUserRequest listUserRequest;
     }
-
     //Test 2: Check if the session token was successfully encapsulated in ListUserReqest object
     @Test
-    public void SessionTokenListUserRequest() {
+    public void SessionTokenListUserRequest(){
         ListUserRequest listUserRequest = new ListUserRequest(sessionToken);
         assertEquals(sessionToken, listUserRequest.getSessionToken());
     }

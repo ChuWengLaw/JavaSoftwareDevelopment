@@ -16,12 +16,12 @@ import java.util.Vector;
  */
 public class UserSQL {
     /**
-     * @param user     a user class
-     * @param userName username of the target user.
-     * @throws SQLException
      * @author Nicholas Tseng
      * This is a method that help passing the data of a user from database
      * and setup a user class with corresponding information.
+     * @param user a user class
+     * @param userName username of the target user.
+     * @throws SQLException
      */
     static void setUserSQL(User user, String userName) throws SQLException {
         PreparedStatement pstatement = Server.connection.prepareStatement("SELECT * FROM  user where userName = ?");
@@ -43,15 +43,15 @@ public class UserSQL {
     }
 
     /**
-     * @param userName     username of the target user.
-     * @param userPassword password of the target user.
-     * @return
-     * @throws SQLException
-     * @throws NoSuchAlgorithmException
      * @author Nicholas Tseng
      * This is a method that help check if username and password matches each other
      * inside the database
      * in the database.
+     * @param userName username of the target user.
+     * @param userPassword password of the target user.
+     * @return
+     * @throws SQLException
+     * @throws NoSuchAlgorithmException
      */
     static boolean checkPasswordSQL(String userName, String userPassword) throws SQLException, NoSuchAlgorithmException {
         boolean correctPassword = false;
@@ -73,16 +73,16 @@ public class UserSQL {
     }
 
     /**
-     * @param userName                     username of the new user
-     * @param userPassword                 password of the new user
-     * @param createBillboardsPermission   create billboard permission of the new user
-     * @param editAllBillboardPermission   edit all billboard permission of the new user
-     * @param scheduleBillboardsPermission schedule billboard permission of the new user
-     * @param editUsersPermission          edit users permission of the new user
-     * @param saltValue                    salt value of the new user, this is for encrypting the password
-     * @throws SQLException
      * @author Nicholas Tseng
      * This is a method that help create a new user in the database.
+     * @param userName username of the new user
+     * @param userPassword password of the new user
+     * @param createBillboardsPermission create billboard permission of the new user
+     * @param editAllBillboardPermission edit all billboard permission of the new user
+     * @param scheduleBillboardsPermission schedule billboard permission of the new user
+     * @param editUsersPermission edit users permission of the new user
+     * @param saltValue salt value of the new user, this is for encrypting the password
+     * @throws SQLException
      */
     static void createUserSQL(String userName, String userPassword,
                               boolean createBillboardsPermission, boolean editAllBillboardPermission,
@@ -102,12 +102,13 @@ public class UserSQL {
     }
 
     /**
-     * This function executes SQL to delete the entered user
+     *This function executes SQL to delete the entered user
      * from the database as well as all the billboards that the
      * user has created.
      *
      * @param userName of the entered user
      * @throws SQLException
+     *
      * @author "Kenji" Foo Shiang Xun
      */
     static void deleteUserBillboardSQL(String userName) throws SQLException {
@@ -132,6 +133,7 @@ public class UserSQL {
      *
      * @return the list of users in a JTable
      * @throws SQLException
+     *
      * @author "Kenji" Foo Shiang Xun
      */
     static JTable listUserSQL() throws SQLException {
@@ -167,6 +169,7 @@ public class UserSQL {
      * @param userName of the entered user
      * @return true if the user exists in the database
      * @throws SQLException
+     *
      * @author "Kenji" Foo Shiang Xun, Nicholas Tseng
      */
     static boolean checkUserSQL(String userName) throws SQLException {
@@ -187,16 +190,16 @@ public class UserSQL {
     }
 
     /**
-     * @param userName                     username of the target user
-     * @param userPassword                 new password of the target user
-     * @param createBillboardsPermission   create billboard permission of the target user
-     * @param editAllBillboardPermission   edit all billboard permission of the target user
-     * @param scheduleBillboardsPermission schedule billboard permission of the target user
-     * @param editUsersPermission          edit users permission of the target user
-     * @param saltValue                    salt value of the new user, this is for encrypting the password
-     * @throws SQLException
      * @author Nicholas Tseng
      * This is a method that edit a user in the database with a new password.
+     * @param userName username of the target user
+     * @param userPassword new password of the target user
+     * @param createBillboardsPermission create billboard permission of the target user
+     * @param editAllBillboardPermission edit all billboard permission of the target user
+     * @param scheduleBillboardsPermission schedule billboard permission of the target user
+     * @param editUsersPermission edit users permission of the target user
+     * @param saltValue salt value of the new user, this is for encrypting the password
+     * @throws SQLException
      */
     static void editUserSQL(String userName, String userPassword,
                             boolean createBillboardsPermission, boolean editAllBillboardPermission,
@@ -216,14 +219,14 @@ public class UserSQL {
     }
 
     /**
-     * @param userName                     username of the target user
-     * @param createBillboardsPermission   create billboard permission of the target user
-     * @param editAllBillboardPermission   edit all billboard permission of the target user
-     * @param scheduleBillboardsPermission schedule billboard permission of the target user
-     * @param editUserPermission           edit users permission of the target user
-     * @throws SQLException
      * @author Nicholas Tseng
      * This is a method that edit a user in the database without a new password.
+     * @param userName username of the target user
+     * @param createBillboardsPermission create billboard permission of the target user
+     * @param editAllBillboardPermission edit all billboard permission of the target user
+     * @param scheduleBillboardsPermission schedule billboard permission of the target user
+     * @param editUserPermission edit users permission of the target user
+     * @throws SQLException
      */
     static void editUserSQL(String userName, boolean createBillboardsPermission, boolean editAllBillboardPermission,
                             boolean scheduleBillboardsPermission, boolean editUserPermission) throws SQLException {
@@ -240,12 +243,12 @@ public class UserSQL {
     }
 
     /**
-     * @param userName    username of the target user
-     * @param newPassword new password of the target user
-     * @param saltString  salt value of the new user, this is for encrypting the password
-     * @throws SQLException
      * @author Nicholas Tseng
      * This is a method that change password of a user in the database.
+     * @param userName username of the target user
+     * @param newPassword new password of the target user
+     * @param saltString salt value of the new user, this is for encrypting the password
+     * @throws SQLException
      */
     static void changePasswordSQL(String userName, String newPassword, String saltString) throws SQLException {
         PreparedStatement pstatement = Server.connection.prepareStatement("UPDATE user " +

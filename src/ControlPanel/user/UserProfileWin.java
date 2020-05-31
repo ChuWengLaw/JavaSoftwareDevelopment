@@ -125,15 +125,14 @@ public class UserProfileWin extends JFrame {
 
         // Display the window
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        int width = (int) screenSize.getWidth();
-        int height = (int) screenSize.getHeight();
-        setLocation(width / 4, height / 4);
+        int width = (int)screenSize.getWidth();
+        int height = (int)screenSize.getHeight();
+        setLocation(width/4,height/4);
         pack();
     }
 
     /**
      * This is a method that set up the check box in the window to show the users their permission.
-     *
      * @param isCheck1 a boolean indicates if checkbox 1 is checked
      * @param isCheck2 a boolean indicates if checkbox 2 is checked
      * @param isCheck3 a boolean indicates if checkbox 3 is checked

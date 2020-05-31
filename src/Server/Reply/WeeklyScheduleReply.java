@@ -8,16 +8,15 @@ import java.util.ArrayList;
 public class WeeklyScheduleReply implements Serializable {
     private SessionToken sessionToken;
     private ArrayList<String[]> Array;
+
     /**
      * @param sessionToken
-     * @param Array
-     * This is the reply class that handle the weekly schedule reply.
-     * It takes the sessionToken, array of all the schedules
-     *
+     * @param Array        This is the reply class that handle the weekly schedule reply.
+     *                     It takes the sessionToken, array of all the schedules
      * @author Callum Longman
      */
     //build constructor and Getter functions
-    public WeeklyScheduleReply(SessionToken sessionToken, ArrayList<String[]> Array){
+    public WeeklyScheduleReply(SessionToken sessionToken, ArrayList<String[]> Array) {
         this.sessionToken = sessionToken;
         this.Array = Array;
     }

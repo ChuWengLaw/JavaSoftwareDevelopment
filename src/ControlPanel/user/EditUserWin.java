@@ -5,6 +5,7 @@ import ControlPanel.Main;
 import ControlPanel.User;
 import Server.Request.EditUserRequest;
 import Server.Request.SearchRequest;
+
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
@@ -18,7 +19,7 @@ import javax.swing.*;
  * This is the edit user window class extends JFrame. In this window,
  * users can edit an existed user information beside the user name.
  */
-public class EditUserWin extends JFrame{
+public class EditUserWin extends JFrame {
     // Initialize the components in the window.
     private JLabel labelUserName = new JLabel("User Name");
     private JLabel labelPassword = new JLabel("Selected password");
@@ -32,7 +33,7 @@ public class EditUserWin extends JFrame{
     private JCheckBox checkBox2 = new JCheckBox("Enable");
     private JCheckBox checkBox3 = new JCheckBox("Enable");
     private JCheckBox checkBox4 = new JCheckBox("Enable");
-    private JButton searchButton= new JButton("Search");
+    private JButton searchButton = new JButton("Search");
     private JButton editButton = new JButton("Edit");
     private JButton cancelButton = new JButton("Cancel");
     private JPanel panel = new JPanel(new GridBagLayout());
@@ -42,7 +43,7 @@ public class EditUserWin extends JFrame{
     /**
      * This is the constructor which will create the edit user window.
      */
-    public EditUserWin(){
+    public EditUserWin() {
         // Setting default value of the frame
         super("Edit User");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -50,10 +51,12 @@ public class EditUserWin extends JFrame{
         // Window Listener
         WindowListener windowListener = new WindowListener() {
             @Override
-            public void windowOpened(WindowEvent e) {}
+            public void windowOpened(WindowEvent e) {
+            }
 
             @Override
-            public void windowClosing(WindowEvent e) {}
+            public void windowClosing(WindowEvent e) {
+            }
 
             @Override
             public void windowClosed(WindowEvent e) {
@@ -76,16 +79,20 @@ public class EditUserWin extends JFrame{
             }
 
             @Override
-            public void windowIconified(WindowEvent e) {}
+            public void windowIconified(WindowEvent e) {
+            }
 
             @Override
-            public void windowDeiconified(WindowEvent e) {}
+            public void windowDeiconified(WindowEvent e) {
+            }
 
             @Override
-            public void windowActivated(WindowEvent e) {}
+            public void windowActivated(WindowEvent e) {
+            }
 
             @Override
-            public void windowDeactivated(WindowEvent e) {}
+            public void windowDeactivated(WindowEvent e) {
+            }
         };
         super.addWindowListener(windowListener);
 
@@ -100,22 +107,21 @@ public class EditUserWin extends JFrame{
         // Button setting
         ActionListener searchListener = e -> {
             // Check if the username text field is empty, if so, return an error message.
-            if(userNameTextField.getText().isEmpty()){
-                JOptionPane.showMessageDialog(null,"User name field can't be empty.");
+            if (userNameTextField.getText().isEmpty()) {
+                JOptionPane.showMessageDialog(null, "User name field can't be empty.");
             }
             // Check if users are trying to edit themselves, if so return an error message.
             // Note that users can edit their own password at "User Profile",
             // but not their own permissions at all.
-            else if (userNameTextField.getText().equals(Main.loginUser.getUserName())){
+            else if (userNameTextField.getText().equals(Main.loginUser.getUserName())) {
                 JOptionPane.showMessageDialog(null,
                         "Administrators are not allow to change their own permission");
-            }
-            else{
+            } else {
                 SearchRequest searchRequest = new SearchRequest(Main.loginUser.getSessionToken(), userNameTextField.getText(), true);
 
                 try {
                     Client.connectServer(searchRequest);
-                } catch(ConnectException ex) {
+                } catch (ConnectException ex) {
                     JOptionPane.showMessageDialog(null, "Connection fail.");
                     System.exit(0);
                 } catch (IOException ex) {
@@ -126,7 +132,7 @@ public class EditUserWin extends JFrame{
                     ex.printStackTrace();
                 }
 
-                if(Client.isRequestState()){
+                if (Client.isRequestState()) {
                     userNameTextField.setEditable(false);
                     passwordTextField.setEditable(true);
                     checkBox1.setEnabled(true);
@@ -138,23 +144,22 @@ public class EditUserWin extends JFrame{
                     checkBox2.setSelected(editedUser.getEditAllBillboardPermission());
                     checkBox3.setSelected(editedUser.getScheduleBillboardsPermission());
                     checkBox4.setSelected(editedUser.getEditUsersPermission());
-                }
-                else{
+                } else {
                     JOptionPane.showMessageDialog(null, "User name does not exist.");
                 }
             }
         };
         searchButton.addActionListener(searchListener);
 
-        ActionListener editListener = e ->{
-            if (passwordTextField.getText().isEmpty()){
+        ActionListener editListener = e -> {
+            if (passwordTextField.getText().isEmpty()) {
                 EditUserRequest editUserRequest = new EditUserRequest(Main.loginUser.getSessionToken(),
                         userNameTextField.getText(), checkBox1.isSelected(), checkBox2.isSelected(),
                         checkBox3.isSelected(), checkBox4.isSelected(), !passwordTextField.getText().isEmpty());
 
                 try {
                     Client.connectServer(editUserRequest);
-                } catch(ConnectException ex) {
+                } catch (ConnectException ex) {
                     JOptionPane.showMessageDialog(null, "Connection fail.");
                     System.exit(0);
                 } catch (IOException ex) {
@@ -165,7 +170,7 @@ public class EditUserWin extends JFrame{
                     ex.printStackTrace();
                 }
 
-                if(Client.isRequestState()){
+                if (Client.isRequestState()) {
                     userNameTextField.setEditable(true);
                     passwordTextField.setEditable(false);
                     checkBox1.setEnabled(false);
@@ -181,8 +186,7 @@ public class EditUserWin extends JFrame{
                     passwordTextField.setText("");
                     JOptionPane.showMessageDialog(null, "Edit successful!");
                 }
-            }
-            else{
+            } else {
                 EditUserRequest editUserRequest = new EditUserRequest(Main.loginUser.getSessionToken(), userNameTextField.getText(),
                         passwordTextField.getText(), checkBox1.isSelected(), checkBox2.isSelected(),
                         checkBox3.isSelected(), checkBox4.isSelected(), !passwordTextField.getText().isEmpty());
@@ -190,7 +194,7 @@ public class EditUserWin extends JFrame{
                 try {
                     Client.connectServer(editUserRequest);
 
-                    if(Client.isRequestState()){
+                    if (Client.isRequestState()) {
                         userNameTextField.setEditable(true);
                         passwordTextField.setEditable(false);
                         checkBox1.setEnabled(false);
@@ -206,11 +210,10 @@ public class EditUserWin extends JFrame{
                         userNameTextField.setText("");
                         passwordTextField.setText("");
                         JOptionPane.showMessageDialog(null, "Edit successful!");
-                    }
-                    else{
+                    } else {
                         throw new Exception();
                     }
-                } catch(ConnectException ex){
+                } catch (ConnectException ex) {
                     JOptionPane.showMessageDialog(null, "Connection fail.");
                     System.exit(0);
                 } catch (IOException ex) {
@@ -309,9 +312,9 @@ public class EditUserWin extends JFrame{
 
         // Display the window
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        int width = (int)screenSize.getWidth();
-        int height = (int)screenSize.getHeight();
-        setLocation(width/4,height/4);
+        int width = (int) screenSize.getWidth();
+        int height = (int) screenSize.getHeight();
+        setLocation(width / 4, height / 4);
         pack();
     }
 }

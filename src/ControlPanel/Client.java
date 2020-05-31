@@ -29,6 +29,7 @@ public class Client {
 
     /**
      * Connects to server (connection read from network.props)
+     *
      * @param args The object encapsulating the data inputs to be sent to server
      */
     public static void connectServer(Object args) throws IOException, InterruptedException, ClassNotFoundException {
@@ -73,25 +74,24 @@ public class Client {
      */
     private static void executeReply(Object requestReply) {
         // if the server replies to the client login request
-        if (requestReply instanceof LoginReply){
+        if (requestReply instanceof LoginReply) {
             LoginReply loginReply = (LoginReply) requestReply;
             requestState = loginReply.isLoginState();
 
-            if (requestState){
+            if (requestState) {
                 Main.loginUser = loginReply.getUser();
                 Main.loginUser.setSessionToken(loginReply.getSessionToken());
             }
         }
         // if the server replies to the client search user request
-        else if (requestReply instanceof SearchReply){
+        else if (requestReply instanceof SearchReply) {
             SearchReply searchReply = (SearchReply) requestReply;
             requestState = searchReply.isRequestState();
             boolean EditSearch = searchReply.isEditSearch();
-            if (requestState){
-                if (EditSearch){
+            if (requestState) {
+                if (EditSearch) {
                     Main.editUserWin.editedUser = searchReply.getUser();
-                }
-                else{
+                } else {
                     Main.searchUserWin.searchUser = searchReply.getUser();
                 }
             }
@@ -99,33 +99,32 @@ public class Client {
             Main.loginUser.setSessionToken(searchReply.getSessionToken());
         }
         // if the server replies to the client logout request
-        else if (requestReply instanceof LogoutReply){
+        else if (requestReply instanceof LogoutReply) {
             LogoutReply logoutReply = (LogoutReply) requestReply;
 
             // Display different message upon different logout reason.
-            if(logoutReply.isExpired()){
+            if (logoutReply.isExpired()) {
                 JOptionPane.showMessageDialog(null, "Session expired, system logged out.");
-            }
-            else{
+            } else {
                 JOptionPane.showMessageDialog(null, "Successfully logged out!");
             }
             System.exit(0);
         }
         // if the server replies in the form of general reply
-        else if (requestReply instanceof GeneralReply){
+        else if (requestReply instanceof GeneralReply) {
             GeneralReply generalReply = (GeneralReply) requestReply;
             requestState = generalReply.isRequestState();
             Main.loginUser.setSessionToken(generalReply.getSessionToken());
         }
         // if the server replies to the client list all users request
-        else if (requestReply instanceof ListUserReply){
+        else if (requestReply instanceof ListUserReply) {
             ListUserReply listUserReply = (ListUserReply) requestReply;
             Main.listUserWin.getTable(listUserReply.getTable());
             requestState = listUserReply.isListUserState();
             Main.loginUser.setSessionToken(listUserReply.getSessionToken());
         }
         // if the server replies to the client get billboard information request
-        else if (requestReply instanceof BBInfoReply){
+        else if (requestReply instanceof BBInfoReply) {
             BBInfoReply bbInfoReply = (BBInfoReply) requestReply;
             textClr = bbInfoReply.getEditTextColour();
             bgClr = bbInfoReply.getEditBGColour();
@@ -137,30 +136,30 @@ public class Client {
             Main.loginUser.setSessionToken(bbInfoReply.getSessionToken());
         }
         // if the server replies to the client list all billboards request
-        else if (requestReply instanceof ListBBReply){
+        else if (requestReply instanceof ListBBReply) {
             ListBBReply listBBReply = (ListBBReply) requestReply;
             listBBTable = listBBReply.getTable();
             requestState = true;
             Main.loginUser.setSessionToken(listBBReply.getSessionToken());
         }
         // if the server replies to the client weekly schedule request
-        else if (requestReply instanceof WeeklyScheduleReply){
+        else if (requestReply instanceof WeeklyScheduleReply) {
             WeeklyScheduleReply ScheduleReply = (WeeklyScheduleReply) requestReply;
             ScheduleArray = ScheduleReply.getArray();
             Main.loginUser.setSessionToken(ScheduleReply.getSessionToken());
         }
         // if the server replies to the client get current scheduled billboard request
-        else if (requestReply instanceof GetCurrentScheduledReply){
+        else if (requestReply instanceof GetCurrentScheduledReply) {
             GetCurrentScheduledReply ScheduleReply = (GetCurrentScheduledReply) requestReply;
             ScheduledBillboardTitle = ScheduleReply.getBillboardTitle();
         }
         // if the server replies to the client list schedule request
-        else if (requestReply instanceof ListScheduleReply){
+        else if (requestReply instanceof ListScheduleReply) {
             ListScheduleReply listScheduleReply = (ListScheduleReply) requestReply;
             ListScheduleBillboardTable = listScheduleReply.getTable();
         }
         // if the server replies to the client edit billboard request
-        else if (requestReply instanceof EditBBReply){
+        else if (requestReply instanceof EditBBReply) {
             EditBBReply editBBReply = (EditBBReply) requestReply;
             EditBGColour = editBBReply.getEditBGColour();
             EditTextColour = editBBReply.getEditTextColour();
@@ -172,7 +171,7 @@ public class Client {
             Main.loginUser.setSessionToken(editBBReply.getSessionToken());
         }
         // if the server replies to the client export billboard request
-        else if (requestReply instanceof XmlReply){
+        else if (requestReply instanceof XmlReply) {
             XmlReply xmlReply = (XmlReply) requestReply;
             exportFile = xmlReply.getBillboardXml();
             requestState = true;
@@ -183,45 +182,67 @@ public class Client {
     public static String getInfo() {
         return info;
     }
+
     public static JTable getBBTable() {
         return listBBTable;
     }
+
     public static String getEditTextColour() {
         return EditTextColour;
     }
+
     public static String getEditBGColour() {
         return EditBGColour;
     }
+
     public static String getEditMsg() {
         return EditMsg;
     }
+
     public static String getEditImg() {
         return EditImg;
     }
+
     public static String getEditInfo() {
         return EditInfo;
     }
+
     public static String getEditInfoColour() {
         return EditInfoColour;
     }
-    public static ArrayList<String[]> getScheduleArray() {return ScheduleArray;}
-    public static String getScheduledBillboardTitle() {return ScheduledBillboardTitle;}
+
+    public static ArrayList<String[]> getScheduleArray() {
+        return ScheduleArray;
+    }
+
+    public static String getScheduledBillboardTitle() {
+        return ScheduledBillboardTitle;
+    }
+
     public static File getExportFile() {
         return exportFile;
     }
-    public static JTable getListScheduleBillboardTable() {return ListScheduleBillboardTable;}
+
+    public static JTable getListScheduleBillboardTable() {
+        return ListScheduleBillboardTable;
+    }
+
     public static String getTextClr() {
         return textClr;
     }
+
     public static String getBgClr() {
         return bgClr;
     }
+
     public static String getMsg() {
         return msg;
     }
+
     public static String getImg() {
         return img;
     }
+
     public static String getInfoClr() {
         return infoClr;
     }

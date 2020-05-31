@@ -4,6 +4,7 @@ import ControlPanel.Client;
 import ControlPanel.Main;
 import ControlPanel.User;
 import Server.Request.SearchRequest;
+
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
@@ -19,7 +20,7 @@ import javax.swing.*;
  * @author "Kenji" Foo Shiang Xun
  */
 
-public class SearchUserInfoWin extends JFrame{
+public class SearchUserInfoWin extends JFrame {
     private JLabel labelUserName = new JLabel("Username");
     private JLabel labelCreateBBPermission = new JLabel("Create billboards");
     private JLabel labelEditBBPermission = new JLabel("Edit billboards");
@@ -30,7 +31,7 @@ public class SearchUserInfoWin extends JFrame{
     private JCheckBox checkBoxEditBB = new JCheckBox("Enable");
     private JCheckBox checkBoxScheduleBB = new JCheckBox("Enable");
     private JCheckBox checkBoxEditUser = new JCheckBox("Enable");
-    private JButton searchButton= new JButton("Search");
+    private JButton searchButton = new JButton("Search");
     private JPanel panel = new JPanel(new GridBagLayout());
     private GridBagConstraints constraints = new GridBagConstraints();
     public User searchUser = new User();

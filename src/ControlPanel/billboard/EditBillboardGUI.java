@@ -95,7 +95,7 @@ public class EditBillboardGUI extends JFrame {
 
                 try {
                     Client.connectServer(temp);
-                    if(Client.isRequestState()){
+                    if (Client.isRequestState()) {
                         JOptionPane.showMessageDialog(null, "Opening edit window...");
                         // hide the previous panel
                         panel.setVisible(false);
@@ -103,11 +103,10 @@ public class EditBillboardGUI extends JFrame {
                         lblBillboardName.setVisible(false);
                         txtBillboardName.setVisible(false);
                         createEditGUI();
-                    }
-                    else{
+                    } else {
                         JOptionPane.showMessageDialog(null, "No permission/invalid billboard name/Currently Scheduled");
                     }
-                } catch(ConnectException ex) {
+                } catch (ConnectException ex) {
                     JOptionPane.showMessageDialog(null, "Connection fail.");
                     System.exit(0);
                 } catch (InterruptedException ex) {
@@ -182,13 +181,12 @@ public class EditBillboardGUI extends JFrame {
                             txtMessage.getText(), txtImage.getText(), txtInformation.getText(), txtInformationColour.getText());
                     try {
                         Client.connectServer(temp);
-                        if(Client.isRequestState()){
+                        if (Client.isRequestState()) {
                             JOptionPane.showMessageDialog(null, "Successfully edited billboard!");
-                        }
-                        else{
+                        } else {
                             JOptionPane.showMessageDialog(null, "Fail to edit billboard!");
                         }
-                    } catch(ConnectException ex) {
+                    } catch (ConnectException ex) {
                         JOptionPane.showMessageDialog(null, "Connection fail.");
                         System.exit(0);
                     } catch (InterruptedException ex) {
@@ -306,14 +304,14 @@ public class EditBillboardGUI extends JFrame {
         editBBConstraints.gridy = 8;
         editBBPanel.add(btnSubmit, editBBConstraints);
         editBBConstraints.gridx = 1;
-        editBBPanel.add(btnBrowse,editBBConstraints);
+        editBBPanel.add(btnBrowse, editBBConstraints);
 
         getContentPane().add(editBBPanel);
         //set the location of the GUI
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        int width = (int)screenSize.getWidth();
-        int height = (int)screenSize.getHeight();
-        setLocation(width/4,height/4);
+        int width = (int) screenSize.getWidth();
+        int height = (int) screenSize.getHeight();
+        setLocation(width / 4, height / 4);
 
         //make changes and then send to GUI
         pack();
@@ -357,12 +355,14 @@ public class EditBillboardGUI extends JFrame {
         return label;
     }
 
-    /**This function takes a file and encodes it as base64 returning the string of the encoded value
-     * @author Lachlan
+    /**
+     * This function takes a file and encodes it as base64 returning the string of the encoded value
+     *
      * @param file the image file which is being converted
      * @return the base64 encoded string
+     * @author Lachlan
      */
-    private String encodeFileBase64 (File file){
+    private String encodeFileBase64(File file) {
         String encodedString = null;
         try {
             FileInputStream fileInputStreamReader = new FileInputStream(file);
